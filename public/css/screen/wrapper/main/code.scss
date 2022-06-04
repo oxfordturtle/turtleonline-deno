@@ -1,0 +1,42 @@
+.main code {
+  .comment {
+    color: blue;
+  }
+
+  .keyword {
+    color: firebrick;
+    font-weight: bold;
+  }
+
+  .type {
+    color: firebrick;
+  }
+
+  .operator {
+    color: cornflowerblue;
+  }
+
+  .command {
+    color: darkviolet;
+  }
+
+  .integer {
+    color: chocolate;
+  }
+
+  .character, .string {
+    color: seagreen;
+  }
+
+  .keycode, .query, .turtle {
+    font-weight: bold;
+  }
+
+  .colour {
+    border-bottom: .125em solid transparent;
+  }
+
+  .illegal, .error {
+    background: rgba(200, 0, 0, .2);
+  }
+}

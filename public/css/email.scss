@@ -1,0 +1,41 @@
+@import "constants.scss";
+
+body {
+  font-family: $system-font;
+  color: $darkgray;
+  margin: 0;
+  padding: 1em;
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+a {
+  color: $blue;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+img {
+  max-width: 100%;
+}
+
+.button {
+  text-align: center;
+  margin-bottom: 1em;
+
+  a {
+    display: inline-block;
+    background: $blue;
+    color: #fff;
+    text-decoration: none;
+    padding: .5em 1em;
+    border-radius: 5px;
+    &:hover {
+      background: darken($blue, 10%);
+    }
+  }
+}

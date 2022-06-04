@@ -1,0 +1,5 @@
+export default `
+<div class="system-tab-pane" data-tab="variables" data-mode="expert,machine">
+  <p style="padding: 1em;">Details of program variables and subroutines are not yet available in the online system.</p>
+</div>
+`

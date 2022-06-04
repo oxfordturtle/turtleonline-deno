@@ -1,0 +1,7 @@
+export default `
+<div class="filename">
+  <select aria-label="Current file" data-binding="currentFileIndex"></select>
+  <input type="text" placeholder="filename" aria-label="Filename" data-binding="filename">
+  <button title="Close current file" data-action="closeProgram"><i class="fa fa-times" aria-hidden="true"></i></button>
+</div>
+`

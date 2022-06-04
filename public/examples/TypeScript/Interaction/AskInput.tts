@@ -1,0 +1,9 @@
+// write question to console
+write('What is your name?  ');
+// read characters from keybuffer until ENTER key is pressed
+var name: string = readLine();
+// write a greeting (on a new line)
+writeLine('');
+write('Hello, ' + name + ', ...  ');
+pause(500);
+writeLine('How are you?');
