@@ -27,10 +27,10 @@ for i in range(0, 26, 1):
     letters[i] = i + 97
 # randomize the order of the letters
 for count in range(0, 50, 1):
-  m: int = randint(0, 25)
-  n: int = randint(0, 25)
+  m = randint(0, 25)
+  n = randint(0, 25)
   if (m != n):
-    temp: int = letters[m]
+    temp = letters[m]
     letters[m] = letters[n]
     letters[n] = temp
 # set timer to zero

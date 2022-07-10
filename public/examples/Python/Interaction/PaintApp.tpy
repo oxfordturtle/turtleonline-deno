@@ -1,7 +1,7 @@
-brushwidth: int
-brushcolour: int
+brushwidth
+brushcolour
 
-def setbrushwidth(wdth: int):
+def setbrushwidth(wdth):
   global brushwidth
   brushwidth = 0
   colour(black)
@@ -12,22 +12,22 @@ def setbrushwidth(wdth: int):
   brushwidth = wdth
   recolour(((brushwidth + 16) * 25) + 25, 875, lightred)
 
-def setbrushcolour(clr: int):
+def setbrushcolour(clr):
   global brushcolour
   brushcolour = clr
   colour(clr)
   setxy(975, 875)
   blot(16)
 
-def paintbrush(x: int, y: int):
+def paintbrush(x, y):
   setxy(x, y)
   blot(brushwidth)
 
-def paintcan(x: int, y: int):
+def paintcan(x, y):
   recolour(x, y, brushcolour)
 
 def setup():
-  def square(col: int):
+  def square(col):
     movexy(50, 0)
     movexy(0, 50)
     movexy(-50, 0)

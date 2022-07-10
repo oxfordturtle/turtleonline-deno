@@ -20,7 +20,7 @@ import { CompilerError } from '../../tools/error.ts'
 import { Token } from '../../lexer/token.ts'
 
 /** parses semicolons */
-export function semicolon (lexemes: Lexemes, compulsory: boolean = false, context: string = 'statement'): void {
+export function semicolon (lexemes: Lexemes, compulsory = false, context = 'statement'): void {
   // check for semicolon
   if (compulsory && (!lexemes.get() || lexemes.get()?.content !== ';')) {
     throw new CompilerError(`Semicolon needed after ${context}.`, lexemes.get(-1))

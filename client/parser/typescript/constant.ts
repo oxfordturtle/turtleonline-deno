@@ -1,7 +1,7 @@
 import identifier from './identifier.ts'
 import type from './type.ts'
 import Lexemes from '../definitions/lexemes.ts'
-import { Constant, IntegerConstant, StringConstant } from '../definitions/constant.ts'
+import { Constant } from '../definitions/constant.ts'
 import Program from '../definitions/program.ts'
 import { Subroutine } from '../definitions/subroutine.ts'
 import { expression, typeCheck } from '../expression.ts'
@@ -14,7 +14,7 @@ export default function constant (lexemes: Lexemes, routine: Program|Subroutine,
   const name = identifier(lexemes, routine, duplicateCheck)
 
   // expecting type specification
-  const [constantType, stringLength, arrayDimensions] = type(lexemes, routine)
+  const [constantType, , arrayDimensions] = type(lexemes, routine)
   if (constantType === null) {
     throw new CompilerError('Constant type cannot be void (expected "boolean", "number", or "string").', lexemes.get())
   }
@@ -37,7 +37,5 @@ export default function constant (lexemes: Lexemes, routine: Program|Subroutine,
   const value = evaluate(exp, 'TypeScript', 'constant')
 
   // create and return the constant
-  return (typeof value === 'string')
-    ? new StringConstant('TypeScript', name, value)
-    : new IntegerConstant('TypeScript', name, value)
+  return new Constant('TypeScript', name, value)
 }

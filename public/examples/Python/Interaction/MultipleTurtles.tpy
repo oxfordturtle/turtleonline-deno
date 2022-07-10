@@ -1,10 +1,10 @@
-numTurtles: Final[int] = 5
-x: Final[int] = 0
-y: Final[int] = 1
-d: Final[int] = 2
-a: Final[int] = 3
-t: Final[int] = 4
-c: Final[int] = 5
+numTurtles: Final = 5
+x: Final = 0
+y: Final = 1
+d: Final = 2
+a: Final = 3
+t: Final = 4
+c: Final = 5
 turtles: List[List[int, c + 1], numTurtles]
 
 # set initial values for each turtle
@@ -27,7 +27,7 @@ def menu ():
 # handle a mouse click
 def handleClick ():
   # select turtle based on canvas colour at mouse location
-  thisTurtle: int = -1
+  thisTurtle = -1
   for i in range(0, numTurtles, 1):
     if (pixcol(?mousex, ?mousey) == rgb(i + 1)):
       thisTurtle = i

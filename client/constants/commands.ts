@@ -1,9 +1,10 @@
 /*
  * Arrays of native Turtle commands and their categories.
  */
-import type { Language } from './languages'
-import { PCode } from './pcodes'
-import type { Type } from '../lexer/lexeme'
+import type { Language } from './languages.ts'
+import { PCode } from './pcodes.ts'
+import type { Type } from '../lexer/lexeme.ts'
+import type { SubroutineType } from '../parser/definitions/subroutine.ts'
 
 /** command class definition */
 export class Command {
@@ -29,6 +30,10 @@ export class Command {
     this.category = category
     this.level = level
     this.description = description
+  }
+
+  get type (): SubroutineType {
+    return this.returns === null ? 'procedure' : 'function'
   }
 }
 

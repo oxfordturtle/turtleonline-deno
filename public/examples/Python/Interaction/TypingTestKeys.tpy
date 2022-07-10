@@ -23,10 +23,10 @@ for i in range(0, 26, 1):
   letters[i] = i + 65
 # randomize the order of the letters
 for count in range(0, 50, 1):
-  m: int = randint(0, 25)
-  n: int = randint(0, 25)
+  m = randint(0, 25)
+  n = randint(0, 25)
   if (m != n):
-    temp: int = letters[m]
+    temp = letters[m]
     letters[m] = letters[n]
     letters[n] = temp
 # set timer to zero
@@ -34,9 +34,9 @@ timeset(0)
 # for each letter in turn...
 for count in range(0, 26, 1):
   # read character code of that letter
-  c: int = letters[count]
+  c = letters[count]
   # select case at random
-  lowerCase: bool = (randint(0, 1) == 0)
+  lowerCase = (randint(0, 1) == 0)
   # rub out previous letter
   blank(black)
   # print letter at random coordinates
@@ -48,7 +48,7 @@ for count in range(0, 26, 1):
   else:
     print(chr(c), 3, 450)
   # wait for user to type that letter, with shift down for uppercase
-  shiftOk: bool = False
+  shiftOk = False
   while ((abs(?key) != c) or not shiftOk):
     shiftOk = (((abs(?kshift) & 8) > 0) ^ lowerCase)
   # reset kshift value

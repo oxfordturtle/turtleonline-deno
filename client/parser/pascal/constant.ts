@@ -1,7 +1,7 @@
 import identifier from './identifier.ts'
 import { semicolon } from './statement.ts'
 import type Lexemes from '../definitions/lexemes.ts'
-import { Constant, IntegerConstant, StringConstant } from '../definitions/constant.ts'
+import { Constant } from '../definitions/constant.ts'
 import type Program from '../definitions/program.ts'
 import { expression } from '../expression.ts'
 import evaluate from '../evaluate.ts'
@@ -23,12 +23,10 @@ export default function constant (lexemes: Lexemes, routine: Program): Constant 
   const value = evaluate(exp, 'Pascal', 'constant')
 
   // create the constant
-  const foo = (typeof value === 'string')
-    ? new StringConstant('Pascal', name, value)
-    : new IntegerConstant('Pascal', name, value)
+  const foo = new Constant('Pascal', name, value)
 
   // expecting a semicolon
-  semicolon(lexemes, true, 'constant defintiion')
+  semicolon(lexemes, true, 'constant definition')
 
   // return the constant
   return foo

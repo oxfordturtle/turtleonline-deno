@@ -1,12 +1,12 @@
-maxpop: int = 100000
-maxgen: int = 100
-lmargin: int = 105
-rmargin: int = 40
-tmargin: int = 150
-bmargin: int = 200
-showoutput: bool = False
-r: int
-pop: int
+maxpop = 100000
+maxgen = 100
+lmargin = 105
+rmargin = 40
+tmargin = 150
+bmargin = 200
+showoutput = False
+r
+pop
 
 def axes():
   colour(black)

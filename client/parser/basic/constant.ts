@@ -1,5 +1,5 @@
 import { variable } from './variable.ts'
-import { Constant, IntegerConstant, StringConstant } from '../definitions/constant.ts'
+import { Constant } from '../definitions/constant.ts'
 import type Program from '../definitions/program.ts'
 import type { Subroutine } from '../definitions/subroutine.ts'
 import type Lexemes from '../definitions/lexemes.ts'
@@ -24,7 +24,5 @@ export default function constant (lexemes: Lexemes, routine: Program|Subroutine)
   exp = typeCheck(exp, foo.type)
 
   // create and return the constant
-  return (typeof value === 'string')
-    ? new StringConstant('BASIC', foo.name, value)
-    : new IntegerConstant('BASIC', foo.name, value)
+  return new Constant('BASIC', foo.name, value)
 }

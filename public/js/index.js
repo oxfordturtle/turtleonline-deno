@@ -1,1 +1,12408 @@
-(()=>{"use strict";const e=["BASIC","C","Java","Pascal","Python","TypeScript"],t={BASIC:"tbas",C:"tc",Java:"tjav",Pascal:"tpas",Python:"tpy",TypeScript:"tts"};class n{constructor(e,t=null){this.language=e,this.example=t,this.name="",this.code="",this.backup="",this.compiled=!1,this.edited=!1}get extension(){return t[this.language]}get filename(){return`${this.name||"filename"}.${this.extension}`}}const o={BASIC:"var1% = 100\nCOLOUR(GREEN)\nBLOT(var1%)\nEND",C:"void main () {\n  int var1 = 100;\n  colour(green);\n  blot(var1);\n}",Java:"class ProgramName {\n  void main () {\n    int var1 = 100;\n    colour(green);\n    blot(var1);\n  }\n}",Pascal:"PROGRAM programName;\nVAR var1: integer;\nBEGIN\n  var1 := 100;\n  colour(green);\n  blot(var1)\nEND.",Python:"var1: int = 100\ncolour(green)\nblot(var1)",TypeScript:"var var1 = 100;\ncolour(green);\nblot(var1);"},a={savedSettingsHaveBeenLoaded:!1,language:"Pascal",mode:"normal",editorFontFamily:"Courier",editorFontSize:13,outputFontFamily:"Courier",outputFontSize:13,includeCommentsInExamples:!0,loadCorrespondingExample:!0,assembler:!0,decimal:!0,autoCompileOnLoad:!1,autoRunOnLoad:!1,autoFormatOnLoad:!1,alwaysSaveSettings:!1,commandsCategoryIndex:0,showSimpleCommands:!0,showIntermediateCommands:!1,showAdvancedCommands:!1,files:[],currentFileIndex:0,filename:"",lexemes:[],usage:[],routines:[],pcode:[],showCanvasOnRun:!0,showOutputOnWrite:!1,showMemoryOnDump:!0,drawCountMax:4,codeCountMax:1e5,smallSize:60,stackSize:5e4,traceOnRun:!1,activateHCLR:!0,preventStackCollision:!0,rangeCheckArrays:!0,canvasStartSize:1e3,setupDefaultKeyBuffer:!0,turtleAttributesAsGlobals:!0,initialiseLocals:!0,allowCSTR:!0,separateReturnStack:!0,separateMemoryControlStack:!0,separateSubroutineRegisterStack:!0};function i(e){const t=sessionStorage.getItem(e);return null!==t?JSON.parse(t):a[e]}function r(e,t){sessionStorage.setItem(e,JSON.stringify(t))}class s{constructor(e,t,n){this.groupId=e,this.id=t,this.names="string"==typeof n?{BASIC:n,C:n,Java:n,Pascal:n,Python:n,TypeScript:n}:n}}class l{constructor(e,t,n){this.index=e,this.id=t,this.title=n,this.examples=c.filter((e=>e.groupId===t))}}const c=[new s("CSAC","LifeStart","Initialising Conwayâ€™s Game of Life"),new s("CSAC","Mandelbrot","Mandelbrot set"),new s("CSAC","MandelbrotMini","Mandelbrot mini"),new s("CSAC","MandelbrotSpectrum","Mandelbrot spectrum"),new s("CSAC","MandelbrotMiniSpectrum","Mandelbrot mini spectrum"),new s("CSAC","SierpinskiColour","Sierpinski colour"),new s("CSAC","SierpinskiIFS","Sierpinski IFS"),new s("CSAC","BarnsleyColour","Barnsley colour"),new s("CSAC","BarnsleyIFS","Barnsley IFS"),new s("CSAC","DragonColour","Dragon colour"),new s("CSAC","DragonIFS","Dragon IFS"),new s("CSAC","TreeIFS","Tree IFS"),new s("CASC","WaveSuperposer","Hugh Wallisâ€™s wave superposer"),new s("Drawing","DrawPause","Simple drawing with pauses"),new s("Drawing","SmileyFace","Smiley face (using PENUP and ELLBLOT)"),new s("Drawing","ThePlough","The plough (using SETXY and POLYLINE)"),new s("Drawing","OlympicRings","Olympic rings (using a variable)"),new s("Drawing","ForLoop","FOR (counting) loop"),new s("Drawing","TriangleSpin","Spinning triangle pattern"),new s("Drawing","Circles","Circling circles"),new s("Drawing","NestedLoops","Nested FOR loops"),new s("Drawing","RandomLines","Random lines pattern"),new s("Drawing","RandomEllipses","Random ellipses pattern"),new s("Procedures","ColourSpiral","Spiral of colours (simple PCODE)"),new s("Procedures","SimpleProc","Simple procedure (using REPEAT)"),new s("Procedures","ParameterProc","Procedure with parameter"),new s("Procedures","ResizableFace","Resizable face (nested procedures)"),new s("Procedures","Polygons","Polygons (two parameters)"),new s("Procedures","Stars","Stars (using ANGLES and FORGET)"),new s("Procedures","PolygonRings","Polygon rings (three parameters)"),new s("Procedures","Triangle1","Simple triangle"),new s("Procedures","Triangle2","Triangle procedure"),new s("Procedures","Triangle3","Triangle procedure with limit"),new s("Procedures","Triangles","Recursive triangles"),new s("Procedures","Factorials","Recursive factorials"),new s("Further","YouAreHere","Text and arrow (using PRINT)"),new s("Further","CycleColours","Cycling colours (using MOD)"),new s("Further","Clock","Analogue clock (using REPEAT)"),new s("Further","DigitalClock","Digital clock (using IF and WHILE)"),new s("Further","Flashlights","Flashlights (using Booleans)"),new s("Further","RefParams","Reference parameters"),new s("Further","Balls3D","3D colour effects"),new s("Further","StringFunctions","Standard string functions"),new s("Further","UserStringFunctions","User-defined string functions"),new s("Further","MathFunctions","Mathematical functions"),new s("Further","TrigGraphs","Trigonometric graphs"),new s("Movement","MovingBall","Moving ball (using variables)"),new s("Movement","BouncingBall","Bouncing ball (using variables)"),new s("Movement","TurtleMove","Moving ball (using Turtle)"),new s("Movement","TurtleBounce","Bouncing ball (using Turtle)"),new s("Movement","BouncingFace","Bouncing face"),new s("Movement","MultiBounce","Multiple bouncing balls"),new s("Movement","BouncingTriangle","Bouncing triangle"),new s("Movement","BouncingShapes","Multiple bouncing shapes"),new s("Movement","GravitySteps","Movement under gravity"),new s("Movement","SolarSystem","Solar system"),new s("Interaction","AskInput","Asking for typed input"),new s("Interaction","QuickClick","Mouse reaction game"),new s("Interaction","TypingTest","Typing test (checking characters)"),new s("Interaction","TypingTestKeys","Typing test (checking keys)"),new s("Interaction","IterationGame","Iteration game (Collatz sequence)"),new s("Interaction","SpongeThrow","Throwing sponges at a moving face"),new s("Interaction","Arcade","Arcade shooting game"),new s("Interaction","SnakeGame","Snake (classic game)"),new s("Interaction","SimpleDraw","Drawing to the mouse"),new s("Interaction","PaintApp","Painting application"),new s("Interaction","MultipleTurtles","Multiple turtles and varying ANGLES"),new s("Files","WriteAndReadFile","Writing and reading a text file"),new s("Files","RenameAndDeleteFile","Renaming and deleting a file"),new s("Files","FileSearching","File searching"),new s("Files","SaveCSV","Saving a CSV file"),new s("Files","ReadCSV","Reading a CSV file"),new s("Files","RandomSentences","Random sentences (using files)"),new s("Files","FileCommands","File commands"),new s("Files","DirectoryCommands","Directory commands"),new s("Cellular","Disease","Spread of disease"),new s("Cellular","TippingPoint","Tipping point (city epidemic)"),new s("Cellular","GameOfLife","Conwayâ€™s Game of Life"),new s("Cellular","LifeArrays","Game of Life, using arrays"),new s("Cellular","Automata","One-dimensional cellular automata"),new s("Cellular","Diffusion","A model of diffusion"),new s("Cellular","Dendrites","Dendritic crystal growth"),new s("Cellular","Schelling","Schellingâ€™s segregation model"),new s("Cellular","IteratedPD","Iterated Prisonerâ€™s Dilemma"),new s("Models","AimCannon","Firing a cannon (manual)"),new s("Models","AutoCannon","Firing a cannon (automatic)"),new s("Models","Launch","Launching a rocket into orbit"),new s("Models","BrownianMotion","Brownian motion"),new s("Models","Cheetahs","Cheetahs and gazelles"),new s("Models","SexRatio","The sex ratio"),new s("Models","Flocking","Flocking behaviour"),new s("Models","Roads","Town road simulation"),new s("Models","Interference","Wave interference tutor"),new s("Models","TwoSlits","Interference from two slits"),new s("Fractals","RecursionFactory","Recursion factory"),new s("Fractals","RecursiveTree","Recursive tree"),new s("Fractals","KochSnowflake","Koch snowflake"),new s("Fractals","SquareKoch","Square Koch fractal curves"),new s("Fractals","Sierpinski","Sierpinski triangle (by deletion)"),new s("Fractals","SierpinskiDots","Sierpinski triangle (by random dots)"),new s("Fractals","IFSBackground","Iterated function systems (IFS) background"),new s("Fractals","IFSColour","IFS mappings on coloured background"),new s("Fractals","IFSDemonstrator","IFS demonstrator program"),new s("Fractals","Logistic","Logistic equation"),new s("Fractals","LogisticSpider","Logistic spider"),new s("Fractals","MandelbrotDemo","Mandelbrot multi-colour"),new s("Fractals","MandelbrotSpectrumDemo","Mandelbrot spectral colours"),new s("Fractals","Quine","Quine (self-replicating) program"),new s("Logic&CS","Hanoi","Tower of Hanoi by recursion"),new s("Logic&CS","IterateRoot","Square roots by iteration"),new s("Logic&CS","Fibonaccis","Fibonaccis (using ARRAY and TIME)"),new s("Logic&CS","Sorting","Comparison of sorting methods"),new s("Logic&CS","SortingStrings","Comparison of sorting methods (strings)"),new s("Logic&CS","NoughtsAndCrosses","Noughts and crosses"),new s("Logic&CS","NimLearn","Nim learning program"),new s("Logic&CS","MultiNim","Nim with multiple piles"),new s("Logic&CS","KnightsTour","Knightâ€™s Tour program")],d=[new l(0,"CSAC","other CSAC programs"),new l(1,"Drawing","drawing and counting loops"),new l(2,"Procedures","procedures and simple recursion"),new l(3,"Further","further commands and structures"),new l(4,"Movement","smooth movement and bouncing"),new l(5,"Interaction","user input, interaction and games"),new l(6,"Cellular","cellular models"),new l(7,"Models","other models"),new l(8,"Fractals","self-similarity and chaos"),new l(9,"Logic&CS","computer science and logic")];function u(e,t={}){const n=document.createElement(e);for(const[e,o]of Object.entries(t))switch(e){case"content":(Array.isArray(o)||"string"==typeof o)&&h(n,o);break;case"className":if("string"==typeof o)for(const e of o.split(" "))n.classList.add(e);break;case"value":"string"==typeof o&&(n.value=o);break;case"on":Array.isArray(o)&&n.addEventListener(o[0],o[1]);break;default:"string"==typeof o&&n.setAttribute(e,o)}return n}function h(e,t){if(Array.isArray(t)){const n=document.createDocumentFragment();for(const e of t)n.appendChild(e);for(;e.firstChild;)e.removeChild(e.firstChild);e.appendChild(n)}else e.innerHTML=t}function p(e){const t=document.createDocumentFragment();return h(t,e),t}function g(e={}){return u("div",e)}function w(e={}){return u("li",e)}function f(e={}){return u("a",e)}function m(e={}){return u("code",e)}function v(e={}){return u("i",e)}function y(e={}){return u("span",e)}function b(e={}){return u("td",e)}function S(e={}){return u("th",e)}function k(e={}){return u("tr",e)}function x(e={}){return u("option",e)}class C extends Error{constructor(e){super(e)}}class P extends Error{constructor(e){super(e)}}class T extends Error{constructor(e,t=null){t&&(e=e.replace("{lex}",`"${t.content}"`),e+=` ("${t.content}", line ${t.line}, index ${t.character})`),super(e),this.token=t}}const A={};function L(e,t){A[e]?A[e].push(t):A[e]=[t]}function I(e,t=null){if(A[e])for(const n of A[e])n(t);"currentFileIndexChanged"===e&&(I("filenameChanged"),I("codeChanged"))}const M=[],E=[],R=[],F=[],B=[],O=[],D=[],q=[];let z=0,J=0,N=0,$=0,W=0,H=0,U=!1;function G(e,t){return M[M[e]+t]}function K(e,t,n){M[M[e]+t]=n}function V(){return G(0,1)}function j(){return G(0,2)}function X(){return G(0,3)}function Y(){return G(0,4)}function Q(){return G(0,5)}function Z(e){K(0,1,e)}function _(e){K(0,2,e)}function ee(e){K(0,3,e)}function te(e){K(0,4,e)}function ne(e){K(0,5,e)}function oe(e){z=Math.max(e,z)}function ae(){return $}function ie(e){Math.max(e,H)}function re(e){const t=Array.from(e).map((e=>e.charCodeAt(0)));B.push($+1),$+=1,M[$]=e.length;for(const e of t)$+=1,M[$]=e;H=Math.max($,H)}function se(e){const t=M[e],n=e+1,o=M.slice(n,n+t).map((e=>String.fromCharCode(e))).join("");return e+t+1>W&&($=e+t),o}function le(e,t){t>0&&(M[e]=0,le(e+1,t-1))}function ce(e,t,n){n>0&&(M[t]=M[e],ce(e+1,t+1,n-1))}function de(){return{stack:M.slice(0,z+1),heap:M.slice(N+1,H+1),heapBase:N+1}}const ue={showCanvasOnRun:a.showCanvasOnRun,showOutputOnWrite:a.showOutputOnWrite,showMemoryOnDump:a.showMemoryOnDump,drawCountMax:a.drawCountMax,codeCountMax:a.codeCountMax,smallSize:a.smallSize,stackSize:a.stackSize,traceOnRun:a.traceOnRun,activateHCLR:a.activateHCLR,preventStackCollision:a.preventStackCollision,rangeCheckArrays:a.rangeCheckArrays};function he(e,t,n,o){return Math.round((e*n+t*o)/(n+o))}class pe{constructor(e,t,n,o){this.index=e,this.names={BASIC:t.toUpperCase(),C:t,Java:t,Pascal:t,Python:t,TypeScript:t},this.type="integer",this.value=n,this.hex=n.toString(16).padStart(6,"0").toUpperCase(),this.text=o?"white":"black"}}const ge=[new pe(1,"green",2263842,!0),new pe(2,"red",16711680,!0),new pe(3,"blue",255,!0),new pe(4,"yellow",16776960,!1),new pe(5,"violet",9055202,!0),new pe(6,"lime",65280,!1),new pe(7,"orange",16755200,!1),new pe(8,"skyblue",45311,!0),new pe(9,"brown",9849600,!0),new pe(10,"pink",15602313,!0),new pe(11,"darkgreen",25600,!0),new pe(12,"darkred",11674146,!0),new pe(13,"darkblue",128,!0),new pe(14,"ochre",12628016,!0),new pe(15,"indigo",4915330,!0),new pe(16,"olive",8421376,!0),new pe(17,"orangered",16737792,!0),new pe(18,"teal",32896,!0),new pe(19,"darkbrown",6045747,!0),new pe(20,"magenta",16711935,!0),new pe(21,"lightgreen",10025880,!1),new pe(22,"lightred",13458524,!0),new pe(23,"lightblue",10075135,!1),new pe(24,"cream",16777147,!1),new pe(25,"lilac",11572223,!0),new pe(26,"yellowgreen",11193395,!1),new pe(27,"peach",16764080,!1),new pe(28,"cyan",65535,!1),new pe(29,"lightbrown",11567184,!0),new pe(30,"lightpink",16758465,!1),new pe(31,"seagreen",3978097,!0),new pe(32,"maroon",8388608,!0),new pe(33,"royal",4286945,!0),new pe(34,"gold",16762880,!1),new pe(35,"purple",8388736,!0),new pe(36,"emerald",51543,!0),new pe(37,"salmon",16416882,!0),new pe(38,"turquoise",48833,!0),new pe(39,"coffee",9596735,!0),new pe(40,"rose",16746666,!0),new pe(41,"greengrey",7377008,!0),new pe(42,"redgrey",11567232,!0),new pe(43,"bluegrey",8421536,!0),new pe(44,"yellowgrey",9474160,!0),new pe(45,"darkgrey",4210752,!0),new pe(46,"midgrey",8421504,!0),new pe(47,"lightgrey",10526880,!0),new pe(48,"silver",12632256,!1),new pe(49,"white",16777215,!1),new pe(50,"black",0,!0)];var we;function fe(e){switch(e){case we.lstr:return-1;case we.ldin:case we.ldvg:case we.ldag:case we.stvg:case we.jump:case we.ifno:case we.subr:case we.pssr:case we.memr:return 1;case we.ldvv:case we.ldvr:case we.ldav:case we.stvv:case we.stvr:case we.memc:return 2;default:return 0}}function me(e){return`#${ve(e.toString(16))}`}function ve(e){return e.length<6?ve(`0${e}`):e}!function(e){e[e.null=0]="null",e[e.dupl=1]="dupl",e[e.swap=2]="swap",e[e.rota=3]="rota",e[e.incr=4]="incr",e[e.decr=5]="decr",e[e.mxin=6]="mxin",e[e.rand=7]="rand",e[e.hstr=8]="hstr",e[e.ctos=9]="ctos",e[e.sasc=10]="sasc",e[e.itos=11]="itos",e[e.hexs=12]="hexs",e[e.sval=13]="sval",e[e.qtos=14]="qtos",e[e.qval=15]="qval",e[e.not=16]="not",e[e.and=17]="and",e[e.or=18]="or",e[e.xor=19]="xor",e[e.andl=20]="andl",e[e.orl=21]="orl",e[e.shft=22]="shft",e[e.neg=23]="neg",e[e.abs=24]="abs",e[e.sign=25]="sign",e[e.plus=26]="plus",e[e.subt=27]="subt",e[e.mult=28]="mult",e[e.divr=29]="divr",e[e.div=30]="div",e[e.mod=31]="mod",e[e.eqal=32]="eqal",e[e.noeq=33]="noeq",e[e.less=34]="less",e[e.more=35]="more",e[e.lseq=36]="lseq",e[e.mreq=37]="mreq",e[e.maxi=38]="maxi",e[e.mini=39]="mini",e[e.seql=40]="seql",e[e.sneq=41]="sneq",e[e.sles=42]="sles",e[e.smor=43]="smor",e[e.sleq=44]="sleq",e[e.smeq=45]="smeq",e[e.smax=46]="smax",e[e.smin=47]="smin",e[e.divm=48]="divm",e[e.sqrt=49]="sqrt",e[e.hyp=50]="hyp",e[e.root=51]="root",e[e.powr=52]="powr",e[e.log=53]="log",e[e.alog=54]="alog",e[e.ln=55]="ln",e[e.exp=56]="exp",e[e.sin=57]="sin",e[e.cos=58]="cos",e[e.tan=59]="tan",e[e.asin=60]="asin",e[e.acos=61]="acos",e[e.atan=62]="atan",e[e.pi=63]="pi",e[e.scat=64]="scat",e[e.slen=65]="slen",e[e.case=66]="case",e[e.copy=67]="copy",e[e.dels=68]="dels",e[e.inss=69]="inss",e[e.poss=70]="poss",e[e.repl=71]="repl",e[e.spad=72]="spad",e[e.trim=73]="trim",e[e.home=80]="home",e[e.setx=81]="setx",e[e.sety=82]="sety",e[e.setd=83]="setd",e[e.angl=84]="angl",e[e.thik=85]="thik",e[e.pen=86]="pen",e[e.colr=87]="colr",e[e.toxy=88]="toxy",e[e.mvxy=89]="mvxy",e[e.drxy=90]="drxy",e[e.fwrd=91]="fwrd",e[e.back=92]="back",e[e.left=93]="left",e[e.rght=94]="rght",e[e.turn=95]="turn",e[e.blnk=96]="blnk",e[e.rcol=97]="rcol",e[e.fill=98]="fill",e[e.pixc=99]="pixc",e[e.pixs=100]="pixs",e[e.rgb=101]="rgb",e[e.mixc=102]="mixc",e[e.rmbr=103]="rmbr",e[e.frgt=104]="frgt",e[e.poly=105]="poly",e[e.pfil=106]="pfil",e[e.circ=107]="circ",e[e.blot=108]="blot",e[e.elps=109]="elps",e[e.eblt=110]="eblt",e[e.box=111]="box",e[e.ldin=112]="ldin",e[e.ldvg=113]="ldvg",e[e.ldvv=114]="ldvv",e[e.ldvr=115]="ldvr",e[e.ldag=116]="ldag",e[e.ldav=117]="ldav",e[e.lstr=118]="lstr",e[e.stvg=119]="stvg",e[e.stvv=120]="stvv",e[e.stvr=121]="stvr",e[e.lptr=122]="lptr",e[e.sptr=123]="sptr",e[e.zptr=124]="zptr",e[e.cptr=125]="cptr",e[e.cstr=126]="cstr",e[e.test=127]="test",e[e.jump=128]="jump",e[e.ifno=129]="ifno",e[e.halt=130]="halt",e[e.subr=131]="subr",e[e.retn=132]="retn",e[e.pssr=133]="pssr",e[e.plsr=134]="plsr",e[e.psrj=135]="psrj",e[e.plrj=136]="plrj",e[e.ldmt=137]="ldmt",e[e.stmt=138]="stmt",e[e.memc=139]="memc",e[e.memr=140]="memr",e[e.hfix=141]="hfix",e[e.hclr=142]="hclr",e[e.hrst=143]="hrst",e[e.canv=144]="canv",e[e.reso=145]="reso",e[e.udat=146]="udat",e[e.seed=147]="seed",e[e.trac=152]="trac",e[e.memw=153]="memw",e[e.dump=154]="dump",e[e.peek=155]="peek",e[e.poke=156]="poke",e[e.inpt=160]="inpt",e[e.iclr=161]="iclr",e[e.bufr=162]="bufr",e[e.read=163]="read",e[e.rdln=164]="rdln",e[e.kech=165]="kech",e[e.outp=166]="outp",e[e.cons=167]="cons",e[e.prnt=168]="prnt",e[e.writ=169]="writ",e[e.newl=170]="newl",e[e.curs=171]="curs",e[e.time=172]="time",e[e.tset=173]="tset",e[e.wait=174]="wait",e[e.tdet=175]="tdet",e[e.chdr=176]="chdr",e[e.file=177]="file",e[e.diry=178]="diry",e[e.open=179]="open",e[e.clos=180]="clos",e[e.fbeg=181]="fbeg",e[e.eof=182]="eof",e[e.eoln=183]="eoln",e[e.frds=184]="frds",e[e.frln=185]="frln",e[e.fwrs=186]="fwrs",e[e.fwln=187]="fwln",e[e.ffnd=188]="ffnd",e[e.fdir=189]="fdir",e[e.fnxt=190]="fnxt",e[e.fmov=191]="fmov",e[e.dopr=224]="dopr",e[e.fopr=225]="fopr",e[e.ilin=226]="ilin",e[e.lefs=227]="lefs",e[e.newt=228]="newt",e[e.oldt=229]="oldt",e[e.rgts=230]="rgts",e[e.rndc=231]="rndc",e[e.svd0=232]="svd0",e[e.wrln=233]="wrln"}(we||(we={}));let ye=document.createElement("canvas"),be=document.createElement("canvas").getContext("2d"),Se=!1,ke=!1,xe=[],Ce=0,Pe=0,Te=ue,Ae=0,Le=0,Ie=1e3,Me=1e3,Ee=1e3,Re=1e3,Fe=!1,Be=0,Oe=0,De=0,qe=0,ze=!1,Je=!1,Ne=0;function $e(e,t){ye=e,be=t}function We(){Ae=0,Le=0,Ie=1e3,Me=1e3,Ee=1e3,Re=1e3,Fe=!1,I("resolution",{width:1e3,height:1e3}),I("console",{clear:!0,colour:"#FFFFFF"}),I("output",{clear:!0,colour:"#FFFFFF"}),I("turtxChanged",500),I("turtyChanged",500),I("turtdChanged",0),I("turtaChanged",360),I("turttChanged",2),I("turtcChanged","#000"),I("canvas",{startx:0,starty:0,sizex:1e3,sizey:1e3})}function He(){Se&&(window.removeEventListener("keydown",Ke),window.removeEventListener("keyup",Ve),window.removeEventListener("keypress",je),window.removeEventListener("keyup",_e),window.removeEventListener("keyup",et),ye.removeEventListener("contextmenu",Ze),ye.removeEventListener("mousemove",Xe),ye.removeEventListener("touchmove",Ze),ye.removeEventListener("touchmove",Xe),ye.removeEventListener("mousedown",Ze),ye.removeEventListener("mousedown",Ye),ye.removeEventListener("touchstart",Ye),ye.removeEventListener("mouseup",Qe),ye.removeEventListener("touchend",Qe),I("cursor",1),Se=!1,ke=!1,I("halted"))}function Ue(){ke=!0,I("paused")}function Ge(){if(!Se)return;if(ke)return void setTimeout(Ge,1);window.removeEventListener("keyup",_e),window.removeEventListener("keyup",et),U&&(U=!1,0===B.length?$=W:U=!0);let e,t,n,o,a,i,r,s,l,c,d,u,h,p=0,g=0;try{for(;p<Te.drawCountMax&&g<=Te.codeCountMax;){switch(xe[Ce][Pe]){case we.null:break;case we.dupl:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");B.push(e,e);break;case we.swap:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");B.push(t,e);break;case we.rota:if(n=B.pop(),t=B.pop(),e=B.pop(),void 0===e||void 0===t||void 0===n)throw new P("Stack operation called on empty stack.");B.push(t,n,e);break;case we.incr:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");B.push(e+1);break;case we.decr:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");B.push(e-1);break;case we.mxin:B.push(Math.pow(2,31)-1);break;case we.rand:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");t=1e4*Math.sin(Ne++),t-=Math.floor(t),B.push(Math.floor(t*Math.abs(e)));break;case we.hstr:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");r=se(e),re(r);break;case we.ctos:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");re(String.fromCharCode(e));break;case we.sasc:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");r=se(e),0===r.length?B.push(0):B.push(r.charCodeAt(0));break;case we.itos:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");re(e.toString(10));break;case we.hexs:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");for(r=e.toString(16).toUpperCase();r.length<t;)r="0"+r;re(r);break;case we.sval:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");r=se(e),n="#"===r[0]?isNaN(parseInt(r.slice(1),16))?t:parseInt(r.slice(1),16):isNaN(parseInt(r,10))?t:parseInt(r,10),B.push(n);break;case we.qtos:if(o=B.pop(),n=B.pop(),t=B.pop(),void 0===t||void 0===n||void 0===o)throw new P("Stack operation called on empty stack.");e=t/n,re(e.toFixed(o));break;case we.qval:if(n=B.pop(),t=B.pop(),e=B.pop(),void 0===e||void 0===t||void 0===n)throw new P("Stack operation called on empty stack.");r=se(e),o=isNaN(parseFloat(r))?n:parseFloat(r),B.push(Math.round(o*t));break;case we.not:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");B.push(~e);break;case we.and:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");B.push(e&t);break;case we.or:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");B.push(e|t);break;case we.xor:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");B.push(e^t);break;case we.andl:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");B.push(e&&t);break;case we.orl:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");B.push(e||t);break;case we.shft:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");t<0?B.push(e<<-t):B.push(e>>t);break;case we.neg:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");B.push(-e);break;case we.abs:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");B.push(Math.abs(e));break;case we.sign:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");B.push(Math.sign(e));break;case we.plus:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");B.push(e+t);break;case we.subt:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");B.push(e-t);break;case we.mult:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");B.push(e*t);break;case we.divr:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");if(0===t)throw new P("Cannot divide by zero.");n=e/t,B.push(Math.round(n));break;case we.div:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");if(0===t)throw new P("Cannot divide by zero.");n=e/t,B.push(n>0?Math.floor(n):Math.ceil(n));break;case we.mod:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");B.push(e%t);break;case we.eqal:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");B.push(e===t?-1:0);break;case we.noeq:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");B.push(e!==t?-1:0);break;case we.less:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");B.push(e<t?-1:0);break;case we.more:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");B.push(e>t?-1:0);break;case we.lseq:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");B.push(e<=t?-1:0);break;case we.mreq:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");B.push(e>=t?-1:0);break;case we.maxi:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");B.push(Math.max(e,t));break;case we.mini:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");B.push(Math.min(e,t));break;case we.seql:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");s=se(t),r=se(e),B.push(r===s?-1:0);break;case we.sneq:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");s=se(t),r=se(e),B.push(r!==s?-1:0);break;case we.sles:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");s=se(e),r=se(t),B.push(e<t?-1:0);break;case we.smor:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");s=se(t),r=se(e),B.push(e>t?-1:0);break;case we.sleq:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");s=se(t),r=se(e),B.push(r<=s?-1:0);break;case we.smeq:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");s=se(t),r=se(e),B.push(r>=s?-1:0);break;case we.smax:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");s=se(t),r=se(e),re(s>r?s:r);break;case we.smin:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");s=se(t),r=se(e),re(s<r?s:r);break;case we.divm:if(n=B.pop(),t=B.pop(),e=B.pop(),void 0===e||void 0===t||void 0===n)throw new P("Stack operation called on empty stack.");B.push(Math.round(e/t*n));break;case we.sqrt:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");B.push(Math.round(Math.sqrt(e)*t));break;case we.hyp:if(n=B.pop(),t=B.pop(),e=B.pop(),void 0===e||void 0===t||void 0===n)throw new P("Stack operation called on empty stack.");B.push(Math.round(Math.sqrt(e*e+t*t)*n));break;case we.root:if(o=B.pop(),n=B.pop(),t=B.pop(),e=B.pop(),void 0===e||void 0===t||void 0===n||void 0===o)throw new P("Stack operation called on empty stack.");B.push(Math.round(Math.pow(e/t,1/n)*o));break;case we.powr:if(o=B.pop(),n=B.pop(),t=B.pop(),e=B.pop(),void 0===e||void 0===t||void 0===n||void 0===o)throw new P("Stack operation called on empty stack.");B.push(Math.round(Math.pow(e/t,n)*o));break;case we.log:if(n=B.pop(),t=B.pop(),e=B.pop(),void 0===e||void 0===t||void 0===n)throw new P("Stack operation called on empty stack.");B.push(Math.round(Math.log(e/t)/Math.LN10*n));break;case we.alog:if(n=B.pop(),t=B.pop(),e=B.pop(),void 0===e||void 0===t||void 0===n)throw new P("Stack operation called on empty stack.");B.push(Math.round(Math.pow(10,e/t)*n));break;case we.ln:if(n=B.pop(),t=B.pop(),e=B.pop(),void 0===e||void 0===t||void 0===n)throw new P("Stack operation called on empty stack.");B.push(Math.round(Math.log(e/t)*n));break;case we.exp:if(n=B.pop(),t=B.pop(),e=B.pop(),void 0===e||void 0===t||void 0===n)throw new P("Stack operation called on empty stack.");B.push(Math.round(Math.exp(e/t)*n));break;case we.sin:if(o=B.pop(),n=B.pop(),t=B.pop(),void 0===t||void 0===n||void 0===o)throw new P("Stack operation called on empty stack.");e=t/n*(2*Math.PI)/Y(),B.push(Math.round(Math.sin(e)*o));break;case we.cos:if(o=B.pop(),n=B.pop(),t=B.pop(),void 0===t||void 0===n||void 0===o)throw new P("Stack operation called on empty stack.");e=t/n*(2*Math.PI)/Y(),B.push(Math.round(Math.cos(e)*o));break;case we.tan:if(o=B.pop(),n=B.pop(),t=B.pop(),void 0===t||void 0===n||void 0===o)throw new P("Stack operation called on empty stack.");e=t/n*(2*Math.PI)/Y(),B.push(Math.round(Math.tan(e)*o));break;case we.asin:if(o=B.pop(),n=B.pop(),t=B.pop(),void 0===t||void 0===n||void 0===o)throw new P("Stack operation called on empty stack.");e=Y()/(2*Math.PI),B.push(Math.round(Math.asin(t/n)*o*e));break;case we.acos:if(o=B.pop(),n=B.pop(),t=B.pop(),void 0===t||void 0===n||void 0===o)throw new P("Stack operation called on empty stack.");e=Y()/(2*Math.PI),B.push(Math.round(Math.acos(t/n)*o*e));break;case we.atan:if(o=B.pop(),n=B.pop(),t=B.pop(),void 0===t||void 0===n||void 0===o)throw new P("Stack operation called on empty stack.");e=Y()/(2*Math.PI),B.push(Math.round(Math.atan2(t,n)*o*e));break;case we.pi:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");B.push(Math.round(Math.PI*e));break;case we.scat:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");s=se(t),r=se(e),re(r+s);break;case we.slen:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");B.push(M[e]);break;case we.case:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");switch(r=se(e),t){case 1:re(r.toLowerCase());break;case 2:re(r.toUpperCase());break;case 3:r.length>0?re(r[0].toUpperCase()+r.slice(1)):re(r);break;case 4:r=r.split(" ").map((e=>e[0].toUpperCase()+e.slice(1).toLowerCase())).join(" "),re(r);break;case 5:r=r.split("").map((e=>e===e.toLowerCase()?e.toUpperCase():e.toLowerCase())).join(""),re(r);break;default:re(r)}break;case we.copy:if(n=B.pop(),t=B.pop(),e=B.pop(),void 0===e||void 0===t||void 0===n)throw new P("Stack operation called on empty stack.");r=se(e),re(r.substr(t-1,n));break;case we.dels:if(o=B.pop(),n=B.pop(),t=B.pop(),void 0===t||void 0===n||void 0===o)throw new P("Stack operation called on empty stack.");s=se(t),r=s.substr(0,n-1)+s.substr(n-1+o),re(r);break;case we.inss:if(o=B.pop(),n=B.pop(),t=B.pop(),void 0===t||void 0===n||void 0===o)throw new P("Stack operation called on empty stack.");l=se(n),s=se(t),r=l.substr(0,o-1)+s+l.substr(o-1),re(r);break;case we.poss:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");s=se(t),r=se(e),B.push(s.indexOf(r)+1);break;case we.repl:if(o=B.pop(),n=B.pop(),t=B.pop(),e=B.pop(),void 0===e||void 0===t||void 0===n||void 0===o)throw new P("Stack operation called on empty stack.");if(l=se(n),s=se(t),r=se(e),o>0){for(;o>0;)r=r.replace(s,l),o-=1;re(r)}else re(r.replace(new RegExp(s,"g"),l));break;case we.spad:if(n=B.pop(),t=B.pop(),e=B.pop(),void 0===e||void 0===t||void 0===n)throw new P("Stack operation called on empty stack.");for(s=se(t),r=se(e);r.length+s.length<=Math.abs(n);)n<0?r+=s:r=s+r;re(r);break;case we.trim:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");r=se(e),re(r.trim());break;case we.home:e=Ae+Ie/2,t=Le+Me/2,Z(Math.round(e)),_(Math.round(t)),ee(0),I("turtxChanged",V()),I("turtyChanged",j()),I("turtdChanged",X()),F.push([V(),j()]);break;case we.setx:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");Z(e),I("turtxChanged",e),F.push([V(),j()]);break;case we.sety:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");_(e),I("turtyChanged",e),F.push([V(),j()]);break;case we.setd:t=B.pop(),void 0!==t&&(e=t%Y(),ee(e),I("turtdChanged",e));break;case we.angl:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");if(0===Y()&&te(e),0===e)throw new P("Angles cannot be set to zero.");t=Math.round(e+X()*e/Y()),ee(t%e),te(e),I("turtdChanged",t%e),I("turtaChanged",e);break;case we.thik:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");t=Math.abs(e),a=e<0,i=Q()<0,ne(a?i?t:-t:i?-t:t),I("turttChanged",Q());break;case we.colr:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");K(0,6,e),I("turtcChanged",me(e));break;case we.pen:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");a=0!==e,t=Math.abs(Q()),n=a?t:-t,ne(n),I("turttChanged",n);break;case we.toxy:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");Z(e),_(t),I("turtxChanged",e),I("turtyChanged",t),F.push([e,t]);break;case we.mvxy:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");t+=j(),e+=V(),Z(e),_(t),I("turtxChanged",e),I("turtyChanged",t),F.push([e,t]);break;case we.drxy:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");t+=j(),e+=V(),Q()>0&&(I("line",{turtle:tt(),x:nt(e),y:ot(t)}),ze&&(p+=1)),Z(e),_(t),I("turtxChanged",e),I("turtyChanged",t),F.push([e,t]);break;case we.fwrd:if(n=B.pop(),void 0===n)throw new P("Stack operation called on empty stack.");o=X(),t=Math.cos(o*Math.PI/(Y()/2)),t=-Math.round(t*n),t+=j(),e=Math.sin(o*Math.PI/(Y()/2)),e=Math.round(e*n),e+=V(),Q()>0&&(I("line",{turtle:tt(),x:nt(e),y:ot(t)}),ze&&(p+=1)),Z(e),_(t),I("turtxChanged",e),I("turtyChanged",t),F.push([e,t]);break;case we.back:if(n=B.pop(),void 0===n)throw new P("Stack operation called on empty stack.");o=X(),t=Math.cos(o*Math.PI/(Y()/2)),t=Math.round(t*n),t+=j(),e=Math.sin(o*Math.PI/(Y()/2)),e=-Math.round(e*n),e+=V(),Q()>0&&(I("line",{turtle:tt(),x:nt(e),y:ot(t)}),ze&&(p+=1)),Z(e),_(t),I("turtxChanged",e),I("turtyChanged",t),F.push([e,t]);break;case we.left:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");t=(X()-e)%Y(),ee(t),I("turtdChanged",t);break;case we.rght:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");t=(X()+e)%Y(),ee(t),I("turtdChanged",t);break;case we.turn:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");Math.abs(t)>=Math.abs(e)?(n=Math.atan(-e/t),t>0?n+=Math.PI:e<0&&(n+=2,n*=Math.PI)):(n=Math.atan(t/e),e>0?n+=Math.PI:(n+=3,n*=Math.PI),n/=2),n=Math.round(n*Y()/Math.PI/2)%Y(),ee(n),I("turtdChanged",e);break;case we.blnk:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");I("blank",me(e)),ze&&(p+=1);break;case we.rcol:if(n=B.pop(),t=B.pop(),e=B.pop(),void 0===e||void 0===t||void 0===n)throw new P("Stack operation called on empty stack.");I("flood",{x:nt(e),y:ot(t),c1:n,c2:0,boundary:!1}),ze&&(p+=1);break;case we.fill:if(o=B.pop(),n=B.pop(),t=B.pop(),e=B.pop(),void 0===e||void 0===t||void 0===n||void 0===o)throw new P("Stack operation called on empty stack.");I("flood",{x:nt(e),y:ot(t),c1:n,c2:o,boundary:!0}),ze&&(p+=1);break;case we.pixc:if(n=B.pop(),t=B.pop(),void 0===t||void 0===n)throw new P("Stack operation called on empty stack.");c=be.getImageData(nt(t),ot(n),1,1),B.push(65536*c.data[0]+256*c.data[1]+c.data[2]);break;case we.pixs:if(n=B.pop(),t=B.pop(),e=B.pop(),void 0===e||void 0===t||void 0===n)throw new P("Stack operation called on empty stack.");I("pixset",{x:nt(e),y:ot(t),c:n,doubled:Fe}),ze&&(p+=1);break;case we.rgb:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");e%=50,e<=0&&(e+=50),e=ge[e-1].value,B.push(e);break;case we.mixc:o=B.pop(),n=B.pop(),t=B.pop(),e=B.pop(),void 0!==e&&void 0!==t&&void 0!==n&&void 0!==o&&(d=he(Math.floor(e/65536),Math.floor(t/65536),n,o),u=he(Math.floor((65280&e)/256),Math.floor((65280&t)/256),n,o),h=he(255&e,255&t,n,o),B.push(65536*d+256*u+h));break;case we.rmbr:F.push([V(),j()]);break;case we.frgt:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");F.length-=e;break;case we.poly:if(n=B.pop(),void 0===n)throw new P("Stack operation called on empty stack.");t=F.length,e=n>t?0:t-n,I("poly",{turtle:tt(),coords:F.slice(e,t).map(at),fill:!1}),ze&&(p+=1);break;case we.pfil:if(n=B.pop(),void 0===n)throw new P("Stack operation called on empty stack.");t=F.length,e=n>t?0:t-n,I("poly",{turtle:tt(),coords:F.slice(e,t).map(at),fill:!0}),ze&&(p+=1);break;case we.circ:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");I("arc",{turtle:tt(),x:nt(e+Ae),y:ot(e+Le),fill:!1}),ze&&(p+=1);break;case we.blot:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");I("arc",{turtle:tt(),x:nt(e+Ae),y:ot(e+Le),fill:!0}),ze&&(p+=1);break;case we.elps:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");I("arc",{turtle:tt(),x:nt(e+Ae),y:ot(t+Le),fill:!1}),ze&&(p+=1);break;case we.eblt:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");I("arc",{turtle:tt(),x:nt(e+Ae),y:ot(t+Le),fill:!0}),ze&&(p+=1);break;case we.box:if(o=B.pop(),n=B.pop(),t=B.pop(),e=B.pop(),void 0===e||void 0===t||void 0===n||void 0===o)throw new P("Stack operation called on empty stack.");a=0!==o,t+=j(),e+=V(),I("box",{turtle:tt(),x:nt(e),y:ot(t),fill:me(n),border:a}),ze&&(p+=1);break;case we.ldin:e=xe[Ce][Pe+1],B.push(e),Pe+=1;break;case we.ldvg:e=xe[Ce][Pe+1],B.push(M[e]),Pe+=1;break;case we.ldvv:e=xe[Ce][Pe+1],t=xe[Ce][Pe+2],B.push(M[M[e]+t]),Pe+=2;break;case we.ldvr:e=xe[Ce][Pe+1],t=xe[Ce][Pe+2],B.push(M[M[M[e]+t]]),Pe+=2;break;case we.ldag:e=xe[Ce][Pe+1],B.push(e),Pe+=1;break;case we.ldav:e=xe[Ce][Pe+1],t=xe[Ce][Pe+2],B.push(M[e]+t),Pe+=2;break;case we.lstr:for(Pe+=1,e=xe[Ce][Pe],t=Pe+e,r="";Pe<t;)Pe+=1,r+=String.fromCharCode(xe[Ce][Pe]);re(r);break;case we.stvg:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");M[xe[Ce][Pe+1]]=e,Pe+=1;break;case we.stvv:if(e=xe[Ce][Pe+1],t=xe[Ce][Pe+2],n=B.pop(),void 0===n)throw new P("Stack operation called on empty stack.");M[M[e]+t]=n,Pe+=2;break;case we.stvr:if(e=xe[Ce][Pe+1],t=xe[Ce][Pe+2],n=B.pop(),void 0===n)throw new P("Stack operation called on empty stack.");M[M[M[e]+t]]=n,Pe+=2;break;case we.lptr:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");B.push(M[e]);break;case we.sptr:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");M[t]=e;break;case we.zptr:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");le(e,t);break;case we.cptr:if(n=B.pop(),t=B.pop(),e=B.pop(),void 0===e||void 0===t||void 0===n)throw new P("Stack operation called on empty stack.");ce(e,t,n);break;case we.cstr:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");o=M[t-1],n=M[e],ce(e,t,Math.min(n,o)+1);break;case we.test:if(t=B[B.length-1],e=B[B.length-2],void 0!==e&&void 0!==t&&(e<0||e>M[t]))throw console.log(`n1: ${e}, n2: ${t}, memory[n2]: ${M[t]}`),new P(`Array index out of range (${Ce}, ${Pe}).`);break;case we.jump:Ce=xe[Ce][Pe+1]-1,Pe=-1;break;case we.ifno:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");0===e?(Ce=xe[Ce][Pe+1]-1,Pe=-1):Pe+=1;break;case we.halt:return void He();case we.subr:-1===J&&(J=W),D.push(Ce+1),Ce=xe[Ce][Pe+1]-1,Pe=-1;break;case we.retn:if(e=D.pop(),void 0===e)throw new P("RETN called on empty return stack.");Ce=e,Pe=-1;break;case we.pssr:q.push(xe[Ce][Pe+1]),Pe+=1;break;case we.plsr:q.pop();break;case we.psrj:B.push(Ce+1);break;case we.plrj:if(D.pop(),e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");Ce=e-1,Pe=-1;break;case we.ldmt:B.push(O.length-1);break;case we.stmt:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");O.push(e),oe(e);break;case we.memc:if(e=xe[Ce][Pe+1],t=xe[Ce][Pe+2],n=O.pop(),void 0===n)throw new P("Stack operation called on empty stack.");if(n+t>Te.stackSize)throw new P("Memory stack has overflowed into memory heap. Probable cause is unterminated recursion.");O.push(M[e]),oe(M[e]),M[e]=n,O.push(n+t),oe(n+t),Pe+=2;break;case we.memr:if(O.pop(),e=xe[Ce][Pe+1],t=O.pop(),void 0===t)throw new P("MEMR called on empty memory stack.");O.push(M[e]),oe(M[e]),M[e]=t,Pe+=2;break;case we.hfix:W=$;break;case we.hclr:break;case we.hrst:J>-1&&($=J,W=J);break;case we.canv:if(o=B.pop(),n=B.pop(),t=B.pop(),e=B.pop(),void 0===e||void 0===t||void 0===n||void 0===o)throw new P("Stack operation called on empty stack.");Me=o,Ie=n,Le=t,Ae=e,I("canvas",{startx:Ae,starty:Le,sizex:Ie,sizey:Me,width:Ee,height:Re,doubled:Fe}),Z(Math.round(Ae+Ie/2)),_(Math.round(Le+Me/2)),ee(0),I("turtxChanged",V()),I("turtyChanged",j()),I("turtdChanged",X()),F.push([V(),j()]),p=Te.drawCountMax;break;case we.reso:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");Math.min(e,t)<=Te.smallSize?(e*=2,t*=2,Fe=!0):Fe=!1,Ee=e,Re=t,I("resolution",{width:e,height:t}),I("blank","#FFFFFF"),p=Te.drawCountMax;break;case we.udat:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");a=0!==e,ze=a,a&&(p=Te.drawCountMax);break;case we.seed:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");0===e?B.push(Ne):(Ne=e,B.push(e));break;case we.trac:case we.memw:B.pop();break;case we.dump:I("memoryDumped",de()),Te.showMemoryOnDump&&I("selectTab","memory");break;case we.peek:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");B.push(M[e]);break;case we.poke:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");M[e]=t;break;case we.inpt:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");e<0?B.push(R[-e]):B.push(E[e]);break;case we.iclr:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");e<0?R[-e]=-1:0===e?(M[M[1]+1]=M[1]+3,M[M[1]+2]=M[1]+3):E[e]=-1;break;case we.bufr:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");e>0&&(t=ae()+3,B.push(ae()+1),M[ae()+1]=e+t,M[ae()+2]=t+1,M[ae()+3]=t+1,M.fill(0,t+1,t+e),$=t+e,ie(ae()));break;case we.read:if(e=B.pop(),t=M[1],n=M[M[1]],r="",d=M[t+1],u=M[t+2],void 0===e)throw new P("Stack operation called on empty stack.");if(0===e)for(;d!==u;)r+=String.fromCharCode(M[d]),d=d<n?d+1:n+3;else{for(;d!==u&&r.length<=e;)r+=String.fromCharCode(M[d]),d<n?d+=1:d=n+3;M[t+1]=d}re(r);break;case we.rdln:return e=Math.pow(2,31)-1,Pe+=1,Pe===xe[Ce].length&&(Ce+=1,Pe=0),De=window.setTimeout(Ge,e),void window.addEventListener("keyup",et);case we.kech:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");a=0!==e,Je=a;break;case we.outp:if(n=B.pop(),t=B.pop(),e=B.pop(),void 0===e||void 0===t||void 0===n)throw new P("Stack operation called on empty stack.");i=0!==n,a=0!==e,I("output",{clear:a,colour:me(t)}),I("selectTab",i?"output":"canvas");break;case we.cons:n=B.pop(),t=B.pop(),void 0!==t&&void 0!==n&&(a=0!==t,I("console",{clear:a,colour:me(n)}));break;case we.prnt:if(n=B.pop(),t=B.pop(),e=B.pop(),void 0===e||void 0===t||void 0===n)throw new P("Stack operation called on empty stack.");r=se(e),I("print",{turtle:tt(),string:r,font:t,size:n});break;case we.writ:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");r=se(e),I("write",r),I("log",r),Te.showOutputOnWrite&&I("selectTab","output");break;case we.newl:I("write","\n"),I("log","\n");break;case we.curs:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");I("cursor",e);break;case we.time:e=Date.now(),e-=qe,B.push(e);break;case we.tset:if(e=Date.now(),t=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");qe=e-t;break;case we.wait:if(e=B.pop(),void 0===e)throw new P("Stack operation called on empty stack.");return Pe+=1,Pe===xe[Ce].length&&(Ce+=1,Pe=0),void window.setTimeout(Ge,e);case we.tdet:if(t=B.pop(),e=B.pop(),void 0===e||void 0===t)throw new P("Stack operation called on empty stack.");return B.push(0),Pe+=1,Pe===xe[Ce].length&&(Ce+=1,Pe=0),Be=t,Oe=window.setTimeout(Ge,e),void window.addEventListener("keyup",_e);case we.chdr:case we.file:case we.diry:case we.open:case we.clos:case we.fbeg:case we.eof:case we.eoln:case we.frds:case we.frln:case we.fwrs:case we.fwln:case we.ffnd:case we.fdir:case we.fnxt:case we.fmov:throw new P("File processing has not yet been implemented in the online Turtle System. We are working on introducing this very soon. In the meantime, please run this program using the downloable system.");default:throw console.log(Ce),console.log(Pe),new P(`Unknown PCode 0x${xe[Ce][Pe].toString(16)}.`)}if(g+=1,Pe+=1,!xe[Ce])throw new P("The program has tried to jump to a line that does not exist. This is either a bug in our compiler, or in your assembled code.");Pe===xe[Ce].length&&(Ce+=1,Pe=0)}}catch(e){He(),I("error",e)}setTimeout(Ge,0)}function Ke(e){if("Backspace"===e.key){e.preventDefault();const t=M[1];t>0&&(M[t+1]!==M[t+2]&&(M[t+2]===t+3?M[t+2]=M[t]:M[t+2]-=1,Je&&I("backspace")),M[t+2]>=M[t+1]?E[0]=M[t+2]-M[t+1]:E[0]=M[t+2]-M[t+1]+M[t]-t-2)}"ArrowUp"!==e.key&&"ArrowDown"!==e.key&&"ArrowLeft"!==e.key&&"ArrowRight"!==e.key||e.preventDefault();const t=e.keyCode;R[9]=t,R[10]=128,e.shiftKey&&(R[10]+=8),e.altKey&&(R[10]+=16),e.ctrlKey&&(R[10]+=32),E[t]=R[10]}function Ve(e){const t=e.keyCode;R[9]=-Math.abs(R[9]),R[10]=-Math.abs(R[10]),E[t]=-Math.abs(E[t])}function je(e){const t=e.keyCode,n=M[1];if(n>0){let e=0;e=M[n+2]===M[n]?n+3:M[n+2]+1,e!==M[n+1]&&(M[M[n+2]]=t,M[n+2]=e,M[n+2]>=M[n+1]?E[0]=M[n+2]-M[n+1]:E[0]=M[n+2]-M[n+1]+M[n]-n-2,Je&&I("log",String.fromCharCode(t)))}}function Xe(e){switch(e.type){case"mousemove":R[7]=it(e.clientX),R[8]=rt(e.clientY);break;case"touchmove":case"touchstart":R[7]=it(e.touches[0].clientX),R[8]=rt(e.touches[0].clientY)}}function Ye(e){const t=Date.now();switch(R[4]=128,e.shiftKey&&(R[4]+=8),e.altKey&&(R[4]+=16),e.ctrlKey&&(R[4]+=32),t-R[11]<300&&(R[4]+=64),R[11]=t,e.type){case"mousedown":switch(R[5]=it(e.clientX),R[6]=rt(e.clientY),e.button){case 0:R[4]+=1,R[1]=R[4],R[2]=-1,R[3]=-1;break;case 1:R[4]+=4,R[1]=-1,R[2]=-1,R[3]=R[4];break;case 2:R[4]+=2,R[1]=-1,R[2]=R[4],R[3]=-1}break;case"touchstart":R[5]=it(e.touches[0].clientX),R[6]=rt(e.touches[0].clientY),R[4]+=1,R[1]=R[4],R[2]=-1,R[3]=-1,Xe(e)}}function Qe(e){switch(R[4]=-R[4],e.type){case"mouseup":switch(e.button){case 0:R[1]=-R[1];break;case 1:R[2]=-R[3];break;case 2:R[2]=-R[2]}break;case"touchend":R[1]=-R[1]}}function Ze(e){e.preventDefault()}function _e(e){e.keyCode===Be&&(B.pop(),B.push(-1),window.clearTimeout(Oe),Ge())}function et(e){if("Enter"===e.key){const e=M[1],t=M[M[1]];let n="",o=M[e+1];const a=M[e+2];for(;o!==a&&13!==M[o];)n+=String.fromCharCode(M[o]),o=o<t?o+1:t+3;M[e+1]=o<t?o+1:t+3,re(n),window.clearTimeout(De),Ge()}}function tt(){return{x:nt(V()),y:ot(j()),d:X(),a:Y(),p:(e=Q(),Fe?2*e:e),c:me(G(0,6))};var e}function nt(e){const t=(e-Ae)*Ee/Ie;return Fe?Math.round(t)+1:Math.round(t)}function ot(e){const t=(e-Le)*Re/Me;return Fe?Math.round(t)+1:Math.round(t)}function at(e){return[nt(e[0]),ot(e[1])]}function it(e){const{left:t,width:n}=ye.getBoundingClientRect(),o=(e-t)*Ie/n+Ae;return Math.round(o)}function rt(e){const{height:t,top:n}=ye.getBoundingClientRect(),o=(e-n)*Me/t+Le;return Math.round(o)}class st{constructor(e,t,n,o){this.type=e,this.content=t,this.line=n,this.character=o}}class lt{constructor(e,t,n,o,a,i,r){this.names=e,this.code=t,this.parameters=n,this.returns=o,this.category=a,this.level=i,this.description=r}}class ct{constructor(e,t,n,o){this.name=e,this.type=t,this.isReferenceParameter=n,this.length=o}}const dt=[new lt({BASIC:"FORWARD",C:"forward",Java:"forward",Pascal:"forward",Python:"forward",TypeScript:"forward"},[we.fwrd],[new ct("n","integer",!1,1)],null,0,0,"Moves the Turtle forward <code>n</code> units, drawing as it goes (unless the pen is up)."),new lt({BASIC:"BACK",C:"back",Java:"back",Pascal:"back",Python:"back",TypeScript:"back"},[we.back],[new ct("n","integer",!1,1)],null,0,0,"Moves the Turtle back <code>n</code> units, drawing as it goes (unless the pen is up)."),new lt({BASIC:"LEFT",C:"left",Java:"left",Pascal:"left",Python:"left",TypeScript:"left"},[we.left],[new ct("n","integer",!1,1)],null,0,0,"Rotates the Turtle left by <code>n</code> degrees."),new lt({BASIC:"RIGHT",C:"right",Java:"right",Pascal:"right",Python:"right",TypeScript:"right"},[we.rght],[new ct("n","integer",!1,1)],null,0,0,"Rotates the Turtle right by <code>n</code> degrees."),new lt({BASIC:"DRAWXY",C:"drawxy",Java:"drawXY",Pascal:"drawxy",Python:"drawxy",TypeScript:"drawXY"},[we.drxy],[new ct("x","integer",!1,1),new ct("y","integer",!1,1)],null,0,1,"Moves the Turtle in a straight line to a point <code>x</code> units away along the x-axis and <code>y</code> units away along the y-axis, drawing as it goes (unless the pen is up)."),new lt({BASIC:"MOVEXY",C:"movexy",Java:"moveXY",Pascal:"movexy",Python:"movexy",TypeScript:"moveXY"},[we.mvxy],[new ct("x","integer",!1,1),new ct("y","integer",!1,1)],null,0,1,"Moves the Turtle in a straight line to a point <code>x</code> units away along the x-axis and <code>y</code> units away along the y-axis, <em>without</em> drawing (regardless of the current pen status)."),new lt({BASIC:"HOME",C:"home",Java:"home",Pascal:"home",Python:"home",TypeScript:"home"},[we.home],[],null,1,0,"Moves the Turtle back to its starting position in the centre of the canvas, facing north, drawing as it goes (unless the pen is up)."),new lt({BASIC:"SETX",C:"setx",Java:"setX",Pascal:"setx",Python:"setx",TypeScript:"setX"},[we.setx],[new ct("x","integer",!1,1)],null,1,0,"Sets the Turtle&rsquo;s <code>x</code> coordinate directly (without movement or drawing on the canvas). This can also be achieved by direct assignment of the global variable <code>turtx</code>."),new lt({BASIC:"SETY",C:"sety",Java:"setY",Pascal:"sety",Python:"sety",TypeScript:"setY"},[we.sety],[new ct("y","integer",!1,1)],null,1,0,"Sets the Turtle&rsquo;s <code>y</code> coordinate directly (without movement or drawing on the canvas). This can also be achieved by direct assignment of the global variable <code>turty</code>."),new lt({BASIC:"SETXY",C:"setxy",Java:"setXY",Pascal:"setxy",Python:"setxy",TypeScript:"setXY"},[we.toxy],[new ct("x","integer",!1,1),new ct("y","integer",!1,1)],null,1,0,"Sets the Turtle&rsquo;s <code>x</code> and <code>y</code> coordinates directly (without movement or drawing on the canvas). This can also be achieved by direct assingment of the global variables <code>turtx</code> and <code>turty</code>."),new lt({BASIC:"DIRECTION",C:"direction",Java:"direction",Pascal:"direction",Python:"direction",TypeScript:"direction"},[we.setd],[new ct("n","integer",!1,1)],null,1,0,"Sets the Turtle&rsquo;s direction to <code>n</code> degrees (0 for north, 90 for east, 180 for south, 270 for west). This can also be achieved by direct assignment of the global variable <code>turtd</code>. Note that the number of degrees in a circle (360 by default) can be changed with the <code>angles</code> command."),new lt({BASIC:"ANGLES",C:"angles",Java:"angles",Pascal:"angles",Python:"angles",TypeScript:"angles"},[we.angl],[new ct("degrees","integer",!1,1)],null,1,1,"Sets the number of <code>degrees</code> in a circle (360 by default)."),new lt({BASIC:"TURNXY",C:"turnxy",Java:"turnXY",Pascal:"turnxy",Python:"turnxy",TypeScript:"turnXY"},[we.turn],[new ct("x","integer",!1,1),new ct("y","integer",!1,1)],null,1,1,"Turns the Turtle to face the point <code>x</code> units away alongthe x-axis and <code>y</code> units away along the y-axis."),new lt({BASIC:"CIRCLE",C:"circle",Java:"circle",Pascal:"circle",Python:"circle",TypeScript:"circle"},[we.circ],[new ct("radius","integer",!1,1)],null,2,0,"Draws a circle outline in the Turtle&rsquo;s current colour and thickness, of the given <code>radius</code>, centred on the Turtle&rsquo;s current location."),new lt({BASIC:"BLOT",C:"blot",Java:"blot",Pascal:"blot",Python:"blot",TypeScript:"blot"},[we.blot],[new ct("radius","integer",!1,1)],null,2,0,"Draws a filled circle in the Turtle&rsquo;s current colour, of the given <code>radius</code>, centred on the Turtle&rsquo;s current location."),new lt({BASIC:"ELLIPSE",C:"ellipse",Java:"ellipse",Pascal:"ellipse",Python:"ellipse",TypeScript:"ellipse"},[we.elps],[new ct("Xradius","integer",!1,1),new ct("Yradius","integer",!1,1)],null,2,0,"Draws an ellipse outline in the Turtle&rsquo;s current colour and thickness, of the given <code>Xradius</code> and <code>Yradius</code>, centred on the Turtle&rsquo;s current location."),new lt({BASIC:"ELLBLOT",C:"ellblot",Java:"ellblot",Pascal:"ellblot",Python:"ellblot",TypeScript:"ellblot"},[we.eblt],[new ct("Xradius","integer",!1,1),new ct("Yradius","integer",!1,1)],null,2,0,"Draws a filled ellipse in the Turtle&rsquo;s current colour, of the given <code>Xradius</code> and <code>Yradius</code>, centred on the Turtle&rsquo;s current location."),new lt({BASIC:"POLYLINE",C:"polyline",Java:"polyline",Pascal:"polyline",Python:"polyline",TypeScript:"polyline"},[we.poly],[new ct("n","integer",!1,1)],null,2,1,"Draws a polygon outline in the Turtle&rsquo;s current colour and thickness, connecting the last <code>n</code> locations that the Turtle has visited."),new lt({BASIC:"POLYGON",C:"polygon",Java:"polygon",Pascal:"polygon",Python:"polygon",TypeScript:"polygon"},[we.pfil],[new ct("n","integer",!1,1)],null,2,1,"Draws a filled polygon in the Turtle&rsquo;s current colour and thickness, connecting the last <code>n</code> locations that the Turtle has visited."),new lt({BASIC:"FORGET",C:"forget",Java:"forget",Pascal:"forget",Python:"forget",TypeScript:"forget"},[we.frgt],[new ct("n","integer",!1,1)],null,2,1,"Makes the Turtle &ldquo;forget&rdquo; the last <code>n</code> points it has visited. Used in conjunction with <code>polyline</code> and <code>polygon</code>."),new lt({BASIC:"REMEMBER",C:"remember",Java:"remember",Pascal:"remember",Python:"remember",TypeScript:"remember"},[we.rmbr],[],null,2,1,"Makes the Turtle &ldquo;remember&rdquo; its current location. This is only necessary if its current location was set by a direct assignment of the global variables <code>turtx</code> and <code>turty</code>; when using the standard moving commands, the Turtle automatically remembers where it has been."),new lt({BASIC:"BOX",C:"box",Java:"box",Pascal:"box",Python:"box",TypeScript:"box"},[we.box],[new ct("x","integer",!1,1),new ct("y","integer",!1,1),new ct("colour","integer",!1,1),new ct("border","boolean",!1,1)],null,2,1,"Draws a box of width <code>x</code> and height <code>y</code>, with the top left corner in the Turtle&rsquo;s current location, filled with the specified <code>colour</code>. If <code>border</code> is <code>true</code>, a border is drawn around the box in the Turtle&rsquo;s current colour and and thickness. This is intended to be used with the <code>print</code> command, to provide a box for framing text."),new lt({BASIC:"COLOUR",C:"colour",Java:"colour",Pascal:"colour",Python:"colour",TypeScript:"colour"},[we.colr],[new ct("colour","integer",!1,1)],null,3,0,"Sets the <code>colour</code> of the Turtle&rsquo;s pen. Takes as an argument either an RGB value, or one of the Turtle System&rsquo;s fifty predefined colour constants (see the <b>Colours</b> tab). This can also be achieved by direct assignment of the global variable <code>turtc</code>."),new lt({BASIC:"RNDCOL",C:"randcol",Java:"randCol",Pascal:"randcol",Python:"randcol",TypeScript:"randCol"},[we.rand,we.incr,we.rgb,we.colr],[new ct("n","integer",!1,1)],null,3,0,"Assigns a random colour to the Turte&rsquo;s pen, between 1 and <code>n</code> (maximum 50). The colours are taken from the Turtle System&rsquo;s fifty predefined colours, which are each assigned a number between 1 and 50 (see the <b>Colours</b> tab)."),new lt({BASIC:"THICKNESS",C:"thickness",Java:"thickness",Pascal:"thickness",Python:"thickness",TypeScript:"thickness"},[we.thik],[new ct("thickness","integer",!1,1)],null,3,0,"Sets the <code>thickness</code> of the Turtle&rsquo;s pen (for line drawing, and outlines of circles, ellipses, boxes, and polygons). This can also be achieved by direct assignment of the global variable <code>turtt</code>."),new lt({BASIC:"PENUP",C:"penup",Java:"penUp",Pascal:"penup",Python:"penup",TypeScript:"penUp"},[we.ldin,0,we.pen],[],null,3,0,"Lifts the Turtle&rsquo;s pen, so that subsequent movement will not draw a line on the Canvas."),new lt({BASIC:"PENDOWN",C:"pendown",Java:"penDown",Pascal:"pendown",Python:"pendown",TypeScript:"penDown"},[we.ldin,-1,we.pen],[],null,3,0,"Lowers the Turtle&rsquo;s pen, so that subsequent movement will draw a line on the Canvas."),new lt({BASIC:"OUTPUT",C:"output",Java:"output",Pascal:"output",Python:"output",TypeScript:"output"},[we.outp],[new ct("clear","boolean",!1,1),new ct("colour","integer",!1,1),new ct("tofront","boolean",!1,1)],null,3,1,"Modifies the textual output. If the first argument is <code>true</code>, it clears any existing text. The second argument specifies the background colour, and the third argument is for switching the display. If the third argument is <code>true</code>, it switches to the <b>Output</b> tab, while if it is <code>false</code>, it switches to the <b>Canvas and Console</b> tab."),new lt({BASIC:"CONSOLE",C:"console",Java:"console",Pascal:"console",Python:"console",TypeScript:"console"},[we.cons],[new ct("clear","boolean",!1,1),new ct("colour","integer",!1,1)],null,3,1,"Modifies the Console; if the first argument is <code>true</code>, it clears any existing text, while the second argument specifies the background colour."),new lt({BASIC:"RGB",C:"rgb",Java:"rgb",Pascal:"rgb",Python:"rgb",TypeScript:"rgb"},[we.rgb],[new ct("colour","integer",!1,1)],"integer",3,2,"Returns the RGB value of the input <code>colour</code> (an integer between 1 and 50). For example, <code>rgb(red)=255</code>."),new lt({BASIC:"MIXCOLS",C:"mixcols",Java:"mixCols",Pascal:"mixcols",Python:"mixcols",TypeScript:"mixCols"},[we.mixc],[new ct("colour1","integer",!1,1),new ct("colour1","integer",!1,1),new ct("proportion1","integer",!1,1),new ct("proportion2","integer",!1,1)],"integer",3,2,"Mixes the given colours in the given proportions."),new lt({BASIC:"NEWTURTLE",C:"newturtle",Java:"newTurtle",Pascal:"newturtle",Python:"newturtle",TypeScript:"newTurtle"},[we.ldin,0,we.sptr],[new ct("array","integer",!1,5)],null,3,2,"Points the Turtle to a custom array in memory (this must be an array of five integers, corresponding to the Turtle&rsquo;s five properties, <code>turtx</code>, <code>turty</code>, <code>turtd</code>, <code>turtt</code>, and <code>turtc</code>). Use repeatedly to simulate multiple Turtles."),new lt({BASIC:"OLDTURTLE",C:"oldturtle",Java:"oldTurtle",Pascal:"oldturtle",Python:"oldturtle",TypeScript:"oldTurtle"},[we.oldt],[],null,3,2,"Points the Turtle back to the default (built-in) array in memory. Use in conjunction with <code>newturtle</code>."),new lt({BASIC:"UPDATE",C:"update",Java:"update",Pascal:"update",Python:"update",TypeScript:"update"},[we.ldin,-1,we.udat],[],null,4,0,"Makes the Machine update the Canvas, and continue updating with all subsequent drawing commands. Used in conjunction with <em>noupdate</em>."),new lt({BASIC:"NOUPDATE",C:"noupdate",Java:"noUpdate",Pascal:"noupdate",Python:"noupdate",TypeScript:"noUpdate"},[we.ldin,0,we.udat],[],null,4,0,"Makes the Machine refrain from updating the Canvas when executing all subsequent drawing commands, until <em>update</em> is called. Use this to create smooth animations, by queueing up several drawing commands to execute simultaneously."),new lt({BASIC:"BLANK",C:"blank",Java:"blank",Pascal:"blank",Python:"blank",TypeScript:"blank"},[we.blnk],[new ct("colour","integer",!1,1)],null,4,0,"Blanks the entire Canvas with the specified <code>colour</code>."),new lt({BASIC:"CANVAS",C:"canvas",Java:"canvas",Pascal:"canvas",Python:"canvas",TypeScript:"canvas"},[we.canv],[new ct("x1","integer",!1,1),new ct("y1","integer",!1,1),new ct("x2","integer",!1,1),new ct("y2","integer",!1,1)],null,4,1,"Sets the top left Canvas coordinate to <code>(x1,y1)</code>, and the Canvas width and height to <code>x2</code> and <code>y2</code> respectively. Note that the width and height fix the number of virtual points on the Canvas, not the number of actual pixels."),new lt({BASIC:"RESOLUTION",C:"resolution",Java:"resolution",Pascal:"resolution",Python:"resolution",TypeScript:"resolution"},[we.reso],[new ct("x","integer",!1,1),new ct("y","integer",!1,1)],null,4,1,"Sets the Canvas resolution, i.e. the number of actual pixels in the <code>x</code> and <code>y</code> dimensions. To be used in conjunction with the <code>canvas</code> command, typically to set the number of actual pixels equal to the number of virtual points on the Canvas."),new lt({BASIC:"PIXSET",C:"pixset",Java:"pixSet",Pascal:"pixset",Python:"pixset",TypeScript:"pixSet"},[we.pixs],[new ct("x","integer",!1,1),new ct("y","integer",!1,1),new ct("colour","integer",!1,1)],null,4,2,"Sets the <code>colour</code> at point <code>(x,y)</code>."),new lt({BASIC:"PIXCOL",C:"pixcol",Java:"pixCol",Pascal:"pixcol",Python:"pixcol",TypeScript:"pixCol"},[we.pixc],[new ct("x","integer",!1,1),new ct("y","integer",!1,1)],"integer",4,2,"Returns the RGB value of the colour at point <code>(x,y)</code>."),new lt({BASIC:"RECOLOUR",C:"recolour",Java:"recolour",Pascal:"recolour",Python:"recolour",TypeScript:"recolour"},[we.rcol],[new ct("x","integer",!1,1),new ct("y","integer",!1,1),new ct("colour","integer",!1,1)],null,4,2,"Floods the Canvas with the specified <code>colour</code>, starting at point <code>(x,y)</code>, until reaching any different colour."),new lt({BASIC:"FILL",C:"fill",Java:"fill",Pascal:"fill",Python:"fill",TypeScript:"fill"},[we.fill],[new ct("x","integer",!1,1),new ct("y","integer",!1,1),new ct("colour","integer",!1,1),new ct("boundary","integer",!1,1)],null,4,2,"Floods the Canvas with the specified <code>colour</code>, starting at point <code>(x,y)</code>, until reaching the <code>boundary</code> colour."),new lt({BASIC:null,C:null,Java:null,Pascal:"inc",Python:null,TypeScript:null},[we.dupl,we.lptr,we.incr,we.swap,we.sptr],[new ct("variable","integer",!0,1)],null,5,0,"Increments the specified <code>variable</code> by 1."),new lt({BASIC:null,C:null,Java:null,Pascal:"dec",Python:null,TypeScript:null},[we.dupl,we.lptr,we.decr,we.swap,we.sptr],[new ct("variable","integer",!0,1)],null,5,0,"Decrements the specified <code>variable</code> by 1."),new lt({BASIC:"ABS",C:"abs",Java:"abs",Pascal:"abs",Python:"abs",TypeScript:"abs"},[we.abs],[new ct("n","integer",!1,1)],"integer",5,0,"Returns the absolute value of <code>n</code>, i.e. <code>n</code> if positive, <code>-n</code> if negative."),new lt({BASIC:"SGN",C:"sign",Java:"sign",Pascal:"sign",Python:"sign",TypeScript:"sign"},[we.sign],[new ct("a","integer",!1,1)],"integer",5,1,"Returns <code>+1</code> if <code>a</code> is positive, <code>-1</code> if <code>a</code> is negative, and <code>0</code> otherwise."),new lt({BASIC:"MAX",C:"max",Java:"max",Pascal:"max",Python:"max",TypeScript:"max"},[we.maxi],[new ct("a","integer",!1,1),new ct("b","integer",!1,1)],"integer",5,1,"Returns the maximum of <code>a</code> and <code>b</code>."),new lt({BASIC:"MIN",C:"min",Java:"min",Pascal:"min",Python:"min",TypeScript:"min"},[we.mini],[new ct("a","integer",!1,1),new ct("b","integer",!1,1)],"integer",5,1,"Returns the minimum of <code>a</code> and <code>b</code>."),new lt({BASIC:"SQR",C:"sqrt",Java:"sqrt",Pascal:"sqrt",Python:"sqrt",TypeScript:"sqrt"},[we.sqrt],[new ct("a","integer",!1,1),new ct("mult","integer",!1,1)],"integer",5,1,"Returns <code>&radic;a</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),new lt({BASIC:"HYPOT",C:"hypot",Java:"hypot",Pascal:"hypot",Python:"hypot",TypeScript:"hypot"},[we.hyp],[new ct("a","integer",!1,1),new ct("b","integer",!1,1),new ct("mult","integer",!1,1)],"integer",5,1,"Returns <code>&radic;(a<sup>2</sup>+b<sup>2</sup>)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),new lt({BASIC:"RND",C:null,Java:null,Pascal:null,Python:null,TypeScript:null},[we.rand,we.incr],[new ct("n","integer",!1,1)],"integer",5,1,"Returns a random integer between 1 and <code>n</code>."),new lt({BASIC:null,C:"rand",Java:"randInt",Pascal:"random",Python:null,TypeScript:"randInt"},[we.rand],[new ct("n","integer",!1,1)],"integer",5,1,"Returns a random non-negative integer less than <code>n</code>."),new lt({BASIC:null,C:null,Java:null,Pascal:null,Python:"randint",TypeScript:null},[we.swap,we.dupl,we.rota,we.incr,we.swap,we.subt,we.rand,we.plus],[new ct("a","integer",!1,1),new ct("b","integer",!1,1)],"integer",5,1,"Returns a random integer between <code>a</code> and <code>b</code>."),new lt({BASIC:"RNDSEED",C:"srand",Java:"seed",Pascal:"randseed",Python:"seed",TypeScript:"seed"},[we.seed],[new ct("seed","integer",!1,1)],"integer",5,1,"Initialises the random number generator with the given <code>seed</code>, and returns that seed. If <code>seed</code> is 0, the seed is set from the current system clock."),new lt({BASIC:"POWER",C:"pow",Java:"power",Pascal:"power",Python:"power",TypeScript:"pow"},[we.powr],[new ct("a","integer",!1,1),new ct("b","integer",!1,1),new ct("c","integer",!1,1),new ct("mult","integer",!1,1)],"integer",5,2,"Returns <code>(a/b)<sup>c</sup></code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),new lt({BASIC:"ROOT",C:"root",Java:"root",Pascal:"root",Python:"root",TypeScript:"root"},[we.root],[new ct("a","integer",!1,1),new ct("b","integer",!1,1),new ct("c","integer",!1,1),new ct("mult","integer",!1,1)],"integer",5,2,"Returns <code><sup>c</sup>&radic;(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),new lt({BASIC:"DIVMULT",C:"divmult",Java:"divmult",Pascal:"divmult",Python:"divmult",TypeScript:"divmult"},[we.divm],[new ct("a","integer",!1,1),new ct("b","integer",!1,1),new ct("mult","integer",!1,1)],"integer",5,2,"Returns <code>a/b</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),new lt({BASIC:"MAXINT",C:"maxint",Java:"maxInt",Pascal:"maxint",Python:"maxint",TypeScript:"maxInt"},[we.mxin],[],"integer",5,2,"Returns the maximum integer that the Machine can deal with (2<sup>31</sup>-1)."),new lt({BASIC:null,C:null,Java:null,Pascal:"shl",Python:null,TypeScript:null},[we.shft],[new ct("number","integer",!1,1),new ct("shift","integer",!1,1)],"integer",5,2,"Shift bits left."),new lt({BASIC:null,C:null,Java:null,Pascal:"shr",Python:null,TypeScript:null},[we.neg,we.shft],[new ct("number","integer",!1,1),new ct("shift","integer",!1,1)],"integer",5,2,"Shift bits right."),new lt({BASIC:"SIN",C:"sin",Java:"sin",Pascal:"sin",Python:"sin",TypeScript:"sin"},[we.sin],[new ct("a","integer",!1,1),new ct("b","integer",!1,1),new ct("mult","integer",!1,1)],"integer",6,1,"Returns <code>sin(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),new lt({BASIC:"COS",C:"cos",Java:"cos",Pascal:"cos",Python:"cos",TypeScript:"cos"},[we.cos],[new ct("a","integer",!1,1),new ct("b","integer",!1,1),new ct("mult","integer",!1,1)],"integer",6,1,"Returns <code>cos(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),new lt({BASIC:"TAN",C:"tan",Java:"tan",Pascal:"tan",Python:"tan",TypeScript:"tan"},[we.tan],[new ct("a","integer",!1,1),new ct("b","integer",!1,1),new ct("mult","integer",!1,1)],"integer",6,1,"Returns <code>tan(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),new lt({BASIC:"PI",C:"pi",Java:"pi",Pascal:"pi",Python:"pi",TypeScript:"PI"},[we.pi],[new ct("mult","integer",!1,1)],"integer",6,1,"Returns the value of Pi, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),new lt({BASIC:"EXP",C:"exp",Java:"exp",Pascal:"exp",Python:"exp",TypeScript:"exp"},[we.exp],[new ct("a","integer",!1,1),new ct("b","integer",!1,1),new ct("mult","integer",!1,1)],"integer",6,1,"Returns <code>a<sup>b</sup></code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),new lt({BASIC:"LN",C:"log",Java:"log",Pascal:"ln",Python:"log",TypeScript:"log"},[we.ln],[new ct("a","integer",!1,1),new ct("b","integer",!1,1),new ct("mult","integer",!1,1)],"integer",6,1,"Returns <code>ln(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),new lt({BASIC:"ANTILOG",C:"antilog",Java:"antilog",Pascal:"antilog",Python:"antilog",TypeScript:"antilog"},[we.alog],[new ct("a","integer",!1,1),new ct("b","integer",!1,1),new ct("mult","integer",!1,1)],"integer",6,2,"Returns <code>antilog<sub>10</sub>(a/b)</code> - i.e. <code>10<sup>a/b</sub></code> - multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),new lt({BASIC:"LOG10",C:"log10",Java:"log10",Pascal:"log10",Python:"log10",TypeScript:"log10"},[we.log],[new ct("a","integer",!1,1),new ct("b","integer",!1,1),new ct("mult","integer",!1,1)],"integer",6,2,"Returns <code>log<sub>10</sub>(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),new lt({BASIC:"ASN",C:"asin",Java:"asin",Pascal:"arcsin",Python:"asin",TypeScript:"asin"},[we.asin],[new ct("a","integer",!1,1),new ct("b","integer",!1,1),new ct("mult","integer",!1,1)],"integer",6,2,"Returns <code>arcsin(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),new lt({BASIC:"ACS",C:"acos",Java:"acos",Pascal:"arccos",Python:"acos",TypeScript:"acos"},[we.acos],[new ct("a","integer",!1,1),new ct("b","integer",!1,1),new ct("mult","integer",!1,1)],"integer",6,2,"Returns <code>arccos(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),new lt({BASIC:"ATN",C:"atan",Java:"atan",Pascal:"arctan",Python:"atan",TypeScript:"atan"},[we.atan],[new ct("a","integer",!1,1),new ct("b","integer",!1,1),new ct("mult","integer",!1,1)],"integer",6,2,"Returns <code>arctan(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),new lt({BASIC:"WRITE",C:"write",Java:"write",Pascal:"write",Python:"write",TypeScript:"write"},[we.writ],[new ct("string","string",!1,1)],null,7,0,"Writes the input <code>string</code> to the console and textual output area of the System."),new lt({BASIC:"WRITELN",C:"writeline",Java:"writeLine",Pascal:"writeln",Python:"writeline",TypeScript:"writeLine"},[we.writ,we.newl],[new ct("string","string",!1,1)],null,7,0,"Writes the input <code>string</code> to the console and textual output area of the System, followed by a line break."),new lt({BASIC:"PRINT",C:"print",Java:"print",Pascal:"print",Python:"print",TypeScript:"print"},[we.prnt],[new ct("string","string",!1,1),new ct("font","integer",!1,1),new ct("size","integer",!1,1)],null,7,0,"Prints the input <code>string</code> in the Turtle&rsquo;s current colour and at the Turtle&rsquo;s current location, in the specified <code>font</code> and <code>size</code>. Can be used in conjunction with the <code>box</code> drawing command. For a list of available fonts, see the <b>Constants</b> tab."),new lt({BASIC:"LCASE$",C:"strlwr",Java:"toLowerCase",Pascal:"lowercase",Python:"lower",TypeScript:"toLowerCase"},[we.ldin,1,we.case],[new ct("string","string",!1,1)],"string",7,1,"Returns the input <code>string</code> as all lowercase."),new lt({BASIC:"UCASE$",C:"strupr",Java:"toUpperCase",Pascal:"uppercase",Python:"upper",TypeScript:"toUpperCase"},[we.ldin,2,we.case],[new ct("string","string",!1,1)],"string",7,1,"Returns the input <code>string</code> as all uppercase."),new lt({BASIC:"CCASE$",C:"strcap",Java:"capitalize",Pascal:"initcap",Python:"capitalize",TypeScript:"capitalize"},[we.ldin,3,we.case],[new ct("string","string",!1,1)],"string",7,1,"Returns the input <code>string</code> with the first letter capitalized."),new lt({BASIC:"TCASE$",C:"strtitle",Java:"toTitleCase",Pascal:"titlecase",Python:"title",TypeScript:"toTitleCase"},[we.ldin,4,we.case],[new ct("string","string",!1,1)],"string",7,1,"Returns the input <code>string</code> in title case (i.e. the first letter of each word capitalized)."),new lt({BASIC:"SCASE$",C:"strswap",Java:"swapCase",Pascal:"swapcase",Python:"swapcase",TypeScript:"swapCase"},[we.ldin,5,we.case],[new ct("string","string",!1,1)],"string",7,1,"Returns the input <code>string</code> with all the cases swapped."),new lt({BASIC:"LEN",C:"strlen",Java:"length",Pascal:"length",Python:"len",TypeScript:"length"},[we.slen],[new ct("string","string",!1,1)],"integer",7,1,"Returns the length of the input <code>string</code> (i.e. the number of characters)."),new lt({BASIC:"DEL$",C:null,Java:null,Pascal:"delete",Python:null,TypeScript:null},[we.dels],[new ct("string","string",!1,1),new ct("index","integer",!1,1),new ct("length","integer",!1,1)],"string",7,2,"Returns the input <code>string</code> with some characters removed, starting at the given <code>index</code> and of the specified <code>length</code>."),new lt({BASIC:null,C:"strdel",Java:"delete",Pascal:null,Python:"delete",TypeScript:"delete"},[we.swap,we.incr,we.swap,we.dels],[new ct("string","string",!1,1),new ct("index","integer",!1,1),new ct("length","integer",!1,1)],"string",7,2,"Returns the input <code>string</code> with some characters removed, starting at the given <code>index</code> and of the specified <code>length</code>."),new lt({BASIC:"LEFT$",C:null,Java:null,Pascal:null,Python:null,TypeScript:null},[we.ldin,1,we.swap,we.copy],[new ct("string","string",!1,1),new ct("length","integer",!1,1)],"string",7,2,"Returns a copy of the characters in the input <code>string</code>, starting on the left and of the specified <code>length</code>."),new lt({BASIC:"MID$",C:null,Java:null,Pascal:"copy",Python:null,TypeScript:null},[we.copy],[new ct("string","string",!1,1),new ct("index","integer",!1,1),new ct("length","integer",!1,1)],"string",7,2,"Returns a copy of the characters in the input <code>string</code>, starting at the given <code>index</code> and of the specified <code>length</code>."),new lt({BASIC:null,C:"strcpy",Java:"copy",Pascal:null,Python:"copy",TypeScript:"copy"},[we.swap,we.incr,we.swap,we.copy],[new ct("string","string",!1,1),new ct("index","integer",!1,1),new ct("length","integer",!1,1)],"string",7,2,"Returns a copy of the characters in the input <code>string</code>, starting at the given <code>index</code> and of the specified <code>length</code>."),new lt({BASIC:"RIGHT$",C:null,Java:null,Pascal:null,Python:null,TypeScript:null},[we.swap,we.dupl,we.slen,we.incr,we.rota,we.subt,we.mxin,we.copy],[new ct("string","string",!1,1),new ct("length","integer",!1,1)],"string",7,2,"Returns a copy of the characters in the input <code>string</code>, starting on the right and of the specified <code>length</code>."),new lt({BASIC:"INS$",C:null,Java:null,Pascal:null,Python:null,TypeScript:null},[we.rota,we.rota,we.swap,we.rota,we.inss],[new ct("string","string",!1,1),new ct("substr","string",!1,1),new ct("index","integer",!1,1)],"string",7,2,"Returns the input <code>string</code> with the specified <code>substring</code> inserted at the given <code>index</code>."),new lt({BASIC:null,C:"strins",Java:"insert",Pascal:null,Python:"insert",TypeScript:"insert"},[we.rota,we.rota,we.swap,we.rota,we.incr,we.inss],[new ct("string","string",!1,1),new ct("substr","string",!1,1),new ct("index","integer",!1,1)],"string",7,2,"Returns the input <code>string</code> with the specified <code>substring</code> inserted at the given <code>index</code>."),new lt({BASIC:null,C:null,Java:null,Pascal:"insert",Python:null,TypeScript:null},[we.inss],[new ct("substr","string",!1,1),new ct("string","string",!1,1),new ct("index","integer",!1,1)],"string",7,2,"Returns the input <code>string</code> with the specified <code>substring</code> inserted at the given <code>index</code>."),new lt({BASIC:"PAD$",C:"strpad",Java:"pad",Pascal:"pad",Python:"pad",TypeScript:null},[we.spad],[new ct("string","string",!1,1),new ct("padding","string",!1,1),new ct("length","integer",!1,1)],"string",7,2,"Returns the input <code>string</code> with the input <code>padding</code> added either before or after to make a string of minimum given <code>length</cope>. The <code>padding</code> is placed before if <code>length</code> is positive, after if it is negative."),new lt({BASIC:null,C:null,Java:null,Pascal:null,Python:null,TypeScript:"padStart"},[we.spad],[new ct("string","string",!1,1),new ct("padding","string",!1,1),new ct("length","integer",!1,1)],"string",7,2,"Returns the input <code>string</code> with the input <code>padding</code> added before to make a string of minimum given <code>length</cope>."),new lt({BASIC:null,C:null,Java:null,Pascal:null,Python:null,TypeScript:"padEnd"},[we.neg,we.spad],[new ct("string","string",!1,1),new ct("padding","string",!1,1),new ct("length","integer",!1,1)],"string",7,2,"Returns the input <code>string</code> with the input <code>padding</code> added after to make a string of minimum given <code>length</cope>."),new lt({BASIC:"REPLACE$",C:"strrepl",Java:"replace",Pascal:"replace",Python:"replace",TypeScript:null},[we.repl],[new ct("string","string",!1,1),new ct("substr","string",!1,1),new ct("replace","string",!1,1),new ct("n","integer",!1,1)],"string",7,2,"Returns the input <code>string</code> with up to <code>n</code> occurences of <code>substring</code> replaced by <code>replace</code>. Set <code>n</code> equal to <code>0</code> to replace every occurence."),new lt({BASIC:"INSTR",C:null,Java:null,Pascal:null,Python:null,TypeScript:null},[we.swap,we.poss],[new ct("string","string",!1,1),new ct("substr","string",!1,1)],"integer",7,2,"Searches for the input <code>substring</code> within the given <code>string</code>; returns the index of the first character if found, 0 otherwise."),new lt({BASIC:null,C:"strpos",Java:"indexOf",Pascal:null,Python:"find",TypeScript:"indexOf"},[we.swap,we.poss,we.decr],[new ct("string","string",!1,1),new ct("substr","string",!1,1)],"integer",7,2,"Searches for the input <code>substring</code> within the given <code>string</code>; returns the index of the first character if found, 0 otherwise."),new lt({BASIC:null,C:null,Java:null,Pascal:"pos",Python:null,TypeScript:null},[we.poss],[new ct("substr","string",!1,1),new ct("string","string",!1,1)],"integer",7,2,"Searches for the input <code>substring</code> within the given <code>string</code>; returns the index of the first character if found, 0 otherwise."),new lt({BASIC:"STR$",C:"itoa",Java:"toString",Pascal:"str",Python:"str",TypeScript:"toString"},[we.itos],[new ct("n","integer",!1,1)],"string",8,0,"Returns the integer <code>n</code> as a string, e.g. <code>str(12)='12'</code>."),new lt({BASIC:"VAL",C:"atoi",Java:"parseInt",Pascal:"val",Python:"int",TypeScript:"parseInt"},[we.ldin,0,we.sval],[new ct("string","string",!1,1)],"integer",8,0,"Returns the input <code>string</code> as an integer, e.g. <code>val('12')=12</code>. Returns <code>0</code> if the string cannot be converted (i.e. if it is not an integer string)."),new lt({BASIC:"VALDEF",C:"atoidef",Java:"parseIntDef",Pascal:"valdef",Python:"intdef",TypeScript:"parseIntDef"},[we.sval],[new ct("string","string",!1,1),new ct("default","integer",!1,1)],"integer",8,0,"Returns the input <code>string</code> as an integer, e.g. <code>val('12')=12</code>. Returns the specified <code>default</code> value if the string cannot be converted (i.e. if it is not an integer string)."),new lt({BASIC:"QSTR$",C:"qitoa",Java:"toStringQ",Pascal:"qstr",Python:"qstr",TypeScript:"toStringQ"},[we.qtos],[new ct("a","integer",!1,1),new ct("b","integer",!1,1),new ct("decplaces","integer",!1,1)],"string",8,1,"Returns the value of <code>a/b</code> to the specified number of decimal places, as a decimal string, e.g. <code>qstr(2,3,4)='0.6667'</code>."),new lt({BASIC:"QVAL",C:"qatoi",Java:"parseIntQ",Pascal:"qval",Python:"qint",TypeScript:"parseIntQ"},[we.qval],[new ct("string","string",!1,1),new ct("mult","integer",!1,1),new ct("default","integer",!1,1)],"integer",8,1,"Returns the input decimal <code>string</code> as an integer, multiplied by <code>mult</code> and rounded to the nearest integer, e.g. <code>qval('1.5',10)=15</code>. Returns the specified <code>default</code> value if the string cannot be converted (i.e. if it is not a decimal string)."),new lt({BASIC:"CHR$",C:null,Java:null,Pascal:null,Python:"chr",TypeScript:"fromCharCode"},[we.ctos],[new ct("n","integer",!1,1)],"string",8,2,"Returns the character with ASCII character code <code>n</code>."),new lt({BASIC:null,C:null,Java:"fromCharCode",Pascal:"chr",Python:null,TypeScript:null},[],[new ct("n","integer",!1,1)],"character",8,2,"Returns the character with ASCII character code <code>n</code>."),new lt({BASIC:"ASC",C:null,Java:"charCode",Pascal:null,Python:"ord",TypeScript:"charCode"},[we.sasc],[new ct("char","string",!1,1)],"integer",8,2,"Returns the ASCII code of the input character, or of the first character of the input string."),new lt({BASIC:null,C:null,Java:null,Pascal:"ord",Python:null,TypeScript:null},[],[new ct("char","character",!1,1)],"integer",8,2,"Returns the ASCII code of the input character."),new lt({BASIC:null,C:null,Java:null,Pascal:"boolint",Python:null,TypeScript:null},[],[new ct("boolean","boolean",!1,1)],"integer",8,2,"Returns the input <code>boolean</code> as an integer (-1 for <code>true</code>, 0 for <code>false</code>)."),new lt({BASIC:null,C:null,Java:null,Pascal:null,Python:"int",TypeScript:null},[],[new ct("boolean","boolean",!1,1)],"integer",8,2,"Returns the input <code>boolean</code> as an integer (1 for <code>true</code>, 0 for <code>false</code>)."),new lt({BASIC:null,C:null,Java:null,Pascal:null,Python:"bool",TypeScript:null},[we.ldin,0,we.noeq],[new ct("integer","integer",!1,1)],"boolean",8,2,"Returns the input <code>integer</code> as a boolean (0 is <code>false</code>, everything else is <code>true</code>)."),new lt({BASIC:"HEX$",C:"itoahex",Java:"toStringHex",Pascal:"hexstr",Python:"hex",TypeScript:"toStringHex"},[we.hexs],[new ct("n","integer",!1,1),new ct("minlength","integer",!1,1)],"string",8,2,"Returns a string representation of integer <code>n</code> in hexadecimal format, padded with leading zeros as up to <code>minlength</code>, e.g. <code>hexstr(255,6)='0000FF'</code>."),new lt({BASIC:"PAUSE",C:"pause",Java:"pause",Pascal:"pause",Python:"pause",TypeScript:"pause"},[we.wait],[new ct("m","integer",!1,1)],null,9,0,"Makes the Turtle Machine wait <code>m</code> milliseconds before performing the next operation. This is useful for controlling the speed of animations."),new lt({BASIC:"HALT",C:"exit",Java:"halt",Pascal:"halt",Python:"halt",TypeScript:"halt"},[we.halt],[],null,9,0,"Halts the program."),new lt({BASIC:"GETLINE$",C:"gets",Java:"readLine",Pascal:"readln",Python:"readline",TypeScript:"readLine"},[we.rdln],[],"string",9,0,"Waits for the RETURN key to be pressed, then returns everything in the keybuffer up to (and not including) the new line character."),new lt({BASIC:"INPUT$",C:"scan",Java:"input",Pascal:"input",Python:"input",TypeScript:"input"},[we.writ,we.newl,we.rdln],[new ct("prompt","string",!1,1)],"string",9,0,"Gives an input prompt, then returns the input when the RETURN key is pressed (using the keybuffer)."),new lt({BASIC:"CURSOR",C:"cursor",Java:"cursor",Pascal:"cursor",Python:"cursor",TypeScript:"cursor"},[we.curs],[new ct("cursorcode","integer",!1,1)],null,9,1,"Sets which cursor to display (1-15) when the mouse pointer is over the canvas. 0 hides the cursor; any value outside the range 0-15 resets the default cursor. For a list of available cursors, see the <b>Cursors</b> tab."),new lt({BASIC:"KEYECHO",C:"keyecho",Java:"keyEcho",Pascal:"keyecho",Python:"keyecho",TypeScript:"keyEcho"},[we.kech],[new ct("on","boolean",!1,1)],null,9,1,"Turns the keyboard echo to the console on (<code>true</code>) or off (<code>false</code>)."),new lt({BASIC:"DETECT",C:"detect",Java:"detect",Pascal:"detect",Python:"detect",TypeScript:"detect"},[we.tdet],[new ct("keycode","integer",!1,1),new ct("m","integer",!1,1)],"boolean",9,1,"Waits a maximum of <code>m</code> milliseconds for the key with the specified <code>keycode</code> to be pressed; returns <code>true</code> if pressed (and stops waiting), <code>false</code> otherwise."),new lt({BASIC:"GET$",C:"get",Java:"read",Pascal:"read",Python:"read",TypeScript:"read"},[we.read],[new ct("n","integer",!1,1)],"string",9,1,"Returns the first <code>n</code> characters from the keybuffer as a string."),new lt({BASIC:"TIME",C:"time",Java:"time",Pascal:"time",Python:"time",TypeScript:"time"},[we.time],[],"integer",9,1,"Returns the time (in milliseconds) since the program began."),new lt({BASIC:"TIMESET",C:"timeset",Java:"timeSet",Pascal:"timeset",Python:"timeset",TypeScript:"timeSet"},[we.tset],[new ct("m","integer",!1,1)],null,9,1,"Artificially sets the time since the program began to <code>m</code> milliseconds."),new lt({BASIC:"RESET",C:"reset",Java:"reset",Pascal:"reset",Python:"reset",TypeScript:"reset"},[we.iclr],[new ct("?input","integer",!1,1)],null,9,2,"Resets the specified <code>?input</code> (<code>?mousex</code>, <code>?mousey</code>, <code>?click</code>, etc.) to its initial value (i.e. -1)."),new lt({BASIC:"KEYSTATUS",C:"keystatus",Java:"keyStatus",Pascal:"keystatus",Python:"keystatus",TypeScript:"keyStatus"},[we.inpt],[new ct("keycode","integer",!1,1)],"integer",9,2,"Returns the <code>?kshift</code> value for the most recent press of the key with the specified <code>keycode</code>."),new lt({BASIC:"KEYBUFFER",C:"keybuffer",Java:"keyBuffer",Pascal:"keybuffer",Python:"keybuffer",TypeScript:"keyBuffer"},[we.bufr,we.ldin,1,we.sptr,we.hfix],[new ct("n","integer",!1,1)],null,9,2,"Creates a new custom keybuffer of length <code>n</code>. A keybuffer of length 32 is available by default; use this command if you need a larger buffer."),new lt({BASIC:"CHDIR",C:null,Java:null,Pascal:"chdir",Python:null,TypeScript:null},[we.chdr],[new ct("directory name","string",!1,1)],null,10,1,"Changes the current directory."),new lt({BASIC:"RMDIR",C:null,Java:null,Pascal:"rmdir",Python:null,TypeScript:null},[we.ldin,1,we.diry,we.ldin,128,we.less],[new ct("subdirectory name","string",!1,1)],"boolean",10,1,"Removes a subdirectory."),new lt({BASIC:"MKDIR",C:null,Java:null,Pascal:"mkdir",Python:null,TypeScript:null},[we.ldin,2,we.diry,we.ldin,127,we.more],[new ct("subdirectory name","string",!1,1)],"boolean",10,1,"Creates a subdirectory."),new lt({BASIC:null,C:null,Java:null,Pascal:"openfile",Python:null,TypeScript:null},[we.open],[new ct("filename","string",!1,1),new ct("mode","integer",!1,1)],"integer",10,1,"Opens a file (1: read, 2: append, 3: write)."),new lt({BASIC:"OPENIN",C:null,Java:null,Pascal:null,Python:null,TypeScript:null},[we.ldin,1,we.open],[new ct("filename","string",!1,1)],"integer",10,1,"Open a file for reading."),new lt({BASIC:"OPENUP",C:null,Java:null,Pascal:null,Python:null,TypeScript:null},[we.ldin,2,we.open],[new ct("filename","string",!1,1)],"integer",10,1,"Opens a file for appending."),new lt({BASIC:"OPENOUT",C:null,Java:null,Pascal:null,Python:null,TypeScript:null},[we.ldin,4,we.open],[new ct("filename","string",!1,1)],"integer",10,1,"Opens a file for writing."),new lt({BASIC:"CLOSE#",C:null,Java:null,Pascal:"closefile",Python:null,TypeScript:null},[we.clos],[new ct("file handle","integer",!1,1)],null,10,1,"Closes a file."),new lt({BASIC:"DELETEFILE",C:null,Java:null,Pascal:"deletefile",Python:null,TypeScript:null},[we.ldin,1,we.file,we.ldin,128,we.less],[new ct("filename","string",!1,1)],"boolean",10,1,"Deletes a file."),new lt({BASIC:"FREAD#",C:null,Java:null,Pascal:"fread",Python:null,TypeScript:null},[we.frds],[new ct("file handle","integer",!1,1),new ct("n","integer",!1,1)],"string",10,1,"Reads n characters (maximum) from a file."),new lt({BASIC:"FREADLN#",C:null,Java:null,Pascal:"freadln",Python:null,TypeScript:null},[we.frln],[new ct("file handle","integer",!1,1)],"string",10,1,"Reads a line from a file."),new lt({BASIC:"FWRITE#",C:null,Java:null,Pascal:"fwrite",Python:null,TypeScript:null},[we.fwrs],[new ct("file handle","integer",!1,1),new ct("string","string",!1,1)],null,10,1,"Writes a string to a file."),new lt({BASIC:"FWRITELN#",C:null,Java:null,Pascal:"fwriteln",Python:null,TypeScript:null},[we.fwln],[new ct("file handle","integer",!1,1),new ct("string","string",!1,1)],null,10,1,"Writes a line to a file."),new lt({BASIC:"EOF#",C:null,Java:null,Pascal:"eof",Python:null,TypeScript:null},[we.eof],[new ct("file handle","integer",!1,1)],"boolean",10,1,"Tests for the end of file."),new lt({BASIC:"CHECKDIR",C:null,Java:null,Pascal:"checkdir",Python:null,TypeScript:null},[we.ldin,0,we.diry,we.ldin,127,we.more],[new ct("directory name","string",!1,1),new ct("code","integer",!1,1)],"integer",10,2,"Creates/deletes/checks a directory."),new lt({BASIC:"CHECKFILE",C:null,Java:null,Pascal:"checkfile",Python:null,TypeScript:null},[we.ldin,0,we.file,we.ldin,127,we.more],[new ct("filename","string",!1,1),new ct("code","integer",!1,1)],"integer",10,2,"Creates/deletes/checks a file."),new lt({BASIC:"COPYFILE",C:null,Java:null,Pascal:"copyfile",Python:null,TypeScript:null},[we.ldin,3,we.fmov],[new ct("old name","string",!1,1),new ct("new name","string",!1,1)],"boolean",10,2,"Copies a file."),new lt({BASIC:"DIREXISTS",C:null,Java:null,Pascal:"direxists",Python:null,TypeScript:null},[we.ldin,0,we.diry,we.ldin,127,we.more],[new ct("subdirectory name","string",!1,1)],"boolean",10,2,"Checks whether a subdirectory exists."),new lt({BASIC:"FILEEXISTS",C:null,Java:null,Pascal:"fileexists",Python:null,TypeScript:null},[we.ldin,0,we.file,we.ldin,127,we.more],[new ct("filename","string",!1,1)],"boolean",10,2,"Checks whether a file exists."),new lt({BASIC:"FINDDIR",C:null,Java:null,Pascal:"finddir",Python:null,TypeScript:null},[we.dupl,we.lptr,we.rota,we.fdir,we.swap,we.rota,we.sptr],[new ct("directory name pattern","string",!1,1),new ct("file handle","integer",!1,1)],"string",10,2,"Finds the first directory matching the pattern."),new lt({BASIC:"FINDFIRST",C:null,Java:null,Pascal:"findfirst",Python:null,TypeScript:null},[we.dupl,we.lptr,we.rota,we.ffnd,we.swap,we.rota,we.sptr],[new ct("filename pattern","string",!1,1),new ct("file handle","integer",!1,1)],"string",10,2,"Finds the first file matching the pattern."),new lt({BASIC:"FINDNEXT",C:null,Java:null,Pascal:"findnext",Python:null,TypeScript:null},[we.fnxt],[new ct("file handle","integer",!1,1)],"string",10,2,"Finds the next file/directory matching a pattern."),new lt({BASIC:"RENAMEFILE",C:null,Java:null,Pascal:"renamefile",Python:null,TypeScript:null},[we.ldin,1,we.fmov],[new ct("old filename","string",!1,1),new ct("new filename","string",!1,1)],"boolean",10,2,"Rename file"),new lt({BASIC:"MOVEFILE",C:null,Java:null,Pascal:"movefile",Python:null,TypeScript:null},[we.ldin,2,we.fmov],[new ct("old filename","string",!1,1),new ct("new filename","string",!1,1)],"boolean",10,2,"Moves a file."),new lt({BASIC:"RESTARTFILE",C:null,Java:null,Pascal:"restartfile",Python:null,TypeScript:null},[we.fbeg],[new ct("file handle","integer",!1,1)],null,10,2,"Restarts reading a file."),new lt({BASIC:"EOLN#",C:null,Java:null,Pascal:"eoln",Python:null,TypeScript:null},[we.eoln],[new ct("file handle","integer",!1,1)],"boolean",10,2,"Tests for end of line in a file."),new lt({BASIC:"DUMP",C:"dump",Java:"dump",Pascal:"dump",Python:"dump",TypeScript:"dump"},[we.dump],[],null,11,2,"&ldquo;Dumps&rdquo; the current memory state into the display in the memory tab."),new lt({BASIC:"HEAPRESET",C:"heapreset",Java:"heapReset",Pascal:"heapreset",Python:"heapreset",TypeScript:"heapReset"},[we.hrst],[],null,11,2,"Resets the memory heap to the initial global value."),new lt({BASIC:"ADDRESS",C:"address",Java:"address",Pascal:"address",Python:"address",TypeScript:"address"},[],[new ct("variable","integer",!0,1)],"integer",11,2,"Returns the address in memory of the given <code>variable</code>."),new lt({BASIC:"PEEK",C:"peek",Java:"peek",Pascal:"peek",Python:"peek",TypeScript:"peek"},[we.peek],[new ct("address","integer",!1,1)],"integer",11,2,"Peek at the value of the memory at the given <code>address</code>."),new lt({BASIC:"POKE",C:"poke",Java:"poke",Pascal:"poke",Python:"poke",TypeScript:"poke"},[we.poke],[new ct("address","integer",!1,1),new ct("value","integer",!1,1)],null,11,2,"Poke the <code>value</code> into the memory at the given <code>address</code>."),new lt({BASIC:"TRACE",C:"trace",Java:"trace",Pascal:"trace",Python:"trace",TypeScript:"trace"},[we.trac],[new ct("on","boolean",!1,1)],null,11,2,"Turns the PCode trace facility on (<code>true</code>) or off (<code>false</code>)."),new lt({BASIC:"WATCH",C:"watch",Java:"watch",Pascal:"watch",Python:"watch",TypeScript:"watch"},[we.memw],[new ct("address","integer",!1,1)],null,11,2,"Sets an <code>address</code> in memory for the trace facility to watch.")];class ut{constructor(e,t){this.names={BASIC:e.length>2?e.toUpperCase():e,C:e,Java:e,Pascal:e,Python:e,TypeScript:e},this.value=t}}const ht=[new ut("?kshift",-10),new ut("?key",-9),new ut("?mousey",-8),new ut("?mousex",-7),new ut("?clicky",-6),new ut("?clickx",-5),new ut("?click",-4),new ut("?mmouse",-3),new ut("?rmouse",-2),new ut("?lmouse",-1),new ut("\\keybuffer",0),new ut("\\backspace",8),new ut("\\tab",9),new ut("\\enter",13),new ut("\\return",13),new ut("\\shift",16),new ut("\\ctrl",17),new ut("\\alt",18),new ut("\\pause",19),new ut("\\capslock",20),new ut("\\escape",27),new ut("\\space",32),new ut("\\pgup",33),new ut("\\pgdn",34),new ut("\\end",35),new ut("\\home",36),new ut("\\left",37),new ut("\\up",38),new ut("\\right",39),new ut("\\down",40),new ut("\\insert",45),new ut("\\delete",46),new ut("\\0",48),new ut("\\1",49),new ut("\\2",50),new ut("\\3",51),new ut("\\4",52),new ut("\\5",53),new ut("\\6",54),new ut("\\7",55),new ut("\\8",56),new ut("\\9",57),new ut("\\a",65),new ut("\\b",66),new ut("\\c",67),new ut("\\d",68),new ut("\\e",69),new ut("\\f",70),new ut("\\g",71),new ut("\\h",72),new ut("\\i",73),new ut("\\j",74),new ut("\\k",75),new ut("\\l",76),new ut("\\m",77),new ut("\\n",78),new ut("\\o",79),new ut("\\p",80),new ut("\\q",81),new ut("\\r",82),new ut("\\s",83),new ut("\\t",84),new ut("\\u",85),new ut("\\v",86),new ut("\\w",87),new ut("\\x",88),new ut("\\y",89),new ut("\\z",90),new ut("\\lwin",91),new ut("\\rwin",92),new ut("\\#0",96),new ut("\\#1",97),new ut("\\#2",98),new ut("\\#3",99),new ut("\\#4",100),new ut("\\#5",101),new ut("\\#6",102),new ut("\\#7",103),new ut("\\#8",104),new ut("\\#9",105),new ut("\\multiply",106),new ut("\\add",107),new ut("\\subtract",109),new ut("\\decimal",110),new ut("\\divide",111),new ut("\\f1",112),new ut("\\f2",113),new ut("\\f3",114),new ut("\\f4",115),new ut("\\f5",116),new ut("\\f6",117),new ut("\\f7",118),new ut("\\f8",119),new ut("\\f9",120),new ut("\\f10",121),new ut("\\f11",122),new ut("\\f12",123),new ut("\\numlock",144),new ut("\\scrolllock",145),new ut("\\semicolon",186),new ut("\\equals",187),new ut("\\comma",188),new ut("\\dash",189),new ut("\\fullstop",190),new ut("\\forwardslash",191),new ut("\\singlequote",192),new ut("\\openbracket",219),new ut("\\backslash",220),new ut("\\closebracket",221),new ut("\\hash",222),new ut("\\backtick",223)];class pt{constructor(e,t,n){this.category=e,this.level=t,this.name=n}}const gt={BASIC:[new pt(20,0,"IF"),new pt(20,0,"ELSE"),new pt(20,0,"FOR"),new pt(20,1,"REPEAT"),new pt(20,1,"WHILE"),new pt(20,1,"DEF"),new pt(21,1,"LOCAL"),new pt(21,2,"PRIVATE"),new pt(22,0,"RETURN"),new pt(22,0,"CONST"),new pt(22,0,"DIM"),new pt(22,0,"END"),new pt(22,0,"ENDPROC"),new pt(22,0,"THEN"),new pt(22,0,"ENDIF"),new pt(22,0,"TO"),new pt(22,0,"STEP"),new pt(22,0,"NEXT"),new pt(22,0,"UNTIL"),new pt(22,0,"ENDWHILE")],C:[new pt(20,0,"if"),new pt(20,0,"else"),new pt(20,0,"for"),new pt(20,1,"while"),new pt(20,1,"do"),new pt(22,0,"const"),new pt(22,0,"return")],Java:[new pt(20,0,"if"),new pt(20,0,"else"),new pt(20,0,"for"),new pt(20,1,"while"),new pt(20,1,"do"),new pt(22,0,"class"),new pt(22,0,"final"),new pt(22,0,"return")],Pascal:[new pt(20,0,"if"),new pt(20,0,"else"),new pt(20,0,"for"),new pt(20,1,"repeat"),new pt(20,1,"while"),new pt(20,1,"procedure"),new pt(20,2,"function"),new pt(22,0,"program"),new pt(22,0,"var"),new pt(22,0,"const"),new pt(22,0,"array"),new pt(22,0,"of"),new pt(22,0,"begin"),new pt(22,0,"end"),new pt(22,0,"then"),new pt(22,0,"to"),new pt(22,0,"downto"),new pt(22,0,"do"),new pt(22,0,"until")],Python:[new pt(20,0,"if"),new pt(20,0,"else"),new pt(20,0,"elif"),new pt(20,0,"for"),new pt(20,1,"while"),new pt(20,1,"def"),new pt(21,1,"global"),new pt(21,2,"nonlocal"),new pt(22,0,"in"),new pt(22,0,"pass"),new pt(22,0,"return")],TypeScript:[new pt(20,0,"if"),new pt(20,0,"else"),new pt(20,0,"for"),new pt(20,1,"while"),new pt(20,1,"do"),new pt(20,1,"function"),new pt(22,0,"var"),new pt(22,0,"const"),new pt(22,0,"return")]};function wt(e,t){const n=[];let o=1,a=1;for(;e.length>0;){const i=ft(e,0,o,a)||mt(e,0,o,a)||vt(e,t,o,a)||yt(e,t,o,a)||kt(e,t,o,a)||xt(e,t,o,a)||Ct(e,t,o,a)||Pt(e,t,o,a)||Tt(e,t,o,a)||At(e,0,o,a)||Lt(e,t,o,a)||It(e,t,o,a)||Mt(e,t,o,a)||Et(e,t,o,a)||Rt(e,t,o,a)||Ft(e,t,o,a)||Bt(e,0,o,a);n.push(i),e=e.slice(i.content.length),"newline"===i.type?(o+=1,a=1):a+=i.content.length}return n}function ft(e,t,n,o){const a=e.match(/^( +)/);return!!a&&new st("spaces",a[0],n,o)}function mt(e,t,n,o){return!("\n"!==e[0])&&new st("newline","\n",n,o)}function vt(e,t,n,o){switch(t){case"BASIC":return!!e.match(/^REM/)&&new st("comment",e.split("\n")[0],n,o);case"C":case"Java":case"TypeScript":return!!e.match(/^\/\//)&&new st("comment",e.split("\n")[0],n,o);case"Pascal":const t="{"===e[0],a=e.match(/}/);return t&&a?new st("comment",e.slice(0,a.index+1),n,o):!!t&&new st("unterminated-comment",e.split("\n")[0],n,o);case"Python":return!!e.match(/^#/)&&new st("comment",e.split("\n")[0],n,o)}}function yt(e,t,n,o){switch(t){case"BASIC":case"C":case"Java":case"TypeScript":case"Pascal":return bt(e,t,n,o)||St(e,t,n,o);case"Python":return St(e,t,n,o)||bt(e,t,n,o)}}function bt(e,t,n,o){const a=e.match({BASIC:/^(\+|-|\*|\/|DIV\b|MOD\b|=|<>|<=|>=|<|>|ANDL\b|ORL\b|NOT\b|AND\b|OR\b|EOR\b)/,C:/^(\+|-|\*|\/|div\b|%|==|!=|<=|>=|<|>|=|!|&&|\|\||~|&|\||\^)/,Java:/^(\+|-|\*|\/|div\b|%|==|!=|<=|>=|<|>|=|!|&&|\|\||~|&|\||\^)/,Pascal:/^(\+|-|\*|\/|div\b|mod\b|=|<>|<=|>=|<|>|:=|andl\b|orl\b|not\b|and\b|or\b|xor\b)/i,Python:/^(\+|-|\*|\/\/|\/|%|==|!=|<=|>=|<|>|=|not\b|and\b|or\b|~|&|\||\^)/,TypeScript:/^(\+|-|\*|\/|div\b|%|==|!=|<=|>=|<|>|=|!|&&|\|\||~|&|\||\^)/}[t]);return!!a&&new st("operator",a[0],n,o)}function St(e,t,n,o){const a=e.match({BASIC:/^(\(|\)|,|:)/,C:/^(\(|\)|{|}|\[|\]|,|;)/,Java:/^(\(|\)|{|}|\[|\]|,|;)/,Pascal:/^(\(|\)|\[|\]|,|:|;|\.\.|\.)/,Python:/^(\(|\)|\[|\]|,|:|;|->)/,TypeScript:/^(\(|\)|{|}|\[|\]|,|;|:)/}[t]);return!!a&&new st("delimiter",a[0],n,o)}function kt(e,t,n,o){switch(e=e.split("\n")[0],t){case"BASIC":case"Pascal":if("'"===e[0]||'"'===e[0]){const t=e[0];let a=1,i=!1;for(;e[a]&&!i;){if("\n"===e[a])return new st("unterminated-string",e.slice(0,a),n,o);e[a]!==t?a+=1:(a+=1,e[a]!==t?i=!0:a+=1)}return new st(i?"string":"unterminated-string",e.slice(0,a),n,o)}return!1;case"C":case"Java":case"Python":case"TypeScript":const t="'"===e[0],a='"'===e[0],i=e.match(/[^\\](')/),r=e.match(/[^\\](")/);return t&&i?new st("string",e.slice(0,i.index+2),n,o):t?new st("unterminated-string",e.split("\n")[0],n,o):a&&r?new st("string",e.slice(0,r.index+2),n,o):!!a&&new st("unterminated-string",e.split("\n")[0],n,o)}}function xt(e,t,n,o){const a=e.match({BASIC:/^(TRUE|FALSE)\b/,C:/^(true|false)\b/,Java:/^(true|false)\b/,Pascal:/^(true|false)\b/i,Python:/^(True|False)\b/,TypeScript:/^(true|false)\b/}[t]);return!!a&&new st("boolean",a[0],n,o)}function Ct(e,t,n,o){switch(t){case"BASIC":case"Pascal":const t=e.match(/^(%[01]+)\b/),a=e.match(/^(0b[01]+)\b/);return t?new st("binary",t[0],n,o):!!a&&new st("bad-binary",a[0],n,o);case"C":case"Java":case"Python":case"TypeScript":const i=e.match(/^(0b[01]+)\b/);return!!i&&new st("binary",i[0],n,o)}}function Pt(e,t,n,o){switch(t){case"BASIC":return!1;case"Pascal":const t=e.match(/^(&[0-7]+)\b/),a=e.match(/^(0o[0-7]+)\b/);return t?new st("octal",t[0],n,o):!!a&&new st("bad-octal",a[0],n,o);case"C":case"Java":case"Python":case"TypeScript":const i=e.match(/^(0o[0-7]+)\b/);return!!i&&new st("octal",i[0],n,o)}}function Tt(e,t,n,o){const a=e.match({BASIC:/^((\$|(0x))[A-Fa-f0-9]+)\b/,C:/^((&|#|\$)[A-Fa-f0-9]+)\b/,Java:/^((&|#|\$)[A-Fa-f0-9]+)\b/,Pascal:/^((&|(0x))[A-Fa-f0-9]+)\b/,Python:/^((&|#|\$)[A-Fa-f0-9]+)\b/,TypeScript:/^((&|#|\$)[A-Fa-f0-9]+)\b/}[t]),i=e.match({BASIC:/^((&|#)[A-Fa-f0-9]+)\b/,C:/^((0x|#)[A-Fa-f0-9]+)\b/,Java:/^((0x|#)[A-Fa-f0-9]+)\b/,Pascal:/^((\$|#)[A-Fa-f0-9]+)\b/,Python:/^(0x[A-Fa-f0-9]+)\b/,TypeScript:/^((0x|#)[A-Fa-f0-9]+)\b/}[t]);return a?new st("bad-hexadecimal",a[0],n,o):!!i&&new st("hexadecimal",i[0],n,o)}function At(e,t,n,o){const a=e.match(/^(\d+)\b/),i=e.match(/^(\d+\.\d+)/);return i?new st("real",i[0],n,o):!!a&&new st("decimal",a[0],n,o)}function Lt(e,t,n,o){const a=gt[t].map((e=>e.name)).join("|"),i="Pascal"===t?new RegExp(`^(${a})\\b`,"i"):new RegExp(`^(${a})\\b`),r=e.match(i);return!!r&&new st("keyword",r[0],n,o)}function It(e,t,n,o){let a=null;switch(t){case"C":a=e.match(/^(void|bool|char|int|string)\b/);break;case"Java":a=e.match(/^(void|boolean|char|int|String)\b/);break;case"Pascal":a=e.match(/^(boolean|char|integer|string)\b/i);break;case"TypeScript":a=e.match(/^(void|boolean|number|string)\b/)}return!!a&&new st("type",a[0],n,o)}function Mt(e,t,n,o){const a=ht.filter((e=>e.value>=0)).map((e=>e.names[t].replace(/\\/,"\\\\"))).join("|"),i="Pascal"===t?new RegExp(`^(${a})\\b`,"i"):new RegExp(`^(${a})\\b`),r=e.match(i),s=e.match(/^(\\[#a-zA-Z0-9]*)\b/);return r?new st("keycode",r[0],n,o):!!s&&new st("bad-keycode",s[0],n,o)}function Et(e,t,n,o){const a=ht.filter((e=>e.value<0)).map((e=>e.names[t].replace(/\?/,"\\?"))).join("|"),i="Pascal"===t?new RegExp(`^(${a})\\b`,"i"):new RegExp(`^(${a})\\b`),r=e.match(i),s=e.match(/^(\?[#a-zA-Z0-9]*)\b/);return r?new st("query",r[0],n,o):!!s&&new st("bad-query",s[0],n,o)}function Rt(e,t,n,o){const a=e.match({BASIC:/^(turt[xydatc]%)/,C:/^(turt[xydatc])\b/,Java:/^(turt[xydatc])\b/,Pascal:/^(turt[xydatc])\b/i,Python:/^(turt[xydatc])\b/,TypeScript:/^(turt[xydatc])\b/}[t]);return!!a&&new st("turtle",a[0],n,o)}function Ft(e,t,n,o){const a="BASIC"===t?e.match(/^([_a-zA-Z][_a-zA-Z0-9]*\$\d*|[_a-zA-Z][_a-zA-Z0-9]*%?)/):e.match(/^([_a-zA-Z][_a-zA-Z0-9]*)\b/);if(a){const e="Pascal"===t?a[0].toLowerCase():a[0],i=ge.find((n=>n.names[t]===e)),r=dt.find((n=>n.names[t]===e));return new st(i?"colour":r||"Python"===t&&"range"===e?"command":"identifier",a[0],n,o)}return!1}function Bt(e,t,n,o){return new st("illegal",e.split(/\s/)[0],n,o)}class Ot{constructor(e,t,n){this.line=e,this.character=t,this.content=n}}class Dt extends Ot{constructor(e){super(e.line,e.character,"[newline]"),this.type="newline"}}class qt extends Ot{constructor(e){super(e.line,e.character,"[dedent]"),this.type="indent"}}class zt extends Ot{constructor(e){super(e.line,e.character,"[dedent]"),this.type="dedent"}}class Jt extends Ot{constructor(e,t){switch(super(e.line,e.character,e.content),this.type="comment",this.subtype=null,t){case"BASIC":this.value=e.content.slice(3).trim();break;case"C":case"Java":case"TypeScript":this.value=e.content.slice(2).trim();break;case"Pascal":this.value=e.content.slice(1,-1).trim();break;case"Python":this.value=e.content.slice(1).trim()}}}class Nt extends Ot{constructor(e){super(e.line,e.character,e.content),this.type="keyword",this.subtype=e.content.toLowerCase()}}class $t extends Ot{constructor(e){switch(super(e.line,e.character,e.content),this.type="type",this.subtype=null,e.content){case"bool":case"boolean":this.subtype="boolean";break;case"char":this.subtype="character";break;case"int":case"integer":case"number":this.subtype="integer";break;case"string":case"String":this.subtype="string"}}}class Wt extends Ot{constructor(e,t){switch(super(e.line,e.character,e.content),this.type="operator",this.subtype="asgn",e.content.toLowerCase()){case"+":this.subtype="plus";break;case"-":this.subtype="subt";break;case"*":this.subtype="mult";break;case"/":this.subtype="divr";break;case"div":case"//":this.subtype="div";break;case"mod":case"%":this.subtype="mod";break;case"=":this.subtype="BASIC"===t||"Pascal"===t?"eqal":"asgn";break;case"==":this.subtype="eqal";break;case"<>":case"!=":this.subtype="noeq";break;case"<=":this.subtype="lseq";break;case">=":this.subtype="mreq";break;case"<":this.subtype="less";break;case">":this.subtype="more";break;case"not":case"~":case"!":this.subtype="not";break;case"and":this.subtype="Python"===t?"andl":"and";break;case"or":this.subtype="Python"===t?"orl":"or";break;case"andl":case"&&":this.subtype="andl";break;case"&":this.subtype="and";break;case"orl":case"||":this.subtype="orl";break;case"|":this.subtype="or";break;case"eor":case"xor":case"^":this.subtype="xor"}}}class Ht extends Ot{constructor(e){super(e.line,e.character,e.content),this.type="delimiter",this.subtype=e.content}}class Ut extends Ot{constructor(e,t){super(e.line,e.character,e.content),this.type="literal",this.subtype="boolean",this.value="C"===t||"Python"===t?"true"===e.content.toLowerCase()?1:0:"true"===e.content.toLowerCase()?-1:0}}class Gt extends Ot{constructor(e,t){super(e.line,e.character,e.content),this.type="literal",this.subtype="integer";const n=e.content.match(/[^0-9]/),o=n?e.content.slice((n.index||0)+1):e.content;this.value=parseInt(o,t),this.radix=t}}class Kt extends Ot{constructor(e){super(e.line,e.character,e.content),this.type="literal",this.subtype="character",this.value=e.value.charCodeAt(0)}}class Vt extends Ot{constructor(e,t){switch(super(e.line,e.character,e.content),this.type="literal",this.subtype="string",t){case"BASIC":this.value=e.content.slice(1,-1).replace(/""/g,'"');break;case"Pascal":"'"===e.content[0]?this.value=e.content.slice(1,-1).replace(/''/g,"'"):this.value=e.content.slice(1,-1).replace(/""/g,'"');break;case"C":case"Java":this.value=e.content.slice(1,-1).replace(/\\('|")/g,"$1");break;case"Python":case"TypeScript":this.value=e.content.slice(1,-1).replace(/\\('|")/g,"$1")}}}class jt extends Ot{constructor(e,t){super(e.line,e.character,e.content),this.type="input",this.subtype="keycode",this.value="Pascal"===t?e.content.toLowerCase():e.content}}class Xt extends Ot{constructor(e,t){super(e.line,e.character,e.content),this.type="input",this.subtype="query",this.value="Pascal"===t?e.content.toLowerCase():e.content}}class Yt extends Ot{constructor(e,t){super(e.line,e.character,e.content),this.type="identifier",this.subtype="turtle"===e.type?"turtle":"identifier",this.value="Pascal"===t?e.content.toLowerCase():e.content}}function Qt(e,t){const n="string"==typeof e?wt(e,t):e,o=[],a=[0];let i=0,r=a[0];for(;i<n.length;){switch(n[i].type){case"spaces":break;case"newline":if("BASIC"===t||"Python"===t||"TypeScript"===t)for(o[o.length-1]&&"newline"!==o[o.length-1].type&&"comment"!==o[o.length-1].type&&o.push(new Dt(n[i]));n[i+1]&&"newline"===n[i+1].type;)i+=1;if("Python"===t)if(r=n[i+1]&&"spaces"===n[i+1].type?n[i+1].content.length:0,r>a[a.length-1])a.push(r),o.push(new qt(n[i+1]));else{for(;r<a[a.length-1];)a.pop(),o.push(new zt(n[i+1]||n[i]));if(r!==a[a.length-1])throw new T(`Inconsistent indentation at line ${(n[i+1]||n[i]).line}.`)}break;case"comment":o.push(new Jt(n[i],t)),"BASIC"!==t&&"Python"!==t||o.push(new Dt(n[i+1]||n[i]));break;case"keyword":o.push(new Nt(n[i]));break;case"type":o.push(new $t(n[i]));break;case"operator":o.push(new Wt(n[i],t));break;case"delimiter":o.push(new Ht(n[i]));break;case"string":const e=new Vt(n[i],t);1!==e.value.length||"C"!==t&&"Java"!==t&&"Pascal"!==t?o.push(e):o.push(new Kt(e));break;case"boolean":o.push(new Ut(n[i],t));break;case"binary":o.push(new Gt(n[i],2));break;case"octal":o.push(new Gt(n[i],8));break;case"hexadecimal":o.push(new Gt(n[i],16));break;case"decimal":o.push(new Gt(n[i],10));break;case"keycode":o.push(new jt(n[i],t));break;case"query":o.push(new Xt(n[i],t));break;case"command":case"turtle":case"colour":case"identifier":o.push(new Yt(n[i],t));break;case"unterminated-comment":throw new T("Unterminated comment.",n[i]);case"unterminated-string":throw new T("Unterminated string.",n[i]);case"bad-binary":case"bad-octal":case"bad-hexadecimal":throw new T("Ill-formed integer literal.",n[i]);case"real":throw new T("The Turtle System does not support real numbers.",n[i]);case"bad-keycode":throw new T("Unrecognised input keycode.",n[i]);case"bad-query":throw new T("Unrecognised input query.",n[i]);case"illegal":throw new T("Illegal character in this context.",n[i])}i+=1}return o}function Zt(e){const t=e.get();if(!t)throw new T("{lex} must be followed by an identifier.",e.get(-1));if("identifier"!==t.type)throw new T("{lex} is not a valid identifier.",t);if("turtle"===t.subtype)throw new T("{lex} is already the name of a predefined Turtle property.",t);return e.next(),t.content}class _t{constructor(e,t){this.name="!",this.index=0,this.start=0,this.end=0,this.constants=[],this.variables=[],this.subroutines=[],this.statements=[],this.language=e,t&&(this.name="Pascal"===e?t.toLowerCase():t)}get parameters(){return this.variables.filter((e=>e.isParameter))}get memoryNeeded(){return this.variables.reduce(((e,t)=>e+t.length),0)}get allSubroutines(){const e=[];for(const t of this.subroutines)e.push(...t.allSubroutines),e.push(t);return e}}class en extends _t{constructor(e,t){super(e,t),this.baseGlobals=12,this.baseOffset=11}get turtleAddress(){return(this.allSubroutines.some((e=>"function"===e.type))?this.allSubroutines.length+1:this.allSubroutines.length)+this.baseGlobals}turt(e){const t="BASIC"===this.language?`turt${e}%`:`turt${e}`,n=new tn(t,this);return n.type="integer",n.turtle=["x","y","d","a","t","c"].indexOf(e)+1,n}get turtleVariables(){return[this.turt("x"),this.turt("y"),this.turt("d"),this.turt("a"),this.turt("t"),this.turt("c")]}get resultAddress(){return this.allSubroutines.length+this.baseGlobals}}class tn{constructor(e,t){this.isParameter=!1,this.isReferenceParameter=!1,this.isPointer=!1,this.type="boolint",this.stringLength=32,this.arrayDimensions=[],this.name="Pascal"===t.language?e.toLowerCase():e,this.routine=t}get isArray(){return this.arrayDimensions.length>0}get isGlobal(){return this.routine instanceof en}get baseLength(){return"string"===this.type?this.stringLength+3:1}get elementLength(){return this.arrayDimensions.length>1?1:this.baseLength}get elementCount(){return this.isArray?this.arrayDimensions[0][1]-this.arrayDimensions[0][0]+1:0}get length(){return this.isReferenceParameter||this.isPointer?1:this.isArray?this.subVariables[0].length*this.elementCount+2:this.baseLength}get subVariables(){const e=[];if(this.isArray)for(let t=0;t<this.elementCount;t+=1){const n=new nn(this,t);e.push(n)}return e}get address(){const e=this.routine.variables.indexOf(this),t=new _t(this.routine.language);return t.variables=this.routine.variables.slice(0,e),this.routine instanceof en?this.routine.turtleAddress+this.routine.turtleVariables.length+t.memoryNeeded+1:t.memoryNeeded+1}get lengthByteAddress(){return this.address+1}}class nn extends tn{constructor(e,t){super(`${e.name}_${t.toString(10)}`,e.routine),this.variable=e,this.index=t,this.type=e.type,this.isParameter=e.isParameter,this.isReferenceParameter=e.isReferenceParameter,this.stringLength=e.stringLength,this.arrayDimensions=e.arrayDimensions.slice(1),this.private=e.private}get address(){return this.variable.lengthByteAddress+this.index+1}get lengthByteAddress(){return this.variable.lengthByteAddress+this.variable.elementCount+1+(this.length-1)*this.index}}class on extends _t{constructor(e,t,n){super(t.language,n),this.level=-1,this.type="procedure",this.returns=null,this.hasReturnStatement=!1,this.globals=[],this.nonlocals=[],this.indent=0,this.startLine=0,this.lexeme=e,this.parent=t}get program(){return this.parent instanceof en?this.parent:this.parent.program}get address(){return this.index+this.program.baseOffset}}function an(e,t){const n="Pascal"===e.language?t.toLowerCase():t;return e.constants.find((e=>e.name===n))||(e instanceof on?an(e.parent,t):void 0)}function rn(e,t){const n="Pascal"===e.language?t.toLowerCase():t,o=(e instanceof en?e.turtleVariables:e.program.turtleVariables).find((e=>e.name===n));if(o)return o;if("Python"===e.language&&e instanceof on&&e.globals.indexOf(t)>-1)return rn(e.program,t);let a=e.variables.find((e=>e.name===t));if(void 0===a&&e instanceof on&&(a=rn(e.parent,t)),a){if(a.private&&a.private!==e)return;return a}}function sn(e,t){const n="Pascal"===e.language?t.toLowerCase():t;if(e.constants.some((e=>e.name===n)))return!0;if("Python"===e.language&&e instanceof on){if(e.globals.some((e=>e===n)))return!0;if(e.nonlocals.some((e=>e===n)))return!0}return!!e.variables.some((e=>e.name===n))||!!e.subroutines.some((e=>e.name===n))}function ln(e,t){const n="Pascal"===e.language?t.toLowerCase():t;return e.subroutines.find((e=>e.name===n))||(e instanceof on?e.name===n?e:ln(e.parent,n):void 0)}function cn(e,t){return ln(e,t)||function(e,t){const n="Pascal"===e.language?t.toLowerCase():t;return dt.find((t=>t.names[e.language]===n))}(e,t)}function dn(e,t){for(e.index=t.start;e.index<t.end;)t.statements.push(Hn(e.get(),e,t))}class un{constructor(e,t,n,o){this.statementType="variableAssignment",this.lexeme=e,this.variable=t,this.indexes=n,this.value=o}}class hn{constructor(e,t){this.statementType="procedureCall",this.arguments=[],this.lexeme=e,this.command=t}}class pn{constructor(e,t){this.statementType="ifStatement",this.ifStatements=[],this.elseStatements=[],this.variables=[],this.constants=[],this.lexeme=e,this.condition=t}}class gn{constructor(e,t,n,o){this.statementType="forStatement",this.statements=[],this.variables=[],this.constants=[],this.lexeme=e,this.initialisation=t,this.condition=n,this.change=o}}class wn{constructor(e,t){this.statementType="repeatStatement",this.statements=[],this.variables=[],this.constants=[],this.lexeme=e,this.condition=t}}class fn{constructor(e,t){this.statementType="whileStatement",this.statements=[],this.variables=[],this.constants=[],this.lexeme=e,this.condition=t}}class mn{constructor(e,t,n){this.statementType="returnStatement",this.lexeme=e,this.routine=t,this.value=n}}class vn{constructor(){this.statementType="passStatement"}}const yn=[["eqal","less","lseq","more","mreq","noeq","seql","sles","sleq","smor","smeq","sneq"],["plus","scat","subt","or","orl","xor"],["and","andl","div","divr","mod","mult"],["neg","not"]];function bn(e,t){return yn[t].find((t=>"operator"===e.type&&e.subtype===t))}function Sn(e){switch(e){case"eqal":return"seql";case"less":return"sles";case"lseq":return"sleq";case"more":return"smor";case"mreq":return"smeq";case"noeq":return"sneq";case"plus":return"scat";default:return e}}class kn{constructor(e){this.expressionType="integer",this.lexeme=e,this.value=e.value}get type(){return this.lexeme.subtype}}class xn{constructor(e){this.expressionType="string",this.type="string",this.lexeme=e,this.value=e.value}}class Cn{constructor(e,t){this.expressionType="input",this.type="integer",this.lexeme=e,this.input=t}}class Pn{constructor(e,t){this.expressionType="colour",this.type="integer",this.lexeme=e,this.colour=t}}class Tn{constructor(e,t){this.expressionType="constant",this.indexes=[],this.lexeme=e,this.constant=t}get type(){switch(this.constant.language){case"C":case"Java":case"Pascal":return"string"===this.constant.type&&this.indexes.length>0?"character":this.constant.type;default:return this.constant.type}}}class An{constructor(e,t){this.expressionType="address",this.indexes=[],this.type="integer",this.lexeme=e,this.variable=t}}class Ln{constructor(e,t){this.expressionType="variable",this.indexes=[],this.lexeme=e,this.variable=t}get type(){switch(this.variable.routine.language){case"C":case"Java":case"Pascal":return"string"===this.variable.type&&this.indexes.length>this.variable.arrayDimensions.length?"character":this.variable.type;default:return this.variable.type}}}class In{constructor(e,t){this.expressionType="function",this.arguments=[],this.lexeme=e,this.command=t,this.type=t.returns||"boolint"}}class Mn{constructor(e,t,n,o){this.expressionType="compound",this.lexeme=e,this.left=t,this.right=n,this.operator=o,this.type=function(e){switch(e){case"plus":return"integer";case"scat":return"string";case"subt":return"integer";case"or":case"orl":case"xor":case"and":case"andl":return"boolint";case"div":case"divr":case"mod":case"mult":case"neg":return"integer";default:return"boolean"}}(o)}}class En{constructor(e,t,n){this.expressionType="cast",this.lexeme=e,this.type=t,this.expression=n}}function Rn(e,t,n,o){if(o.returns)throw new T("{lex} is a function, not a procedure.",e);const a=new hn(e,o);if(Fn(e,t,n,a),a.command instanceof on&&a.command!==n&&"BASIC"===n.language&&0===a.command.statements.length){const e=t.index;dn(t,a.command),t.index=e}return a}function Fn(e,t,n,o){var a,i;if(o.command.parameters.length>0){if(!t.get()||"("!==(null===(a=t.get())||void 0===a?void 0:a.content))throw new T("Opening bracket missing after command {lex}.",e);t.next(),function(e,t,n){var o,a,i,r,s,l;const c=n.command instanceof lt?n.command.names[t.language]:n.command.name,d=n.command.parameters.length;let u=0;for(;u<d&&")"!==(null===(o=e.get())||void 0===o?void 0:o.content);){const o=n.command.parameters[u];let s=On(e,t);if(n.command instanceof lt)switch(null===(a=n.command.names[t.language])||void 0===a?void 0:a.toLowerCase()){case"address":break;case"length":s instanceof Ln&&s.variable.isArray||(s=Bn(s,o.type));break;default:s=Bn(s,o.type)}else s=Bn(s,o.type);if(n.arguments.push(s),u+=1,u<d){if(!e.get())throw new T("Comma needed after parameter.",s.lexeme);if(")"===(null===(i=e.get())||void 0===i?void 0:i.content))throw new T(`Not enough arguments given for command "${c}".`,n.lexeme);if(","!==(null===(r=e.get())||void 0===r?void 0:r.content))throw console.log(e.lexemes.slice(e.index-10,e.index+10)),new T("Comma needed after parameter.",s.lexeme);e.next()}}if(u<d)throw new T("Too few arguments given for command {lex}.",n.lexeme);if(","===(null===(s=e.get())||void 0===s?void 0:s.content))throw new T("Too many arguments given for command {lex}.",n.lexeme);if(")"!==(null===(l=e.get())||void 0===l?void 0:l.content))throw new T("Closing bracket missing after command {lex}.",n.lexeme);e.next()}(t,n,o)}else if("BASIC"===n.language||"Pascal"===n.language){if(t.get()&&"("===(null===(i=t.get())||void 0===i?void 0:i.content))throw new T("Command {lex} takes no arguments.",t.get(-1))}else{const e=t.get(),n=t.get(1);if(!e||"("!==e.content)throw new T("Opening bracket missing after command {lex}.",t.get(-1));if(!n||"newline"===n.type||";"===n.content)throw new T("Closing bracket missing after command {lex}.",t.get(-1));if(")"!==n.content)throw new T("Command {lex} takes no arguments.",t.get(-1));t.next(),t.next()}}function Bn(e,t){if(e.type===t)return e;if("string"===t&&"character"===e.type)return new En(e.lexeme,"string",e);if("character"===t&&"string"===e.type)return e;if("character"===t&&"integer"===e.type)return e;if("integer"===t&&"character"===e.type)return e;if("boolint"===t&&("boolean"===e.type||"integer"===e.type))return e;if("boolint"===e.type&&("boolean"===t||"integer"===t))return e;throw new T(`Type error: '${t}' expected but '${e.type}' found.`,e.lexeme)}function On(e,t,n=0){if(n>2)return Dn(e,t);let o=On(e,t,n+1);for(;e.get()&&bn(e.get(),n);){const a=e.get();let i=bn(a,n);e.next();let r=On(e,t,n+1);o=Bn(o,r.type),r=Bn(r,o.type),"string"!==o.type&&"string"!==r.type||(i=Sn(i)),"character"!==o.type&&"character"!==r.type||"plus"===i&&(i=Sn(i)),o=new Mn(a,o,r,i)}return o}function Dn(e,t){var n,o,a,i,r,s,l,c,d,u,h,p,g,w;const f=e.get();let m;switch(f.type){case"operator":switch(f.subtype){case"subt":return e.next(),m=Dn(e,t),m=Bn(m,"integer"),new Mn(f,null,m,"neg");case"not":return e.next(),m=Dn(e,t),m=Bn(m,"boolint"),new Mn(f,null,m,"not");case"and":if("C"!==t.language)throw new T("Expression cannot begin with {lex}.",e.get());if(e.next(),m=Dn(e,t),!(m instanceof Ln))throw new T('Address operator "&" must be followed by a variable.',f);const n=new An(m.lexeme,m.variable);return n.indexes.push(...m.indexes),n;default:throw new T("Expression cannot begin with {lex}.",f)}case"literal":return e.next(),"string"===f.subtype?new xn(f):new kn(f);case"input":const v=function(e,t){const n="Pascal"===e.language?t.toLowerCase():t;return ht.find((t=>t.names[e.language]===n))}(t,f.content);if(v)return e.next(),new Cn(f,v);throw new T("{lex} is not a valid input code.",f);case"identifier":const y=an(t,f.value);if(y){const a=new Tn(f,y);e.next();const i="BASIC"===t.language?"(":"[",r="BASIC"===t.language?")":"]";if(e.get()&&(null===(n=e.get())||void 0===n?void 0:n.content)===i){if("string"!==y.type)throw new T("{lex} is not a string constant.",f);{e.next();let n=On(e,t);if(n=Bn(n,"integer"),a.indexes.push(n),!e.get()||(null===(o=e.get())||void 0===o?void 0:o.content)!==r)throw new T(`Closing bracket "${r}" missing after string variable index.`,n.lexeme);e.next()}}return a}const b=rn(t,f.value);if(b){const n=new Ln(f,b);e.next();const o="BASIC"===t.language?"(":"[",u="BASIC"===t.language?")":"]";if(e.get()&&(null===(a=e.get())||void 0===a?void 0:a.content)===o)if(b.isArray){for(e.next();e.get()&&(null===(i=e.get())||void 0===i?void 0:i.content)!==u;){let a=On(e,t);if(a=Bn(a,"integer"),n.indexes.push(a),"BASIC"===t.language||"Pascal"===t.language){if(","===(null===(r=e.get())||void 0===r?void 0:r.content)&&(e.next(),(null===(s=e.get())||void 0===s?void 0:s.content)===u))throw new T("Trailing comma at the end of array indexes.",e.get(-1))}else(null===(l=e.get())||void 0===l?void 0:l.content)===u&&(null===(c=e.get(1))||void 0===c?void 0:c.content)===o&&(e.next(),e.next())}if(!e.get())throw new T(`Closing bracket "${u}" needed after array indexes.`,e.get(-1));e.next()}else{if("string"!==b.type)throw new T("{lex} is not a string or array variable.",f);if(e.next(),m=On(e,t),m=Bn(m,"integer"),n.indexes.push(m),!e.get()||(null===(d=e.get())||void 0===d?void 0:d.content)!==u)throw new T(`Closing bracket "${u}" missing after string variable index.`,m.lexeme);e.next()}if(b.isArray){const e="string"===b.type?b.arrayDimensions.length+1:b.arrayDimensions.length;if(n.indexes.length>e)throw new T("Too many indexes for array variable {lex}.",f)}return n}const S=function(e,t){const n=("Pascal"===e.language?t.toLowerCase():t).replace(/gray$/,"grey").replace(/GRAY$/,"GREY");return ge.find((t=>t.names[e.language]===n))}(t,f.value);if(S)return e.next(),new Pn(f,S);const k=cn(t,f.value);if(k)return e.next(),function(e,t,n,o){if(!o.returns)throw new T("{lex} is a procedure, not a function.",t.get(-1));const a=new In(e,o);if(Fn(e,t,n,a),a.command instanceof on&&a.command!==n&&"BASIC"===n.language&&0===a.command.statements.length){const e=t.index;dn(t,a.command),t.index=e}return a}(f,e,t,k);throw new T("{lex} is not defined.",f);default:if("C"!==t.language&&"Java"!==t.language||"("!==(null===(u=e.get())||void 0===u?void 0:u.content)||"type"!==(null===(h=e.get(1))||void 0===h?void 0:h.type)){if("("===(null===(g=e.get())||void 0===g?void 0:g.content)){if(e.next(),m=On(e,t),e.get()&&")"===(null===(w=e.get())||void 0===w?void 0:w.content))return e.next(),m;throw new T("Closing bracket missing after expression.",m.lexeme)}throw new T("Expression cannot begin with {lex}.",f)}{e.next();const n=e.get(),o=n.subtype;if(null===o)throw new T("Expression cannot be cast as void.",n);if(e.next(),")"!==(null===(p=e.get())||void 0===p?void 0:p.content))throw new T('Type in type cast expression must be followed by a closing bracket ")".',n);if(e.next(),m=On(e,t),o!==m.type){if("boolean"===o&&"character"===m.type)throw new T("Characters cannot be cast as booleans.",n);if("boolean"===o&&"string"===m.type)throw new T("Strings cannot be cast as booleans.",n);if("string"===o&&"boolean"===m.type)throw new T("Booleans cannot be cast as strings.",n);if("character"===o&&"boolean"===m.type)throw new T("Booleans cannot be cast as characters.",n);if("character"===o&&"string"===m.type)throw new T("Strings cannot be cast as characters.",n);m=new En(n,o,m)}return m}}}function qn(e,t,n){const o="BASIC"===t||"Pascal"===t?-1:1;switch(e.expressionType){case"address":case"variable":throw new T("constant"===n?"Constant value cannot refer to any variables.":"string"===n?"String size specification cannot refer to any variables.":"array"===n?"Array size specification cannot refer to any variables.":"FOR loop step change specification cannot refer to any variables.",e.lexeme);case"function":throw new T("constant"===n?"Constant value cannot invoke any functions.":"string"===n?"String size specification cannot invoke any functions.":"array"===n?"Array size specification cannot invoke any functions.":"FOR loop step change specification cannot invoke any functions.",e.lexeme);case"constant":return e.constant.value;case"integer":case"string":return e.value;case"input":return e.input.value;case"colour":return e.colour.value;case"cast":return qn(e.expression,t,n);case"compound":const a=e.left?qn(e.left,t,n):null,i=qn(e.right,t,n);switch(e.operator){case"eqal":case"seql":return a===i?o:0;case"less":case"sles":return a<i?o:0;case"lseq":case"sleq":return a<=i?o:0;case"more":case"smor":return a>i?o:0;case"mreq":case"smeq":return a>=i?o:0;case"noeq":case"sneq":return a!==i?o:0;case"plus":case"scat":return a+i;case"subt":return a?a-i:-i;case"neg":return-i;case"not":return 0===i?o:0;case"or":return a|i;case"orl":return a||i;case"xor":return a^i;case"and":return a&i;case"andl":return a&&i;case"div":return Math.floor(a/i);case"divr":return Math.round(a/i);case"mod":return a%i;case"mult":return a*i}}}function zn(e,t){const[n,o,a]=function(e){const t=Zt(e),n=t.match(/\$(\d+)$/);let o,a=32;if("%"===t.slice(-1))o="boolint";else if("$"===t.slice(-1))o="string";else{if(!n)throw new T('{lex} is not the name of any recognised command or a valid variable name. (Boolean and integer variables end with "%", and string variables end with "$".)',e.get(-1));o="string",a=parseInt(n[1],10)}return[t,o,a]}(e);if(sn(t,n))throw new T("{lex} is already defined in the current scope.",e.get(-1));const i=new tn(n,t);return i.type=o,i.stringLength=a,i}function Jn(e,t){var n,o,a;const i=[];for(;"newline"!==(null===(n=e.get())||void 0===n?void 0:n.type);)if(i.push(zn(e,t)),","===(null===(o=e.get())||void 0===o?void 0:o.content)&&(e.next(),!e.get()||"newline"===(null===(a=e.get())||void 0===a?void 0:a.type)))throw new T("Trailing comma at end of line.",e.get(-1));return i}class Nn{constructor(e,t,n){this.type="boolint",this.name="Pascal"===e?t.toLowerCase():t,this.language=e,this.value=n}}class $n{constructor(e,t,n){this.type="string",this.name="Pascal"===e?t.toLowerCase():t,this.language=e,this.value=n}}function Wn(e){var t,n;if(e.get()&&"newline"!==(null===(t=e.get())||void 0===t?void 0:t.type))throw new T("Statement must be on a new line.",e.get());for(;"newline"===(null===(n=e.get())||void 0===n?void 0:n.type);)e.next()}function Hn(e,t,n,o=!1){var a,i,r,s;let l;switch(e.type){case"newline":l=new vn;break;case"operator":if("eqal"!==e.subtype)throw new T("Statement cannot begin with {lex}.",e);e.subtype="asgn",t.next(),l=function(e,t,n){if(n instanceof en)throw new T("Statement in the main program cannot begin with {lex}.",e);if("function"!==n.type)throw new T("Procedures cannot return a value.",e);let o=On(t,n);return o=Bn(o,n.returns),new mn(e,n,o)}(e,t,n);break;case"identifier":l=function(e,t,n){const o=cn(n,e.content);if(o)return t.next(),Rn(e,t,n,o);const a=rn(n,e.content);if(a)return t.next(),Un(e,t,n,a);const i=n instanceof en?n:n.program,r=zn(t,i);return i.variables.push(r),Un(e,t,n,r)}(e,t,n);break;case"keyword":switch(e.subtype){case"const":t.next(),n.constants.push(function(e,t){var n;const o=zn(e,t);if(!e.get()||"="!==(null===(n=e.get())||void 0===n?void 0:n.content))throw new T("Constant must be assigned a value.",e.get(-1));e.next();let a=On(e,t);const i=qn(a,"BASIC","constant");return a=Bn(a,o.type),"string"==typeof i?new $n("BASIC",o.name,i):new Nn("BASIC",o.name,i)}(t,n)),l=new vn;break;case"dim":t.next(),n.variables.push(function(e,t){var n,o,a,i,r,s;const l=zn(e,t);if(!e.get())throw new T('"DIM" variable identifier must be followed by dimensions in brackets.',e.get(-1));if("("!==(null===(n=e.get())||void 0===n?void 0:n.content))throw new T('"DIM" variable identifier must be followed by dimensions in brackets.',e.get());for(e.next();")"!==(null===(o=e.get())||void 0===o?void 0:o.content);){if(!e.get())throw new T("Expected array size specification.",e.get(-1));if("newline"===(null===(a=e.get())||void 0===a?void 0:a.type))throw new T("Array declaration must be one a single line.",e.get(-1));const n=On(e,t);Bn(n,"integer");const o=qn(n,"BASIC","array");if("string"==typeof o)throw new T("Array size must be an integer.",e.get());if(o<=0)throw new T("Array size must be positive.",e.get());if(l.arrayDimensions.push([0,o]),","===(null===(i=e.get())||void 0===i?void 0:i.content)&&(e.next(),")"===(null===(r=e.get())||void 0===r?void 0:r.content)))throw new T("Trailing comma in array size specification.",e.get())}if(!e.get()||")"!==(null===(s=e.get())||void 0===s?void 0:s.content))throw new T("Closing bracket missing after array size specification.",e.get(-1));if(0===l.arrayDimensions.length)throw new T("Expected array size specification.",e.get());return e.next(),l}(t,n)),l=new vn;break;case"local":if(n instanceof en)throw new T("Main program cannot declare any LOCAL variables.",t.get());t.next(),n.variables.push(...Jn(t,n)),l=new vn;break;case"private":if(n instanceof en)throw new T("Main program cannot declare any PRIVATE variables.",t.get());t.next();const o=Jn(t,n);for(const e of o)e.private=n;n.program.variables.push(...o),l=new vn;break;case"if":t.next(),l=Gn(e,t,n);break;case"for":t.next(),l=Kn(e,t,n);break;case"repeat":t.next(),l=Vn(e,t,n);break;case"while":t.next(),l=jn(e,t,n);break;case"def":if(n instanceof en)throw new T('Subroutines must be defined after program "END".',e);throw new T("Subroutines cannot contain any nested subroutine definitions.",e);default:throw new T("Statement cannot begin with {lex}.",t.get())}break;default:throw new T("Statement cannot begin with {lex}.",t.get())}if(!o&&t.get()){if(":"!==(null===(a=t.get())||void 0===a?void 0:a.content)&&"newline"!==(null===(i=t.get())||void 0===i?void 0:i.type))throw console.log(t),new T("Statements must be separated by a colon or placed on different lines.",t.get());for(;":"===(null===(r=t.get())||void 0===r?void 0:r.content)||"newline"===(null===(s=t.get())||void 0===s?void 0:s.type);)t.next()}return l}function Un(e,t,n,o){var a,i,r,s;const l=[];if("("===(null===(a=t.get())||void 0===a?void 0:a.content)){if(!o.isArray)throw new T("{lex} is not an array variable.",e);for(t.next();t.get()&&")"!==(null===(i=t.get())||void 0===i?void 0:i.content);){let e=On(t,n);if(e=Bn(e,"integer"),l.push(e),","===(null===(r=t.get())||void 0===r?void 0:r.content)&&(t.next(),")"===(null===(s=t.get())||void 0===s?void 0:s.content)))throw new T("Trailing comma at the end of array indexes.",t.get(-1))}if(!t.get())throw new T('Closing bracket ")" needed after array indexes.',t.get(-1));t.next()}if(o.isArray){const t="string"===o.type?o.arrayDimensions.length+1:o.arrayDimensions.length;if(l.length>t)throw new T("Too many indexes for array variable {lex}.",e)}const c=t.get();if(!c)throw new T('Variable must be followed by assignment operator "=".',t.get(-1));if("operator"!==c.type||"="!==c.content)throw new T('Variable must be followed by assignment operator "=".',c);if(t.next(),!t.get())throw new T(`Variable "${o.name}" must be assigned a value.`,t.get(-1));let d=On(t,n);return d=Bn(d,o.type),new un(c,o,l,d)}function Gn(e,t,n){var o,a,i,r;let s;if(!t.get())throw new T('"IF" must be followed by a boolean expression.',e);let l=On(t,n);if(l=Bn(l,"boolean"),!t.get())throw new T('"IF ..." must be followed by "THEN".',t.get(-1));if("THEN"!==(null===(o=t.get())||void 0===o?void 0:o.content))throw new T('"IF ..." must be followed by "THEN".',t.get());t.next();const c=new pn(e,l),d=t.get();if(!d)throw new T('No statements found after "IF ... THEN".',t.get());if("newline"===d.type){for(;"newline"===(null===(a=t.get())||void 0===a?void 0:a.type);)t.next();c.ifStatements.push(...Xn(t,n,"IF")),s=!1}else s=!0,c.ifStatements.push(Hn(d,t,n,s));if(t.get()&&"ELSE"===(null===(i=t.get())||void 0===i?void 0:i.content)){t.next();const e=t.get();if(!e)throw new T('No statements found after "ELSE".',t.get(-1));if(s){if("newline"===e.type)throw new T('Statement following "ELSE" cannot be on a new line.',t.get(1));c.elseStatements.push(Hn(e,t,n,s))}else{if("newline"!==e.type)throw new T('Statement following "ELSE" must be on a new line.',e);for(;"newline"===(null===(r=t.get())||void 0===r?void 0:r.type);)t.next();c.elseStatements.push(...Xn(t,n,"ELSE"))}}return c}function Kn(e,t,n){var o,a,i;const r=t.get();if(!r)throw new T('"FOR" must be followed by an integer variable.',e);if("identifier"!==r.type)throw new T('"FOR" must be followed by an integer variable.',r);if("turtle"===r.subtype)throw new T('Turtle attribute cannot be used as a "FOR" variable.',r);let s=rn(n,r.content);if(s)t.next();else{const e=n instanceof en?n:n.program;s=zn(t,e),e.variables.push(s)}if("integer"!==s.type&&"boolint"!==s.type)throw new T("{lex} is not an integer variable.",t.get());const l=Un(r,t,n,s);if(!t.get())throw new T('"FOR" loop initialisation must be followed by "TO".',t.get(-1));if("TO"!==(null===(o=t.get())||void 0===o?void 0:o.content))throw new T('"FOR" loop initialisation must be followed by "TO".',t.get());if(t.next(),!t.get())throw new T('"TO" must be followed by an integer (or integer constant).',t.get(-1));let c=On(t,n);c=Bn(c,"integer");const d=new st("decimal","1",e.line,-1),u=new st("operator","=",e.line,-1),h=new st("operator","+",e.line,-1),p=new st("operator","<=",e.line,-1),g=new st("operator",">=",e.line,-1),w=new Gt(d,10),f=new Wt(u,"BASIC"),m=new Wt(h,"BASIC"),v=new Wt(p,"BASIC"),y=new Wt(g,"BASIC"),b=new Ln(r,s),S=new kn(w);let k=new un(f,s,[],new Mn(m,b,S,"plus")),x=new Mn(v,b,c,"lseq");if(t.get()&&"STEP"===(null===(a=t.get())||void 0===a?void 0:a.content)){if(t.next(),!t.get())throw new T('"STEP" instruction must be followed by an integer value.',t.get(-1));let e=On(t,n);Bn(e,"integer");const o=qn(e,"BASIC","step");if(0===o)throw new T("Step value cannot be zero.",e.lexeme);k=new un(f,s,[],new Mn(m,b,e,"plus")),x=o<0?new Mn(y,b,c,"mreq"):new Mn(v,b,c,"lseq")}const C=new gn(e,l,x,k),P=t.get();if(!P)throw new T('No statements found after "FOR" loop initialisation.',e);if("newline"===P.type){for(;"newline"===(null===(i=t.get())||void 0===i?void 0:i.type);)t.next();C.statements.push(...Xn(t,n,"FOR"))}else C.statements.push(Hn(P,t,n));return C}function Vn(e,t,n){var o;let a;const i=t.get();if(!i)throw new T('No statements found after "REPEAT".',e);if("newline"===i.type){for(;"newline"===(null===(o=t.get())||void 0===o?void 0:o.type);)t.next();a=Xn(t,n,"REPEAT")}else a=[Hn(i,t,n)];if(!t.get())throw new T('"UNTIL" must be followed by a boolean expression.',t.get(-1));let r=On(t,n);r=Bn(r,"boolean");const s=new wn(e,r);return s.statements.push(...a),s}function jn(e,t,n){var o;if(!t.get())throw new T('"WHILE" must be followed by a boolean expression.',t.get(-1));let a=On(t,n);a=Bn(a,"boolean");const i=new fn(e,a),r=t.get();if(!r)throw new T('No commands found after "WHILE ... DO".',t.get(-1));if("newline"===r.type){for(;"newline"===(null===(o=t.get())||void 0===o?void 0:o.type);)t.next();i.statements.push(...Xn(t,n,"WHILE"))}else i.statements.push(Hn(r,t,n));return i}function Xn(e,t,n){const o=[];let a=!1;if(!e.get())throw new T(`No commands found after "${n}".`,e.get(-1));for(;!a&&e.index<t.end;){const i=e.get();a=Yn(n,i),a?"ELSE"!==i.content&&e.next():o.push(Hn(i,e,t))}if(!a)throw new T(`Unterminated "${n}" statement.`,e.get(-1));return o}function Yn(e,t){switch(t.content){case"ELSE":if("IF"!==e)throw new T('"ELSE" does not have any matching "IF".',t);return!0;case"ENDIF":if("IF"!==e&&"ELSE"!==e)throw new T('"ENDIF" does not have any matching "IF".',t);return!0;case"NEXT":if("FOR"!==e)throw new T('"NEXT" does not have any matching "FOR".',t);return!0;case"UNTIL":if("REPEAT"!==e)throw new T('"UNTIL" does not have any matching "REPEAT".',t);return!0;case"ENDWHILE":if("WHILE"!==e)throw new T('"ENDWHILE" does not have any matching "WHILE".',t);return!0;default:return!1}}function Qn(e,t,n){var o,a,i,r,s;const[l,c,d,u]=function(e){const t=Zt(e);let n;if("PROC"===t.slice(0,4))n="procedure";else{if("FN"!==t.slice(0,2))throw new T('{lex} is not a valid subroutine name. (Procedure names must begin with "PROC", and function names must begin with "FN".)',e.get(-1));n="function"}const o=t.match(/\$(\d+)$/);let a="boolint",i=32;return"$"===t.slice(-1)?a="string":o&&(a="string",i=parseInt(o[1],10)),[t,n,a,i]}(t),h=new on(e,n,l);if(h.type=c,h.index=n.subroutines.length+1,"function"===c){const e=new tn("!result",h);e.type=d,e.stringLength=u,h.type="function",h.returns=d,h.variables.push(e)}if("("===(null===(o=t.get())||void 0===o?void 0:o.content)&&(t.next(),h.variables.push(...function(e,t){var n,o,a,i,r,s;const l=[];for(;")"!==(null===(n=e.get())||void 0===n?void 0:n.content);){let n=!1;"RETURN"===(null===(o=e.get())||void 0===o?void 0:o.content)&&(n=!0,e.next());const s=zn(e,t);if(s.isParameter=!0,s.isReferenceParameter=n,"("===(null===(a=e.get())||void 0===a?void 0:a.content)){if(s.arrayDimensions.push([0,0]),e.next(),!e.get()||")"!==(null===(i=e.get())||void 0===i?void 0:i.content))throw new T("Closing bracket missing after array parameter specification.",e.get(-1));e.next()}l.push(s),","===(null===(r=e.get())||void 0===r?void 0:r.content)&&e.next()}if(")"!==(null===(s=e.get())||void 0===s?void 0:s.content))throw new T("Closing bracket missing after method parameters.",e.get(-1));return e.next(),l}(t,h))),!t.get())throw new T("No statements found after subroutine declaration.",t.get(-1));Wn(t),h.start=t.index;let p=!1;if("procedure"===h.type)for(;t.get()&&!p;)p="ENDPROC"===(null===(a=t.get())||void 0===a?void 0:a.content),t.next();else for(;t.get()&&!p;)if("="===(null===(i=t.get())||void 0===i?void 0:i.content)&&"newline"===(null===(r=t.get(-1))||void 0===r?void 0:r.type))for(p=!0;t.get()&&"newline"!==(null===(s=t.get())||void 0===s?void 0:s.type);)t.next();else t.next();if(h.end="procedure"===h.type?t.index-2:t.index,!p){if("procedure"===h.type)throw new T(`Procedure "${h.name}" does not have an end (expected "ENDPROC").`,t.lexemes[h.start]);throw new T(`Function "${h.name}" does not have an end (expected "=<expression>").`,t.lexemes[h.end])}return Wn(t),h}function Zn(e){var t,n;const o=e.get();if(!o)throw new T('Expected type definition ("bool", "char", "int", "string", or "void").',e.get(-1));if("type"!==o.type)throw new T('{lex} is not a valid type definition (expected "bool", "char", "int", "string", or "void").',o);const a=o.subtype;e.next();let i=32;if("["===(null===(t=e.get())||void 0===t?void 0:t.content)){e.next();const t=e.get();if(!t)throw new T("Expecting string size specification.",e.get(-1));if("literal"!==t.type||"integer"!==t.subtype)throw new T("String size must be an integer.",e.get());if(t.value<=0)throw new T("String size must be greater than zero.",e.get());if(i=t.value,e.next(),!e.get())throw new T('Closing bracket "]" missing after string size specification.',e.get(-1));if("]"!==(null===(n=e.get())||void 0===n?void 0:n.content))throw new T('Closing bracket "]" missing after string size specification.',e.get());e.next()}return[a,i]}function _n(e,t){const n=e.get();if(!n)throw new T("{lex} must be followed by an identifier.",e.get(-1));if("identifier"!==n.type)throw new T("{lex} is not a valid identifier.",n);if("turtle"===n.subtype)throw new T("{lex} is already the name of a predefined Turtle property.",n);if(sn(t,n.value))throw new T("{lex} is already defined in the current scope.",n);return e.next(),n.value}function eo(e,t){var n,o;const[a,i]=Zn(e);if(null===a)throw new T('Constant type cannot be void (expected "bool", "char", "int", or "string").',e.get());const r=_n(e,t);if(!e.get())throw new T(`Constant ${r} must be assigned a value.`,e.get(-1));if("["===(null===(n=e.get())||void 0===n?void 0:n.content))throw new T("Constant cannot be an array.",e.get(-1));if("="!==(null===(o=e.get())||void 0===o?void 0:o.content))throw new T(`Constant ${r} must be assigned a value.`,e.get());e.next();const s=On(e,t);Bn(s,a);const l=qn(s,"C","constant");return"string"==typeof l?new $n("C",r,l):new Nn("C",r,l)}function to(e,t){var n,o,a;const i=e.get(),[r,s]=Zn(e);if(null===r)throw new T('Variable cannot be void (expected "boolean", "char", "int", or "String").',e.get());let l=!1;"*"===(null===(n=e.get())||void 0===n?void 0:n.content)&&(e.next(),l=!0);const c=_n(e,t),d=new tn(c,t);for(d.type=r,d.stringLength=s,d.isPointer=l;"["===(null===(o=e.get())||void 0===o?void 0:o.content);){if(e.next(),!e.get())throw new T('Opening bracket "[" must be followed by an array size.',e.get(-1));const n=On(e,t);Bn(n,"integer");const o=qn(n,"C","array");if("string"==typeof o)throw new T("Array size must be an integer.",e.get());if(o<=0)throw new T("Array size must be positive.",e.get());if(d.arrayDimensions.push([0,o-1]),!e.get())throw new T('Array size specification must be followed by closing bracket "]".',e.get(-1));if("]"!==(null===(a=e.get())||void 0===a?void 0:a.content))throw new T('Array size specification must be followed by closing bracket "]".',e.get());e.next()}if(null===Zn&&d.arrayDimensions.length>0)throw new T("Array of void is not allowed.",i);return d}function no(e){var t;if(!e.get()||";"!==(null===(t=e.get())||void 0===t?void 0:t.content))throw new T("Statement must be followed by a semicolon.",e.get(-1));e.next()}function oo(e,t,n){let o;switch(e.type){case"identifier":case"type":o=ao(e,t,n),no(t);break;case"keyword":switch(e.subtype){case"const":o=ao(e,t,n),no(t);break;case"return":t.next(),o=function(e,t,n){if("function"!==n.type)throw new T("Procedures cannot return a value.",t.get());let o=On(t,n);return o=Bn(o,n.returns),no(t),n.hasReturnStatement=!0,new mn(e,n,o)}(e,t,n);break;case"if":t.next(),o=function(e,t,n){var o,a,i,r,s;if(!t.get()||"("!==(null===(o=t.get())||void 0===o?void 0:o.content))throw new T('"if" must be followed by an opening bracket "(".',e);if(t.next(),!t.get())throw new T('"if (" must be followed by a Boolean expression.',t.get(-1));let l=On(t,n);if(l=Bn(l,"boolean"),!t.get()||")"!==(null===(a=t.get())||void 0===a?void 0:a.content))throw new T('"if (..." must be followed by a closing bracket ")".',t.get(-1));t.next();const c=new pn(e,l);if(!t.get()||"{"!==(null===(i=t.get())||void 0===i?void 0:i.content))throw new T('"if (...)" must be followed by an opening curly bracket "{".',t.get(-1));if(t.next(),c.ifStatements.push(...ro(t,n)),t.get()&&"else"===(null===(r=t.get())||void 0===r?void 0:r.content)){if(t.next(),!t.get()||"{"!==(null===(s=t.get())||void 0===s?void 0:s.content))throw new T('"else" must be followed by an opening bracket "{".',t.get(-1));t.next(),c.elseStatements.push(...ro(t,n))}return c}(e,t,n);break;case"else":throw new T('Statement cannot begin with "else". If you have an "if" above, you may be missing a closing bracket "}".',t.get());case"for":t.next(),o=function(e,t,n){var o,a,i;if(!t.get()||"("!==(null===(o=t.get())||void 0===o?void 0:o.content))throw new T('"for" must be followed by an opening bracket "(".',t.get(-1));t.next();const r=t.get();if(!r)throw new T('"for" conditions must begin with a variable assignment.',t.get(-1));if("identifier"!==r.type&&"type"!==r.type)throw new T('"for" conditions must begin with a variable assignment.',t.get());const s=ao(r,t,n);if(!(s instanceof un))throw new T('"for" conditions must begin with a variable assignment.',t.get(-1));if("integer"!==s.variable.type)throw new T("Loop variable must be an integer.",t.get());if(no(t),!t.get())throw new T('"for (...;" must be followed by a loop condition.',t.get(-1));let l=On(t,n);l=Bn(l,"boolean"),no(t);const c=t.get();if(!c)throw new T('"for" conditions must begin with a variable assignment.',t.get(-1));if("identifier"!==c.type&&"type"!==c.type)throw new T('"for" conditions must begin with a variable assignment.',c);const d=ao(c,t,n);if(!(d instanceof un))throw new T('"for" loop variable must be changed on each loop.',t.get(-1));if(d.variable!==s.variable)throw new T("Initial loop variable and change loop variable must be the same.",t.get(-1));if(!t.get()||")"!==(null===(a=t.get())||void 0===a?void 0:a.content))throw new T('Closing bracket ")" missing after "for" loop initialisation.',t.get(-1));t.next();const u=new gn(e,s,l,d);if(!t.get()||"{"!==(null===(i=t.get())||void 0===i?void 0:i.content))throw new T('"for (...)" must be followed by an opening bracket "{".',t.get(-1));return t.next(),u.statements.push(...ro(t,n)),u}(e,t,n);break;case"do":t.next(),o=function(e,t,n){var o,a,i,r;if(!t.get()||"{"!==(null===(o=t.get())||void 0===o?void 0:o.content))throw new T('"do" must be followed by an opening bracket "{".',t.get(-1));t.next();const s=ro(t,n);if(!t.get()||"while"!==(null===(a=t.get())||void 0===a?void 0:a.content))throw new T('"do { ... }" must be followed by "while".',t.get(-1));if(t.next(),!t.get()||"("!==(null===(i=t.get())||void 0===i?void 0:i.content))throw new T('"while" must be followed by an opening bracket "(".',t.get(-1));if(t.next(),!t.get())throw new T('"while (" must be followed by a boolean expression.',t.get(-1));let l=On(t,n);l=Bn(l,"boolean");const c=new st("operator","!",l.lexeme.line,l.lexeme.character),d=new Wt(c,"C");if(l=new Mn(d,null,l,"not"),!t.get()||")"!==(null===(r=t.get())||void 0===r?void 0:r.content))throw new T('"while (..." must be followed by a closing bracket ")".',t.get(-1));t.next(),no(t);const u=new wn(e,l);return u.statements.push(...s),u}(e,t,n);break;case"while":t.next(),o=function(e,t,n){var o,a,i;if(!t.get()||"("!==(null===(o=t.get())||void 0===o?void 0:o.content))throw new T('"while" must be followed by an opening bracket "(".',t.get(-1));if(t.next(),!t.get())throw new T('"while (" must be followed by a Boolean expression.',t.get(-1));let r=On(t,n);if(r=Bn(r,"boolean"),!t.get()||")"!==(null===(a=t.get())||void 0===a?void 0:a.content))throw new T('"while (..." must be followed by a closing bracket ")".',t.get(-1));t.next();const s=new fn(e,r);if(!t.get()||"{"!==(null===(i=t.get())||void 0===i?void 0:i.content))throw new T('"while (...)" must be followed by an opening curly bracket "{".',t.get(-1));return t.next(),s.statements.push(...ro(t,n)),s}(e,t,n);break;default:throw new T("Statement cannot begin with {lex}.",e)}break;default:throw new T("Statement cannot begin with {lex}.",e)}return o}function ao(e,t,n){var o;switch(e.type){case"keyword":return t.next(),n.constants.push(eo(t,n)),new vn;case"type":const a=t.get(1),i=to(t,n);return n.variables.push(i),"="===(null===(o=t.get())||void 0===o?void 0:o.content)?io(a,t,n,i):new vn;case"identifier":const r=rn(n,e.value),s=cn(n,e.value);if(r)return t.next(),io(e,t,n,r);if(s)return t.next(),Rn(e,t,n,s);throw new T("{lex} is not defined.",t.get())}}function io(e,t,n,o){var a,i,r,s,l;const c=[];if("["===(null===(a=t.get())||void 0===a?void 0:a.content))if(o.isArray){for(t.next();t.get()&&"]"!==(null===(i=t.get())||void 0===i?void 0:i.content);){let e=On(t,n);e=Bn(e,"integer"),c.push(e),"]"===(null===(r=t.get())||void 0===r?void 0:r.content)&&"["===(null===(s=t.get(1))||void 0===s?void 0:s.content)&&(t.next(),t.next())}if(!t.get())throw new T('Closing bracket "]" needed after array indexes.',t.get(-1));t.next()}else{if("string"!==o.type)throw new T("{lex} is not a string or array variable.",e);{t.next();let e=On(t,n);if(e=Bn(e,"integer"),c.push(e),!t.get()||"]"!==(null===(l=t.get())||void 0===l?void 0:l.content))throw new T('Closing bracket "]" missing after string variable index.',e.lexeme);t.next()}}if(o.isArray){const t="string"===o.type?o.arrayDimensions.length+1:o.arrayDimensions.length;if(c.length>t)throw new T("Too many indexes for array variable {lex}.",e)}const d=t.get();if(!d)throw new T('Variable must be followed by assignment operator "=".',t.get(-1));if("operator"!==d.type||"="!==d.content)throw new T('Variable must be followed by assignment operator "=".',d);if(t.next(),!t.get())throw new T(`Variable "${o.name}" must be assigned a value.`,d);let u=On(t,n);const h=new Ln(e,o);return h.indexes.push(...c),u=Bn(u,h.type),new un(d,o,c,u)}function ro(e,t){var n,o;const a=[];for(;e.get()&&"}"!==(null===(n=e.get())||void 0===n?void 0:n.content);)a.push(oo(e.get(),e,t));if("}"!==(null===(o=e.get())||void 0===o?void 0:o.content))throw new T('Closing bracket "}" missing after statement block.',e.get(-1));return e.next(),a}function so(e,t,n){var o,a,i;const[r,s]=Zn(t),l=_n(t,n),c=new on(e,n,l);if(c.index=n.subroutines.length+1,null!==r){const e=new tn("!result",c);e.type=r,e.stringLength=s,c.variables.push(e),c.type="function",c.returns=r}if(c.variables.push(...function(e,t){var n,o,a,i;if(!e.get())throw new T("Opening bracket missing after method name.",e.get(-1));if("("!==(null===(n=e.get())||void 0===n?void 0:n.content))throw new T("Opening bracket missing after method name.",e.get());e.next();const r=[];for(;")"!==(null===(o=e.get())||void 0===o?void 0:o.content);){const n=to(e,t);n.isParameter=!0,r.push(n),","===(null===(a=e.get())||void 0===a?void 0:a.content)&&e.next()}if(")"!==(null===(i=e.get())||void 0===i?void 0:i.content))throw new T("Closing bracket missing after method parameters.",e.get(-1));return e.next(),r}(t,c)),!t.get())throw new T('Method parameters must be followed by an opening bracket "{".',t.get(-1));if("{"!==(null===(o=t.get())||void 0===o?void 0:o.content))throw new T('Method parameters must be followed by an opening bracket "{".',t.get());t.next(),c.start=t.index;let d=0;for(;t.get()&&d>=0;)"{"===(null===(a=t.get())||void 0===a?void 0:a.content)?d+=1:"}"===(null===(i=t.get())||void 0===i?void 0:i.content)&&(d-=1),t.next();return c.end=t.index-1,c}function lo(e,t){var n,o,a,i;const r=e.get();if(!r)throw new T('Expected type definition ("boolean", "char", "int", "String", or "void").',e.get(-1));if("type"!==r.type)throw new T('{lex} is not a valid type definition (expected "boolean", "char", "int", "String", or "void").',e.get(-1));const s=r.subtype;e.next();let l=32;if("string"===s&&"("===(null===(n=e.get())||void 0===n?void 0:n.content)){e.next();const t=e.get();if(!t)throw new T("Expected string size specification.",e.get(-1));if("literal"!==t.type||"integer"!==t.subtype)throw new T("String size must be an integer.",t);if(t.value<=0)throw new T("String size must be greater than zero.",t);if(l=t.value,e.next(),!e.get())throw new T('Closing bracket ")" missing after string size specification.',e.get(-1));if(")"!==(null===(o=e.get())||void 0===o?void 0:o.content))throw new T('Closing bracket ")" missing after string size specification.',e.get());e.next()}let c=[];for(;"["===(null===(a=e.get())||void 0===a?void 0:a.content);){if(e.next(),!e.get())throw new T('Opening bracket "[" must be followed by an array size.',e.get(-1));const n=On(e,t);Bn(n,"integer");const o=qn(n,"Java","array");if("string"==typeof o)throw new T("Array size must be an integer.",e.get());if(o<=0)throw new T("Array size must be positive.",e.get());if(c.push([0,o-1]),!e.get())throw new T('Array size specification must be followed by closing bracket "]".',e.get(-1));if("]"!==(null===(i=e.get())||void 0===i?void 0:i.content))throw new T('Array size specification must be followed by closing bracket "]".',e.get());e.next()}if(null===s&&c.length>0)throw new T("Array of void is not allowed.",r);return[s,l,c]}function co(e,t){const n=e.get();if(!n)throw new T("{lex} must be followed by an identifier.",e.get(-1));if("identifier"!==n.type)throw new T("{lex} is not a valid identifier.",n);if("turtle"===n.subtype)throw new T("{lex} is already the name of a predefined Turtle property.",n);if(sn(t,n.value))throw new T("{lex} is already defined in the current scope.",n);return e.next(),n.value}function uo(e,t){var n;const[o,a,i]=lo(e,t);if(null===o)throw new T('Constant type cannot be void (expected "boolean", "char", "int", or "String").',e.get());if(i.length>0)throw new T("Constant cannot be an array.",e.get());const r=co(e,t);if(!e.get())throw new T(`Constant ${r} must be assigned a value.`,e.get(-1));if("="!==(null===(n=e.get())||void 0===n?void 0:n.content))throw new T(`Constant ${r} must be assigned a value.`,e.get());e.next();const s=On(e,t);Bn(s,o);const l=qn(s,"Java","constant");return"string"==typeof l?new $n("Java",r,l):new Nn("Java",r,l)}function ho(e,t){const[n,o,a]=lo(e,t);if(null===n)throw new T('Variable cannot be void (expected "boolean", "char", "int", or "String").',e.get());const i=co(e,t),r=new tn(i,t);return r.type=n,r.stringLength=o,r.arrayDimensions=a,r}function po(e){var t;if(!e.get()||";"!==(null===(t=e.get())||void 0===t?void 0:t.content))throw new T("Statement must be followed by a semicolon.",e.get(-1));e.next()}function go(e,t,n){let o;switch(e.type){case"identifier":case"type":o=wo(e,t,n),po(t);break;case"keyword":switch(e.subtype){case"final":o=wo(e,t,n),po(t);break;case"return":t.next(),o=function(e,t,n){if("function"!==n.type)throw new T("Procedures cannot return a value.",t.get());let o=On(t,n);return o=Bn(o,n.returns),po(t),n.hasReturnStatement=!0,new mn(e,n,o)}(e,t,n);break;case"if":t.next(),o=function(e,t,n){var o,a,i,r,s;if(!t.get()||"("!==(null===(o=t.get())||void 0===o?void 0:o.content))throw new T('"if" must be followed by an opening bracket "(".',t.get(-1));if(t.next(),!t.get())throw new T('"if (" must be followed by a Boolean expression.',t.get(-1));let l=On(t,n);if(l=Bn(l,"boolean"),!t.get()||")"!==(null===(a=t.get())||void 0===a?void 0:a.content))throw new T('"if (..." must be followed by a closing bracket ")".',t.get(-1));t.next();const c=new pn(e,l);if(!t.get()||"{"!==(null===(i=t.get())||void 0===i?void 0:i.content))throw new T('"if (...)" must be followed by an opening curly bracket "{".',t.get(-1));if(t.next(),c.ifStatements.push(...mo(t,n)),t.get()&&"else"===(null===(r=t.get())||void 0===r?void 0:r.content)){if(t.next(),!t.get()||"{"!==(null===(s=t.get())||void 0===s?void 0:s.content))throw new T('"else" must be followed by an opening bracket "{".',t.get(-1));t.next(),c.elseStatements.push(...mo(t,n))}return c}(e,t,n);break;case"else":throw new T('Statement cannot begin with "else". If you have an "if" above, you may be missing a closing bracket "}".',e);case"for":t.next(),o=function(e,t,n){var o,a,i;if(!t.get()||"("!==(null===(o=t.get())||void 0===o?void 0:o.content))throw new T('"for" must be followed by an opening bracket "(".',t.get(-1));t.next();const r=t.get();if(!r)throw new T('"for" conditions must begin with a variable assignment.',t.get(-1));if("identifier"!==r.type&&"type"!==r.type)throw new T('"for" conditions must begin with a variable assignment.',t.get());const s=wo(r,t,n);if(!(s instanceof un))throw new T('"for" conditions must begin with a variable assignment.',t.get(-1));if("integer"!==s.variable.type)throw new T("Loop variable must be an integer.",t.get());if(po(t),!t.get())throw new T('"for (...;" must be followed by a loop condition.',t.get(-1));let l=On(t,n);l=Bn(l,"boolean"),po(t);const c=t.get();if(!c)throw new T('"for" conditions must begin with a variable assignment.',t.get(-1));if("identifier"!==c.type&&"type"!==c.type)throw new T('"for" conditions must begin with a variable assignment.',c);const d=wo(c,t,n);if(!(d instanceof un))throw new T('"for" loop variable must be changed on each loop.',t.get(-1));if(d.variable!==s.variable)throw new T("Initial loop variable and change loop variable must be the same.",t.get(-1));if(!t.get()||")"!==(null===(a=t.get())||void 0===a?void 0:a.content))throw new T('Closing bracket ")" missing after "for" loop initialisation.',t.get(-1));t.next();const u=new gn(e,s,l,d);if(!t.get()||"{"!==(null===(i=t.get())||void 0===i?void 0:i.content))throw new T('"for (...)" must be followed by an opening bracket "{".',t.get(-1));return t.next(),u.statements.push(...mo(t,n)),u}(e,t,n);break;case"do":t.next(),o=function(e,t,n){var o,a,i,r;if(!t.get()||"{"!==(null===(o=t.get())||void 0===o?void 0:o.content))throw new T('"do" must be followed by an opening bracket "{".',t.get(-1));t.next();const s=mo(t,n);if(!t.get()||"while"!==(null===(a=t.get())||void 0===a?void 0:a.content))throw new T('"do { ... }" must be followed by "while".',t.get(-1));if(t.next(),!t.get()||"("!==(null===(i=t.get())||void 0===i?void 0:i.content))throw new T('"while" must be followed by an opening bracket "(".',t.get(-1));if(t.next(),!t.get())throw new T('"while (" must be followed by a boolean expression.',t.get(-1));let l=On(t,n);l=Bn(l,"boolean");const c=new st("operator","!",l.lexeme.line,l.lexeme.character),d=new Wt(c,"C");if(l=new Mn(d,null,l,"not"),!t.get()||")"!==(null===(r=t.get())||void 0===r?void 0:r.content))throw new T('"while (..." must be followed by a closing bracket ")".',t.get(-1));t.next(),po(t);const u=new wn(e,l);return u.statements.push(...s),u}(e,t,n);break;case"while":t.next(),o=function(e,t,n){var o,a,i;if(!t.get()||"("!==(null===(o=t.get())||void 0===o?void 0:o.content))throw new T('"while" must be followed by an opening bracket "(".',t.get(-1));if(t.next(),!t.get())throw new T('"while (" must be followed by a Boolean expression.',t.get(-1));let r=On(t,n);if(r=Bn(r,"boolean"),!t.get()||")"!==(null===(a=t.get())||void 0===a?void 0:a.content))throw new T('"while (..." must be followed by a closing bracket ")".',t.get(-1));t.next();const s=new fn(e,r);if(!t.get()||"{"!==(null===(i=t.get())||void 0===i?void 0:i.content))throw new T('"while (...)" must be followed by an opening curly bracket "{".',t.get(-1));return t.next(),s.statements.push(...mo(t,n)),s}(e,t,n);break;default:throw new T("Statement cannot begin with {lex}.",e)}break;default:throw new T("Statement cannot begin with {lex}.",e)}return o}function wo(e,t,n){var o;switch(e.type){case"keyword":return t.next(),n.constants.push(uo(t,n)),new vn;case"type":const a=t.get(1),i=ho(t,n);return n.variables.push(i),"="===(null===(o=t.get())||void 0===o?void 0:o.content)?fo(a,t,n,i):new vn;case"identifier":const r=rn(n,e.value),s=cn(n,e.value);if(r)return t.next(),fo(e,t,n,r);if(s)return t.next(),Rn(e,t,n,s);throw new T("{lex} is not defined.",t.get())}}function fo(e,t,n,o){var a,i,r,s,l;const c=[];if("["===(null===(a=t.get())||void 0===a?void 0:a.content))if(o.isArray){for(t.next();t.get()&&"]"!==(null===(i=t.get())||void 0===i?void 0:i.content);){let e=On(t,n);e=Bn(e,"integer"),c.push(e),"]"===(null===(r=t.get())||void 0===r?void 0:r.content)&&"["===(null===(s=t.get(1))||void 0===s?void 0:s.content)&&(t.next(),t.next())}if(!t.get())throw new T('Closing bracket "]" needed after array indexes.',t.get(-1));t.next()}else{if("string"!==o.type)throw new T("{lex} is not a string or array variable.",e);{t.next();let e=On(t,n);if(e=Bn(e,"integer"),c.push(e),!t.get()||"]"!==(null===(l=t.get())||void 0===l?void 0:l.content))throw new T('Closing bracket "]" missing after string variable index.',e.lexeme);t.next()}}if(o.isArray){const t="string"===o.type?o.arrayDimensions.length+1:o.arrayDimensions.length;if(c.length>t)throw new T("Too many indexes for array variable {lex}.",e)}const d=t.get();if(!d)throw new T('Variable must be followed by assignment operator "=".',t.get(-1));if("operator"!==d.type||"="!==d.content)throw new T('Variable must be followed by assignment operator "=".',d);if(t.next(),!t.get())throw new T(`Variable "${o.name}" must be assigned a value.`,t.get(-1));let u=On(t,n);const h=new Ln(e,o);return h.indexes.push(...c),u=Bn(u,h.type),new un(d,o,c,u)}function mo(e,t){var n,o;const a=[];for(;e.get()&&"}"!==(null===(n=e.get())||void 0===n?void 0:n.content);)a.push(go(e.get(),e,t));if("}"!==(null===(o=e.get())||void 0===o?void 0:o.content))throw new T('Closing bracket "}" missing after statement block.',e.get(-1));return e.next(),a}function vo(e,t,n){var o,a,i;const[r,s,l]=lo(t,n),c=co(t,n);if(l.length>0)throw new T("Methods cannot return arrays.",t.get(-1));const d=new on(e,n,c);if(d.index=n.subroutines.length+1,null!==r){const e=new tn("!result",d);e.type=r,e.stringLength=s,d.variables.push(e),d.type="function",d.returns=r}if(d.variables.push(...function(e,t){var n,o,a,i;if(!e.get())throw new T("Opening bracket missing after method name.",e.get(-1));if("("!==(null===(n=e.get())||void 0===n?void 0:n.content))throw new T("Opening bracket missing after method name.",e.get());e.next();const r=[];for(;")"!==(null===(o=e.get())||void 0===o?void 0:o.content);){const n=ho(e,t);n.isParameter=!0,r.push(n),","===(null===(a=e.get())||void 0===a?void 0:a.content)&&e.next()}if(")"!==(null===(i=e.get())||void 0===i?void 0:i.content))throw new T("Closing bracket missing after method parameters.",e.get(-1));return e.next(),r}(t,d)),!t.get())throw new T('Method parameters must be followed by an opening bracket "{".',t.get(-1));if("{"!==(null===(o=t.get())||void 0===o?void 0:o.content))throw new T('Method parameters must be followed by an opening bracket "{".',t.get());t.next(),d.start=t.index;let u=0;for(;t.get()&&u>=0;)"{"===(null===(a=t.get())||void 0===a?void 0:a.content)?u+=1:"}"===(null===(i=t.get())||void 0===i?void 0:i.content)&&(u-=1),t.next();return d.end=t.index-1,d}function yo(e,t){const n=e.get();if(!n)throw new T("{lex} must be followed by an identifier.",e.get(-1));if("identifier"!==n.type)throw new T("{lex} is not a valid identifier.",n);if("turtle"===n.subtype)throw new T("{lex} is already the name of a predefined Turtle property.",n);if(sn(t,n.value))throw new T("{lex} is already defined in the current scope.",n);return e.next(),n.value}function bo(e,t=!1,n="statement"){var o,a;if(t&&(!e.get()||";"!==(null===(o=e.get())||void 0===o?void 0:o.content)))throw new T(`Semicolon needed after ${n}.`,e.get(-1));for(;e.get()&&";"===(null===(a=e.get())||void 0===a?void 0:a.content);)e.next()}function So(e,t,n){let o;switch(e.type){case"identifier":o=function(e,t,n){if(an(n,e.value))throw new T("{lex} is a constant, not a variable.",e);const o=rn(n,e.value);if(o)return t.next(),ko(e,t,n,o);const a=cn(n,e.value);if(a)return t.next(),Rn(e,t,n,a);throw new T("Identifier {lex} is not defined.",e)}(e,t,n);break;case"keyword":switch(e.subtype){case"if":t.next(),o=function(e,t,n){var o,a,i,r,s,l;if(!t.get())throw new T('"IF" must be followed by a boolean expression.',e);let c=On(t,n);c=Bn(c,"boolean");const d=new pn(e,c);if(!t.get()||"then"!==(null===(a=null===(o=t.get())||void 0===o?void 0:o.content)||void 0===a?void 0:a.toLowerCase()))throw new T('"IF ..." must be followed by "THEN".',c.lexeme);t.next();const u=t.get();if(!u)throw new T('No commands found after "IF ... THEN".',t.get(-1));if("begin"===(null===(i=u.content)||void 0===i?void 0:i.toLowerCase())?(t.next(),d.ifStatements.push(...xo(t,n,"begin"))):d.ifStatements.push(So(u,t,n)),t.get()&&"else"===(null===(s=null===(r=t.get())||void 0===r?void 0:r.content)||void 0===s?void 0:s.toLowerCase())){t.next();const e=t.get();if(!e)throw new T('No commands found after "ELSE".',t.get(-1));"begin"===(null===(l=e.content)||void 0===l?void 0:l.toLowerCase())?(t.next(),d.elseStatements.push(...xo(t,n,"begin"))):d.elseStatements.push(So(e,t,n))}return d}(e,t,n);break;case"for":t.next(),o=function(e,t,n){var o,a;const i=t.get();if(!i)throw new T('"FOR" must be followed by an integer variable.',e);if("identifier"!==i.type)throw new T('"FOR" must be followed by an integer variable.',i);if("turtle"===i.subtype)throw new T('Turtle attribute cannot be used as a "FOR" variable.',i);const r=rn(n,i.value);if(!r)throw new T("Variable {lex} has not been declared.",i);if("integer"!==r.type&&"boolint"!==r.type)throw new T("{lex} is not an integer variable.",i);if(r.isArray)throw new T("FOR variable cannot be an array or array element.",i);t.next();const s=ko(i,t,n,r),l=t.get(),c=null===(o=null==l?void 0:l.content)||void 0===o?void 0:o.toLowerCase();if(!l||"to"!==c&&"downto"!==c)throw new T('"FOR ... := ..." must be followed by "TO" or "DOWNTO".',s.lexeme);const d=new st("decimal","1",e.line,-1),u=new st("operator","=",e.line,-1),h=new st("operator","to"===c?"+":"-",e.line,-1),p=new Gt(d,10),g=new Wt(u,"Pascal"),w=new Wt(h,"Pascal"),f=new Ln(i,r),m=new kn(p),v=new Mn(w,f,m,"to"===c?"plus":"subt"),y=new un(g,r,[],v);if(t.next(),!t.get())throw new T(`"${c.toUpperCase()}" must be followed by an integer (or integer constant).`,l);let b=On(t,n);b=Bn(b,"integer");const S=new st("operator","to"===c?"<=":">=",e.line,-1),k=new Wt(S,"Pascal"),x=new Mn(k,f,b,"to"===c?"lseq":"mreq"),C=new gn(e,s,x,y),P=t.get();if(!P)throw new T('"FOR" loop range must be followed by "DO".',t.get(-1));t.next();const A=t.get();if(!A)throw new T('No commands found after "FOR" loop initialisation.',P);return"begin"===(null===(a=A.content)||void 0===a?void 0:a.toLowerCase())?(t.next(),C.statements.push(...xo(t,n,"begin"))):C.statements.push(So(A,t,n)),C}(e,t,n);break;case"repeat":t.next(),o=function(e,t,n){const o=xo(t,n,"repeat");if(!t.get())throw new T('"UNTIL" must be followed by a boolean expression.',t.get(-1));let a=On(t,n);a=Bn(a,"boolean");const i=new wn(e,a);return i.statements.push(...o),i}(e,t,n);break;case"while":t.next(),o=function(e,t,n){var o,a,i;if(!t.get())throw new T('"WHILE" must be followed by a boolean expression.',e);let r=On(t,n);r=Bn(r,"boolean");const s=new fn(e,r);if(!t.get())throw new T('"WHILE ..." must be followed by "DO".',r.lexeme);if("do"!==(null===(o=t.get())||void 0===o?void 0:o.content))throw new T('"WHILE ..." must be followed by "DO".',t.get());t.next();const l=t.get();if(!l)throw new T('No commands found after "WHILE" loop initialisation.',t.get(-1));return"begin"===(null===(i=null===(a=t.get())||void 0===a?void 0:a.content)||void 0===i?void 0:i.toLowerCase())?(t.next(),s.statements.push(...xo(t,n,"begin"))):s.statements.push(So(l,t,n)),s}(e,t,n);break;default:throw new T("Statement cannot begin with {lex}.",e)}break;default:throw new T("Statement cannot begin with {lex}.",e)}return function(e){var t,n,o,a,i,r;if(e.get())if(";"!==(null===(t=e.get())||void 0===t?void 0:t.content)){if(-1===["begin","do",".","repeat",";","then"].indexOf(null===(o=null===(n=e.get(-1))||void 0===n?void 0:n.content)||void 0===o?void 0:o.toLowerCase())&&-1===["else","end",";","until"].indexOf(null===(i=null===(a=e.get())||void 0===a?void 0:a.content)||void 0===i?void 0:i.toLowerCase()))throw new T("Semicolon needed after command.",e.get())}else for(;e.get()&&";"===(null===(r=e.get())||void 0===r?void 0:r.content);)e.next()}(t),o}function ko(e,t,n,o){var a,i,r,s,l;const c=[];if("["===(null===(a=t.get())||void 0===a?void 0:a.content))if(o.isArray){for(t.next();t.get()&&"]"!==(null===(i=t.get())||void 0===i?void 0:i.content);){let e=On(t,n);if(e=Bn(e,"integer"),c.push(e),","===(null===(r=t.get())||void 0===r?void 0:r.content)&&(t.next(),"]"===(null===(s=t.get())||void 0===s?void 0:s.content)))throw new T("Trailing comma at the end of array indexes.",t.get(-1))}if(!t.get())throw new T('Closing bracket "]" needed after array indexes.',t.get(-1));t.next()}else{if("string"!==o.type)throw new T("{lex} is not a string or array variable.",e);{t.next();let e=On(t,n);if(e=Bn(e,"integer"),c.push(e),!t.get()||"]"!==(null===(l=t.get())||void 0===l?void 0:l.content))throw new T('Closing bracket "]" missing after string variable index.',e.lexeme);t.next()}}if(o.isArray){const t="string"===o.type?o.arrayDimensions.length+1:o.arrayDimensions.length;if(c.length>t)throw new T("Too many indexes for array variable {lex}.",e)}const d=t.get();if(!d||"operator"!==d.type||"asgn"!==d.subtype)throw new T('Variable must be followed by assignment operator ":=".',e);if(t.next(),!t.get())throw new T(`Variable "${name}" must be assigned a value.`,d);const u="string"===o.type&&c.length>0?"character":o.type;let h=On(t,n);return h=Bn(h,u),new un(d,o,c,h)}function xo(e,t,n){const o=[];let a=!1;if(!e.get())throw new T(`No commands found after "${n.toUpperCase()}".`,e.get(-1));for(;!a&&e.get();){const i=e.get();a=Co(n,i),a?e.next():o.push(So(i,e,t))}if(!a){if("begin"===n)throw new T('"BEGIN" does not have any matching "END".',e.get(-1));throw new T('"REPEAT" does not have any matching "UNTIL".',e.get(-1))}return o}function Co(e,t){switch(t.content.toLowerCase()){case"end":if("begin"!==e)throw new T('"END" does not have any matching "BEGIN".',t);return!0;case"until":if("repeat"!==e)throw new T('"UNTIL" does not have any matching "REPEAT".',t);return!0;default:return!1}}function Po(e,t){var n;const o=yo(e,t);if(!e.get()||"="!==(null===(n=e.get())||void 0===n?void 0:n.content))throw new T("Constant must be assigned a value.",e.get(-1));e.next();const a=qn(On(e,t),"Pascal","constant"),i="string"==typeof a?new $n("Pascal",o,a):new Nn("Pascal",o,a);return bo(e,!0,"constant defintiion"),i}function To(e,t,n){var o,a,i,r,s,l,c,d,u,h,p,g,w;if(!e.get())throw new T('Expected type specification (": <type>").',e.get(-1));if(":"!==(null===(o=e.get())||void 0===o?void 0:o.content))throw new T('Expected type specification (": <type>").',e.get());e.next();let f=[];if("array"===(null===(a=e.get())||void 0===a?void 0:a.content))if(n)for(;"array"===(null===(i=e.get())||void 0===i?void 0:i.content);){if(f.push([0,0]),e.next(),!e.get()||"of"!==(null===(r=e.get())||void 0===r?void 0:r.content))throw new T('Keyword "array" must be followed by "of".',e.get(-1));e.next()}else{if(e.next(),!e.get()&&"["!==(null===(s=e.get())||void 0===s?void 0:s.content))throw new T('Keyword "array" must be followed by array dimensions.',e.get(-1));for(e.next();e.get()&&"]"!==(null===(l=e.get())||void 0===l?void 0:l.content);){const n=On(e,t);Bn(n,"integer");const o=qn(n,"Pascal","array");if(!e.get()||".."!==(null===(c=e.get())||void 0===c?void 0:c.content))throw new T('Array start index must be followed by ".." then the end index.',e.get(-1));e.next();const a=On(e,t);Bn(a,"integer");const i=qn(a,"Pascal","array");if(f.push([o,i]),","===(null===(d=e.get())||void 0===d?void 0:d.content))e.next();else if("]"!==(null===(u=e.get())||void 0===u?void 0:u.content))throw new T("Comma missing between array dimensions.",e.get(-1))}if(!e.get())throw new T('Closing bracket "]" missing after array dimensions specification.',e.get(-1));if(e.next(),!e.get()||"of"!==(null===(p=null===(h=e.get())||void 0===h?void 0:h.content)||void 0===p?void 0:p.toLowerCase()))throw new T('"array[...]" must be followed by "of".',e.get(-1));e.next()}const m=e.get();if(!m)throw new T('Expected type definition ("array", "boolean", "char", "integer", or "string").',e.get(-1));if("type"!==m.type)throw new T('{lex} is not a valid type definition (expected "array", "boolean", "char", "integer", or "string").',e.get());const v=m.subtype;e.next();let y=32;if("string"===v&&"["===(null===(g=e.get())||void 0===g?void 0:g.content)){e.next();const n=On(e,t);if(Bn(n,"integer"),y=qn(n,"Pascal","string"),!e.get())throw new T('Closing bracket "]" missing after string size specification.',e.get(-1));if("]"!==(null===(w=e.get())||void 0===w?void 0:w.content))throw new T('Closing bracket "]" missing after string size specification.',e.get());e.next()}return[v,y,f]}function Ao(e,t){var n,o,a,i;const r=[];for(;e.get()&&":"!==(null===(n=e.get())||void 0===n?void 0:n.content);){const n=yo(e,t);if(r.push(new tn(n,t)),","===(null===(o=e.get())||void 0===o?void 0:o.content))e.next();else if("identifier"===(null===(a=e.get())||void 0===a?void 0:a.type))throw new T("Comma missing between variable names.",e.get())}const[s,l,c]=To(e,t,!1);for(const e of r)e.type=s,e.stringLength=l,e.arrayDimensions=c;return bo(e,!0,"variable declaration"),e.get()&&"identifier"===(null===(i=e.get())||void 0===i?void 0:i.type)&&r.push(...Ao(e,t)),r}function Lo(e,t,n){var o,a,i,r,s;const l=yo(t,n),c=new on(e,n,l);if(c.type=e.subtype,c.index=Io(c),"("===(null===(o=t.get())||void 0===o?void 0:o.content)&&(t.next(),c.variables.push(...function(e,t){var n,o,a,i,r;for(;e.get()&&")"!==(null===(n=e.get())||void 0===n?void 0:n.content);)if(t.variables.push(...Mo(e,t)),e.get()&&";"===(null===(o=e.get())||void 0===o?void 0:o.content)){if(e.next(),")"===(null===(a=e.get())||void 0===a?void 0:a.content))throw new T("Trailing semicolon at end of parameter list.",e.get())}else if("identifier"===(null===(i=e.get())||void 0===i?void 0:i.type))throw new T("Semicolon missing between parameters.",e.get());if(")"!==(null===(r=e.get())||void 0===r?void 0:r.content))throw new T(`Closing bracket missing after ${t.type} parameters.`,e.get(-1));return e.next(),[]}(t,c))),"function"===c.type){const[e,n,o]=To(t,c,!1);if(o.length>0)throw new T("Functions cannot return arrays.",t.get(-1));c.returns=e;const a=new tn("result",c);a.type=e,a.stringLength=n,c.variables.unshift(a)}bo(t,!0,`${c.type} definition`);let d=!1;for(;t.get()&&"end"!==(null===(i=null===(a=t.get())||void 0===a?void 0:a.content)||void 0===i?void 0:i.toLowerCase());){const e=t.get();switch(e.type){case"keyword":switch(e.subtype){case"var":t.next(),c.variables.push(...Ao(t,c));break;case"procedure":case"function":t.next(),c.subroutines.push(Lo(e,t,c));break;case"begin":for(d=!0,t.next();t.get()&&"end"!==(null===(s=null===(r=t.get())||void 0===r?void 0:r.content)||void 0===s?void 0:s.toLowerCase());){const e=t.get();c.statements.push(So(e,t,c))}break;default:if(!d)throw new T(`Keyword "begin" missing for ${c.type} ${c.name}.`,t.get());throw new T("{lex} makes no sense here.",t.get())}break;default:if(!d)throw new T(`Keyword "begin" missing for ${c.type} ${c.name}.`,t.get());throw new T("{lex} makes no sense here.",t.get())}}if(!d)throw new T(`Keyword "begin" missing for ${c.type} ${c.name}.`,t.get(-1));if(!t.get())throw new T(`Keyword "end" missing for ${c.type} ${c.name}.`,t.get(-1));return t.next(),bo(t,!0,`${c.type} end`),c}function Io(e){return e.parent instanceof en?e.parent.allSubroutines.length+1:Io(e.parent)+e.allSubroutines.length+1}function Mo(e,t){var n,o,a,i;const r=[];let s=!1;for("var"===(null===(n=e.get())||void 0===n?void 0:n.content)&&(s=!0,e.next());e.get()&&":"!==(null===(o=e.get())||void 0===o?void 0:o.content);){const n=yo(e,t);if(r.push(new tn(n,t)),","===(null===(a=e.get())||void 0===a?void 0:a.content))e.next();else if("identifier"===(null===(i=e.get())||void 0===i?void 0:i.type))throw new T("Comma missing between parameter names.",e.get())}const[l,c,d]=To(e,t,!0);for(const e of r)e.type=l,e.stringLength=c,e.arrayDimensions=d,e.isParameter=!0,e.isReferenceParameter=s;return r}function Eo(e,t,n){const o=e.get();if(!o)throw new T("{lex} must be followed by an identifier.",e.get(-1));if("identifier"!==o.type)throw new T("{lex} is not a valid identifier.",o);if(n){if("turtle"===o.subtype)throw new T("{lex} is already the name of a Turtle attribute.",o);if(sn(t,o.value))throw new T("{lex} is already the name of a variable or subroutine in the current scope.",o)}return e.next(),o.value}function Ro(e,t,n=!1){var o,a,i,r,s,l,c;const d=e.get();let u=32;if(!d)throw new T("Expecting type specification.",e.get(-1));switch(d.content){case"bool":return e.next(),[!1,"boolean",u,[]];case"int":return e.next(),[!1,"integer",u,[]];case"str":if(e.next(),"["===(null===(o=e.get())||void 0===o?void 0:o.content)){e.next();const t=e.get();if(!t)throw new T("Expected string size specification.",e.get(-1));if("literal"!==t.type||"integer"!==t.subtype)throw new T("String size must be an integer.",t);if(t.value<=0)throw new T("String size must be greater than zero.",t);if(u=t.value,e.next(),!e.get())throw new T('Closing bracket "]" missing after string size specification.',e.get(-1));if("]"!==(null===(a=e.get())||void 0===a?void 0:a.content))throw new T('Closing bracket "]" missing after string size specification.',e.get());e.next()}return[!1,"string",u,[]];case"final":throw new T('"Final" must be written with a capital "F".',d);case"Final":if(n)throw new T('Expecting base type ("bool", "int", or "str").',d);if(e.next(),!e.get())throw new T('"List" must be followed by a type in square brackets.',e.get(-1));if("["!==(null===(i=e.get())||void 0===i?void 0:i.content))throw new T('"List" must be followed by a type in square brackets.',e.get());e.next();const h=Ro(e,t,!0);if(h[0]=!0,!e.get())throw new T("Constant type must be followed by closing square brackets.",e.get(-1));if("]"!==(null===(r=e.get())||void 0===r?void 0:r.content))throw new T("Constant type must be followed by closing square brackets.",e.get());return e.next(),h;case"list":throw new T('"List" must be written with a capital "L".',d);case"List":if(n)throw new T('Expecting base type ("bool", "int", or "str").',d);if(e.next(),!e.get())throw new T('"List" must be followed by a type in square brackets.',d);if("["!==(null===(s=e.get())||void 0===s?void 0:s.content))throw new T('"List" must be followed by a type in square brackets.',e.get());e.next();const p=Ro(e,t);if(p[0])throw new T("List type cannot be constant.",e.get());if(!e.get())throw new T("List type must be followed by a length specification.",e.get(-1));if(","!==(null===(l=e.get())||void 0===l?void 0:l.content))throw new T("List type must be followed by a comma, then a length specification.",e.get());e.next();const g=On(e,t);Bn(g,"integer");const w=qn(g,"Python","array");if("string"==typeof w)throw new T("List length must be an integer.",g.lexeme);if(w<=0)throw new T("List length must be positive.",g.lexeme);if(p[3].push([0,w-1]),!e.get())throw new T("List type must be followed by closing square brackets.",e.get(-1));if("]"!==(null===(c=e.get())||void 0===c?void 0:c.content))throw new T("List type must be followed by closing square brackets.",e.get());return e.next(),p;default:throw new T('{lex} is not a valid type specification (expected "bool", "int", or "str")',e.get())}}function Fo(e,t){var n;const o=Eo(e,t,!0);if(!e.get())throw new T('Expected a colon ":" followed by a type specification.',e.get(-1));if(":"!==(null===(n=e.get())||void 0===n?void 0:n.content))throw new T('Expected a colon ":" followed by a type specification.',e.get());e.next();const[a,i,r,s]=Ro(e,t);if(a)return"string"===i?new $n("Python",o,""):new Nn("Python",o,0);const l=new tn(o,t);return l.type=i,l.stringLength=r,l.arrayDimensions=s,l}function Bo(e,t,n,o){var a,i,r,s,l,c;const d=Eo(t,n,!0),u=n instanceof en?n:n.program,h=new on(e,n,d);if(h.index=u.allSubroutines.length+1,h.variables.push(...function(e,t){var n,o,a,i;if(!e.get())throw new T('Opening bracket "(" missing after function name.',e.get(-1));if("("!==(null===(n=e.get())||void 0===n?void 0:n.content))throw new T('Opening bracket "(" missing after function name.',e.get());e.next();const r=[];for(;")"!==(null===(o=e.get())||void 0===o?void 0:o.content);){const n=Fo(e,t);if(n instanceof Nn||n instanceof $n)throw new T("Subroutine parameters cannot be constants.",e.get(-1));n.isParameter=!0,r.push(n),","===(null===(a=e.get())||void 0===a?void 0:a.content)&&e.next()}if(")"!==(null===(i=e.get())||void 0===i?void 0:i.content))throw new T("Closing bracket missing after function parameters.",e.get(-1));return e.next(),r}(t,h)),"->"===(null===(a=t.get())||void 0===a?void 0:a.content)){h.type="function",t.next();const[e,o,a,i]=Ro(t,n);if(e)throw new T("Functions cannot return constant values.",t.get());if(i.length>0)throw new T("Functions cannot return arrays.",t.get(-1));const r=new tn("!result",h);r.type=o,r.stringLength=a,h.returns=r.type,h.variables.unshift(r)}if(!t.get())throw new T('Subroutine declaration must be followed by a colon ":".',t.get(-1));if(":"!==(null===(i=t.get())||void 0===i?void 0:i.content))throw new T('Subroutine declaration must be followed by a colon ":".',t.get());if(t.next(),!t.get())throw new T("No statements found after subroutine definition.",t.get(-1));if("newline"!==(null===(r=t.get())||void 0===r?void 0:r.type))throw new T("Subroutine definition must be followed by a line break.",t.get());if(t.next(),!t.get())throw new T("No statements found after subroutine definition.",t.get(-1));if("indent"!==(null===(s=t.get())||void 0===s?void 0:s.type))throw new T("Indent needed after subroutine definition.",t.get());h.indent=o+1,t.next(),h.start=t.index;let p=0;for(;t.get()&&p>=0;)"indent"===(null===(l=t.get())||void 0===l?void 0:l.type)?p+=1:"dedent"===(null===(c=t.get())||void 0===c?void 0:c.type)&&(p-=1),t.next();return h.end=t.index-1,h}function Oo(e,t,n){var o,a;const i=[];if(i.push(Eo(e,t,!1)),","===(null===(o=e.get())||void 0===o?void 0:o.content))e.next(),i.push(...Oo(e,t,n));else if("identifier"===(null===(a=e.get())||void 0===a?void 0:a.type))throw new T(`Comma missing between ${n} variable declarations.`,e.get(-1));return i}function Do(e){var t,n,o,a;if(e.get())if(";"===(null===(t=e.get())||void 0===t?void 0:t.content))for(e.next();"newline"===(null===(n=e.get())||void 0===n?void 0:n.type);)e.next();else{if("newline"!==(null===(o=e.get())||void 0===o?void 0:o.type))throw new T("Statement must be separated by a semicolon or placed on a new line.",e.get());for(;"newline"===(null===(a=e.get())||void 0===a?void 0:a.type);)e.next()}}function qo(e,t,n){var o,a,i,r;let s;switch(e.type){case"newline":t.next(),s=new vn;break;case"identifier":const l=rn(n,null===(o=t.get())||void 0===o?void 0:o.content),c=cn(n,null===(a=t.get())||void 0===a?void 0:a.content);l?(t.next(),s=zo(e,t,n,l)):c?(t.next(),s=Rn(e,t,n,c)):s=function(e,t,n){var o,a;const i=Fo(t,n);if(i instanceof Nn||i instanceof $n){if(!t.get())throw new T("Constant must be assigned a value.",t.get(-1));if("="!==(null===(o=t.get())||void 0===o?void 0:o.content))throw new T("Constant must be assigned a value.",t.get());t.next();const e=On(t,n);return Bn(e,i.type),i.value=qn(e,"Python","constant"),n.constants.push(i),new vn}return n.variables.push(i),"="===(null===(a=t.get())||void 0===a?void 0:a.content)?zo(e,t,n,i):new vn}(e,t,n),Do(t);break;case"keyword":switch(e.subtype){case"def":const o=ln(n,null===(i=t.get(1))||void 0===i?void 0:i.content);t.index=o.end+1,s=new vn;break;case"global":case"nonlocal":if(t.next(),n instanceof en)throw new T("{lex} statements can only occur inside a subroutine.",t.get(-1));"global"===(null===(r=t.get(-1))||void 0===r?void 0:r.content)?n.globals.push(...Oo(t,n,"global")):n.nonlocals.push(...Oo(t,n,"nonlocal")),s=new vn,Do(t);break;case"return":t.next(),s=function(e,t,n){if(n instanceof en)throw new T("Programs cannot return a value.",t.get());if("function"!==n.type)throw new T("Procedures cannot return a value.",t.get());let o=On(t,n);return o=Bn(o,n.returns),Do(t),n.hasReturnStatement=!0,new mn(e,n,o)}(e,t,n);break;case"if":t.next(),s=function(e,t,n){var o,a,i,r,s,l;if(!t.get())throw new T('"if" must be followed by a Boolean expression.',e);let c=On(t,n);if(c=Bn(c,"boolean"),!t.get())throw new T('"if <expression>" must be followed by a colon.',c.lexeme);if(t.next(),!t.get())throw new T('No statements found after "if <expression>:".',t.get(-1));if("newline"!==(null===(o=t.get())||void 0===o?void 0:o.type))throw new T('Statements following "if <expression>:" must be on a new line.',t.get());t.next();const d=new pn(e,c);if(!t.get())throw new T('No statements found after "if <expression>:".',t.get(-1));if("indent"!==(null===(a=t.get())||void 0===a?void 0:a.type))throw new T('Statements following "if <expression>:" must be indented.',t.get());if(t.next(),!t.get())throw new T('No statements found after "if <expression>:".',t.get(-1));if(d.ifStatements.push(...Jo(t,n)),t.get()&&"else"===(null===(i=t.get())||void 0===i?void 0:i.content)){if(t.next(),!t.get())throw new T('"else" must be followed by a colon.',t.get(-1));if(":"!==(null===(r=t.get())||void 0===r?void 0:r.content))throw new T('"else" must be followed by a colon.',t.get());if(t.next(),!t.get())throw new T('No statements found after "else:".',t.get(-1));if("newline"!==(null===(s=t.get())||void 0===s?void 0:s.type))throw new T('Statements following "else:" must be on a new line.',t.get());if(t.next(),!t.get())throw new T('No statements found after "else:".',t.get(-1));if("indent"!==(null===(l=t.get())||void 0===l?void 0:l.type))throw new T('Statements following "else:" must be indented.',t.get());if(t.next(),!t.get())throw new T('No statements found after "else:".',t.get(-1));d.elseStatements.push(...Jo(t,n))}return d}(e,t,n);break;case"else":throw new T('Statement cannot begin with "else". If you have an "if" above, this line may need to be indented more.',t.get());case"for":t.next(),s=function(e,t,n){var o,a,i,r,s,l,c,d,u,h,p,g,w,f;const m=t.get();if(!m)throw new T('"for" must be followed by an integer variable.',t.get(-1));if("identifier"!==m.type)throw new T("{lex} is not a valid variable name.",t.get());let v=rn(n,null===(o=t.get())||void 0===o?void 0:o.content);if(v||(v=new tn(null===(a=t.get())||void 0===a?void 0:a.content,n),v.type="integer",n.variables.push(v)),"integer"!==v.type)throw new T("Loop variable must be an integer.",t.get());if(t.next(),!t.get())throw new T('"for <variable>" must be followed by "in".',t.get(-1));if("in"!==(null===(i=t.get())||void 0===i?void 0:i.content))throw new T('"for <variable>" must be followed by "in".',t.get());if(t.next(),!t.get())throw new T('"for <variable> in" must be followed by a range specification.',t.get(-1));if("range"!==(null===(r=t.get())||void 0===r?void 0:r.content))throw new T('"for <variable> in" must be followed by a range specification.',t.get());if(t.next(),!t.get())throw new T('"range" must be followed by an opening bracket.',t.get(-1));if("("!==(null===(s=t.get())||void 0===s?void 0:s.content))throw new T('"range" must be followed by an opening bracket.',t.get());if(t.next(),!t.get())throw new T('Missing first argument to the "range" function.',t.get(-1));let y=On(t,n);y=Bn(y,"integer");const b=new st("operator","=",e.line,-1),S=new Wt(b,"Python"),k=new un(S,v,[],y);if(!t.get())throw new T("Argument must be followed by a comma.",t.get(-1));if(")"===(null===(l=t.get())||void 0===l?void 0:l.content))throw new T('Too few arguments for "range" function.',t.get());if(","!==(null===(c=t.get())||void 0===c?void 0:c.content))throw new T("Argument must be followed by a comma.",t.get());if(t.next(),!t.get())throw new T('Too few arguments for "range" function.',t.get(-1));let x=On(t,n);if(x=Bn(x,"integer"),!t.get())throw new T("Argument must be followed by a comma.",t.get(-1));if(")"===(null===(d=t.get())||void 0===d?void 0:d.content))throw new T('Too few arguments for "range" function.',t.get());if(","!==(null===(u=t.get())||void 0===u?void 0:u.content))throw new T("Argument must be followed by a comma.",t.get());if(t.next(),!t.get())throw new T('Too few arguments for "range" function.',t.get(-1));let C=On(t,n);Bn(C,"integer");const P=qn(C,"Python","step");if(0===P)throw new T("Step value cannot be zero.",C.lexeme);const A=new Ln(m,v),L=new st("operator","+",e.line,-1),I=new st("operator","<",e.line,-1),M=new st("operator",">",e.line,-1),E=new Wt(L,"Python"),R=new Wt(I,"Python"),F=new Wt(M,"Python");let B=new un(S,v,[],new Mn(E,A,C,"plus")),O=P<0?new Mn(F,A,x,"more"):new Mn(R,A,x,"less");if(!t.get())throw new T('Closing bracket needed after "range" function arguments.',t.get(-1));if(","===(null===(h=t.get())||void 0===h?void 0:h.content))throw new T('Too many arguments for "range" function.',t.get());if(")"!==(null===(p=t.get())||void 0===p?void 0:p.content))throw new T('Closing bracket needed after "range" function arguments.',t.get());if(t.next(),!t.get())throw new T('"for <variable> in range(...)" must be followed by a colon.',t.get(-1));if(":"!==(null===(g=t.get())||void 0===g?void 0:g.content))throw new T('"for <variable> in range(...)" must be followed by a colon.',t.get());if(t.next(),!t.get())throw new T('No statements found after "for <variable> in range(...):".',t.get(-1));if("newline"!==(null===(w=t.get())||void 0===w?void 0:w.type))throw new T('Statements following "for <variable> in range(...):" must be on a new line.',t.get());t.next();const D=new gn(e,k,O,B);if(!t.get())throw new T('No statements found after "for <variable> in range(...):".',t.get(-1));if("indent"!==(null===(f=t.get())||void 0===f?void 0:f.type))throw new T('Statements following "for <variable> in range(...):" must be indented.',t.get());if(t.next(),!t.get())throw new T('No statements found after "for <variable> in range(...):',t.get(-1));return D.statements.push(...Jo(t,n)),D}(e,t,n);break;case"while":t.next(),s=function(e,t,n){var o,a,i;if(!t.get())throw new T('"while" must be followed by a Boolean expression.',e);let r=On(t,n);if(r=Bn(r,"boolean"),!t.get())throw new T('"while <expression>" must be followed by a colon.',t.get(-1));if(":"!==(null===(o=t.get())||void 0===o?void 0:o.content))throw new T('"while <expression>" must be followed by a colon.',t.get());if(t.next(),!t.get())throw new T('No statements found after "while <expression>:".',t.get(-1));if("newline"!==(null===(a=t.get())||void 0===a?void 0:a.type))throw new T('Statements following "while <expression>:" must be on a new line.',t.get());t.next();const s=new fn(e,r);if(!t.get())throw new T('No statements found after "while <expression>:".',t.get(-1));if("indent"!==(null===(i=t.get())||void 0===i?void 0:i.type))throw new T('Statements following "while <expression>:" must be indented.',t.get());if(t.next(),!t.get())throw new T('No statements found after "while <expression>:".',t.get(-1));return s.statements.push(...Jo(t,n)),s}(e,t,n);break;case"pass":t.next(),Do(t),s=new vn;break;default:throw new T("Statement cannot begin with {lex}.",e)}break;case"indent":throw new T("Statement cannot be indented.",e);default:throw new T("Statement cannot begin with {lex}.",e)}return s}function zo(e,t,n,o){var a,i,r,s,l;const c=[];if("["===(null===(a=t.get())||void 0===a?void 0:a.content))if(o.isArray){for(t.next();t.get()&&"]"!==(null===(i=t.get())||void 0===i?void 0:i.content);){let e=On(t,n);e=Bn(e,"integer"),c.push(e),"]"===(null===(r=t.get())||void 0===r?void 0:r.content)&&"["===(null===(s=t.get(1))||void 0===s?void 0:s.content)&&(t.next(),t.next())}if(!t.get())throw new T('Closing bracket "]" needed after array indexes.',t.get(-1));t.next()}else{if("string"!==o.type)throw new T("{lex} is not a string or array variable.",e);{t.next();let e=On(t,n);if(e=Bn(e,"integer"),c.push(e),!t.get()||"]"!==(null===(l=t.get())||void 0===l?void 0:l.content))throw new T('Closing bracket "]" missing after string variable index.',e.lexeme);t.next()}}if(o.isArray){const t="string"===o.type?o.arrayDimensions.length+1:o.arrayDimensions.length;if(c.length>t)throw new T("Too many indexes for array variable {lex}.",e)}const d=t.get();if(!d)throw new T('Variable must be followed by assignment operator "=".',t.get(-1));if(":"===d.content){if(o.turtle)throw new T("{lex} is the name of a predefined Turtle attribute, and cannot be given a type specification.",t.get(-1));throw new T("Type of variable {lex} has already been given.",t.get(-1))}if("["===d.content)throw new T("{lex} is not a string or list variable.",t.get(-1));if("operator"!==d.type||"asgn"!==d.subtype)throw new T('Variable must be followed by assignment operator "=".',t.get());if(t.next(),!t.get())throw new T(`Variable "${o.name}" must be assigned a value.`,t.get(-1));let u=On(t,n);const h=new Ln(e,o);return h.indexes.push(...c),u=Bn(u,h.type),new un(d,o,c,u)}function Jo(e,t){var n;const o=[];for(;e.get()&&"dedent"!==(null===(n=e.get())||void 0===n?void 0:n.type);)o.push(qo(e.get(),e,t));return e.get()&&e.next(),o}function No(e){const t=new en("Python");return t.end=e.lexemes.length,$o(e,t),t}function $o(e,t){let n=0;for(e.index=t.start;e.index<t.end;){const o=e.get();switch(e.next(),o.type){case"indent":n+=1;break;case"dedent":n-=1;break;case"keyword":"def"===o.subtype&&t.subroutines.push(Bo(o,e,t,n))}}for(e.index=t.start;e.index<t.end;)t.statements.push(qo(e.get(),e,t));for(const n of t.subroutines)$o(e,n)}function Wo(e,t,n){const o=e.get();if(!o)throw new T("{lex} must be followed by an identifier.",e.get(-1));if("identifier"!==o.type)throw new T("{lex} is not a valid identifier.",o);if("turtle"===o.subtype)throw new T("{lex} is already the name of a predefined Turtle property.",o);if(n&&sn(t,o.value))throw new T("{lex} is already defined in the current scope.",o);return e.next(),o.value}function Ho(e,t){var n,o,a,i,r;if(!e.get())throw new T('Expected type specification (": <type>").',e.get(-1));if(":"!==(null===(n=e.get())||void 0===n?void 0:n.content))throw new T('Expected type specification (": <type>").',e.get());e.next();const s=e.get();if(!s)throw new T('Expected type definition ("boolean", "number", "string", or "void").',e.get(-1));if("type"!==s.type)throw new T('{lex} is not a valid type definition (expected "boolean", "number", "string", or "void").',s);const l=s.subtype;e.next();let c=32;if("string"===l&&"("===(null===(o=e.get())||void 0===o?void 0:o.content)){e.next();const t=e.get();if(!t)throw new T("Expected string size specification.",e.get(-1));if("literal"!==t.type||"integer"!==t.subtype)throw new T("String size must be an integer.",t);if(t.value<=0)throw new T("String size must be greater than zero.",e.get());if(c=t.value,e.next(),!e.get())throw new T('Closing bracket ")" missing after string size specification.',e.get(-1));if(")"!==(null===(a=e.get())||void 0===a?void 0:a.content))throw new T('Closing bracket ")" missing after string size specification.',e.get());e.next()}let d=[];for(;"["===(null===(i=e.get())||void 0===i?void 0:i.content);){if(e.next(),!e.get())throw new T('Opening bracket "[" must be followed by an array size.',e.get(-1));const n=On(e,t);Bn(n,"integer");const o=qn(n,"TypeScript","array");if("string"==typeof o)throw new T("Array size must be an integer.",e.get());if(o<=0)throw new T("Array size must be positive.",e.get());if(d.push([0,o-1]),!e.get())throw new T('Array size specification must be followed by closing bracket "]".',e.get(-1));if("]"!==(null===(r=e.get())||void 0===r?void 0:r.content))throw new T('Array size specification must be followed by closing bracket "]".',e.get());e.next()}if(null===l&&d.length>0)throw new T("Array of void is not allowed.",s);return[l,c,d]}function Uo(e,t,n){var o;const a=Wo(e,t,n),[i,r,s]=Ho(e,t);if(null===i)throw new T('Constant type cannot be void (expected "boolean", "number", or "string").',e.get());if(s.length>0)throw new T("Constant cannot be an array.",e.get());if(!e.get())throw new T(`Constant ${a} must be assigned a value.`,e.get(-1));if("="!==(null===(o=e.get())||void 0===o?void 0:o.content))throw new T(`Constant ${a} must be assigned a value.`,e.get());e.next();const l=On(e,t);Bn(l,i);const c=qn(l,"TypeScript","constant");return"string"==typeof c?new $n("TypeScript",a,c):new Nn("TypeScript",a,c)}function Go(e,t,n){const o=Wo(e,t,n),[a,i,r]=Ho(e,t);if(null===a)throw new T('Variable cannot be void (expected "boolean", "number", or "string").',e.get());const s=new tn(o,t);return s.type=a,s.stringLength=i,s.arrayDimensions=r,s}function Ko(e,t,n){var o,a,i;const r=Wo(t,n,!0),s=new on(e,n,r),l=n instanceof en?n:n.program;s.index=l.allSubroutines.length+1,s.variables.push(...function(e,t){var n,o,a,i;if(!e.get())throw new T('Opening bracket "(" missing after function name.',e.get(-1));if("("!==(null===(n=e.get())||void 0===n?void 0:n.content))throw new T('Opening bracket "(" missing after function name.',e.get());e.next();const r=[];for(;")"!==(null===(o=e.get())||void 0===o?void 0:o.content);){const n=Go(e,t,!0);n.isParameter=!0,r.push(n),","===(null===(a=e.get())||void 0===a?void 0:a.content)&&e.next()}if(")"!==(null===(i=e.get())||void 0===i?void 0:i.content))throw new T("Closing bracket missing after function parameters.",e.get(-1));return e.next(),r}(t,s));const[c,d,u]=Ho(t,n);if(u.length>0)throw new T("Functions cannot return arrays.",t.get(-1));if(null!==c){const e=new tn("!result",s);e.type=c,e.stringLength=d,s.variables.unshift(e),s.type="function",s.returns=c}if(!t.get())throw new T('Method parameters must be followed by an opening bracket "{".',t.get(-1));if("{"!==(null===(o=t.get())||void 0===o?void 0:o.content))throw new T('Method parameters must be followed by an opening bracket "{".',t.get());t.next(),s.start=t.index;let h=0;for(;t.get()&&h>=0;)"{"===(null===(a=t.get())||void 0===a?void 0:a.content)?h+=1:"}"===(null===(i=t.get())||void 0===i?void 0:i.content)&&(h-=1),t.next();return s.end=t.index-1,s}function Vo(e){var t,n,o,a;if(e.get()){if(";"!==(null===(t=e.get())||void 0===t?void 0:t.content)&&"newline"!==(null===(n=e.get())||void 0===n?void 0:n.type))throw new T("Statement must be followed by a semicolon or placed on a new line.",e.get(-1));for(;";"===(null===(o=e.get())||void 0===o?void 0:o.content)||"newline"===(null===(a=e.get())||void 0===a?void 0:a.type);)e.next()}}function jo(e,t,n){var o;let a;switch(e.type){case"newline":t.next(),a=new vn;break;case"identifier":a=Xo(e,t,n),Vo(t);break;case"keyword":switch(e.subtype){case"function":const i=ln(n,null===(o=t.get(1))||void 0===o?void 0:o.content);t.index=i.end+1,a=new vn;break;case"const":case"var":a=Xo(e,t,n),Vo(t);break;case"return":t.next(),a=function(e,t,n){if(n instanceof en)throw new T('"RETURN" statements are only valid within the body of a function.',t.get());if("function"!==n.type)throw new T("Procedures cannot return a value.",t.get());let o=On(t,n);return o=Bn(o,n.returns),Vo(t),n.hasReturnStatement=!0,new mn(e,n,o)}(e,t,n);break;case"if":t.next(),a=function(e,t,n){var o,a,i,r,s;if(!t.get()||"("!==(null===(o=t.get())||void 0===o?void 0:o.content))throw new T('"if" must be followed by an opening bracket "(".',t.get(-1));if(t.next(),!t.get())throw new T('"if (" must be followed by a Boolean expression.',t.get(-1));let l=On(t,n);if(l=Bn(l,"boolean"),!t.get()||")"!==(null===(a=t.get())||void 0===a?void 0:a.content))throw new T('"if (..." must be followed by a closing bracket ")".',t.get(-1));t.next();const c=new pn(e,l);if(!t.get()||"{"!==(null===(i=t.get())||void 0===i?void 0:i.content))throw new T('"if (...)" must be followed by an opening curly bracket "{".',t.get(-1));if(t.next(),c.ifStatements.push(...Qo(t,n)),t.get()&&"else"===(null===(r=t.get())||void 0===r?void 0:r.content)){if(t.next(),!t.get()||"{"!==(null===(s=t.get())||void 0===s?void 0:s.content))throw new T('"else" must be followed by an opening bracket "{".',t.get(-1));t.next(),c.elseStatements.push(...Qo(t,n))}return c}(e,t,n);break;case"else":throw new T('Statement cannot begin with "else". If you have an "if" above, you may be missing a closing bracket "}".',e);case"for":t.next(),a=function(e,t,n){var o,a,i,r,s;if(!t.get()||"("!==(null===(o=t.get())||void 0===o?void 0:o.content))throw new T('"for" must be followed by an opening bracket "(".',t.get(-1));t.next();const l=t.get();if(!l)throw new T('"for" conditions must begin with a variable assignment.',t.get(-1));if("keyword"!==l.type&&"identifier"!==l.type)throw new T('"for" conditions must begin with a variable assignment.',l);const c=Xo(l,t,n);if(!(c instanceof un))throw new T('"for" conditions must begin with a variable assignment.',t.get(-1));if("integer"!==c.variable.type)throw new T("Loop variable must be an integer.",t.get());if(!t.get()||";"!==(null===(a=t.get())||void 0===a?void 0:a.content))throw new T('"for (..." must be followed by a semicolon.',t.get(-1));if(t.next(),!t.get())throw new T('"for (...; ...;" must be followed by a loop condition.',t.get(-1));let d=On(t,n);if(d=Bn(d,"boolean"),!t.get()||";"!==(null===(i=t.get())||void 0===i?void 0:i.content))throw new T('"for (...; ..." must be followed by a semicolon.',t.get(-1));t.next();const u=t.get();if(!u)throw new T('"for (...;" must be followed by a loop variable reassignment.',t.get(-1));if("keyword"!==u.type&&"identifier"!==u.type)throw new T('"for (...;" must be followed by a loop variable reassignment.',t.get(-1));const h=Xo(u,t,n);if(!(h instanceof un))throw new T('"for (...;" must be followed by a loop variable reassignment.',t.get(-1));if(h.variable!==c.variable)throw new T("Initial loop variable and change loop variable must be the same.",t.get(-1));if(!t.get()||")"!==(null===(r=t.get())||void 0===r?void 0:r.content))throw new T('"for (...; ...; ..." must be followed by a closing bracket ")".',t.get(-1));if(t.next(),!t.get()||"{"!==(null===(s=t.get())||void 0===s?void 0:s.content))throw new T('"for (...; ...; ...)" must be followed by an opening bracket "{".',t.get(-1));t.next();const p=new gn(e,c,d,h);return p.statements.push(...Qo(t,n)),p}(e,t,n);break;case"do":t.next(),a=function(e,t,n){var o,a,i,r;if(!t.get()||"{"!==(null===(o=t.get())||void 0===o?void 0:o.content))throw new T('"do" must be followed by an opening bracket "{".',t.get(-1));t.next();const s=Qo(t,n);if(!t.get()||"while"!==(null===(a=t.get())||void 0===a?void 0:a.content))throw new T('"do { ... }" must be followed by "while".',t.get(-1));if(t.next(),!t.get()||"("!==(null===(i=t.get())||void 0===i?void 0:i.content))throw new T('"while" must be followed by an opening bracket "(".',t.get(-1));if(t.next(),!t.get())throw new T('"while (" must be followed by a boolean expression.',t.get(-1));let l=On(t,n);l=Bn(l,"boolean");const c=new st("operator","!",l.lexeme.line,l.lexeme.character),d=new Wt(c,"TypeScript");if(l=new Mn(d,null,l,"not"),!t.get()||")"!==(null===(r=t.get())||void 0===r?void 0:r.content))throw new T('"while (..." must be followed by a closing bracket ")".',t.get(-1));t.next(),Vo(t);const u=new wn(e,l);return u.statements.push(...s),u}(e,t,n);break;case"while":t.next(),a=function(e,t,n){var o,a,i;if(!t.get()||"("!==(null===(o=t.get())||void 0===o?void 0:o.content))throw new T('"while" must be followed by an opening bracket "(".',t.get(-1));if(t.next(),!t.get())throw new T('"while (" must be followed by a Boolean expression.',t.get(-1));let r=On(t,n);if(r=Bn(r,"boolean"),!t.get()||")"!==(null===(a=t.get())||void 0===a?void 0:a.content))throw new T('"while (..." must be followed by a closing bracket ")".',t.get(-1));t.next();const s=new fn(e,r);if(!t.get()||"{"!==(null===(i=t.get())||void 0===i?void 0:i.content))throw new T('"while (...)" must be followed by an opening curly bracket "{".',t.get(-1));return t.next(),s.statements.push(...Qo(t,n)),s}(e,t,n);break;default:throw new T("Statement cannot begin with {lex}.",e)}break;default:throw new T("Statement cannot begin with {lex}.",e)}return a}function Xo(e,t,n){var o;switch(e.type){case"keyword":switch(e.subtype){case"const":return t.next(),Uo(t,n,!1),new vn;case"var":t.next();const a=t.get(),i=rn(n,a.content);return Go(t,n,!1),"="===(null===(o=t.get())||void 0===o?void 0:o.content)?Yo(a,t,n,i):new vn;default:throw new T("Simple statement cannot begin with {lex}.",e)}case"identifier":const a=an(n,e.value),i=rn(n,e.value),r=cn(n,e.value);if(a)throw new T("{lex} is a constant and cannot be assined a new value.",e);if(i)return t.next(),Yo(e,t,n,i);if(r)return t.next(),Rn(e,t,n,r);throw new T("{lex} is not defined.",t.get())}}function Yo(e,t,n,o){var a,i,r,s,l;const c=[];if("["===(null===(a=t.get())||void 0===a?void 0:a.content))if(o.isArray){for(t.next();t.get()&&"]"!==(null===(i=t.get())||void 0===i?void 0:i.content);){let e=On(t,n);e=Bn(e,"integer"),c.push(e),"]"===(null===(r=t.get())||void 0===r?void 0:r.content)&&"["===(null===(s=t.get(1))||void 0===s?void 0:s.content)&&(t.next(),t.next())}if(!t.get())throw new T('Closing bracket "]" needed after array indexes.',t.get(-1));t.next()}else{if("string"!==o.type)throw new T("{lex} is not a string or array variable.",e);{t.next();let e=On(t,n);if(e=Bn(e,"integer"),c.push(e),!t.get()||"]"!==(null===(l=t.get())||void 0===l?void 0:l.content))throw new T('Closing bracket "]" missing after string variable index.',e.lexeme);t.next()}}if(o.isArray){const t="string"===o.type?o.arrayDimensions.length+1:o.arrayDimensions.length;if(c.length>t)throw new T("Too many indexes for array variable {lex}.",e)}const d=t.get();if(!d)throw new T('Variable must be followed by assignment operator "=".',t.get(-1));if(":"===d.content)throw new T("Type of variable {lex} has already been given.",d);if("["===d.content)throw new T("{lex} is not a string or array variable.",d);if("operator"!==d.type||"asgn"!==d.subtype)throw new T('Variable must be followed by assignment operator "=".',d);if(t.next(),!t.get())throw new T(`Variable "${o.name}" must be assigned a value.`,t.get(-1));let u=On(t,n);const h=new Ln(e,o);return h.indexes.push(...c),u=Bn(u,h.type),new un(d,o,c,u)}function Qo(e,t){var n,o;const a=[];for(;e.get()&&"}"!==(null===(n=e.get())||void 0===n?void 0:n.content);)a.push(jo(e.get(),e,t));if("}"!==(null===(o=e.get())||void 0===o?void 0:o.content))throw new T('Closing bracket "}" missing after statement block.',e.get(-1));return e.next(),a}function Zo(e){const t=new en("TypeScript");return t.end=e.lexemes.length,_o(e,t),t}function _o(e,t){for(e.index=t.start;e.index<t.end;){const n=e.get();switch(e.next(),n.type){case"keyword":switch(n.subtype){case"const":t.constants.push(Uo(e,t,!0)),Vo(e);break;case"var":t.variables.push(Go(e,t,!0));break;case"function":t.subroutines.push(Ko(n,e,t))}}}for(e.index=t.start;e.index<t.end;)t.statements.push(jo(e.get(),e,t));for(const n of t.subroutines)_o(e,n)}class ea{constructor(e){this.lexemes=e.filter((e=>"comment"!==e.type)),this.index=0}get(e=0){return this.lexemes[this.index+e]}next(){this.index+=1}}function ta(e,t){const n="string"==typeof e?Qt(e,t):e,o=new ea(n);switch(t){case"BASIC":return function(e){var t,n;const o=new en("BASIC"),a=e.lexemes.findIndex((e=>"END"===e.content));if(a<0)throw new T('Program must end with keyword "END".');for(o.end=a,e.index=a+1;e.get();)if("newline"===(null===(t=e.get())||void 0===t?void 0:t.type))e.next();else{if("DEF"!==(null===(n=e.get())||void 0===n?void 0:n.content))throw new T('Only subroutine definitions are permissible after program "END".',e.get());e.next(),o.subroutines.push(Qn(e.get(-1),e,o))}dn(e,o);for(const t of o.subroutines)0===t.statements.length&&dn(e,t);return o}(o);case"C":return function(e){var t;const n=new en("C");for(;e.get();){const o=e.get(),a=e.index;switch(o.type){case"keyword":if("const"!==o.subtype)throw new T("Program can only contain constant definitions, variable declarations, and subroutine defintions.",o);e.next(),n.constants.push(eo(e,n)),no(e);break;case"type":Zn(e),_n(e,n),"("===(null===(t=e.get())||void 0===t?void 0:t.content)?(e.index=a,n.subroutines.push(so(o,e,n))):(e.index=a,n.statements.push(ao(o,e,n)),no(e));break;default:throw new T("Program can only contain constant definitions, variable declarations, and subroutine defintions.",o)}}for(const t of n.allSubroutines)for(e.index=t.start;e.index<t.end;)t.statements.push(oo(e.get(),e,t));if(!n.subroutines.some((e=>"main"===e.name)))throw new T('Program does not contain any "main" method.');return n}(o);case"Java":return function(e){var t;const n=function(e){const[t,n,o]=e.lexemes.slice(0,3),a=e.lexemes[e.lexemes.length-1];if(!t)throw new T('Program must begin with keyword "class".');if("class"!==t.content)throw new T('Program must begin with keyword "class".',t);if(!n)throw new T("{lex} must be followed by a program name.",t);if("identifier"!==n.type)throw new T("{lex} is not a valid program name.",n);if("turtle"===n.subtype)throw new T("{lex} is the name of a predefined Turtle attribute, and cannot be used as the name of the program.",n);const i=n.content.charCodeAt(0);if(i<65||i>90)throw new T("Program name must begin with a capital letter.",n);if(!o)throw new T('Program name must be followed by an opening bracket "{".',n);if("{"!==o.content)throw new T('Program name must be followed by an opening bracket "{".',o);if(!a)throw new T('Program must end with a closing bracket "}".',e.lexemes[e.lexemes.length-1]);if("}"!==a.content)throw new T('Program must end with a closing bracket "}".',e.lexemes[e.lexemes.length]);const r=new en("Java",n.content);return r.start=3,r.end=e.lexemes.length-1,r}(e);for(e.index=n.start;e.index<n.end;){const o=e.get(),a=e.index;switch(o.type){case"keyword":if("final"!==o.subtype)throw new T("Program can only contain constant definitions, variable declarations, and subroutine defintions.",o);e.next(),n.constants.push(uo(e,n)),po(e);break;case"type":lo(e,n),co(e,n),"("===(null===(t=e.get())||void 0===t?void 0:t.content)?(e.index=a,n.subroutines.push(vo(o,e,n))):(e.index=a,n.statements.push(wo(o,e,n)),po(e));break;default:throw new T("Program can only contain constant definitions, variable declarations, and subroutine defintions.",o)}}for(const t of n.allSubroutines)for(e.index=t.start;e.index<t.end;)t.statements.push(go(e.get(),e,t));if(!n.subroutines.some((e=>"main"===e.name)))throw new T('Program does not contain any "main" method.');return n}(o);case"Pascal":return function(e){var t,n,o,a,i;const r=new en("Pascal"),s=e.get();if(!s||"keyword"!==s.type||"program"!==s.subtype)throw new T('Program must begin with keyword "PROGRAM".',e.get());e.next(),r.name=yo(e,r),bo(e,!0,"program declaration");let l=!1;for(;e.get()&&"end"!==(null===(t=e.get())||void 0===t?void 0:t.content.toLowerCase());){const t=e.get();switch(t.type){case"keyword":switch(t.subtype){case"const":if(r.variables.length>0)throw new T("Constant definitions must be placed above any variable declarations.",e.get());if(r.subroutines.length>0)throw new T("Constant definitions must be placed above any subroutine definitions.",e.get());e.next();const i=r.constants.length;for(;"identifier"===(null===(n=e.get())||void 0===n?void 0:n.type);)r.constants.push(Po(e,r));if(r.constants.length===i)throw new T('"CONST" must be followed by an identifier.',e.get(-1));break;case"var":if(r.subroutines.length>0)throw new T("Variable declarations must be placed above any subroutine definitions.",e.get());e.next(),r.variables.push(...Ao(e,r));break;case"procedure":case"function":e.next(),r.subroutines.push(Lo(t,e,r));break;case"begin":for(l=!0,e.next();e.get()&&"end"!==(null===(a=null===(o=e.get())||void 0===o?void 0:o.content)||void 0===a?void 0:a.toLowerCase());){const t=e.get();r.statements.push(So(t,e,r))}break;default:if(!l)throw new T('Keyword "begin" missing for main program.',e.get());throw new T("{lex} makes no sense here.",e.get())}break;default:if(!l)throw new T('Keyword "begin" missing for main program.',e.get());throw new T("{lex} makes no sense here.",e.get())}}if(!l)throw new T('Keyword "begin" missing for main program.',e.get(-1));if(!e.get())throw new T('Keyword "end" missing after main program.',e.get(-1));if(e.next(),!e.get()||"."!==(null===(i=e.get())||void 0===i?void 0:i.content))throw new T('Full stop missing after program "end".',e.get(-1));if(e.get(1))throw new T('No text can appear after program "end".',e.get(1));return r}(o);case"Python":return No(o);case"TypeScript":return Zo(o)}}class na{constructor(e,t,n){this.index=e,this.title=t,this.expressions=n[0]&&n[0]instanceof on?n:n.filter((t=>t.category===e))}}const oa=[new na(0,"Turtle: relative movement",dt),new na(1,"Turtle: absolute movement",dt),new na(2,"Turtle: drawing shapes",dt),new na(3,"Other Turtle commands",dt),new na(4,"Canvas operations",dt),new na(5,"General arithmetic functions",dt),new na(6,"Trig / exp / log functions",dt),new na(7,"String operations",dt),new na(8,"Type conversion routines",dt),new na(9,"Input and timing routines",dt),new na(10,"File processing",dt),new na(11,"Turtle Machine monitoring",dt)],aa={BASIC:[new na(20,"Command structures",gt.BASIC),new na(21,"Variable scope modifiers",gt.BASIC)],C:[new na(20,"Command structures",gt.C)],Java:[new na(20,"Command structures",gt.Java)],Pascal:[new na(20,"Command structures",gt.Pascal)],Python:[new na(20,"Command structures",gt.Python),new na(21,"Variable scope modifiers",gt.Python)],TypeScript:[new na(20,"Command structures",gt.TypeScript)]};function ia(e,t,n){const o=n.expressions.filter(ra.bind(null,e,t)).map(sa.bind(null,e,t));return o.sort(((e,t)=>e.level===t.level?e.name.localeCompare(t.name):e.level-t.level)),{category:n.title,expressions:o,total:o.reduce(((e,t)=>e+t.count),0)}}function ra(e,t,n){const o=n instanceof lt?n.names[e]:n.name;return!!o&&("Pascal"===e?t.filter((e=>e.content&&e.content.toLowerCase()===o.toLowerCase())):t.filter((e=>e.content===o))).length>0}function sa(e,t,n){const o=n instanceof lt?n.names[e]:n.name,a="Pascal"===e?t.filter((e=>e.content&&e.content.toLowerCase()===o.toLowerCase())):t.filter((e=>e.content===o));return a.sort(((e,t)=>e.line-t.line)),{name:"Pascal"===e?o.toLowerCase():o,level:n.level+1,count:a.length,lines:a.reduce(((e,t)=>`${e} ${t.line.toString(10)}`),"").trim()}}const la={canvasStartSize:a.canvasStartSize,setupDefaultKeyBuffer:a.setupDefaultKeyBuffer,turtleAttributesAsGlobals:a.turtleAttributesAsGlobals,initialiseLocals:a.initialiseLocals,allowCSTR:a.allowCSTR,separateReturnStack:a.separateReturnStack,separateMemoryControlStack:a.separateMemoryControlStack,separateSubroutineRegisterStack:a.separateSubroutineRegisterStack};function ca(e,t){if(0===e.length)e.push(...t);else{const n=e[e.length-1],o=t.shift();o&&n.push(...o),e.push(...t)}}function da(e,t,n,o=!1){switch(e.expressionType){case"integer":return[ua(e)];case"string":return[ha(e)];case"input":return[pa(e)];case"colour":return[ga(e)];case"constant":return function(e,t,n){const o=[];return"string"===e.constant.type?(o.push([we.lstr,e.constant.value.length].concat(Array.from(e.constant.value).map((e=>e.charCodeAt(0))))),e.indexes.length>0&&(ca(o,da(e.indexes[0],t,n)),"Pascal"===t.language&&ca(o,[[we.decr]]),ca(o,[[we.swap,we.test,we.plus,we.incr,we.lptr]]))):o.push([we.ldin,e.constant.value]),o}(e,t,n);case"address":return wa(e,t,n);case"variable":return o?e.variable.isArray&&e.indexes.length<e.variable.arrayDimensions.length||"string"===e.variable.type&&0===e.indexes.length?fa(e,t,n):wa(e,t,n):fa(e,t,n);case"function":return function(e,t,n){const o=[];for(let a=0;a<e.command.parameters.length;a+=1)ca(o,da(e.arguments[a],t,n,e.command.parameters[a].isReferenceParameter));return e.command instanceof on?ca(o,[[we.subr,e.command.index]]):ca(o,[e.command.code.slice()]),e.command instanceof on&&(o.push([we.ldvv,t.resultAddress,1]),"string"===e.command.returns&&ca(o,[[we.hstr]])),o}(e,t,n);case"compound":return function(e,t,n){const o=e.left?da(e.left,t,n):null;if(o&&"integer"===e.right.expressionType&&1===e.right.value){if("plus"===e.operator)return ca(o,[[we.incr]]),o;if("subt"===e.operator)return ca(o,[[we.decr]]),o}const a=da(e.right,t,n),i=function(e,t,n){switch(e){case"not":return"C"===t.language||"Python"===t.language?[we.ldin,0,we.eqal]:[we.not];default:return[we[e]]}}(e.operator,t);return o?(ca(o,a),ca(o,[i]),o):(ca(a,[i]),a)}(e,t,n);case"cast":return function(e,t,n){const o=da(e.expression,t,n);return"character"===e.expression.type&&"string"===e.type&&ca(o,[[we.ctos]]),"integer"===e.expression.type&&"string"===e.type&&ca(o,[[we.itos]]),"string"===e.expression.type&&"integer"===e.type&&ca(o,[[we.ldin,0,we.sval]]),o}(e,t,n)}}function ua(e,t){return[we.ldin,e.value]}function ha(e,t){return[we.lstr,e.value.length].concat(Array.from(e.value).map((e=>e.charCodeAt(0))))}function pa(e,t){return e.input.value<0?[we.ldin,e.input.value,we.inpt]:[we.ldin,e.input.value]}function ga(e,t){return[we.ldin,e.colour.value]}function wa(e,t,n){const o=[];if(e.variable.isArray&&e.indexes.length>0){const a=new Ln(e.lexeme,e.variable);o.push(...da(a,t,n));for(let a=0;a<e.indexes.length;a+=1)ca(o,da(e.indexes[a],t,n)),e.variable.arrayDimensions[a]&&0!==e.variable.arrayDimensions[a][0]?ca(o,[[we.ldin,e.variable.arrayDimensions[a][0],we.subt]]):void 0===e.variable.arrayDimensions[a]&&"Pascal"===t.language&&ca(o,[[we.decr]]),ca(o,[[we.swap,we.test,we.plus,we.incr]])}else"string"===e.variable.type&&e.indexes.length>0?(o.push(...da(e.indexes[0],t,n)),"Pascal"===t.language&&ca(o,[[we.decr]]),ca(o,da(new Ln(e.lexeme,e.variable),t,n)),ca(o,[[we.test,we.plus,we.incr]])):e.variable.turtle?o.push([we.ldag,t.turtleAddress+e.variable.turtle]):e.variable.routine instanceof en?o.push([we.ldag,e.variable.address]):o.push([we.ldav,e.variable.routine.address,e.variable.address]);return o}function fa(e,t,n){let o=[];if(e.variable.isArray&&e.indexes.length>0){const a=new Ln(e.lexeme,e.variable);o.push(...da(a,t,n));for(let a=0;a<e.indexes.length;a+=1)ca(o,da(e.indexes[a],t,n)),e.variable.arrayDimensions[a]&&0!==e.variable.arrayDimensions[a][0]?ca(o,[[we.ldin,e.variable.arrayDimensions[a][0],we.subt]]):void 0===e.variable.arrayDimensions[a]&&"Pascal"===t.language&&ca(o,[[we.decr]]),ca(o,[[we.swap,we.test,we.plus,we.incr,we.lptr]])}else"string"===e.variable.type&&e.indexes.length>0?(o.push(...da(e.indexes[0],t,n)),"Pascal"===t.language&&ca(o,[[we.decr]]),ca(o,da(new Ln(e.lexeme,e.variable),t,n)),ca(o,[[we.test,we.plus,we.incr,we.lptr]]),"Python"!==t.language&&"TypeScript"!==t.language||ca(o,[[we.ctos]])):e.variable.turtle?o.push([we.ldvg,t.turtleAddress+e.variable.turtle]):e.variable.routine instanceof en?o.push([we.ldvg,e.variable.address]):e.variable.isReferenceParameter&&!e.variable.isArray&&"string"!==e.variable.type?o.push([we.ldvr,e.variable.routine.address,e.variable.address]):o.push([we.ldvv,e.variable.routine.address,e.variable.address]);return e.variable.isPointer&&ca(o,[[we.peek]]),o}function ma(e,t,n,o){switch(e.statementType){case"variableAssignment":return va(e,t,o);case"procedureCall":return function(e,t,n){const o=[];for(let a=0;a<e.command.parameters.length;a+=1)ca(o,da(e.arguments[a],t,n,e.command.parameters[a].isReferenceParameter));return e.command instanceof on?ca(o,[[we.subr,e.command.index]]):e.command.code[0]===we.oldt?ca(o,[[we.ldin,t.turtleAddress,we.ldin,0,we.sptr]]):ca(o,[e.command.code.slice()]),o}(e,t,o);case"ifStatement":return function(e,t,n,o){const a=da(e.condition,t,o),i=[];for(const r of e.ifStatements){const e=n+i.length+a.length;i.push(...ma(r,t,e,o))}const r=[];for(const s of e.elseStatements){const e=n+i.length+r.length+a.length+1;r.push(...ma(s,t,e,o))}if(0===r.length)return ca(a,[[we.ifno,n+i.length+a.length]]),i.unshift(...a),i;ca(a,[[we.ifno,n+i.length+a.length+1]]);const s=[we.jump,n+i.length+r.length+a.length+1];return i.unshift(...a),i.push(s),i.concat(r)}(e,t,n,o);case"forStatement":return function(e,t,n,o){const a=[];for(const i of e.statements){const e=n+a.length+2;a.push(...ma(i,t,e,o))}const i=da(e.condition,t,o);return ca(i,[[we.ifno,n+a.length+i.length+2]]),a.unshift(...i),a.unshift(...va(e.initialisation,t,o)),a.push(...va(e.change,t,o)),ca(a,[[we.jump,n+1]]),a}(e,t,n,o);case"repeatStatement":return function(e,t,n,o){const a=[];for(const i of e.statements){const e=n+a.length;a.push(...ma(i,t,e,o))}const i=da(e.condition,t,o);return ca(i,[[we.ifno,n]]),a.push(...i),a}(e,t,n,o);case"whileStatement":return function(e,t,n,o){const a=[];for(const i of e.statements){const e=n+a.length+1;a.push(...ma(i,t,e,o))}const i=da(e.condition,t,o),r=n+a.length+i.length+1;return ca(i,[[we.ifno,r]]),a.unshift(...i),a.push([we.jump,n]),a}(e,t,n,o);case"returnStatement":return function(e,t,n){const o=ya(new un(e.lexeme,e.routine.variables[0],[],e.value),t,n);return o.push([we.ldvg,e.routine.address,we.stvg,t.resultAddress,we.memr,e.routine.address,we.plsr,we.retn]),o}(e,t,o);case"passStatement":return[]}}function va(e,t,n){return e.variable.turtle?function(e,t,n){const o=da(e.value,t,n);return ca(o,[[we.stvg,t.turtleAddress+e.variable.turtle]]),o}(e,t,n):e.variable.isGlobal?function(e,t,n){const o=da(e.value,t,n);if(e.variable.isArray||"string"===e.variable.type&&e.indexes.length>0){const a=new Ln(e.lexeme,e.variable);a.indexes.push(...e.indexes);const i=da(a,t,n),r=i[i.length-1];e.variable.isArray&&"string"===e.variable.type?r.push(we.cstr):r[r.length-1]=we.sptr,ca(o,i)}else"string"===e.variable.type?ca(o,[[we.ldvg,e.variable.address,we.cstr]]):ca(o,[[we.stvg,e.variable.address]]);return o}(e,t,n):e.variable.isPointer?function(e,t,n){const o=da(new Ln(e.lexeme,e.variable),t,n);return o[o.length-1].pop(),ca(o,da(e.value,t,n)),"string"===e.variable.type?ca(o,[[we.cstr]]):ca(o,[[we.poke]]),o}(e,t,n):e.variable.isReferenceParameter&&!e.variable.isArray&&"string"!==e.variable.type?function(e,t,n){const o=da(e.value,t,n);return ca(o,[[we.stvr,e.variable.routine.address,e.variable.address]]),o}(e,t,n):ya(e,t,n)}function ya(e,t,n){const o=da(e.value,t,n);if(e.variable.isArray||"string"===e.variable.type&&e.indexes.length>0){const a=new Ln(e.lexeme,e.variable);a.indexes.push(...e.indexes);const i=da(a,t,n),r=i[i.length-1];e.variable.isArray&&"string"===e.variable.type?r.push(we.cstr):r[r.length-1]=we.sptr,ca(o,i)}else"string"===e.variable.type?ca(o,[[we.ldvv,e.variable.routine.address,e.variable.address,we.cstr]]):ca(o,[[we.stvv,e.variable.routine.address,e.variable.address]]);return o}function ba(e){const t=[];if(e.isArray){t.push([we.ldag,e.lengthByteAddress,we.stvg,e.address,we.ldin,e.elementCount,we.stvg,e.lengthByteAddress]);for(const n of e.subVariables){const e=ba(n);e.length>0&&t.push(...e)}}else"string"===e.type&&t.push([we.ldag,e.lengthByteAddress+1,we.stvg,e.address,we.ldin,e.stringLength+1,we.stvg,e.lengthByteAddress]);return t}function Sa(e,t,n){const o=e instanceof on?e.program:e,a=[];for(const i of e.statements)a.push(...ma(i,o,t+a.length,n));return a}function ka(e,t){const n=[];if(n.push([we.pssr,e.index]),e.variables.length>0){n.push([we.memc,e.address,e.memoryNeeded]),t.initialiseLocals&&e.variables.length>e.parameters.length&&n.push([we.ldav,e.address,1,we.ldin,e.memoryNeeded,we.zptr]);for(const t of e.variables){const e=xa(t);e.length>0&&n.push(...e)}if(e.parameters.length>0){n.push([]);for(const t of e.parameters.reverse()){const o=n[n.length-1];t.isArray&&!t.isReferenceParameter||("string"!==t.type||t.isReferenceParameter?o.push(we.stvv,e.address,t.address):o.push(we.ldvv,e.address,t.address,we.cstr))}}}return n}function xa(e){const t=e.routine,n=[];if(e.isArray&&!e.isReferenceParameter){n.push([we.ldav,t.address,e.lengthByteAddress,we.stvv,t.address,e.address,we.ldin,e.elementCount,we.stvv,t.address,e.lengthByteAddress]);for(const t of e.subVariables){const e=xa(t);e.length>0&&n.push(...e)}return n}return"string"===e.type&&n.push([we.ldav,t.address,e.lengthByteAddress+1,we.stvv,t.address,e.address,we.ldin,e.stringLength+1,we.stvv,t.address,e.lengthByteAddress]),n}function Ca(e,t){const n=[];return"function"===e.type&&n.push(we.ldvg,e.address,we.stvg,e.program.resultAddress),e.variables.length>0&&n.push(we.memr,e.address),n.push(we.plsr,we.retn),[n]}var Pa,Ta,Aa,La,Ia,Ma,Ea,Ra,Fa,Ba,Oa,Da,qa,za,Ja,Na,$a,Wa,Ha,Ua,Ga,Ka,Va,ja,Xa,Ya,Qa,Za,_a,ei,ti,ni,oi,ai,ii,ri,si,li,ci,di,ui,hi,pi,gi,wi,fi=function(e,t,n,o){return new(n||(n=Promise))((function(a,i){function r(e){try{l(o.next(e))}catch(e){i(e)}}function s(e){try{l(o.throw(e))}catch(e){i(e)}}function l(e){var t;e.done?a(e.value):(t=e.value,t instanceof n?t:new n((function(e){e(t)}))).then(r,s)}l((o=o.apply(e,t||[])).next())}))},mi=function(e,t,n){if(!t.has(e))throw new TypeError("attempted to set private field on non-instance");return t.set(e,n),n},vi=function(e,t){if(!t.has(e))throw new TypeError("attempted to get private field on non-instance");return t.get(e)};Pa=new WeakMap,Ta=new WeakMap,Aa=new WeakMap,La=new WeakMap,Ia=new WeakMap,Ma=new WeakMap,Ea=new WeakMap,Ra=new WeakMap,Fa=new WeakMap,Ba=new WeakMap,Oa=new WeakMap,Da=new WeakMap,qa=new WeakMap,za=new WeakMap,Ja=new WeakMap,Na=new WeakMap,$a=new WeakMap,Wa=new WeakMap,Ha=new WeakMap,Ua=new WeakMap,Ga=new WeakMap,Ka=new WeakMap,Va=new WeakMap,ja=new WeakMap,Xa=new WeakMap,Ya=new WeakMap,Qa=new WeakMap,Za=new WeakMap,_a=new WeakMap,ei=new WeakMap,ti=new WeakMap,ni=new WeakMap,oi=new WeakMap,ai=new WeakMap,ii=new WeakMap,ri=new WeakMap,si=new WeakMap,li=new WeakMap,ci=new WeakMap,di=new WeakMap,ui=new WeakMap,hi=new WeakMap,pi=new WeakMap,gi=new WeakMap,wi=new WeakMap;const yi=new class{constructor(){Pa.set(this,void 0),Ta.set(this,void 0),Aa.set(this,void 0),La.set(this,void 0),Ia.set(this,void 0),Ma.set(this,void 0),Ea.set(this,void 0),Ra.set(this,void 0),Fa.set(this,void 0),Ba.set(this,void 0),Oa.set(this,void 0),Da.set(this,void 0),qa.set(this,void 0),za.set(this,void 0),Ja.set(this,void 0),Na.set(this,void 0),$a.set(this,void 0),Wa.set(this,void 0),Ha.set(this,void 0),Ua.set(this,void 0),Ga.set(this,void 0),Ka.set(this,void 0),Va.set(this,void 0),ja.set(this,void 0),Xa.set(this,void 0),Ya.set(this,void 0),Qa.set(this,void 0),Za.set(this,void 0),_a.set(this,void 0),ei.set(this,void 0),ti.set(this,void 0),ni.set(this,void 0),oi.set(this,void 0),ai.set(this,void 0),ii.set(this,void 0),ri.set(this,void 0),si.set(this,void 0),li.set(this,void 0),ci.set(this,void 0),di.set(this,void 0),ui.set(this,void 0),hi.set(this,void 0),pi.set(this,void 0),gi.set(this,void 0),wi.set(this,void 0),mi(this,Pa,i("savedSettingsHaveBeenLoaded")),mi(this,Ta,i("language")),mi(this,Aa,i("mode")),mi(this,La,i("editorFontFamily")),mi(this,Ia,i("editorFontSize")),mi(this,Ma,i("outputFontFamily")),mi(this,Ea,i("outputFontSize")),mi(this,Ra,i("includeCommentsInExamples")),mi(this,Fa,i("loadCorrespondingExample")),mi(this,Ba,i("assembler")),mi(this,Oa,i("decimal")),mi(this,Da,i("autoCompileOnLoad")),mi(this,qa,i("autoRunOnLoad")),mi(this,za,i("autoFormatOnLoad")),mi(this,Ja,i("alwaysSaveSettings")),mi(this,Na,i("commandsCategoryIndex")),mi(this,$a,i("showSimpleCommands")),mi(this,Wa,i("showIntermediateCommands")),mi(this,Ha,i("showAdvancedCommands")),mi(this,Ua,i("files")),mi(this,Ga,i("currentFileIndex")),mi(this,Ka,[]),mi(this,Va,[]),mi(this,ja,new en(vi(this,Ta),"")),mi(this,Xa,[]),mi(this,Ya,[]),mi(this,Qa,i("showCanvasOnRun")),mi(this,Za,i("showOutputOnWrite")),mi(this,_a,i("showMemoryOnDump")),mi(this,ei,i("drawCountMax")),mi(this,ti,i("codeCountMax")),mi(this,ni,i("smallSize")),mi(this,oi,i("stackSize")),mi(this,ai,i("traceOnRun")),mi(this,ii,i("activateHCLR")),mi(this,ri,i("preventStackCollision")),mi(this,si,i("rangeCheckArrays")),mi(this,li,i("canvasStartSize")),mi(this,ci,i("setupDefaultKeyBuffer")),mi(this,di,i("turtleAttributesAsGlobals")),mi(this,ui,i("initialiseLocals")),mi(this,hi,i("allowCSTR")),mi(this,pi,i("separateReturnStack")),mi(this,gi,i("separateMemoryControlStack")),mi(this,wi,i("separateSubroutineRegisterStack"))}init(){return fi(this,void 0,void 0,(function*(){const e=yield fetch("/status");(yield e.json())?this.savedSettingsHaveBeenLoaded||(yield this.loadSavedSettings()):(this.savedSettingsHaveBeenLoaded=!1,this.alwaysSaveSettings=!1),0===vi(this,Ua).length?vi(this,Ua).push(new n(this.language)):1===vi(this,Ua).length&&""===this.file.code?this.file.language=this.language:mi(this,Ka,wt(this.code,this.language)),this.file.compiled&&this.compileCurrentFile(),I("languageChanged"),I("modeChanged"),I("editorFontFamilyChanged"),I("editorFontSizeChanged"),I("outputFontFamilyChanged"),I("outputFontSizeChanged"),I("includeCommentsInExamplesChanged"),I("loadCorrespondingExampleChanged"),I("assemblerChanged"),I("decimalChanged"),I("autoCompileOnLoadChanged"),I("autoRunOnLoadChanged"),I("autoFormatOnLoadChanged"),I("alwaysSaveSettingsChanged"),I("commandsCategoryIndexChanged"),I("showSimpleCommandsChanged"),I("showIntermediateCommandsChanged"),I("showAdvancedCommandsChanged"),I("filesChanged"),I("currentFileIndexChanged"),I("tokensChanged"),I("lexemesChanged"),I("programChanged"),I("usageChanged"),I("pcodeChanged"),I("showCanvasOnRunChanged"),I("showOutputOnWriteChanged"),I("showMemoryOnDumpChanged"),I("drawCountMaxChanged"),I("codeCountMaxChanged"),I("smallSizeChanged"),I("stackSizeChanged"),I("traceOnRunChanged"),I("activateHCLRChanged"),I("preventStackCollisionChanged"),I("rangeCheckArraysChanged"),I("canvasStartSizeChanged"),I("setupDefaultKeyBufferChanged"),I("turtleAttributesAsGlobalsChanged"),I("initialiseLocalsChanged"),I("allowCSTRChanged"),I("separateReturnStackChanged"),I("separateMemoryControlStackChanged"),I("separateSubroutineRegisterStackChanged"),I("systemReady")}))}get savedSettingsHaveBeenLoaded(){return vi(this,Pa)}get language(){return vi(this,Ta)}get mode(){return vi(this,Aa)}get editorFontFamily(){return vi(this,La)}get editorFontSize(){return vi(this,Ia)}get outputFontFamily(){return vi(this,Ma)}get outputFontSize(){return vi(this,Ea)}get includeCommentsInExamples(){return vi(this,Ra)}get loadCorrespondingExample(){return vi(this,Fa)}get assembler(){return vi(this,Ba)}get decimal(){return vi(this,Oa)}get autoCompileOnLoad(){return vi(this,Da)}get autoRunOnLoad(){return vi(this,qa)}get autoFormatOnLoad(){return vi(this,za)}get alwaysSaveSettings(){return vi(this,Ja)}get commandsCategoryIndex(){return vi(this,Na)}get showSimpleCommands(){return vi(this,$a)}get showIntermediateCommands(){return vi(this,Wa)}get showAdvancedCommands(){return vi(this,Ha)}get files(){return vi(this,Ua)}get currentFileIndex(){return vi(this,Ga)}get file(){return this.files[this.currentFileIndex]}get filename(){return this.files[this.currentFileIndex].name}get code(){return this.files[this.currentFileIndex].code}get tokens(){return vi(this,Ka)}get lexemes(){return vi(this,Va).filter((e=>"comment"!==e.type))}get comments(){return vi(this,Va).filter((e=>"comment"===e.type))}get program(){return vi(this,ja)}get usage(){return vi(this,Xa)}get pcode(){return vi(this,Ya)}get showCanvasOnRun(){return vi(this,Qa)}get showOutputOnWrite(){return vi(this,Za)}get showMemoryOnDump(){return vi(this,_a)}get drawCountMax(){return vi(this,ei)}get codeCountMax(){return vi(this,ti)}get smallSize(){return vi(this,ni)}get stackSize(){return vi(this,oi)}get traceOnRun(){return vi(this,ai)}get activateHCLR(){return vi(this,ii)}get preventStackCollision(){return vi(this,ri)}get rangeCheckArrays(){return vi(this,si)}get canvasStartSize(){return vi(this,li)}get setupDefaultKeyBuffer(){return vi(this,ci)}get turtleAttributesAsGlobals(){return vi(this,di)}get initialiseLocals(){return vi(this,ui)}get allowCSTR(){return vi(this,hi)}get separateReturnStack(){return vi(this,pi)}get separateMemoryControlStack(){return vi(this,gi)}get separateSubroutineRegisterStack(){return vi(this,wi)}get machineOptions(){return{showCanvasOnRun:this.showCanvasOnRun,showOutputOnWrite:this.showOutputOnWrite,showMemoryOnDump:this.showMemoryOnDump,drawCountMax:this.drawCountMax,codeCountMax:this.codeCountMax,smallSize:this.smallSize,stackSize:this.stackSize,traceOnRun:this.traceOnRun,activateHCLR:this.activateHCLR,preventStackCollision:this.preventStackCollision,rangeCheckArrays:this.rangeCheckArrays}}get compilerOptions(){return{canvasStartSize:this.canvasStartSize,setupDefaultKeyBuffer:this.setupDefaultKeyBuffer,turtleAttributesAsGlobals:this.turtleAttributesAsGlobals,initialiseLocals:this.initialiseLocals,allowCSTR:this.allowCSTR,separateReturnStack:this.separateReturnStack,separateMemoryControlStack:this.separateMemoryControlStack,separateSubroutineRegisterStack:this.separateSubroutineRegisterStack}}set savedSettingsHaveBeenLoaded(e){mi(this,Pa,e),r("savedSettingsHaveBeenLoaded",e)}set language(t){e.includes(t)||I("error",new C(`Unknown language "${t}".`)),mi(this,Ta,t),r("language",t),I("languageChanged"),this.file.compiled=!1,r("files",this.files),I("codeChanged"),this.files&&this.file.example&&this.loadCorrespondingExample&&this.openExampleFile(this.file.example)}set mode(e){mi(this,Aa,e),r("mode",e),I("modeChanged")}set editorFontFamily(e){mi(this,La,e),r("editorFontFamily",e),I("editorFontFamilyChanged")}set editorFontSize(e){mi(this,Ia,e),r("editorFontSize",e),I("editorFontSizeChanged")}set outputFontFamily(e){mi(this,Ma,e),r("outputFontFamily",e),I("outputFontFamilyChanged")}set outputFontSize(e){mi(this,Ea,e),r("outputFontSize",e),I("outputFontSizeChanged")}set includeCommentsInExamples(e){mi(this,Ra,e),r("includeCommentsInExamples",e),I("includeCommentsInExamplesChanged")}set loadCorrespondingExample(e){mi(this,Fa,e),r("loadCorrespondingExample",e),I("loadCorrespondingExampleChanged")}set assembler(e){mi(this,Ba,e),r("assembler",e),I("pcodeChanged")}set decimal(e){mi(this,Oa,e),r("decimal",e),I("pcodeChanged")}set autoCompileOnLoad(e){mi(this,Da,e),r("autoCompileOnLoad",vi(this,Da)),I("autoCompileOnLoadChanged")}set autoRunOnLoad(e){mi(this,qa,e),r("autoRunOnLoad",vi(this,qa)),I("autoRunOnLoadChanged")}set autoFormatOnLoad(e){mi(this,za,e),r("autoFormatOnLoad",vi(this,za)),I("autoFormatOnLoadChanged")}set alwaysSaveSettings(e){mi(this,Ja,e),r("alwaysSaveSettings",e),I("alwaysSaveSettingsChanged")}set commandsCategoryIndex(e){mi(this,Na,e),r("commandsCategoryIndex",e),I("commandsCategoryIndexChanged")}set showSimpleCommands(e){mi(this,$a,e),r("showSimpleCommands",e),I("showSimpleCommandsChanged")}set showIntermediateCommands(e){mi(this,Wa,e),r("showIntermediateCommands",e),I("showIntermediateCommandsChanged")}set showAdvancedCommands(e){mi(this,Ha,e),r("showAdvancedCommands",e),I("showAdvancedCommandsChanged")}set files(e){mi(this,Ua,e),r("files",e),I("filesChanged")}set currentFileIndex(e){mi(this,Ga,e),r("currentFileIndex",e),mi(this,Ta,this.file.language),r("language",this.file.language),I("languageChanged"),this.file.compiled?this.compileCurrentFile():(this.tokens=wt(this.code,this.language),this.lexemes=[],this.program=new en(this.language,""),this.usage=[],this.pcode=[]),I("currentFileIndexChanged")}set filename(e){this.file.name=e,this.file.edited=!0,r("files",this.files),I("filenameChanged")}set code(e){this.file.code=e,this.file.edited=!0,this.file.compiled=!1,this.tokens=wt(e,this.language),r("files",this.files),I("codeChanged")}set tokens(e){mi(this,Ka,e),I("tokensChanged")}set lexemes(e){mi(this,Va,e),I("lexemesChanged")}set program(e){mi(this,ja,e),I("programChanged")}set usage(e){mi(this,Xa,e),I("usageChanged")}set pcode(e){mi(this,Ya,e),I("pcodeChanged")}set showCanvasOnRun(e){mi(this,Qa,e),r("showCanvasOnRun",e),I("showCanvasOnRunChanged")}set showOutputOnWrite(e){mi(this,Za,e),r("showOutputOnWrite",e),I("showOutputOnWriteChanged")}set showMemoryOnDump(e){mi(this,_a,e),r("showMemoryOnDump",e),I("showMemoryOnDumpChanged")}set drawCountMax(e){mi(this,ei,e),r("drawCountMax",e),I("drawCountMaxChanged")}set codeCountMax(e){mi(this,ti,e),r("codeCountMax",e),I("codeCountMaxChanged")}set smallSize(e){mi(this,ni,e),r("smallSize",e),I("smallSizeChanged")}set stackSize(e){mi(this,oi,e),r("stackSize",e),I("stackSizeChanged")}set traceOnRun(e){mi(this,ai,e),r("traceOnRun",e),I("traceOnRunChanged")}set activateHCLR(e){mi(this,ii,e),r("activateHCLR",e),I("activateHCLRChanged")}set preventStackCollision(e){mi(this,ri,e),r("preventStackCollision",e),I("preventStackCollisionChanged")}set rangeCheckArrays(e){mi(this,si,e),r("rangeCheckArrays",e),I("rangeCheckArraysChanged")}set canvasStartSize(e){mi(this,li,e),r("canvasStartSize",e),I("canvasStartSizeChanged")}set setupDefaultKeyBuffer(e){mi(this,ci,e),r("setupDefaultKeyBuffer",e),I("setupDefaultKeyBufferChanged")}set turtleAttributesAsGlobals(e){mi(this,di,e),r("turtleAttributesAsGlobals",e),I("turtleAttributesAsGlobalsChanged")}set initialiseLocals(e){mi(this,ui,e),r("initialiseLocals",e),I("initialiseLocalsChanged")}set allowCSTR(e){mi(this,hi,e),r("allowCSTR",e),I("allowCSTRChanged")}set separateReturnStack(e){mi(this,pi,e),r("separateReturnStack",e),I("separateReturnStackChanged")}set separateMemoryControlStack(e){mi(this,gi,e),r("separateMemoryControlStack",e),I("separateMemoryControlStackChanged")}set separateSubroutineRegisterStack(e){mi(this,wi,e),r("separateSubroutineRegisterStack",e),I("separateSubroutineRegisterStackChanged")}undo(){}redo(){}cut(){}copy(){}paste(){}selectAll(){}saveSettings(){return fi(this,void 0,void 0,(function*(){const e=yield fetch("/status");if(e.ok&&(yield e.json())){const e={language:this.language,mode:this.mode,editorFontFamily:this.editorFontFamily,editorFontSize:this.editorFontSize,outputFontFamily:this.outputFontFamily,outputFontSize:this.outputFontSize,includeCommentsInExamples:this.includeCommentsInExamples,loadCorrespondingExample:this.loadCorrespondingExample,assembler:this.assembler,decimal:this.decimal,autoCompileOnLoad:this.autoCompileOnLoad,autoRunOnLoad:this.autoRunOnLoad,autoFormatOnLoad:this.autoFormatOnLoad,alwaysSaveSettings:this.alwaysSaveSettings,showCanvasOnRun:this.showCanvasOnRun,showOutputOnWrite:this.showOutputOnWrite,showMemoryOnDump:this.showMemoryOnDump,drawCountMax:this.drawCountMax,codeCountMax:this.codeCountMax,smallSize:this.smallSize,stackSize:this.stackSize,traceOnRun:this.traceOnRun,activateHCLR:this.activateHCLR,preventStackCollision:this.preventStackCollision,rangeCheckArrays:this.rangeCheckArrays,canvasStartSize:this.canvasStartSize,setupDefaultKeyBuffer:this.setupDefaultKeyBuffer,turtleAttributesAsGlobals:this.turtleAttributesAsGlobals,initialiseLocals:this.initialiseLocals,allowCSTR:this.allowCSTR,separateReturnStack:this.separateReturnStack,separateMemoryControlStack:this.separateMemoryControlStack,separateSubroutineRegisterStack:this.separateSubroutineRegisterStack};(yield fetch("/account/update-settings",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(e)})).ok?I("closeMenu","system"):I("error",new C("Your settings could not be saved. Please try again later."))}else I("error",new C("You must be logged in to save your settings."))}))}loadSavedSettings(){return fi(this,void 0,void 0,(function*(){const e=yield fetch("/status"),t=e.ok?yield e.json():null;t&&t.systemSettings&&(this.savedSettingsHaveBeenLoaded=!0,this.language=t.systemSettings.language,this.mode=t.systemSettings.mode,this.editorFontFamily=t.systemSettings.editorFontFamily,this.editorFontSize=t.systemSettings.editorFontSize,this.outputFontFamily=t.systemSettings.outputFontFamily,this.outputFontSize=t.systemSettings.outputFontSize,this.includeCommentsInExamples=t.systemSettings.includeCommentsInExamples,this.loadCorrespondingExample=t.systemSettings.loadCorrespondingExample,this.assembler=t.systemSettings.assembler,this.decimal=t.systemSettings.decimal,this.autoCompileOnLoad=t.systemSettings.autoCompileOnLoad,this.autoRunOnLoad=t.systemSettings.autoRunOnLoad,this.autoFormatOnLoad=t.systemSettings.autoFormatOnLoad,this.alwaysSaveSettings=t.systemSettings.alwaysSaveSettings,this.showCanvasOnRun=t.systemSettings.showCanvasOnRun,this.showOutputOnWrite=t.systemSettings.showOutputOnWrite,this.showMemoryOnDump=t.systemSettings.showMemoryOnDump,this.drawCountMax=t.systemSettings.drawCountMax,this.codeCountMax=t.systemSettings.codeCountMax,this.smallSize=t.systemSettings.smallSize,this.stackSize=t.systemSettings.stackSize,this.traceOnRun=t.systemSettings.traceOnRun,this.activateHCLR=t.systemSettings.activateHCLR,this.preventStackCollision=t.systemSettings.preventStackCollision,this.rangeCheckArrays=t.systemSettings.rangeCheckArrays,this.canvasStartSize=t.systemSettings.canvasStartSize,this.setupDefaultKeyBuffer=t.systemSettings.setupDefaultKeyBuffer,this.turtleAttributesAsGlobals=t.systemSettings.turtleAttributesAsGlobals,this.initialiseLocals=t.systemSettings.initialiseLocals,this.allowCSTR=t.systemSettings.allowCSTR,this.separateReturnStack=t.systemSettings.separateReturnStack,this.separateMemoryControlStack=t.systemSettings.separateMemoryControlStack,this.separateSubroutineRegisterStack=t.systemSettings.separateSubroutineRegisterStack)}))}resetDefaults(){this.language=a.language,this.mode=a.mode,this.editorFontFamily=a.editorFontFamily,this.editorFontSize=a.editorFontSize,this.outputFontFamily=a.outputFontFamily,this.outputFontSize=a.outputFontSize,this.includeCommentsInExamples=a.includeCommentsInExamples,this.loadCorrespondingExample=a.loadCorrespondingExample,this.assembler=a.assembler,this.decimal=a.decimal,this.autoCompileOnLoad=a.autoCompileOnLoad,this.autoRunOnLoad=a.autoRunOnLoad,this.autoFormatOnLoad=a.autoFormatOnLoad,this.alwaysSaveSettings=a.alwaysSaveSettings,this.showCanvasOnRun=a.showCanvasOnRun,this.showOutputOnWrite=a.showOutputOnWrite,this.showMemoryOnDump=a.showMemoryOnDump,this.drawCountMax=a.drawCountMax,this.codeCountMax=a.codeCountMax,this.smallSize=a.smallSize,this.stackSize=a.stackSize,this.traceOnRun=a.traceOnRun,this.activateHCLR=a.activateHCLR,this.preventStackCollision=a.preventStackCollision,this.rangeCheckArrays=a.rangeCheckArrays,this.canvasStartSize=a.canvasStartSize,this.setupDefaultKeyBuffer=a.setupDefaultKeyBuffer,this.turtleAttributesAsGlobals=a.turtleAttributesAsGlobals,this.initialiseLocals=a.initialiseLocals,this.allowCSTR=a.allowCSTR,this.separateReturnStack=a.separateReturnStack,this.separateMemoryControlStack=a.separateMemoryControlStack,this.separateSubroutineRegisterStack=a.separateSubroutineRegisterStack,I("closeMenu","system")}addFile(e){He(),this.file&&""===this.file.code&&!1===this.file.edited?(this.files[this.currentFileIndex]=e,this.files=this.files,I("currentFileIndexChanged")):(this.files.push(e),this.files=this.files,this.currentFileIndex=this.files.length-1,this.code=e.code),I("closeMenu","system")}closeCurrentFile(){He(),this.files=this.files.slice(0,this.currentFileIndex).concat(this.files.slice(this.currentFileIndex+1)),0===this.files.length?this.newFile():this.currentFileIndex>this.files.length-1?this.currentFileIndex=this.currentFileIndex-1:this.currentFileIndex=this.currentFileIndex,I("closeMenu","system")}newFile(e=!1){const t=new n(this.language);e&&(t.code=o[this.language]),this.addFile(t)}openFile(e,t,o=null){const a=new n(this.language,o),i=e.split("."),r=i.pop(),s=i.join(".");let l;switch(r){case"tbas":case"tgb":a.language="BASIC",a.name=s,a.code=t.trim();break;case"tc":a.language="C",a.name=s,a.code=t.trim();break;case"tjav":a.language="Java",a.name=s,a.code=t.trim();break;case"tpas":case"tgp":a.language="Pascal",a.name=s,a.code=t.trim();break;case"tpy":case"tgy":a.language="Python",a.name=s,a.code=t.trim();break;case"tts":a.language="TypeScript",a.name=s,a.code=t.trim();break;case"tmx":case"tgx":try{l=JSON.parse(t),l.language&&l.name&&l.code&&l.usage&&l.pcode?(a.language=l.language,a.name=l.name,a.code=l.code.trim()):I("error",new C("Invalid TMX file."))}catch(e){I("error",new C("Invalid TMX file."))}break;case"tmj":case"tmb":default:throw new C("Invalid file type.")}this.addFile(a),l&&(this.lexemes=Qt(l.code.trim(),this.language),this.program=ta(this.lexemes,this.language),this.usage=l.usage,this.pcode=l.pcode,this.file.compiled=!0)}openLocalFile(){const e=this,t=function(e={}){return u("input",e)}({type:"file",on:["change",function(){if(t.files){const n=t.files[0],o=new FileReader;o.onload=function(){e.openFile(n.name,o.result)},o.readAsText(n)}}]});t.click()}openRemoteFile(e){I("error",new C("Feature not yet available."))}openExampleFile(e){const n=c.find((t=>t.id===e));if(n){const o=`${n.id}.${t[this.language]}`;window.fetch(`/examples/${this.language}/${n.groupId}/${o}`).then((t=>{t.ok?t.text().then((t=>{this.openFile(o,t.trim(),e)})):I("error",new C(`Example "${e}" is not available for Turtle ${this.language}.`))}))}else I("error",new C(`Unknown example "${e}".`))}openExampleGroup(e){const t=d.find((t=>t.id===e));if(t)for(const e of t.examples)this.openExampleFile(e.id);else I("error",new C(`Group ID ${e} not found.`))}saveLocalFile(){const e=document.createElement("a"),t=new window.Blob([this.file.code],{type:"text/plain;charset=utf-8"});e.setAttribute("href",URL.createObjectURL(t)),e.setAttribute("download",this.file.filename),e.click()}saveRemoteFile(){I("error",new C("Feature not yet available."))}compileCurrentFile(){this.file.language=this.language;try{this.tokens=wt(this.code,this.language),this.lexemes=Qt(this.tokens,this.language),this.program=ta(this.lexemes,this.language),this.usage=function(e,t){const n=oa.concat(aa[t.language]).map(ia.bind(null,t.language,e)),o=new na(30,"Subroutine calls",t.allSubroutines.slice(1)),a=ia(t.language,e,o);return n.concat(a).filter((e=>e.expressions.length>0))}(this.lexemes,this.program),this.pcode=function(e,t=la){const n=function(e,t){const n=[[we.ldin,e.turtleAddress,we.dupl,we.dupl,we.ldin,0,we.sptr,we.ldin,e.turtleVariables.length,we.swap,we.sptr,we.incr,we.ldin,e.memoryNeeded+e.turtleVariables.length,we.zptr,we.ldin,e.turtleAddress+e.memoryNeeded+e.turtleVariables.length,we.stmt],[we.home,we.ldin,2,we.thik,we.ldin,360,we.angl,we.ldin,32,we.bufr,we.ldin,1,we.sptr,we.hfix,we.ldin,0,we.dupl,we.ldin,1e3,we.dupl,we.dupl,we.dupl,we.reso,we.canv]];for(const t of e.variables){const e=ba(t);e.length>0&&n.push(...e)}return n}(e),o=e.allSubroutines.length>0?n.length+2:n.length+1,a=function(e,t,n){const o=[];for(const a of e){a.startLine=t;const e=ka(a,n),i=Sa(a,t+e.length,n),r=e.concat(i);if("procedure"===a.type||"Pascal"===a.program.language){const e=Ca(a);r.push(...e)}t+=r.length,o.push(...r)}return o}(e.allSubroutines,o,t),i=Sa(e,o+a.length,t),r=[[we.jump,n.length+a.length+2]],s=a.length>1?n.concat(r).concat(a).concat(i):n.concat(i);if(function(e,t){for(let n=0;n<t.length;n+=1)for(let o=0;o<t[n].length;o+=1)if(t[n][o-1]&&t[n][o-1]===we.subr){const a=e.allSubroutines.find((e=>e.index===t[n][o]));a&&(t[n][o]=a.startLine)}}(e,s),"C"===e.language||"Java"===e.language){const t=e.subroutines.find((e=>"main"===e.name));s.push([we.subr,t.startLine])}return function(e){const t=[we.hstr,we.ctos,we.itos,we.hexs,we.qtos,we.smax,we.smin,we.scat,we.case,we.copy,we.dels,we.inss,we.repl,we.spad,we.lstr,we.read,we.rdln,we.frds,we.frln,we.ffnd,we.fdir,we.fnxt];for(const n of e){let e=!1,o=!1,a=null,i=0;for(;i<n.length;){t.indexOf(n[i])>=0&&(e=!0),n[i]===we.subr&&(o=!0),n[i]!==we.jump&&n[i]!==we.ifno||(a=i);const r=fe(n[i]);i+=-1===r?n[i+1]+2:r+1}e&&!o&&(null!==a?n.splice(a,0,we.hclr):n[n.length-1]!==we.hclr&&n.push(we.hclr))}}(s),s.push([we.halt]),s}(this.program,this.compilerOptions),this.file.language=this.language,this.file.compiled=!0,this.files=this.files}catch(e){I("error",e)}}backupCode(){this.file.backup=this.file.code}restoreCode(){this.file.code!==this.file.backup&&(this.file.compiled=!1),this.file.code=this.file.backup}dumpMemory(){I("memoryDumped",de())}playPauseMachine(){var e,t;Se?ke?(ke=!1,I("unpaused")):Ue():(this.file.compiled||this.compileCurrentFile(),this.file.compiled&&(e=this.pcode,t=this.machineOptions,We(),xe=e,Te=t,Ce=0,Pe=0,Te.showCanvasOnRun&&I("selectTab","canvas"),function(e){M.length=2097152,E.length=256,R.length=16,M.fill(0),E.fill(-1),R.fill(-1),F.length=0,B.length=0,O.length=0,D.length=0,q.length=0,z=0,J=-1,N=e.stackSize-1,$=N,W=$,H=$}(Te),qe=Date.now(),ze=!0,Je=!0,Ne=Date.now(),Se=!0,ke=!1,window.addEventListener("keydown",Ke),window.addEventListener("keyup",Ve),window.addEventListener("keypress",je),ye.addEventListener("contextmenu",Ze),ye.addEventListener("mousemove",Xe),ye.addEventListener("touchmove",Ze),ye.addEventListener("touchmove",Xe),ye.addEventListener("mousedown",Ze),ye.addEventListener("mousedown",Ye),ye.addEventListener("touchstart",Ye),ye.addEventListener("mouseup",Qe),ye.addEventListener("touchend",Qe),I("played"),Ge())),I("closeMenu","system")}};function bi(e){const t=document.querySelector(`[data-menu="${e}"]`);t&&(t.classList.contains("open")?ki(e):Si(e))}function Si(e){const t=document.querySelector(`[data-action="toggleMenu"][data-arg="${e}"]`),n=document.querySelector(`[data-menu="${e}"]`);if(t&&n){switch(e){case"user":ki("site");break;case"site":case"documentation":ki("user")}t.classList.add("open"),n.classList.add("open");const o=t.querySelector(".fa-caret-down");o&&(o.classList.remove("fa-caret-down"),o.classList.add("fa-caret-up"))}}function ki(e){const t=document.querySelector(`[data-action="toggleMenu"][data-arg="${e}"]`),n=document.querySelector(`[data-menu="${e}"]`);if(t&&n){for(const e of n.querySelectorAll("[data-menu]"))ki(e.dataset.menu);for(const e of n.querySelectorAll("[data-system-menu]"))Pi(e.dataset.systemMenu);n.classList.remove("open"),t.classList.remove("open");const e=t.querySelector(".fa-caret-up");e&&(e.classList.remove("fa-caret-up"),e.classList.add("fa-caret-down"))}}function xi(e){const t=document.querySelector(`[data-system-menu="${e}"]`);t&&(t.classList.contains("open")?Pi(e):Ci(e))}function Ci(e){var t,n;const o=document.querySelector(`[data-action="toggleSystemMenu"][data-arg="${e}"]`),a=document.querySelector(`[data-system-menu="${e}"]`);if(o&&a){Si("system");const e=null===(n=null===(t=o.parentElement)||void 0===t?void 0:t.parentElement)||void 0===n?void 0:n.querySelectorAll('[data-action="toggleSystemMenu"]');for(const t of e||[])Pi(t.dataset.arg);o.classList.add("open"),a.classList.add("open")}}function Pi(e){const t=document.querySelector(`[data-action="toggleSystemMenu"][data-arg="${e}"]`),n=document.querySelector(`[data-system-menu="${e}"]`);t&&n&&(t.classList.remove("open"),n.classList.remove("open"))}function Ti(e){for(const t of document.querySelectorAll('[data-action="selectTab"]'))for(const n of t.children)n.value===e&&(n.selected=!0);for(const t of document.querySelectorAll(`[data-tab="${e}"]`)){if(t.parentElement)for(const e of t.parentElement.children)e.classList.remove("active");t.classList.add("active")}}const Ai=new C("This feature has not yet been implemented in the online system.");for(const e of document.querySelectorAll("[data-action]")){const t=e;switch(t.dataset.action){case"toggleMenu":t.addEventListener("click",(function(){t.blur(),t.dataset.arg&&bi(t.dataset.arg)})),L("toggleMenu",bi);break;case"openMenu":t.addEventListener("click",(function(){t.blur(),t.dataset.arg&&Si(t.dataset.arg)})),L("openMenu",Si);break;case"closeMenu":t.addEventListener("click",(function(){t.blur(),t.dataset.arg&&ki(t.dataset.arg)})),L("closeMenu",ki);break;case"closeSiteMenus":t.addEventListener("click",(function(){ki("site"),ki("documentation"),ki("user")}));break;case"toggleSystemMenu":t.addEventListener("click",(function(){t.blur(),t.dataset.arg&&xi(t.dataset.arg)})),L("toggleSystemMenu",xi);break;case"openSystemMenu":t.addEventListener("click",(function(){t.blur(),t.dataset.arg&&Ci(t.dataset.arg)})),L("openSystemMenu",Ci);break;case"closeSystemMenu":t.addEventListener("click",(function(){t.blur(),t.dataset.arg&&Pi(t.dataset.arg)})),L("closeSystemMenu",Pi);break;case"selectTab":t.addEventListener("change",(function(){t.blur(),Ti(t.value)})),L("selectTab",Ti);break;case"maximize":t.addEventListener("click",(function(){t.blur(),document.body.classList.toggle("fullscreen"),document.body.classList.contains("fullscreen")?h(t,[v({className:"fa fa-compress",title:"Expand down"})]):h(t,[v({className:"fa fa-expand",title:"Maximize"})])}));break;case"newProgram":t.addEventListener("click",(function(){yi.newFile()}));break;case"newSkeletonProgram":t.addEventListener("click",(function(){yi.newFile(!0)}));break;case"openProgram":t.addEventListener("click",(function(){yi.openLocalFile()}));break;case"saveProgram":t.addEventListener("click",(function(){yi.saveLocalFile()}));break;case"saveExportFile":t.addEventListener("click",(function(){I("error",Ai)}));break;case"closeProgram":t.addEventListener("click",(function(){yi.closeCurrentFile()}));break;case"copyCanvasGraphic":case"saveCanvasGraphic":case"printProgram":case"printOutputText":case"printConsoleText":t.addEventListener("click",(function(){I("error",Ai)}));break;case"undo":t.addEventListener("click",(function(){yi.undo()}));break;case"redo":t.addEventListener("click",(function(){yi.redo()}));break;case"cut":t.addEventListener("click",(function(){yi.cut()}));break;case"copy":t.addEventListener("click",(function(){yi.copy()}));break;case"paste":t.addEventListener("click",(function(){yi.paste()}));break;case"selectAll":t.addEventListener("click",(function(){yi.selectAll()}));break;case"findAndReplace":case"autoFormat":t.addEventListener("click",(function(){I("error",Ai)}));break;case"storeCopy":t.addEventListener("click",(function(){yi.backupCode()}));break;case"restoreCopy":t.addEventListener("click",(function(){yi.restoreCode()}));break;case"compile":t.addEventListener("click",(function(){yi.compileCurrentFile()}));break;case"savePCodeJson":case"savePCodeBinary":t.addEventListener("click",(function(){I("error",Ai)}));break;case"run":t.addEventListener("click",(function(){t.blur(),yi.playPauseMachine()}));break;case"halt":t.addEventListener("click",(function(){t.blur(),He()}));break;case"pause":t.addEventListener("click",(function(){t.blur(),Ue()}));break;case"resetMachine":t.addEventListener("click",(function(){t.blur(),We(),ki("system")}));break;case"viewMachineOptions":t.addEventListener("click",(function(){I("selectTab","options"),ki("system")}));break;case"loadAndRunPCode":t.addEventListener("click",(function(){I("error",Ai)}));break;case"saveSettings":t.addEventListener("click",(function(){yi.saveSettings()}));break;case"resetSettings":t.addEventListener("click",(function(){yi.resetDefaults()}));break;case"dumpMemory":t.addEventListener("click",(function(){t.blur(),yi.dumpMemory()}));break;default:console.error(`Unknown action '${t.dataset.action}'.`)}}for(const t of document.querySelectorAll("[data-binding]"))switch(t.dataset.binding){case"language":h(t,e.map((e=>x({value:e,content:`Turtle ${e}`})))),t.addEventListener("change",(function(){yi.language=t.value})),L("languageChanged",(function(){t.value=yi.language}));break;case"mode":t.addEventListener("change",(function(){t.checked&&(yi.mode=t.value)})),L("modeChanged",(function(){t.value===yi.mode&&(t.checked=!0)}));break;case"editorFontFamily":Li(t),t.addEventListener("change",(function(){yi.editorFontFamily=t.value})),L("editorFontFamilyChanged",(function(){t.value=yi.editorFontFamily}));break;case"editorFontSize":t.addEventListener("change",(function(){yi.editorFontSize=parseInt(t.value)})),L("editorFontSizeChanged",(function(){t.value=yi.editorFontSize.toString(10)}));break;case"outputFontFamily":Li(t),t.addEventListener("change",(function(){yi.outputFontFamily=t.value})),L("outputFontFamilyChanged",(function(){t.value=yi.outputFontFamily}));break;case"outputFontSize":t.addEventListener("change",(function(){yi.outputFontSize=parseInt(t.value)})),L("outputFontSizeChanged",(function(){t.value=yi.outputFontSize.toString(10)}));break;case"includeCommentsInExamples":Ei(t),t.addEventListener("change",(function(){yi.includeCommentsInExamples=t.checked})),L("includeCommentsInExamplesChanged",(function(){t.checked=yi.includeCommentsInExamples}));break;case"loadCorrespondingExample":t.addEventListener("change",(function(){yi.loadCorrespondingExample=t.checked})),L("loadCorrespondingExampleChanged",(function(){t.checked=yi.loadCorrespondingExample}));break;case"assembler":t.addEventListener("change",(function(){t.checked&&(yi.assembler="assembler"===t.value)})),L("assemblerChanged",(function(){yi.assembler?t.checked="assembler"===t.value:t.checked="assembler"!==t.value}));break;case"decimal":t.addEventListener("change",(function(){t.checked&&(yi.decimal="decimal"===t.value)})),L("decimalChanged",(function(){yi.decimal?t.checked="decimal"===t.value:t.checked="decimal"!==t.value}));break;case"autoCompileOnLoad":Ei(t),t.addEventListener("change",(function(){yi.autoCompileOnLoad=t.checked})),L("autoCompileOnLoadChanged",(function(){t.checked=yi.autoCompileOnLoad}));break;case"autoRunOnLoad":Ei(t),t.addEventListener("change",(function(){yi.autoRunOnLoad=t.checked})),L("autoRunOnLoadChanged",(function(){t.checked=yi.autoRunOnLoad}));break;case"autoFormatOnLoad":Ei(t),t.addEventListener("change",(function(){yi.autoFormatOnLoad=t.checked})),L("autoFormatOnLoadChanged",(function(){t.checked=yi.autoFormatOnLoad}));break;case"alwaysSaveSettings":Ri(t),t.addEventListener("change",(function(){yi.alwaysSaveSettings=t.checked})),L("alwaysSaveSettingsChanged",(function(){t.checked=yi.alwaysSaveSettings}));break;case"commandsCategoryIndex":Ii(t),t.addEventListener("change",(function(){yi.commandsCategoryIndex=parseInt(t.value)})),L("commandsCategoryIndexChanged",(function(){t.value=yi.commandsCategoryIndex.toString(10)}));break;case"showSimpleCommands":t.addEventListener("change",(function(){yi.showSimpleCommands=t.checked})),L("showSimpleCommandsChanged",(function(){t.checked=yi.showSimpleCommands}));break;case"showIntermediateCommands":t.addEventListener("change",(function(){yi.showIntermediateCommands=t.checked})),L("showIntermediateCommandsChanged",(function(){t.checked=yi.showIntermediateCommands}));break;case"showAdvancedCommands":t.addEventListener("change",(function(){yi.showAdvancedCommands=t.checked})),L("showAdvancedCommandsChanged",(function(){t.checked=yi.showAdvancedCommands}));break;case"currentFileIndex":Mi(t),t.addEventListener("change",(function(){yi.currentFileIndex=parseInt(t.value)})),L("filesChanged",(function(){Mi(t)})),L("currentFileIndexChanged",(function(){t.value=yi.currentFileIndex.toString(10)}));break;case"filename":t.addEventListener("change",(function(){yi.filename=t.value})),L("filenameChanged",(function(){t.value=yi.filename}));break;case"showCanvasOnRun":t.addEventListener("change",(function(){yi.showCanvasOnRun=t.checked})),L("showCanvasOnRunChanged",(function(){t.checked=yi.showCanvasOnRun}));break;case"showOutputOnWrite":t.addEventListener("change",(function(){yi.showOutputOnWrite=t.checked})),L("showOutputOnWriteChanged",(function(){t.checked=yi.showOutputOnWrite}));break;case"showMemoryOnDump":t.addEventListener("change",(function(){yi.showMemoryOnDump=t.checked})),L("showMemoryOnDumpChanged",(function(){t.checked=yi.showMemoryOnDump}));break;case"drawCountMax":t.addEventListener("change",(function(){yi.drawCountMax=parseInt(t.value)})),L("drawCountMaxChanged",(function(){t.value=yi.drawCountMax.toString(10)}));break;case"codeCountMax":t.addEventListener("change",(function(){yi.codeCountMax=parseInt(t.value)})),L("codeCountMaxChanged",(function(){t.value=yi.codeCountMax.toString(10)}));break;case"smallSize":t.addEventListener("change",(function(){yi.smallSize=parseInt(t.value)})),L("smallSizeChanged",(function(){t.value=yi.smallSize.toString(10)}));break;case"stackSize":t.addEventListener("change",(function(){yi.stackSize=parseInt(t.value)})),L("stackSizeChanged",(function(){t.value=yi.stackSize.toString(10)}));break;case"traceOnRun":Ei(t),t.addEventListener("change",(function(){yi.traceOnRun=t.checked})),L("traceOnRunChanged",(function(){t.checked=yi.traceOnRun}));break;case"activateHCLR":Ei(t),t.addEventListener("change",(function(){yi.activateHCLR=t.checked})),L("activateHCLRChanged",(function(){t.checked=yi.activateHCLR}));break;case"preventStackCollision":Ei(t),t.addEventListener("change",(function(){yi.preventStackCollision=t.checked})),L("preventStackCollisionChanged",(function(){t.checked=yi.preventStackCollision}));break;case"rangeCheckArrays":Ei(t),t.addEventListener("change",(function(){yi.rangeCheckArrays=t.checked})),L("rangeCheckArraysChanged",(function(){t.checked=yi.rangeCheckArrays}));break;case"canvasStartSize":t.addEventListener("change",(function(){t.checked&&(yi.canvasStartSize=parseInt(t.value))})),L("canvasStartSizeChanged",(function(){t.value===yi.canvasStartSize.toString(10)&&(t.checked=!0)}));break;case"setupDefaultKeyBuffer":Ei(t),t.addEventListener("change",(function(){yi.setupDefaultKeyBuffer=t.checked})),L("setupDefaultKeyBufferChanged",(function(){t.checked=yi.setupDefaultKeyBuffer}));break;case"turtleAttributesAsGlobals":Ei(t),t.addEventListener("change",(function(){yi.turtleAttributesAsGlobals=t.checked})),L("turtleAttributesAsGlobalsChanged",(function(){t.checked=yi.turtleAttributesAsGlobals}));break;case"initialiseLocals":Ei(t),t.addEventListener("change",(function(){yi.initialiseLocals=t.checked})),L("initialiseLocalsChanged",(function(){t.checked=yi.initialiseLocals}));break;case"allowCSTR":Ei(t),t.addEventListener("change",(function(){yi.allowCSTR=t.checked})),L("allowCSTRChanged",(function(){t.checked=yi.allowCSTR}));break;case"separateReturnStack":Ei(t),t.addEventListener("change",(function(){yi.separateReturnStack=t.checked})),L("separateReturnStackChanged",(function(){t.checked=yi.separateReturnStack}));break;case"separateMemoryControlStack":Ei(t),t.addEventListener("change",(function(){yi.separateMemoryControlStack=t.checked})),L("separateMemoryControlStackChanged",(function(){t.checked=yi.separateMemoryControlStack}));break;case"separateSubroutineRegisterStack":Ei(t),t.addEventListener("change",(function(){yi.separateSubroutineRegisterStack=t.checked})),L("separateSubroutineRegisterStackChanged",(function(){t.checked=yi.separateSubroutineRegisterStack}));break;default:console.error(`Unknown data binding '${t.dataset.binding}'.`)}function Li(e){h(e,[x({value:"Consolas",content:"Consolas"}),x({value:"Courier",content:"Courier"}),x({value:"Lucida Sans Typewriter",content:"Lucida Sans Typewriter"}),x({value:"Monospace",content:"Monospace"})])}function Ii(e){h(e,oa.map((e=>x({value:e.index.toString(10),content:`${(e.index+1).toString(10)}. ${e.title}`}))))}function Mi(e){h(e,yi.files.map(((e,t)=>x({value:t.toString(10),content:`${(t+1).toString(10).padStart(2,"0")} [${e.language}] ${e.name||"[no name]"}`,selected:yi.currentFileIndex===t?"selected":void 0}))))}function Ei(e){e.setAttribute("disabled","disabled"),e.parentElement&&e.parentElement.addEventListener("click",(function(){I("error",new C("This option cannot yet be modified in the online system."))}))}function Ri(e){return t=this,n=void 0,a=function*(){const t=yield fetch("/status");null===(t.ok?yield t.json():null)&&(e.setAttribute("disabled","disabled"),e.parentElement&&e.parentElement.addEventListener("click",(function(){I("error",new C("You must be logged in to change this setting."))})))},new((o=void 0)||(o=Promise))((function(e,i){function r(e){try{l(a.next(e))}catch(e){i(e)}}function s(e){try{l(a.throw(e))}catch(e){i(e)}}function l(t){var n;t.done?e(t.value):(n=t.value,n instanceof o?n:new o((function(e){e(n)}))).then(r,s)}l((a=a.apply(t,n||[])).next())}));var t,n,o,a}function Fi(e,t){return("string"==typeof e?wt(e,t):e).map((e=>{switch(e.type){case"spaces":case"newline":return e.content;case"unterminated-comment":case"unterminated-string":case"bad-binary":case"bad-octal":case"bad-hexadecimal":case"real":case"bad-keycode":case"bad-query":case"illegal":return`<span class="error">${e.content}</span>`;case"binary":case"octal":case"hexadecimal":case"decimal":return`<span class="integer">${e.content}</span>`;case"colour":const n=ge.find((n=>n.names[t]===e.content));return n?`<span class="colour" style="border-color:#${n.hex};">${e.content}</span>`:`<span class="colour">${e.content}</span>`;default:return`<span class="${e.type}">${e.content}</span>`}})).join("")}!function(){const e=document.getElementById("version-select"),t=document.getElementById("download-link");e&&t&&e.addEventListener("change",(()=>{const n=t.href.split("/");n.pop(),n.push(e.value),t.setAttribute("href",n.join("/"))}))}();const Bi=document.querySelectorAll("code[data-language]");for(const e of Bi)e.innerHTML=Fi(e.innerText,e.dataset.language);L("languageChanged",(function(){const e=document.querySelectorAll("[data-language]");for(const t of e)yi.language===t.dataset.language||"turtle"===t.id?t.classList.remove("hidden"):t.classList.add("hidden")})),L("modeChanged",(function(){const e=document.querySelectorAll("[data-mode]"),t=document.querySelector('[data-component="guide-toc"]');for(const t of e)t.dataset.mode&&(t.dataset.mode.split(",").includes(yi.mode)||"turtle"===t.id?t.classList.remove("hidden"):(t.classList.add("hidden"),t.classList.contains("system-tab-pane")&&t.classList.contains("active")&&I("selectTab","canvas")));if(t)for(const e of t.children)if("simple"===yi.mode||"normal"===yi.mode)switch(e.value){case"the-compile-menu":case"the-tabs-menu":e.classList.add("hidden");break;case"the-run-menu":e.innerHTML="8. The Run Menu";break;case"the-options-menu":e.innerHTML="9. The Options Menu";break;case"the-examples-menu":e.innerHTML="10. The Examples Menu"}else switch(e.value){case"the-compile-menu":case"the-tabs-menu":e.classList.remove("hidden");break;case"the-run-menu":e.innerHTML="10. The Run Menu";break;case"the-options-menu":e.innerHTML="11. The Options Menu";break;case"the-examples-menu":e.innerHTML="12. The Examples Menu"}})),function(){const e=document.querySelector("[data-preview]");e&&e.dataset.preview&&document.getElementById(e.dataset.preview).addEventListener("change",(t=>{const n=t.currentTarget;e.innerHTML="<p>Dear <strong>{{ firstname }} {{ surname }}</strong>,</p>",e.innerHTML+=n.value}))}();const Oi=document.querySelector('[data-component="coloursTableBody"]');function Di(e){return`\n    <th>${e.index}</th>\n    <td style="background:#${e.hex};color:${e.text}">\n      ${e.names[yi.language]}<br>${function(e,t){switch(e){case"BASIC":return`&${t}`;case"Pascal":return`$${t}`;case"Python":return`0x${t}`}}(yi.language,e.hex)}\n    </td>`}Oi&&L("languageChanged",(function(){if(Oi){Oi.innerHTML="";for(let e=0;e<10;e+=1)Oi.innerHTML+=`<tr>${ge.slice(5*e,5*e+5).map(Di).join("")}</tr>`}}));const qi=document.querySelector('[data-component="commandsTableBody"]');function zi(){if(qi){let e=oa[yi.commandsCategoryIndex].expressions;yi.showSimpleCommands||(e=e.filter((e=>0!==e.level))),yi.showIntermediateCommands||(e=e.filter((e=>1!==e.level))),yi.showAdvancedCommands||(e=e.filter((e=>2!==e.level))),e=e.filter((e=>e.names[yi.language])),h(qi,e.map(Ji))}}function Ji(e){const t=e;return k({content:[b({content:[m({content:Fi(t.names[yi.language],yi.language)})]}),b({content:t.parameters.map((e=>`<code>${Fi(e.name,yi.language)}</code> (${e.type})`)).join("<br>")}),b({content:t.returns||"-"}),b({content:t.description})]})}qi&&(L("languageChanged",zi),L("commandsCategoryIndexChanged",zi),L("showSimpleCommandsChanged",zi),L("showIntermediateCommandsChanged",zi),L("showAdvancedCommandsChanged",zi));class Ni{constructor(e,t,n){this.index=e,this.name=t,this.css=n}}const $i=[new Ni(0,"None","none"),new Ni(1,"Default","default"),new Ni(2,"Pointer","pointer"),new Ni(3,"Crosshair","crosshair"),new Ni(4,"Text","text"),new Ni(5,"Move","move"),new Ni(6,"Resize NESW","nesw-resize"),new Ni(7,"Resize NS","ns-resize"),new Ni(8,"Resize NWSE","nwse-resize"),new Ni(9,"Resize EW","ew-resize"),new Ni(10,"Resize N","n-resize"),new Ni(11,"Wait","wait"),new Ni(12,"Progress","progress"),new Ni(13,"No Drop","no-drop"),new Ni(14,"Forbidden","not-allowed"),new Ni(15,"Help","help")],Wi=document.querySelector('[data-component="cursorsTableBody"]');function Hi(e){return`<td>${e.index}</td><td style="cursor:${e.css}">${e.name}</td>`}Wi&&L("languageChanged",(function(){Wi&&h(Wi,[k({content:$i.slice(0,4).map(Hi).join("")}),k({content:$i.slice(4,8).map(Hi).join("")}),k({content:$i.slice(8,12).map(Hi).join("")}),k({content:$i.slice(12,16).map(Hi).join("")})])}));class Ui{constructor(e,t,n){this.index=e,this.name=t,this.css=n}}const Gi=[new Ui(0,"Arial","Arial, sans-serif"),new Ui(1,"Arial Black",'"Arial Black", sans-serif'),new Ui(2,"Arial Narrow",'"Arial Narrow", sans-serif'),new Ui(3,"Bookman Old Style",'"Bookman Old Style", serif'),new Ui(4,"Comic Sans MS",'"Comic Sans MS", cursive, sans-serif'),new Ui(5,"Courier New",'"Courier New", Courier, monospace'),new Ui(6,"Georgia","Georgia, serif"),new Ui(7,"Lucida Bright",'"Lucida Bright", serif'),new Ui(8,"Lucida Calligraphy",'"Lucida Calligraphy", cursive, serif'),new Ui(9,"Lucida Handwriting",'"Lucida Handwriting", cursive, serif'),new Ui(10,"Lucida Sans",'"Lucida Sans Unicode", sans-serif'),new Ui(11,"Lucida Sans Typewriter",'"Lucida Sans Typewriter", sans-serif'),new Ui(12,"Old English Text MT",'"Old English Text MT", serif'),new Ui(13,"Symbol","Symbol"),new Ui(14,"Times New Roman",'"Times New Roman", Times, serif'),new Ui(15,"Verdana","Verdana, Geneva, sans-serif")],Ki=document.querySelector('[data-component="fontsTableBody"]');function Vi(e){return k({style:`font-family: ${e.css};`,content:[b({content:e.name}),b({content:e.index.toString(10)}),b({style:"font-style: italic;",content:(e.index+16).toString(10)}),b({style:"font-weight: bold;",content:(e.index+32).toString(10)}),b({style:"font-style: italic; font-weight: bold;",content:(e.index+48).toString(10)}),b({style:"text-decoration: underline;",content:(e.index+64).toString(10)}),b({style:"text-decoration: line-through;",content:(e.index+128).toString(10)})]})}Ki&&L("languageChanged",(function(){Ki&&h(Ki,Gi.map(Vi))}));const ji=document.querySelector('[data-component="keycodesTableBody"]');function Xi(e){return k({content:[b({content:[m({content:e.names[yi.language]})]}),b({content:e.value.toString(10)})]})}ji&&L("languageChanged",(function(){ji&&h(ji,ht.filter((e=>e.value>0)).map(Xi))}));const Yi=document.querySelector('[data-component="canvas"]'),Qi=document.querySelector('[data-component="canvasXCoords"]'),Zi=document.querySelector('[data-component="canvasYCoords"]');if(Yi&&Qi&&Zi){const e=Yi.getContext("2d"),t=Qi.querySelector(":nth-child(1)"),n=Qi.querySelector(":nth-child(2)"),o=Qi.querySelector(":nth-child(3)"),a=Qi.querySelector(":nth-child(4)"),i=Qi.querySelector(":nth-child(5)"),r=Zi.querySelector(":nth-child(1)"),s=Zi.querySelector(":nth-child(2)"),l=Zi.querySelector(":nth-child(3)"),c=Zi.querySelector(":nth-child(4)"),d=Zi.querySelector(":nth-child(5)");$e(Yi,e),L("resolution",(function(e){Yi.style.imageRendering=e.width<500||e.height<500?"pixelated":"auto",Yi.width=e.width,Yi.height=e.height})),L("canvas",(function(e){t.innerHTML=e.startx.toString(10),n.innerHTML=Math.round((e.startx+e.sizex)/4).toString(10),o.innerHTML=Math.round((e.startx+e.sizex)/2).toString(10),a.innerHTML=Math.round((e.startx+e.sizex)/4*3).toString(10),i.innerHTML=Math.round(e.startx+e.sizex-1).toString(10),r.innerHTML=e.starty.toString(10),s.innerHTML=Math.round((e.starty+e.sizey)/4).toString(10),l.innerHTML=Math.round((e.starty+e.sizey)/2).toString(10),c.innerHTML=Math.round((e.starty+e.sizey)/4*3).toString(10),d.innerHTML=Math.round(e.starty+e.sizey-1).toString(10)})),L("cursor",(function(e){const t=e<0||e>15?1:e;Yi.style.cursor=$i[t].css})),L("print",(function(t){e.textBaseline="hanging",e.fillStyle=t.turtle.c,e.font=`${t.size}pt ${Gi[15&t.font].css}`,(16&t.font)>0&&(e.font=`bold ${e.font}`),(32&t.font)>0&&(e.font=`italic ${e.font}`),t.font,t.font,e.fillText(t.string,t.turtle.x,t.turtle.y)})),L("line",(function(t){e.beginPath(),e.moveTo(t.turtle.x,t.turtle.y),e.lineTo(t.x,t.y),e.lineCap="round",e.lineWidth=Math.abs(t.turtle.p),e.strokeStyle=t.turtle.c,e.stroke()})),L("poly",(function(t){e.beginPath(),t.coords.forEach(((t,n)=>{0===n?e.moveTo(t[0],t[1]):e.lineTo(t[0],t[1])})),t.fill?(e.closePath(),e.fillStyle=t.turtle.c,e.fill()):(e.lineCap="round",e.lineWidth=Math.abs(t.turtle.p),e.strokeStyle=t.turtle.c,e.stroke())})),L("arc",(function(t){e.beginPath(),t.x===t.y?e.arc(t.turtle.x,t.turtle.y,t.x,0,2*Math.PI,!1):(e.save(),e.translate(t.turtle.x-t.x,t.turtle.y-t.y),e.scale(t.x,t.y),e.arc(1,1,1,0,2*Math.PI,!1),e.restore()),t.fill?(e.fillStyle=t.turtle.c,e.fill()):(e.lineWidth=Math.abs(t.turtle.p),e.strokeStyle=t.turtle.c,e.stroke())})),L("box",(function(t){e.beginPath(),e.moveTo(t.turtle.x,t.turtle.y),e.lineTo(t.x,t.turtle.y),e.lineTo(t.x,t.y),e.lineTo(t.turtle.x,t.y),e.closePath(),e.fillStyle=t.fill,e.fill(),t.border&&(e.lineCap="round",e.lineWidth=Math.abs(t.turtle.p),e.strokeStyle=t.turtle.c,e.stroke())})),L("pixset",(function(t){const n=e.createImageData(1,1);n.data[0]=t.c>>16&255,n.data[1]=t.c>>8&255,n.data[2]=255&t.c,n.data[3]=255,e.putImageData(n,t.x,t.y),t.doubled&&(e.putImageData(n,t.x-1,t.y),e.putImageData(n,t.x,t.y-1),e.putImageData(n,t.x-1,t.y-1))})),L("blank",(function(t){e.fillStyle=t,e.fillRect(0,0,Yi.width,Yi.height)})),L("flood",(function(t){const n=e.getImageData(0,0,Yi.width,Yi.height),o=[],a=[0,-1,1,0],i=[-1,0,0,1];let r=0,s=4*(t.y*Yi.width+t.x);const l=65536*n.data[s]+256*n.data[s+1]+n.data[s+2];let c,d,u,h,p,g,w=t.x,f=t.y;for(o.push(w),o.push(f);o.length>0;)for(f=o.pop(),w=o.pop(),r=0;r<4;r+=1)c=w+a[r],d=f+i[r],h=c>0&&c<=Yi.width,p=d>0&&d<=Yi.height,h&&p&&(s=4*(d*Yi.width+c),u=65536*n.data[s],u+=256*n.data[s+1],u+=n.data[s+2],h=u!==t.c1,p=u!==t.c2||!t.boundary,g=u===l||t.boundary,h&&p&&g&&(s=4*(d*Yi.width+c),n.data[s]=(16711680&t.c1)>>16,n.data[s+1]=(65280&t.c1)>>8,n.data[s+2]=255&t.c1,o.push(c),o.push(d)));e.putImageData(n,0,0)}))}const _i=document.querySelector('[data-component="commentsTableBody"]');function er(e){return k({content:[b({content:e.line.toString(10)}),b({content:e.value})]})}_i&&L("lexemesChanged",(function(){h(_i,yi.comments.map(er))}));const tr=document.querySelector('[data-component="console"]');tr&&(L("log",(function(e){tr.innerHTML+=e,tr.scrollTop=tr.scrollHeight})),L("backspace",(function(){tr.innerHTML=tr.innerHTML.slice(0,-1),tr.scrollTop=tr.scrollHeight})),L("console",(function(e){e.clear&&(tr.innerHTML=""),tr.style.background=e.colour})));const nr=document.querySelector('[data-component="runButton"]'),or=document.querySelector('[data-component="haltButton"]');nr&&or&&(L("played",(()=>{nr.innerHTML='<i class="fa fa-pause"></i>',or.removeAttribute("disabled")})),L("paused",(()=>{nr.innerHTML='<i class="fa fa-play"></i>'})),L("unpaused",(()=>{nr.innerHTML='<i class="fa fa-pause"></i>'})),L("halted",(()=>{nr.innerHTML='<i class="fa fa-play"></i>',or.setAttribute("disabled","disabled")})));const ar=document.querySelector('[data-component="editor"]');if(ar){const e=ar.querySelector(".line-numbers"),t=ar.querySelector(".code-wrapper"),n=ar.querySelector("textarea"),o=ar.querySelector("pre"),a=ar.querySelector("code");function ir(){const t=yi.code.split("\n");h(e,t.map(((e,t)=>w({content:(t+1).toString(10)})))),h(a,Fi(yi.tokens,yi.language)),window.requestAnimationFrame((function(){n.value=yi.code,n.style.height=1.5*t.length+"em",n.style.width=`${o.scrollWidth.toString(10)}px`,o.style.height=1.5*t.length+"em",e.style.height=1.5*t.length+"em"}))}n.addEventListener("keydown",(function(e){if(9===e.keyCode){const t=n.selectionStart,o=n.value.slice(0,t),a=n.value.slice(t);e.preventDefault(),n.value=[o,a].join("  "),yi.code=n.value,n.selectionStart=t+2,n.selectionEnd=t+2}13===e.keyCode&&(t.scrollLeft=0)})),n.addEventListener("input",(function(){yi.code=n.value})),L("codeChanged",ir),L("editorFontFamilyChanged",(function(){ar.style.fontFamily=yi.editorFontFamily,ir()})),L("editorFontSizeChanged",(function(){ar.style.fontSize=`${yi.editorFontSize.toString(10)}px`,ir()})),L("selectAll",(function(){n.select()})),t.addEventListener("scroll",(function(){e.scrollTop=t.scrollTop,t.scrollLeft<=8&&(t.scrollLeft=0)}))}const rr=document.querySelector('[data-component="examplesMenu"]');if(rr){const e=d.slice(1).map((function(e){return f({on:["click",function(){bi(e.id)}],"data-action":"toggleMenu","data-arg":e.id,content:[y({content:`Examples ${e.index.toString(10)} - ${e.title}`}),v({className:"fa fa-caret-right","aria-hidden":"true"})]})})),t=d.slice(1).map((function(e){return g({className:"system-sub-menu","data-menu":e.id,content:[f({on:["click",function(){ki(e.id)}],"data-action":"closeMenu","data-arg":e.id,content:[v({className:"fa fa-caret-left","aria-hidden":"true"}),y({content:"back"})]})].concat(e.examples.map(sr))})}));h(rr,e.concat(t))}function sr(e){return f({on:["click",function(){yi.openExampleFile(e.id)}],content:[y({content:e.names[yi.language]})]})}const lr=document.querySelector('[data-component="memoryStackTableBody"]'),cr=document.querySelector('[data-component="memoryHeapTableBody"]');function dr(e,t,n){const o=t.map((e=>b({content:e.toString(10)})));return o.unshift(S({content:(e+10*n).toString(10)})),k({content:o})}lr&&cr&&L("memoryDumped",(function(e){const t=[],n=[];for(;e.stack.length>0;)t.push(e.stack.splice(0,10));for(;e.heap.length>0;)n.push(e.heap.splice(0,10));h(lr,t.map(dr.bind(null,0))),h(cr,n.map(dr.bind(null,e.heapBase)))}));const ur=document.querySelector('[data-component="output"]');ur&&(L("write",(function(e){ur.innerHTML+=e})),L("output",(function(e){e.clear&&(ur.innerHTML=""),ur.style.background=e.colour})));const hr=document.querySelector('[data-component="pcodeList"]');function pr(e){const t=yi.assembler?gr(e,0):e.reduce(((e,t)=>e.concat(wr(t))),[]);for(;t.length%10>0;)t.push(g());return w({content:t})}function gr(e,t){const n=we[e[t]],o=n?[wr(n.toUpperCase())]:[wr(e[t])];let a=0;if(n)if(fe(e[t])<0){const n=e[t+1];for(o.push(wr(n)),a+=1;a<=n;)a+=1,o.push(wr(String.fromCharCode(e[t+a])))}else for(;a<fe(e[t]);)a+=1,o.push(wr(e[t+a]));return t+a<e.length-1?o.concat(gr(e,t+a+1)):o}function wr(e){return null==e?g({content:":("}):"string"==typeof e?g({content:e}):yi.decimal?g({content:e.toString(10)}):g({content:e.toString(16).toUpperCase()})}hr&&L("pcodeChanged",(function(){h(hr,yi.pcode.map(pr))}));const fr=document.querySelector('[data-component="syntaxTableBody"]');function mr(e,t){return k({content:[b({content:`${t+1}`}),b({content:e.line.toString(10)}),b({className:"wide",content:[m({content:e.content?Fi(e.content,yi.language):""})]}),b({className:"wide",content:`${e.type}${e.subtype?` (${e.subtype})`:""}`})]})}fr&&L("lexemesChanged",(function(){h(fr,yi.lexemes.map(mr))}));const vr=document.querySelector('[data-component="turtxDisplay"]'),yr=document.querySelector('[data-component="turtyDisplay"]'),br=document.querySelector('[data-component="turtdDisplay"]'),Sr=document.querySelector('[data-component="turtaDisplay"]'),kr=document.querySelector('[data-component="turttDisplay"]'),xr=document.querySelector('[data-component="turtcDisplay"]');vr&&yr&&br&&Sr&&kr&&xr&&(L("turtxChanged",(function(e){vr.innerHTML=e.toString(10)})),L("turtyChanged",(function(e){yr.innerHTML=e.toString(10)})),L("turtdChanged",(function(e){br.innerHTML=e.toString(10)})),L("turtaChanged",(function(e){Sr.innerHTML=e.toString(10)})),L("turttChanged",(function(e){const t=e<0,n=Math.abs(e);kr.innerHTML=t?`(${n.toString(10)})`:n.toString(10)})),L("turtcChanged",(function(e){xr.style.background=e})));const Cr=document.querySelector('[data-component="usageTableBody"]');function Pr(e){return p([k({className:"category-heading",content:[S({colspan:"4",content:e.category})]}),p(e.expressions.map(Tr)),k({content:[b(),b({content:"TOTAL:"}),b({content:e.total.toString(10)}),b()]})])}function Tr(e){return k({content:[b({content:[m({content:Fi(e.name,yi.language)})]}),b({content:e.level.toString(10)}),b({content:e.count.toString(10)}),b({content:e.lines.replace(/\s/g,", ")})]})}Cr&&L("usageChanged",(function(){h(Cr,yi.usage.map(Pr))})),"serviceWorker"in navigator&&window.addEventListener("load",(function(){navigator.serviceWorker.register("/js/service-worker.js")})),globalThis.state=yi;const Ar=document.getElementById("turtle");Ar&&(Ar.dataset.language&&e.includes(Ar.dataset.language)&&(yi.language=Ar.dataset.language),Ar.dataset.example&&yi.openExampleFile(Ar.dataset.example),Ar.dataset.file&&yi.openRemoteFile(Ar.dataset.file),L("systemReady",(function(){Ar.classList.remove("hidden")}))),window.addEventListener("beforeunload",(function(){yi.alwaysSaveSettings&&yi.saveSettings()})),L("error",(function(e){let t=e.message;console.error(e),window.alert(t)})),yi.init()})();
+(() => {
+  // client/constants/languages.ts
+  var languages = [
+    "BASIC",
+    "C",
+    "Java",
+    "Pascal",
+    "Python",
+    "TypeScript"
+  ];
+  var extensions = {
+    "BASIC": "tbas",
+    "C": "tc",
+    "Java": "tjav",
+    "Pascal": "tpas",
+    "Python": "tpy",
+    "TypeScript": "tts"
+  };
+
+  // client/state/file.ts
+  var File = class {
+    constructor(language2, example = null) {
+      this.language = language2;
+      this.example = example;
+      this.name = "";
+      this.code = "";
+      this.backup = "";
+      this.compiled = false;
+      this.edited = false;
+    }
+    get extension() {
+      return extensions[this.language];
+    }
+    get filename() {
+      return `${this.name || "filename"}.${this.extension}`;
+    }
+  };
+  var skeletons = {
+    BASIC: "var1% = 100\nCOLOUR(GREEN)\nBLOT(var1%)\nEND",
+    C: "void main () {\n  int var1 = 100;\n  colour(green);\n  blot(var1);\n}",
+    Java: "class ProgramName {\n  void main () {\n    int var1 = 100;\n    colour(green);\n    blot(var1);\n  }\n}",
+    Pascal: "PROGRAM programName;\nVAR var1: integer;\nBEGIN\n  var1 := 100;\n  colour(green);\n  blot(var1)\nEND.",
+    Python: "var1: int = 100\ncolour(green)\nblot(var1)",
+    TypeScript: "var var1 = 100;\ncolour(green);\nblot(var1);"
+  };
+
+  // client/constants/properties.ts
+  var defaults = {
+    "savedSettingsHaveBeenLoaded": false,
+    "language": "Pascal",
+    "mode": "normal",
+    "editorFontFamily": "Courier",
+    "editorFontSize": 13,
+    "outputFontFamily": "Courier",
+    "outputFontSize": 13,
+    "includeCommentsInExamples": true,
+    "loadCorrespondingExample": true,
+    "assembler": true,
+    "decimal": true,
+    "autoCompileOnLoad": false,
+    "autoRunOnLoad": false,
+    "autoFormatOnLoad": false,
+    "alwaysSaveSettings": false,
+    "commandsCategoryIndex": 0,
+    "showSimpleCommands": true,
+    "showIntermediateCommands": false,
+    "showAdvancedCommands": false,
+    "files": [],
+    "currentFileIndex": 0,
+    "filename": "",
+    "lexemes": [],
+    "usage": [],
+    "routines": [],
+    "pcode": [],
+    "showCanvasOnRun": true,
+    "showOutputOnWrite": false,
+    "showMemoryOnDump": true,
+    "drawCountMax": 4,
+    "codeCountMax": 1e5,
+    "smallSize": 60,
+    "stackSize": 5e4,
+    "traceOnRun": false,
+    "activateHCLR": true,
+    "preventStackCollision": true,
+    "rangeCheckArrays": true,
+    "canvasStartSize": 1e3,
+    "setupDefaultKeyBuffer": true,
+    "turtleAttributesAsGlobals": true,
+    "initialiseLocals": true,
+    "allowCSTR": true,
+    "separateReturnStack": true,
+    "separateMemoryControlStack": true,
+    "separateSubroutineRegisterStack": true
+  };
+
+  // client/state/storage.ts
+  function load(property) {
+    const fromStorage = sessionStorage.getItem(property);
+    return fromStorage !== null ? JSON.parse(fromStorage) : defaults[property];
+  }
+  function save(property, value) {
+    sessionStorage.setItem(property, JSON.stringify(value));
+  }
+
+  // client/constants/examples.ts
+  var Example = class {
+    constructor(groupId, id, names) {
+      this.groupId = groupId;
+      this.id = id;
+      this.names = typeof names === "string" ? { BASIC: names, C: names, Java: names, Pascal: names, Python: names, TypeScript: names } : names;
+    }
+  };
+  var Group = class {
+    constructor(index, id, title) {
+      this.index = index;
+      this.id = id;
+      this.title = title;
+      this.examples = examples.filter((x) => x.groupId === id);
+    }
+  };
+  var examples = [
+    new Example("CSAC", "LifeStart", "Initialising Conway\u2019s Game of Life"),
+    new Example("CSAC", "Mandelbrot", "Mandelbrot set"),
+    new Example("CSAC", "MandelbrotMini", "Mandelbrot mini"),
+    new Example("CSAC", "MandelbrotSpectrum", "Mandelbrot spectrum"),
+    new Example("CSAC", "MandelbrotMiniSpectrum", "Mandelbrot mini spectrum"),
+    new Example("CSAC", "SierpinskiColour", "Sierpinski colour"),
+    new Example("CSAC", "SierpinskiIFS", "Sierpinski IFS"),
+    new Example("CSAC", "BarnsleyColour", "Barnsley colour"),
+    new Example("CSAC", "BarnsleyIFS", "Barnsley IFS"),
+    new Example("CSAC", "DragonColour", "Dragon colour"),
+    new Example("CSAC", "DragonIFS", "Dragon IFS"),
+    new Example("CSAC", "TreeIFS", "Tree IFS"),
+    new Example("CASC", "WaveSuperposer", "Hugh Wallis\u2019s wave superposer"),
+    new Example("Drawing", "DrawPause", "Simple drawing with pauses"),
+    new Example("Drawing", "SmileyFace", "Smiley face (using PENUP and ELLBLOT)"),
+    new Example("Drawing", "ThePlough", "The plough (using SETXY and POLYLINE)"),
+    new Example("Drawing", "OlympicRings", "Olympic rings (using a variable)"),
+    new Example("Drawing", "ForLoop", "FOR (counting) loop"),
+    new Example("Drawing", "TriangleSpin", "Spinning triangle pattern"),
+    new Example("Drawing", "Circles", "Circling circles"),
+    new Example("Drawing", "NestedLoops", "Nested FOR loops"),
+    new Example("Drawing", "RandomLines", "Random lines pattern"),
+    new Example("Drawing", "RandomEllipses", "Random ellipses pattern"),
+    new Example("Procedures", "ColourSpiral", "Spiral of colours (simple PCODE)"),
+    new Example("Procedures", "SimpleProc", "Simple procedure (using REPEAT)"),
+    new Example("Procedures", "ParameterProc", "Procedure with parameter"),
+    new Example("Procedures", "ResizableFace", "Resizable face (nested procedures)"),
+    new Example("Procedures", "Polygons", "Polygons (two parameters)"),
+    new Example("Procedures", "Stars", "Stars (using ANGLES and FORGET)"),
+    new Example("Procedures", "PolygonRings", "Polygon rings (three parameters)"),
+    new Example("Procedures", "Triangle1", "Simple triangle"),
+    new Example("Procedures", "Triangle2", "Triangle procedure"),
+    new Example("Procedures", "Triangle3", "Triangle procedure with limit"),
+    new Example("Procedures", "Triangles", "Recursive triangles"),
+    new Example("Procedures", "Factorials", "Recursive factorials"),
+    new Example("Further", "YouAreHere", "Text and arrow (using PRINT)"),
+    new Example("Further", "CycleColours", "Cycling colours (using MOD)"),
+    new Example("Further", "Clock", "Analogue clock (using REPEAT)"),
+    new Example("Further", "DigitalClock", "Digital clock (using IF and WHILE)"),
+    new Example("Further", "Flashlights", "Flashlights (using Booleans)"),
+    new Example("Further", "RefParams", "Reference parameters"),
+    new Example("Further", "Balls3D", "3D colour effects"),
+    new Example("Further", "StringFunctions", "Standard string functions"),
+    new Example("Further", "UserStringFunctions", "User-defined string functions"),
+    new Example("Further", "MathFunctions", "Mathematical functions"),
+    new Example("Further", "TrigGraphs", "Trigonometric graphs"),
+    new Example("Movement", "MovingBall", "Moving ball (using variables)"),
+    new Example("Movement", "BouncingBall", "Bouncing ball (using variables)"),
+    new Example("Movement", "TurtleMove", "Moving ball (using Turtle)"),
+    new Example("Movement", "TurtleBounce", "Bouncing ball (using Turtle)"),
+    new Example("Movement", "BouncingFace", "Bouncing face"),
+    new Example("Movement", "MultiBounce", "Multiple bouncing balls"),
+    new Example("Movement", "BouncingTriangle", "Bouncing triangle"),
+    new Example("Movement", "BouncingShapes", "Multiple bouncing shapes"),
+    new Example("Movement", "GravitySteps", "Movement under gravity"),
+    new Example("Movement", "SolarSystem", "Solar system"),
+    new Example("Interaction", "AskInput", "Asking for typed input"),
+    new Example("Interaction", "QuickClick", "Mouse reaction game"),
+    new Example("Interaction", "TypingTest", "Typing test (checking characters)"),
+    new Example("Interaction", "TypingTestKeys", "Typing test (checking keys)"),
+    new Example("Interaction", "IterationGame", "Iteration game (Collatz sequence)"),
+    new Example("Interaction", "SpongeThrow", "Throwing sponges at a moving face"),
+    new Example("Interaction", "Arcade", "Arcade shooting game"),
+    new Example("Interaction", "SnakeGame", "Snake (classic game)"),
+    new Example("Interaction", "SimpleDraw", "Drawing to the mouse"),
+    new Example("Interaction", "PaintApp", "Painting application"),
+    new Example("Interaction", "MultipleTurtles", "Multiple turtles and varying ANGLES"),
+    new Example("Files", "WriteAndReadFile", "Writing and reading a text file"),
+    new Example("Files", "RenameAndDeleteFile", "Renaming and deleting a file"),
+    new Example("Files", "FileSearching", "File searching"),
+    new Example("Files", "SaveCSV", "Saving a CSV file"),
+    new Example("Files", "ReadCSV", "Reading a CSV file"),
+    new Example("Files", "RandomSentences", "Random sentences (using files)"),
+    new Example("Files", "FileCommands", "File commands"),
+    new Example("Files", "DirectoryCommands", "Directory commands"),
+    new Example("Cellular", "Disease", "Spread of disease"),
+    new Example("Cellular", "TippingPoint", "Tipping point (city epidemic)"),
+    new Example("Cellular", "GameOfLife", "Conway\u2019s Game of Life"),
+    new Example("Cellular", "LifeArrays", "Game of Life, using arrays"),
+    new Example("Cellular", "Automata", "One-dimensional cellular automata"),
+    new Example("Cellular", "Diffusion", "A model of diffusion"),
+    new Example("Cellular", "Dendrites", "Dendritic crystal growth"),
+    new Example("Cellular", "Schelling", "Schelling\u2019s segregation model"),
+    new Example("Cellular", "IteratedPD", "Iterated Prisoner\u2019s Dilemma"),
+    new Example("Models", "AimCannon", "Firing a cannon (manual)"),
+    new Example("Models", "AutoCannon", "Firing a cannon (automatic)"),
+    new Example("Models", "Launch", "Launching a rocket into orbit"),
+    new Example("Models", "BrownianMotion", "Brownian motion"),
+    new Example("Models", "Cheetahs", "Cheetahs and gazelles"),
+    new Example("Models", "SexRatio", "The sex ratio"),
+    new Example("Models", "Flocking", "Flocking behaviour"),
+    new Example("Models", "Roads", "Town road simulation"),
+    new Example("Models", "Interference", "Wave interference tutor"),
+    new Example("Models", "TwoSlits", "Interference from two slits"),
+    new Example("Fractals", "RecursionFactory", "Recursion factory"),
+    new Example("Fractals", "RecursiveTree", "Recursive tree"),
+    new Example("Fractals", "KochSnowflake", "Koch snowflake"),
+    new Example("Fractals", "SquareKoch", "Square Koch fractal curves"),
+    new Example("Fractals", "Sierpinski", "Sierpinski triangle (by deletion)"),
+    new Example("Fractals", "SierpinskiDots", "Sierpinski triangle (by random dots)"),
+    new Example("Fractals", "IFSBackground", "Iterated function systems (IFS) background"),
+    new Example("Fractals", "IFSColour", "IFS mappings on coloured background"),
+    new Example("Fractals", "IFSDemonstrator", "IFS demonstrator program"),
+    new Example("Fractals", "Logistic", "Logistic equation"),
+    new Example("Fractals", "LogisticSpider", "Logistic spider"),
+    new Example("Fractals", "MandelbrotDemo", "Mandelbrot multi-colour"),
+    new Example("Fractals", "MandelbrotSpectrumDemo", "Mandelbrot spectral colours"),
+    new Example("Fractals", "Quine", "Quine (self-replicating) program"),
+    new Example("Logic&CS", "Hanoi", "Tower of Hanoi by recursion"),
+    new Example("Logic&CS", "IterateRoot", "Square roots by iteration"),
+    new Example("Logic&CS", "Fibonaccis", "Fibonaccis (using ARRAY and TIME)"),
+    new Example("Logic&CS", "Sorting", "Comparison of sorting methods"),
+    new Example("Logic&CS", "SortingStrings", "Comparison of sorting methods (strings)"),
+    new Example("Logic&CS", "NoughtsAndCrosses", "Noughts and crosses"),
+    new Example("Logic&CS", "NimLearn", "Nim learning program"),
+    new Example("Logic&CS", "MultiNim", "Nim with multiple piles"),
+    new Example("Logic&CS", "KnightsTour", "Knight\u2019s Tour program")
+  ];
+  var groups = [
+    new Group(0, "CSAC", "other CSAC programs"),
+    new Group(1, "Drawing", "drawing and counting loops"),
+    new Group(2, "Procedures", "procedures and simple recursion"),
+    new Group(3, "Further", "further commands and structures"),
+    new Group(4, "Movement", "smooth movement and bouncing"),
+    new Group(5, "Interaction", "user input, interaction and games"),
+    new Group(6, "Cellular", "cellular models"),
+    new Group(7, "Models", "other models"),
+    new Group(8, "Fractals", "self-similarity and chaos"),
+    new Group(9, "Logic&CS", "computer science and logic")
+  ];
+
+  // client/tools/elements.ts
+  function element(type8, options2 = {}) {
+    const element2 = document.createElement(type8);
+    for (const [key, value] of Object.entries(options2)) {
+      switch (key) {
+        case "content":
+          if (Array.isArray(value) || typeof value === "string") {
+            fill(element2, value);
+          }
+          break;
+        case "className":
+          if (typeof value === "string") {
+            for (const className of value.split(" ")) {
+              element2.classList.add(className);
+            }
+          }
+          break;
+        case "value":
+          if (typeof value === "string") {
+            element2.value = value;
+          }
+          break;
+        case "on":
+          if (Array.isArray(value)) {
+            element2.addEventListener(value[0], value[1]);
+          }
+          break;
+        default:
+          if (typeof value === "string") {
+            element2.setAttribute(key, value);
+          }
+          break;
+      }
+    }
+    return element2;
+  }
+  function fill(element2, content) {
+    if (Array.isArray(content)) {
+      const fragment2 = document.createDocumentFragment();
+      for (const element3 of content) {
+        fragment2.appendChild(element3);
+      }
+      while (element2.firstChild) {
+        element2.removeChild(element2.firstChild);
+      }
+      element2.appendChild(fragment2);
+    } else {
+      element2.innerHTML = content;
+    }
+  }
+  function fragment(content) {
+    const fragment2 = document.createDocumentFragment();
+    fill(fragment2, content);
+    return fragment2;
+  }
+  function div(options2 = {}) {
+    return element("div", options2);
+  }
+  function li(options2 = {}) {
+    return element("li", options2);
+  }
+  function a(options2 = {}) {
+    return element("a", options2);
+  }
+  function code(options2 = {}) {
+    return element("code", options2);
+  }
+  function i(options2 = {}) {
+    return element("i", options2);
+  }
+  function span(options2 = {}) {
+    return element("span", options2);
+  }
+  function td(options2 = {}) {
+    return element("td", options2);
+  }
+  function th(options2 = {}) {
+    return element("th", options2);
+  }
+  function tr(options2 = {}) {
+    return element("tr", options2);
+  }
+  function input(options2 = {}) {
+    return element("input", options2);
+  }
+  function option(options2 = {}) {
+    return element("option", options2);
+  }
+
+  // client/tools/error.ts
+  var SystemError = class extends Error {
+    constructor(message) {
+      super(message);
+    }
+  };
+  var MachineError = class extends Error {
+    constructor(message) {
+      super(message);
+    }
+  };
+  var CompilerError = class extends Error {
+    constructor(message, token = null) {
+      if (token) {
+        message = message.replace("{lex}", `"${token.content}"`);
+        message += ` ("${token.content}", line ${token.line}, index ${token.character})`;
+      }
+      super(message);
+      this.token = token;
+    }
+  };
+
+  // client/tools/hub.ts
+  var replies = {};
+  function on(message, callback) {
+    if (replies[message]) {
+      replies[message].push(callback);
+    } else {
+      replies[message] = [callback];
+    }
+  }
+  function send(message, data = null) {
+    if (replies[message]) {
+      for (const reply of replies[message]) {
+        reply(data);
+      }
+    }
+    if (message === "currentFileIndexChanged") {
+      send("filenameChanged");
+      send("codeChanged");
+    }
+  }
+
+  // client/machine/memory.ts
+  var main = [];
+  var keys = [];
+  var query = [];
+  var coords = [];
+  var stack = [];
+  var memoryStack = [];
+  var returnStack = [];
+  var subroutineStack = [];
+  var stackTop = 0;
+  var heapGlobal = 0;
+  var heapBase = 0;
+  var heapTemp = 0;
+  var heapPerm = 0;
+  var heapMax = 0;
+  var heapClearPending = false;
+  var turtxIndex = 1;
+  var turtyIndex = 2;
+  var turtdIndex = 3;
+  var turtaIndex = 4;
+  var turttIndex = 5;
+  var turtcIndex = 6;
+  function init(options2) {
+    main.length = 2097152;
+    keys.length = 256;
+    query.length = 16;
+    main.fill(0);
+    keys.fill(-1);
+    query.fill(-1);
+    coords.length = 0;
+    stack.length = 0;
+    memoryStack.length = 0;
+    returnStack.length = 0;
+    subroutineStack.length = 0;
+    stackTop = 0;
+    heapGlobal = -1;
+    heapBase = options2.stackSize - 1;
+    heapTemp = heapBase;
+    heapPerm = heapTemp;
+    heapMax = heapTemp;
+  }
+  function peek(address) {
+    return main[address];
+  }
+  function peekAddressOffset(address, offset) {
+    return main[main[address] + offset];
+  }
+  function pokeAddressOffset(address, offset, value) {
+    main[main[address] + offset] = value;
+  }
+  function getTurtX() {
+    return peekAddressOffset(0, turtxIndex);
+  }
+  function getTurtY() {
+    return peekAddressOffset(0, turtyIndex);
+  }
+  function getTurtD() {
+    return peekAddressOffset(0, turtdIndex);
+  }
+  function getTurtA() {
+    return peekAddressOffset(0, turtaIndex);
+  }
+  function getTurtT() {
+    return peekAddressOffset(0, turttIndex);
+  }
+  function getTurtC() {
+    return peekAddressOffset(0, turtcIndex);
+  }
+  function setTurtX(turtx2) {
+    pokeAddressOffset(0, turtxIndex, turtx2);
+  }
+  function setTurtY(turty2) {
+    pokeAddressOffset(0, turtyIndex, turty2);
+  }
+  function setTurtD(turtd) {
+    pokeAddressOffset(0, turtdIndex, turtd);
+  }
+  function setTurtA(turta) {
+    pokeAddressOffset(0, turtaIndex, turta);
+  }
+  function setTurtT(turtt2) {
+    pokeAddressOffset(0, turttIndex, turtt2);
+  }
+  function setTurtC(turtc) {
+    pokeAddressOffset(0, turtcIndex, turtc);
+  }
+  function getHeapGlobal() {
+    return heapGlobal;
+  }
+  function setHeapGlobal(value) {
+    heapGlobal = value;
+  }
+  function getHeapPerm() {
+    return heapPerm;
+  }
+  function setStackTop(value) {
+    stackTop = Math.max(value, stackTop);
+  }
+  function getHeapTemp() {
+    return heapTemp;
+  }
+  function setHeapTemp(value) {
+    heapTemp = value;
+  }
+  function setHeapMax(value) {
+    Math.max(value, heapMax);
+  }
+  function heapFix() {
+    heapPerm = heapTemp;
+  }
+  function heapClear() {
+    if (stack.length === 0) {
+      heapTemp = heapPerm;
+    } else {
+      heapClearPending = true;
+    }
+  }
+  function delayedHeapClear() {
+    if (heapClearPending) {
+      heapClearPending = false;
+      heapClear();
+    }
+  }
+  function heapReset() {
+    if (heapGlobal > -1) {
+      heapTemp = heapGlobal;
+      heapPerm = heapGlobal;
+    }
+  }
+  function makeHeapString(string2) {
+    const stringArray = Array.from(string2).map((c2) => c2.charCodeAt(0));
+    stack.push(heapTemp + 1);
+    heapTemp += 1;
+    main[heapTemp] = string2.length;
+    for (const code3 of stringArray) {
+      heapTemp += 1;
+      main[heapTemp] = code3;
+    }
+    heapMax = Math.max(heapTemp, heapMax);
+  }
+  function getHeapString(address) {
+    const length = main[address];
+    const start = address + 1;
+    const charArray = main.slice(start, start + length);
+    const string2 = charArray.map((c2) => String.fromCharCode(c2)).join("");
+    if (address + length + 1 > heapPerm) {
+      heapTemp = address + length;
+    }
+    return string2;
+  }
+  function zero(start, length) {
+    if (length > 0) {
+      main[start] = 0;
+      zero(start + 1, length - 1);
+    }
+  }
+  function copy(source, target, length) {
+    if (length > 0) {
+      main[target] = main[source];
+      copy(source + 1, target + 1, length - 1);
+    }
+  }
+  function dump() {
+    const stack2 = main.slice(0, stackTop + 1);
+    const heap = main.slice(heapBase + 1, heapMax + 1);
+    return { stack: stack2, heap, heapBase: heapBase + 1 };
+  }
+
+  // client/machine/options.ts
+  var defaultOptions = {
+    showCanvasOnRun: defaults.showCanvasOnRun,
+    showOutputOnWrite: defaults.showOutputOnWrite,
+    showMemoryOnDump: defaults.showMemoryOnDump,
+    drawCountMax: defaults.drawCountMax,
+    codeCountMax: defaults.codeCountMax,
+    smallSize: defaults.smallSize,
+    stackSize: defaults.stackSize,
+    traceOnRun: defaults.traceOnRun,
+    activateHCLR: defaults.activateHCLR,
+    preventStackCollision: defaults.preventStackCollision,
+    rangeCheckArrays: defaults.rangeCheckArrays
+  };
+
+  // client/machine/misc.ts
+  function mixBytes(byte1, byte2, proportion1, proportion2) {
+    return Math.round((byte1 * proportion1 + byte2 * proportion2) / (proportion1 + proportion2));
+  }
+
+  // client/constants/colours.ts
+  var Colour = class {
+    constructor(index, name, value, dark) {
+      this.index = index;
+      this.names = { BASIC: name.toUpperCase(), C: name, Java: name, Pascal: name, Python: name, TypeScript: name };
+      this.type = "integer";
+      this.value = value;
+      this.hex = value.toString(16).padStart(6, "0").toUpperCase();
+      this.text = dark ? "white" : "black";
+    }
+  };
+  var colours = [
+    new Colour(1, "green", 2263842, true),
+    new Colour(2, "red", 16711680, true),
+    new Colour(3, "blue", 255, true),
+    new Colour(4, "yellow", 16776960, false),
+    new Colour(5, "violet", 9055202, true),
+    new Colour(6, "lime", 65280, false),
+    new Colour(7, "orange", 16755200, false),
+    new Colour(8, "skyblue", 45311, true),
+    new Colour(9, "brown", 9849600, true),
+    new Colour(10, "pink", 15602313, true),
+    new Colour(11, "darkgreen", 25600, true),
+    new Colour(12, "darkred", 11674146, true),
+    new Colour(13, "darkblue", 128, true),
+    new Colour(14, "ochre", 12628016, true),
+    new Colour(15, "indigo", 4915330, true),
+    new Colour(16, "olive", 8421376, true),
+    new Colour(17, "orangered", 16737792, true),
+    new Colour(18, "teal", 32896, true),
+    new Colour(19, "darkbrown", 6045747, true),
+    new Colour(20, "magenta", 16711935, true),
+    new Colour(21, "lightgreen", 10025880, false),
+    new Colour(22, "lightred", 13458524, true),
+    new Colour(23, "lightblue", 10075135, false),
+    new Colour(24, "cream", 16777147, false),
+    new Colour(25, "lilac", 11572223, true),
+    new Colour(26, "yellowgreen", 11193395, false),
+    new Colour(27, "peach", 16764080, false),
+    new Colour(28, "cyan", 65535, false),
+    new Colour(29, "lightbrown", 11567184, true),
+    new Colour(30, "lightpink", 16758465, false),
+    new Colour(31, "seagreen", 3978097, true),
+    new Colour(32, "maroon", 8388608, true),
+    new Colour(33, "royal", 4286945, true),
+    new Colour(34, "gold", 16762880, false),
+    new Colour(35, "purple", 8388736, true),
+    new Colour(36, "emerald", 51543, true),
+    new Colour(37, "salmon", 16416882, true),
+    new Colour(38, "turquoise", 48833, true),
+    new Colour(39, "coffee", 9596735, true),
+    new Colour(40, "rose", 16746666, true),
+    new Colour(41, "greengrey", 7377008, true),
+    new Colour(42, "redgrey", 11567232, true),
+    new Colour(43, "bluegrey", 8421536, true),
+    new Colour(44, "yellowgrey", 9474160, true),
+    new Colour(45, "darkgrey", 4210752, true),
+    new Colour(46, "midgrey", 8421504, true),
+    new Colour(47, "lightgrey", 10526880, true),
+    new Colour(48, "silver", 12632256, false),
+    new Colour(49, "white", 16777215, false),
+    new Colour(50, "black", 0, true)
+  ];
+
+  // client/constants/pcodes.ts
+  var PCode = /* @__PURE__ */ ((PCode2) => {
+    PCode2[PCode2["null"] = 0] = "null";
+    PCode2[PCode2["dupl"] = 1] = "dupl";
+    PCode2[PCode2["swap"] = 2] = "swap";
+    PCode2[PCode2["rota"] = 3] = "rota";
+    PCode2[PCode2["incr"] = 4] = "incr";
+    PCode2[PCode2["decr"] = 5] = "decr";
+    PCode2[PCode2["mxin"] = 6] = "mxin";
+    PCode2[PCode2["rand"] = 7] = "rand";
+    PCode2[PCode2["hstr"] = 8] = "hstr";
+    PCode2[PCode2["ctos"] = 9] = "ctos";
+    PCode2[PCode2["sasc"] = 10] = "sasc";
+    PCode2[PCode2["itos"] = 11] = "itos";
+    PCode2[PCode2["hexs"] = 12] = "hexs";
+    PCode2[PCode2["sval"] = 13] = "sval";
+    PCode2[PCode2["qtos"] = 14] = "qtos";
+    PCode2[PCode2["qval"] = 15] = "qval";
+    PCode2[PCode2["not"] = 16] = "not";
+    PCode2[PCode2["and"] = 17] = "and";
+    PCode2[PCode2["or"] = 18] = "or";
+    PCode2[PCode2["xor"] = 19] = "xor";
+    PCode2[PCode2["andl"] = 20] = "andl";
+    PCode2[PCode2["orl"] = 21] = "orl";
+    PCode2[PCode2["shft"] = 22] = "shft";
+    PCode2[PCode2["neg"] = 23] = "neg";
+    PCode2[PCode2["abs"] = 24] = "abs";
+    PCode2[PCode2["sign"] = 25] = "sign";
+    PCode2[PCode2["plus"] = 26] = "plus";
+    PCode2[PCode2["subt"] = 27] = "subt";
+    PCode2[PCode2["mult"] = 28] = "mult";
+    PCode2[PCode2["divr"] = 29] = "divr";
+    PCode2[PCode2["div"] = 30] = "div";
+    PCode2[PCode2["mod"] = 31] = "mod";
+    PCode2[PCode2["eqal"] = 32] = "eqal";
+    PCode2[PCode2["noeq"] = 33] = "noeq";
+    PCode2[PCode2["less"] = 34] = "less";
+    PCode2[PCode2["more"] = 35] = "more";
+    PCode2[PCode2["lseq"] = 36] = "lseq";
+    PCode2[PCode2["mreq"] = 37] = "mreq";
+    PCode2[PCode2["maxi"] = 38] = "maxi";
+    PCode2[PCode2["mini"] = 39] = "mini";
+    PCode2[PCode2["seql"] = 40] = "seql";
+    PCode2[PCode2["sneq"] = 41] = "sneq";
+    PCode2[PCode2["sles"] = 42] = "sles";
+    PCode2[PCode2["smor"] = 43] = "smor";
+    PCode2[PCode2["sleq"] = 44] = "sleq";
+    PCode2[PCode2["smeq"] = 45] = "smeq";
+    PCode2[PCode2["smax"] = 46] = "smax";
+    PCode2[PCode2["smin"] = 47] = "smin";
+    PCode2[PCode2["divm"] = 48] = "divm";
+    PCode2[PCode2["sqrt"] = 49] = "sqrt";
+    PCode2[PCode2["hyp"] = 50] = "hyp";
+    PCode2[PCode2["root"] = 51] = "root";
+    PCode2[PCode2["powr"] = 52] = "powr";
+    PCode2[PCode2["log"] = 53] = "log";
+    PCode2[PCode2["alog"] = 54] = "alog";
+    PCode2[PCode2["ln"] = 55] = "ln";
+    PCode2[PCode2["exp"] = 56] = "exp";
+    PCode2[PCode2["sin"] = 57] = "sin";
+    PCode2[PCode2["cos"] = 58] = "cos";
+    PCode2[PCode2["tan"] = 59] = "tan";
+    PCode2[PCode2["asin"] = 60] = "asin";
+    PCode2[PCode2["acos"] = 61] = "acos";
+    PCode2[PCode2["atan"] = 62] = "atan";
+    PCode2[PCode2["pi"] = 63] = "pi";
+    PCode2[PCode2["scat"] = 64] = "scat";
+    PCode2[PCode2["slen"] = 65] = "slen";
+    PCode2[PCode2["case"] = 66] = "case";
+    PCode2[PCode2["copy"] = 67] = "copy";
+    PCode2[PCode2["dels"] = 68] = "dels";
+    PCode2[PCode2["inss"] = 69] = "inss";
+    PCode2[PCode2["poss"] = 70] = "poss";
+    PCode2[PCode2["repl"] = 71] = "repl";
+    PCode2[PCode2["spad"] = 72] = "spad";
+    PCode2[PCode2["trim"] = 73] = "trim";
+    PCode2[PCode2["home"] = 80] = "home";
+    PCode2[PCode2["setx"] = 81] = "setx";
+    PCode2[PCode2["sety"] = 82] = "sety";
+    PCode2[PCode2["setd"] = 83] = "setd";
+    PCode2[PCode2["angl"] = 84] = "angl";
+    PCode2[PCode2["thik"] = 85] = "thik";
+    PCode2[PCode2["pen"] = 86] = "pen";
+    PCode2[PCode2["colr"] = 87] = "colr";
+    PCode2[PCode2["toxy"] = 88] = "toxy";
+    PCode2[PCode2["mvxy"] = 89] = "mvxy";
+    PCode2[PCode2["drxy"] = 90] = "drxy";
+    PCode2[PCode2["fwrd"] = 91] = "fwrd";
+    PCode2[PCode2["back"] = 92] = "back";
+    PCode2[PCode2["left"] = 93] = "left";
+    PCode2[PCode2["rght"] = 94] = "rght";
+    PCode2[PCode2["turn"] = 95] = "turn";
+    PCode2[PCode2["blnk"] = 96] = "blnk";
+    PCode2[PCode2["rcol"] = 97] = "rcol";
+    PCode2[PCode2["fill"] = 98] = "fill";
+    PCode2[PCode2["pixc"] = 99] = "pixc";
+    PCode2[PCode2["pixs"] = 100] = "pixs";
+    PCode2[PCode2["rgb"] = 101] = "rgb";
+    PCode2[PCode2["mixc"] = 102] = "mixc";
+    PCode2[PCode2["rmbr"] = 103] = "rmbr";
+    PCode2[PCode2["frgt"] = 104] = "frgt";
+    PCode2[PCode2["poly"] = 105] = "poly";
+    PCode2[PCode2["pfil"] = 106] = "pfil";
+    PCode2[PCode2["circ"] = 107] = "circ";
+    PCode2[PCode2["blot"] = 108] = "blot";
+    PCode2[PCode2["elps"] = 109] = "elps";
+    PCode2[PCode2["eblt"] = 110] = "eblt";
+    PCode2[PCode2["box"] = 111] = "box";
+    PCode2[PCode2["ldin"] = 112] = "ldin";
+    PCode2[PCode2["ldvg"] = 113] = "ldvg";
+    PCode2[PCode2["ldvv"] = 114] = "ldvv";
+    PCode2[PCode2["ldvr"] = 115] = "ldvr";
+    PCode2[PCode2["ldag"] = 116] = "ldag";
+    PCode2[PCode2["ldav"] = 117] = "ldav";
+    PCode2[PCode2["lstr"] = 118] = "lstr";
+    PCode2[PCode2["stvg"] = 119] = "stvg";
+    PCode2[PCode2["stvv"] = 120] = "stvv";
+    PCode2[PCode2["stvr"] = 121] = "stvr";
+    PCode2[PCode2["lptr"] = 122] = "lptr";
+    PCode2[PCode2["sptr"] = 123] = "sptr";
+    PCode2[PCode2["zptr"] = 124] = "zptr";
+    PCode2[PCode2["cptr"] = 125] = "cptr";
+    PCode2[PCode2["cstr"] = 126] = "cstr";
+    PCode2[PCode2["test"] = 127] = "test";
+    PCode2[PCode2["jump"] = 128] = "jump";
+    PCode2[PCode2["ifno"] = 129] = "ifno";
+    PCode2[PCode2["halt"] = 130] = "halt";
+    PCode2[PCode2["subr"] = 131] = "subr";
+    PCode2[PCode2["retn"] = 132] = "retn";
+    PCode2[PCode2["pssr"] = 133] = "pssr";
+    PCode2[PCode2["plsr"] = 134] = "plsr";
+    PCode2[PCode2["psrj"] = 135] = "psrj";
+    PCode2[PCode2["plrj"] = 136] = "plrj";
+    PCode2[PCode2["ldmt"] = 137] = "ldmt";
+    PCode2[PCode2["stmt"] = 138] = "stmt";
+    PCode2[PCode2["memc"] = 139] = "memc";
+    PCode2[PCode2["memr"] = 140] = "memr";
+    PCode2[PCode2["hfix"] = 141] = "hfix";
+    PCode2[PCode2["hclr"] = 142] = "hclr";
+    PCode2[PCode2["hrst"] = 143] = "hrst";
+    PCode2[PCode2["canv"] = 144] = "canv";
+    PCode2[PCode2["reso"] = 145] = "reso";
+    PCode2[PCode2["udat"] = 146] = "udat";
+    PCode2[PCode2["seed"] = 147] = "seed";
+    PCode2[PCode2["trac"] = 152] = "trac";
+    PCode2[PCode2["memw"] = 153] = "memw";
+    PCode2[PCode2["dump"] = 154] = "dump";
+    PCode2[PCode2["peek"] = 155] = "peek";
+    PCode2[PCode2["poke"] = 156] = "poke";
+    PCode2[PCode2["inpt"] = 160] = "inpt";
+    PCode2[PCode2["iclr"] = 161] = "iclr";
+    PCode2[PCode2["bufr"] = 162] = "bufr";
+    PCode2[PCode2["read"] = 163] = "read";
+    PCode2[PCode2["rdln"] = 164] = "rdln";
+    PCode2[PCode2["kech"] = 165] = "kech";
+    PCode2[PCode2["outp"] = 166] = "outp";
+    PCode2[PCode2["cons"] = 167] = "cons";
+    PCode2[PCode2["prnt"] = 168] = "prnt";
+    PCode2[PCode2["writ"] = 169] = "writ";
+    PCode2[PCode2["newl"] = 170] = "newl";
+    PCode2[PCode2["curs"] = 171] = "curs";
+    PCode2[PCode2["time"] = 172] = "time";
+    PCode2[PCode2["tset"] = 173] = "tset";
+    PCode2[PCode2["wait"] = 174] = "wait";
+    PCode2[PCode2["tdet"] = 175] = "tdet";
+    PCode2[PCode2["chdr"] = 176] = "chdr";
+    PCode2[PCode2["file"] = 177] = "file";
+    PCode2[PCode2["diry"] = 178] = "diry";
+    PCode2[PCode2["open"] = 179] = "open";
+    PCode2[PCode2["clos"] = 180] = "clos";
+    PCode2[PCode2["fbeg"] = 181] = "fbeg";
+    PCode2[PCode2["eof"] = 182] = "eof";
+    PCode2[PCode2["eoln"] = 183] = "eoln";
+    PCode2[PCode2["frds"] = 184] = "frds";
+    PCode2[PCode2["frln"] = 185] = "frln";
+    PCode2[PCode2["fwrs"] = 186] = "fwrs";
+    PCode2[PCode2["fwln"] = 187] = "fwln";
+    PCode2[PCode2["ffnd"] = 188] = "ffnd";
+    PCode2[PCode2["fdir"] = 189] = "fdir";
+    PCode2[PCode2["fnxt"] = 190] = "fnxt";
+    PCode2[PCode2["fmov"] = 191] = "fmov";
+    PCode2[PCode2["dopr"] = 224] = "dopr";
+    PCode2[PCode2["fopr"] = 225] = "fopr";
+    PCode2[PCode2["ilin"] = 226] = "ilin";
+    PCode2[PCode2["lefs"] = 227] = "lefs";
+    PCode2[PCode2["newt"] = 228] = "newt";
+    PCode2[PCode2["oldt"] = 229] = "oldt";
+    PCode2[PCode2["rgts"] = 230] = "rgts";
+    PCode2[PCode2["rndc"] = 231] = "rndc";
+    PCode2[PCode2["svd0"] = 232] = "svd0";
+    PCode2[PCode2["wrln"] = 233] = "wrln";
+    return PCode2;
+  })(PCode || {});
+  function pcodeArgs(pcode2) {
+    switch (pcode2) {
+      case 118 /* lstr */:
+        return -1;
+      case 112 /* ldin */:
+      case 113 /* ldvg */:
+      case 116 /* ldag */:
+      case 119 /* stvg */:
+      case 128 /* jump */:
+      case 129 /* ifno */:
+      case 131 /* subr */:
+      case 133 /* pssr */:
+      case 140 /* memr */:
+        return 1;
+      case 114 /* ldvv */:
+      case 115 /* ldvr */:
+      case 117 /* ldav */:
+      case 120 /* stvv */:
+      case 121 /* stvr */:
+      case 139 /* memc */:
+        return 2;
+      default:
+        return 0;
+    }
+  }
+
+  // client/tools/hex.ts
+  function hex(colour2) {
+    return `#${padded(colour2.toString(16))}`;
+  }
+  function padded(string2) {
+    return string2.length < 6 ? padded(`0${string2}`) : string2;
+  }
+
+  // client/machine/index.ts
+  var canvas = document.createElement("canvas");
+  var context = document.createElement("canvas").getContext("2d");
+  var running = false;
+  var paused = false;
+  var pcode = [];
+  var line = 0;
+  var code2 = 0;
+  var options = defaultOptions;
+  var startx = 0;
+  var starty = 0;
+  var sizex = 1e3;
+  var sizey = 1e3;
+  var width = 1e3;
+  var height = 1e3;
+  var doubled = false;
+  var detectKeycode = 0;
+  var detectTimeoutID = 0;
+  var readlineTimeoutID = 0;
+  var startTime = 0;
+  var update = false;
+  var keyecho = false;
+  var seed = 0;
+  function setCanvasAndContext(can, con) {
+    canvas = can;
+    context = con;
+  }
+  function reset() {
+    startx = 0;
+    starty = 0;
+    sizex = 1e3;
+    sizey = 1e3;
+    width = 1e3;
+    height = 1e3;
+    doubled = false;
+    send("resolution", { width: 1e3, height: 1e3 });
+    send("console", { clear: true, colour: "#FFFFFF" });
+    send("output", { clear: true, colour: "#FFFFFF" });
+    send("turtxChanged", 500);
+    send("turtyChanged", 500);
+    send("turtdChanged", 0);
+    send("turtaChanged", 360);
+    send("turttChanged", 2);
+    send("turtcChanged", "#000");
+    send("canvas", { startx: 0, starty: 0, sizex: 1e3, sizey: 1e3 });
+  }
+  function run(p, o) {
+    reset();
+    pcode = p;
+    options = o;
+    line = 0;
+    code2 = 0;
+    if (options.showCanvasOnRun) {
+      send("selectTab", "canvas");
+    }
+    init(options);
+    startTime = Date.now();
+    update = true;
+    keyecho = true;
+    seed = Date.now();
+    running = true;
+    paused = false;
+    window.addEventListener("keydown", storeKey);
+    window.addEventListener("keyup", releaseKey);
+    window.addEventListener("keypress", putInBuffer);
+    canvas.addEventListener("contextmenu", preventDefault);
+    canvas.addEventListener("mousemove", storeMouseXY);
+    canvas.addEventListener("touchmove", preventDefault);
+    canvas.addEventListener("touchmove", storeMouseXY);
+    canvas.addEventListener("mousedown", preventDefault);
+    canvas.addEventListener("mousedown", storeClickXY);
+    canvas.addEventListener("touchstart", storeClickXY);
+    canvas.addEventListener("mouseup", releaseClickXY);
+    canvas.addEventListener("touchend", releaseClickXY);
+    send("played");
+    execute();
+  }
+  function halt() {
+    if (running) {
+      window.removeEventListener("keydown", storeKey);
+      window.removeEventListener("keyup", releaseKey);
+      window.removeEventListener("keypress", putInBuffer);
+      window.removeEventListener("keyup", detect);
+      window.removeEventListener("keyup", readline);
+      canvas.removeEventListener("contextmenu", preventDefault);
+      canvas.removeEventListener("mousemove", storeMouseXY);
+      canvas.removeEventListener("touchmove", preventDefault);
+      canvas.removeEventListener("touchmove", storeMouseXY);
+      canvas.removeEventListener("mousedown", preventDefault);
+      canvas.removeEventListener("mousedown", storeClickXY);
+      canvas.removeEventListener("touchstart", storeClickXY);
+      canvas.removeEventListener("mouseup", releaseClickXY);
+      canvas.removeEventListener("touchend", releaseClickXY);
+      send("cursor", 1);
+      running = false;
+      paused = false;
+      send("halted");
+    }
+  }
+  function isRunning() {
+    return running;
+  }
+  function isPaused() {
+    return paused;
+  }
+  function pause() {
+    paused = true;
+    send("paused");
+  }
+  function play() {
+    paused = false;
+    send("unpaused");
+  }
+  function execute() {
+    if (!running) {
+      return;
+    }
+    if (paused) {
+      setTimeout(execute, 1);
+      return;
+    }
+    window.removeEventListener("keyup", detect);
+    window.removeEventListener("keyup", readline);
+    delayedHeapClear();
+    let drawCount = 0;
+    let codeCount = 0;
+    let n1;
+    let n2;
+    let n3;
+    let n4;
+    let bool1;
+    let bool2;
+    let s1;
+    let s2;
+    let s3;
+    let image;
+    let r;
+    let g;
+    let b;
+    try {
+      while (drawCount < options.drawCountMax && codeCount <= options.codeCountMax) {
+        switch (pcode[line][code2]) {
+          case 0 /* null */:
+            break;
+          case 1 /* dupl */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              stack.push(n1, n1);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 2 /* swap */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              stack.push(n2, n1);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 3 /* rota */:
+            n3 = stack.pop();
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0 && n3 !== void 0) {
+              stack.push(n2, n3, n1);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 4 /* incr */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              stack.push(n1 + 1);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 5 /* decr */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              stack.push(n1 - 1);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 6 /* mxin */:
+            stack.push(Math.pow(2, 31) - 1);
+            break;
+          case 7 /* rand */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              n2 = Math.sin(seed++) * 1e4;
+              n2 = n2 - Math.floor(n2);
+              stack.push(Math.floor(n2 * Math.abs(n1)));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 8 /* hstr */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              s1 = getHeapString(n1);
+              makeHeapString(s1);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 9 /* ctos */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              makeHeapString(String.fromCharCode(n1));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 10 /* sasc */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              s1 = getHeapString(n1);
+              if (s1.length === 0) {
+                stack.push(0);
+              } else {
+                stack.push(s1.charCodeAt(0));
+              }
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 11 /* itos */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              makeHeapString(n1.toString(10));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 12 /* hexs */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              s1 = n1.toString(16).toUpperCase();
+              while (s1.length < n2) {
+                s1 = "0" + s1;
+              }
+              makeHeapString(s1);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 13 /* sval */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              s1 = getHeapString(n1);
+              if (s1[0] === "#") {
+                n3 = isNaN(parseInt(s1.slice(1), 16)) ? n2 : parseInt(s1.slice(1), 16);
+              } else {
+                n3 = isNaN(parseInt(s1, 10)) ? n2 : parseInt(s1, 10);
+              }
+              stack.push(n3);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 14 /* qtos */:
+            n4 = stack.pop();
+            n3 = stack.pop();
+            n2 = stack.pop();
+            if (n2 !== void 0 && n3 !== void 0 && n4 !== void 0) {
+              n1 = n2 / n3;
+              makeHeapString(n1.toFixed(n4));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 15 /* qval */:
+            n3 = stack.pop();
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0 && n3 !== void 0) {
+              s1 = getHeapString(n1);
+              n4 = isNaN(parseFloat(s1)) ? n3 : parseFloat(s1);
+              stack.push(Math.round(n4 * n2));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 16 /* not */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              stack.push(~n1);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 17 /* and */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              stack.push(n1 & n2);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 18 /* or */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              stack.push(n1 | n2);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 19 /* xor */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              stack.push(n1 ^ n2);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 20 /* andl */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              stack.push(n1 && n2);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 21 /* orl */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              stack.push(n1 || n2);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 22 /* shft */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              if (n2 < 0) {
+                stack.push(n1 << -n2);
+              } else {
+                stack.push(n1 >> n2);
+              }
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 23 /* neg */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              stack.push(-n1);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 24 /* abs */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              stack.push(Math.abs(n1));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 25 /* sign */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              stack.push(Math.sign(n1));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 26 /* plus */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              stack.push(n1 + n2);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 27 /* subt */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              stack.push(n1 - n2);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 28 /* mult */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              stack.push(n1 * n2);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 29 /* divr */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              if (n2 === 0) {
+                throw new MachineError("Cannot divide by zero.");
+              }
+              n3 = n1 / n2;
+              stack.push(Math.round(n3));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 30 /* div */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              if (n2 === 0) {
+                throw new MachineError("Cannot divide by zero.");
+              }
+              n3 = n1 / n2;
+              stack.push(n3 > 0 ? Math.floor(n3) : Math.ceil(n3));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 31 /* mod */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              stack.push(n1 % n2);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 32 /* eqal */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              stack.push(n1 === n2 ? -1 : 0);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 33 /* noeq */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              stack.push(n1 !== n2 ? -1 : 0);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 34 /* less */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              stack.push(n1 < n2 ? -1 : 0);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 35 /* more */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              stack.push(n1 > n2 ? -1 : 0);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 36 /* lseq */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              stack.push(n1 <= n2 ? -1 : 0);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 37 /* mreq */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              stack.push(n1 >= n2 ? -1 : 0);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 38 /* maxi */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              stack.push(Math.max(n1, n2));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 39 /* mini */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              stack.push(Math.min(n1, n2));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 40 /* seql */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              s2 = getHeapString(n2);
+              s1 = getHeapString(n1);
+              stack.push(s1 === s2 ? -1 : 0);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 41 /* sneq */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              s2 = getHeapString(n2);
+              s1 = getHeapString(n1);
+              stack.push(s1 !== s2 ? -1 : 0);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 42 /* sles */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              s2 = getHeapString(n1);
+              s1 = getHeapString(n2);
+              stack.push(n1 < n2 ? -1 : 0);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 43 /* smor */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              s2 = getHeapString(n2);
+              s1 = getHeapString(n1);
+              stack.push(n1 > n2 ? -1 : 0);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 44 /* sleq */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              s2 = getHeapString(n2);
+              s1 = getHeapString(n1);
+              stack.push(s1 <= s2 ? -1 : 0);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 45 /* smeq */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              s2 = getHeapString(n2);
+              s1 = getHeapString(n1);
+              stack.push(s1 >= s2 ? -1 : 0);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 46 /* smax */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              s2 = getHeapString(n2);
+              s1 = getHeapString(n1);
+              makeHeapString(s2 > s1 ? s2 : s1);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 47 /* smin */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              s2 = getHeapString(n2);
+              s1 = getHeapString(n1);
+              makeHeapString(s2 < s1 ? s2 : s1);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 48 /* divm */:
+            n3 = stack.pop();
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0 && n3 !== void 0) {
+              stack.push(Math.round(n1 / n2 * n3));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 49 /* sqrt */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              stack.push(Math.round(Math.sqrt(n1) * n2));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 50 /* hyp */:
+            n3 = stack.pop();
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0 && n3 !== void 0) {
+              stack.push(Math.round(Math.sqrt(n1 * n1 + n2 * n2) * n3));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 51 /* root */:
+            n4 = stack.pop();
+            n3 = stack.pop();
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0 && n3 !== void 0 && n4 !== void 0) {
+              stack.push(Math.round(Math.pow(n1 / n2, 1 / n3) * n4));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 52 /* powr */:
+            n4 = stack.pop();
+            n3 = stack.pop();
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0 && n3 !== void 0 && n4 !== void 0) {
+              stack.push(Math.round(Math.pow(n1 / n2, n3) * n4));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 53 /* log */:
+            n3 = stack.pop();
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0 && n3 !== void 0) {
+              stack.push(Math.round(Math.log(n1 / n2) / Math.LN10 * n3));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 54 /* alog */:
+            n3 = stack.pop();
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0 && n3 !== void 0) {
+              stack.push(Math.round(Math.pow(10, n1 / n2) * n3));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 55 /* ln */:
+            n3 = stack.pop();
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0 && n3 !== void 0) {
+              stack.push(Math.round(Math.log(n1 / n2) * n3));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 56 /* exp */:
+            n3 = stack.pop();
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0 && n3 !== void 0) {
+              stack.push(Math.round(Math.exp(n1 / n2) * n3));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 57 /* sin */:
+            n4 = stack.pop();
+            n3 = stack.pop();
+            n2 = stack.pop();
+            if (n2 !== void 0 && n3 !== void 0 && n4 !== void 0) {
+              n1 = n2 / n3 * (2 * Math.PI) / getTurtA();
+              stack.push(Math.round(Math.sin(n1) * n4));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 58 /* cos */:
+            n4 = stack.pop();
+            n3 = stack.pop();
+            n2 = stack.pop();
+            if (n2 !== void 0 && n3 !== void 0 && n4 !== void 0) {
+              n1 = n2 / n3 * (2 * Math.PI) / getTurtA();
+              stack.push(Math.round(Math.cos(n1) * n4));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 59 /* tan */:
+            n4 = stack.pop();
+            n3 = stack.pop();
+            n2 = stack.pop();
+            if (n2 !== void 0 && n3 !== void 0 && n4 !== void 0) {
+              n1 = n2 / n3 * (2 * Math.PI) / getTurtA();
+              stack.push(Math.round(Math.tan(n1) * n4));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 60 /* asin */:
+            n4 = stack.pop();
+            n3 = stack.pop();
+            n2 = stack.pop();
+            if (n2 !== void 0 && n3 !== void 0 && n4 !== void 0) {
+              n1 = getTurtA() / (2 * Math.PI);
+              stack.push(Math.round(Math.asin(n2 / n3) * n4 * n1));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 61 /* acos */:
+            n4 = stack.pop();
+            n3 = stack.pop();
+            n2 = stack.pop();
+            if (n2 !== void 0 && n3 !== void 0 && n4 !== void 0) {
+              n1 = getTurtA() / (2 * Math.PI);
+              stack.push(Math.round(Math.acos(n2 / n3) * n4 * n1));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 62 /* atan */:
+            n4 = stack.pop();
+            n3 = stack.pop();
+            n2 = stack.pop();
+            if (n2 !== void 0 && n3 !== void 0 && n4 !== void 0) {
+              n1 = getTurtA() / (2 * Math.PI);
+              stack.push(Math.round(Math.atan2(n2, n3) * n4 * n1));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 63 /* pi */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              stack.push(Math.round(Math.PI * n1));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 64 /* scat */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              s2 = getHeapString(n2);
+              s1 = getHeapString(n1);
+              makeHeapString(s1 + s2);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 65 /* slen */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              stack.push(main[n1]);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 66 /* case */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              s1 = getHeapString(n1);
+              switch (n2) {
+                case 1:
+                  makeHeapString(s1.toLowerCase());
+                  break;
+                case 2:
+                  makeHeapString(s1.toUpperCase());
+                  break;
+                case 3:
+                  if (s1.length > 0) {
+                    makeHeapString(s1[0].toUpperCase() + s1.slice(1));
+                  } else {
+                    makeHeapString(s1);
+                  }
+                  break;
+                case 4:
+                  s1 = s1.split(" ").map((x) => x[0].toUpperCase() + x.slice(1).toLowerCase()).join(" ");
+                  makeHeapString(s1);
+                  break;
+                case 5:
+                  s1 = s1.split("").map((x) => x === x.toLowerCase() ? x.toUpperCase() : x.toLowerCase()).join("");
+                  makeHeapString(s1);
+                  break;
+                default:
+                  makeHeapString(s1);
+                  break;
+              }
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 67 /* copy */:
+            n3 = stack.pop();
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0 && n3 !== void 0) {
+              s1 = getHeapString(n1);
+              makeHeapString(s1.substr(n2 - 1, n3));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 68 /* dels */:
+            n4 = stack.pop();
+            n3 = stack.pop();
+            n2 = stack.pop();
+            if (n2 !== void 0 && n3 !== void 0 && n4 !== void 0) {
+              s2 = getHeapString(n2);
+              s1 = s2.substr(0, n3 - 1) + s2.substr(n3 - 1 + n4);
+              makeHeapString(s1);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 69 /* inss */:
+            n4 = stack.pop();
+            n3 = stack.pop();
+            n2 = stack.pop();
+            if (n2 !== void 0 && n3 !== void 0 && n4 !== void 0) {
+              s3 = getHeapString(n3);
+              s2 = getHeapString(n2);
+              s1 = s3.substr(0, n4 - 1) + s2 + s3.substr(n4 - 1);
+              makeHeapString(s1);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 70 /* poss */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              s2 = getHeapString(n2);
+              s1 = getHeapString(n1);
+              stack.push(s2.indexOf(s1) + 1);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 71 /* repl */:
+            n4 = stack.pop();
+            n3 = stack.pop();
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0 && n3 !== void 0 && n4 !== void 0) {
+              s3 = getHeapString(n3);
+              s2 = getHeapString(n2);
+              s1 = getHeapString(n1);
+              if (n4 > 0) {
+                while (n4 > 0) {
+                  s1 = s1.replace(s2, s3);
+                  n4 = n4 - 1;
+                }
+                makeHeapString(s1);
+              } else {
+                makeHeapString(s1.replace(new RegExp(s2, "g"), s3));
+              }
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 72 /* spad */:
+            n3 = stack.pop();
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0 && n3 !== void 0) {
+              s2 = getHeapString(n2);
+              s1 = getHeapString(n1);
+              while (s1.length + s2.length <= Math.abs(n3)) {
+                if (n3 < 0) {
+                  s1 = s1 + s2;
+                } else {
+                  s1 = s2 + s1;
+                }
+              }
+              makeHeapString(s1);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 73 /* trim */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              s1 = getHeapString(n1);
+              makeHeapString(s1.trim());
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 80 /* home */:
+            n1 = startx + sizex / 2;
+            n2 = starty + sizey / 2;
+            setTurtX(Math.round(n1));
+            setTurtY(Math.round(n2));
+            setTurtD(0);
+            send("turtxChanged", getTurtX());
+            send("turtyChanged", getTurtY());
+            send("turtdChanged", getTurtD());
+            coords.push([getTurtX(), getTurtY()]);
+            break;
+          case 81 /* setx */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              setTurtX(n1);
+              send("turtxChanged", n1);
+              coords.push([getTurtX(), getTurtY()]);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 82 /* sety */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              setTurtY(n1);
+              send("turtyChanged", n1);
+              coords.push([getTurtX(), getTurtY()]);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 83 /* setd */:
+            n2 = stack.pop();
+            if (n2 !== void 0) {
+              n1 = n2 % getTurtA();
+              setTurtD(n1);
+              send("turtdChanged", n1);
+            }
+            break;
+          case 84 /* angl */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              if (getTurtA() === 0) {
+                setTurtA(n1);
+              }
+              if (n1 === 0) {
+                throw new MachineError("Angles cannot be set to zero.");
+              }
+              n2 = Math.round(n1 + getTurtD() * n1 / getTurtA());
+              setTurtD(n2 % n1);
+              setTurtA(n1);
+              send("turtdChanged", n2 % n1);
+              send("turtaChanged", n1);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 85 /* thik */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              n2 = Math.abs(n1);
+              bool1 = n1 < 0;
+              bool2 = getTurtT() < 0;
+              if (bool1) {
+                setTurtT(bool2 ? n2 : -n2);
+              } else {
+                setTurtT(bool2 ? -n2 : n2);
+              }
+              send("turttChanged", getTurtT());
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 87 /* colr */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              setTurtC(n1);
+              send("turtcChanged", hex(n1));
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 86 /* pen */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              bool1 = n1 !== 0;
+              n2 = Math.abs(getTurtT());
+              n3 = bool1 ? n2 : -n2;
+              setTurtT(n3);
+              send("turttChanged", n3);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 88 /* toxy */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              setTurtX(n1);
+              setTurtY(n2);
+              send("turtxChanged", n1);
+              send("turtyChanged", n2);
+              coords.push([n1, n2]);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 89 /* mvxy */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              n2 += getTurtY();
+              n1 += getTurtX();
+              setTurtX(n1);
+              setTurtY(n2);
+              send("turtxChanged", n1);
+              send("turtyChanged", n2);
+              coords.push([n1, n2]);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 90 /* drxy */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              n2 += getTurtY();
+              n1 += getTurtX();
+              if (getTurtT() > 0) {
+                send("line", { turtle: turtle(), x: turtx(n1), y: turty(n2) });
+                if (update) {
+                  drawCount += 1;
+                }
+              }
+              setTurtX(n1);
+              setTurtY(n2);
+              send("turtxChanged", n1);
+              send("turtyChanged", n2);
+              coords.push([n1, n2]);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 91 /* fwrd */:
+            n3 = stack.pop();
+            if (n3 !== void 0) {
+              n4 = getTurtD();
+              n2 = Math.cos(n4 * Math.PI / (getTurtA() / 2));
+              n2 = -Math.round(n2 * n3);
+              n2 += getTurtY();
+              n1 = Math.sin(n4 * Math.PI / (getTurtA() / 2));
+              n1 = Math.round(n1 * n3);
+              n1 += getTurtX();
+              if (getTurtT() > 0) {
+                send("line", { turtle: turtle(), x: turtx(n1), y: turty(n2) });
+                if (update) {
+                  drawCount += 1;
+                }
+              }
+              setTurtX(n1);
+              setTurtY(n2);
+              send("turtxChanged", n1);
+              send("turtyChanged", n2);
+              coords.push([n1, n2]);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 92 /* back */:
+            n3 = stack.pop();
+            if (n3 !== void 0) {
+              n4 = getTurtD();
+              n2 = Math.cos(n4 * Math.PI / (getTurtA() / 2));
+              n2 = Math.round(n2 * n3);
+              n2 += getTurtY();
+              n1 = Math.sin(n4 * Math.PI / (getTurtA() / 2));
+              n1 = -Math.round(n1 * n3);
+              n1 += getTurtX();
+              if (getTurtT() > 0) {
+                send("line", { turtle: turtle(), x: turtx(n1), y: turty(n2) });
+                if (update) {
+                  drawCount += 1;
+                }
+              }
+              setTurtX(n1);
+              setTurtY(n2);
+              send("turtxChanged", n1);
+              send("turtyChanged", n2);
+              coords.push([n1, n2]);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 93 /* left */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              n2 = (getTurtD() - n1) % getTurtA();
+              setTurtD(n2);
+              send("turtdChanged", n2);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 94 /* rght */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              n2 = (getTurtD() + n1) % getTurtA();
+              setTurtD(n2);
+              send("turtdChanged", n2);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 95 /* turn */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              if (Math.abs(n2) >= Math.abs(n1)) {
+                n3 = Math.atan(-n1 / n2);
+                if (n2 > 0) {
+                  n3 += Math.PI;
+                } else if (n1 < 0) {
+                  n3 += 2;
+                  n3 *= Math.PI;
+                }
+              } else {
+                n3 = Math.atan(n2 / n1);
+                if (n1 > 0) {
+                  n3 += Math.PI;
+                } else {
+                  n3 += 3;
+                  n3 *= Math.PI;
+                }
+                n3 /= 2;
+              }
+              n3 = Math.round(n3 * getTurtA() / Math.PI / 2) % getTurtA();
+              setTurtD(n3);
+              send("turtdChanged", n1);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 96 /* blnk */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              send("blank", hex(n1));
+              if (update) {
+                drawCount += 1;
+              }
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 97 /* rcol */:
+            n3 = stack.pop();
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0 && n3 !== void 0) {
+              send("flood", { x: turtx(n1), y: turty(n2), c1: n3, c2: 0, boundary: false });
+              if (update) {
+                drawCount += 1;
+              }
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 98 /* fill */:
+            n4 = stack.pop();
+            n3 = stack.pop();
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0 && n3 !== void 0 && n4 !== void 0) {
+              send("flood", { x: turtx(n1), y: turty(n2), c1: n3, c2: n4, boundary: true });
+              if (update) {
+                drawCount += 1;
+              }
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 99 /* pixc */:
+            n3 = stack.pop();
+            n2 = stack.pop();
+            if (n2 !== void 0 && n3 !== void 0) {
+              image = context.getImageData(turtx(n2), turty(n3), 1, 1);
+              stack.push(image.data[0] * 65536 + image.data[1] * 256 + image.data[2]);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 100 /* pixs */:
+            n3 = stack.pop();
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0 && n3 !== void 0) {
+              send("pixset", { x: turtx(n1), y: turty(n2), c: n3, doubled });
+              if (update) {
+                drawCount += 1;
+              }
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 101 /* rgb */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              n1 = n1 % 50;
+              if (n1 <= 0) {
+                n1 += 50;
+              }
+              n1 = colours[n1 - 1].value;
+              stack.push(n1);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 102 /* mixc */:
+            n4 = stack.pop();
+            n3 = stack.pop();
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0 && n3 !== void 0 && n4 !== void 0) {
+              r = mixBytes(Math.floor(n1 / 65536), Math.floor(n2 / 65536), n3, n4);
+              g = mixBytes(Math.floor((n1 & 65280) / 256), Math.floor((n2 & 65280) / 256), n3, n4);
+              b = mixBytes(n1 & 255, n2 & 255, n3, n4);
+              stack.push(r * 65536 + g * 256 + b);
+            }
+            break;
+          case 103 /* rmbr */:
+            coords.push([getTurtX(), getTurtY()]);
+            break;
+          case 104 /* frgt */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              coords.length -= n1;
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 105 /* poly */:
+            n3 = stack.pop();
+            if (n3 !== void 0) {
+              n2 = coords.length;
+              n1 = n3 > n2 ? 0 : n2 - n3;
+              send("poly", { turtle: turtle(), coords: coords.slice(n1, n2).map(vcoords), fill: false });
+              if (update) {
+                drawCount += 1;
+              }
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 106 /* pfil */:
+            n3 = stack.pop();
+            if (n3 !== void 0) {
+              n2 = coords.length;
+              n1 = n3 > n2 ? 0 : n2 - n3;
+              send("poly", { turtle: turtle(), coords: coords.slice(n1, n2).map(vcoords), fill: true });
+              if (update) {
+                drawCount += 1;
+              }
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 107 /* circ */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              send("arc", { turtle: turtle(), x: turtx(n1 + startx), y: turty(n1 + starty), fill: false });
+              if (update) {
+                drawCount += 1;
+              }
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 108 /* blot */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              send("arc", { turtle: turtle(), x: turtx(n1 + startx), y: turty(n1 + starty), fill: true });
+              if (update) {
+                drawCount += 1;
+              }
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 109 /* elps */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              send("arc", { turtle: turtle(), x: turtx(n1 + startx), y: turty(n2 + starty), fill: false });
+              if (update) {
+                drawCount += 1;
+              }
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 110 /* eblt */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              send("arc", { turtle: turtle(), x: turtx(n1 + startx), y: turty(n2 + starty), fill: true });
+              if (update) {
+                drawCount += 1;
+              }
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 111 /* box */:
+            n4 = stack.pop();
+            n3 = stack.pop();
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0 && n3 !== void 0 && n4 !== void 0) {
+              bool1 = n4 !== 0;
+              n2 += getTurtY();
+              n1 += getTurtX();
+              send("box", { turtle: turtle(), x: turtx(n1), y: turty(n2), fill: hex(n3), border: bool1 });
+              if (update) {
+                drawCount += 1;
+              }
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 112 /* ldin */:
+            n1 = pcode[line][code2 + 1];
+            stack.push(n1);
+            code2 += 1;
+            break;
+          case 113 /* ldvg */:
+            n1 = pcode[line][code2 + 1];
+            stack.push(peek(n1));
+            code2 += 1;
+            break;
+          case 114 /* ldvv */:
+            n1 = pcode[line][code2 + 1];
+            n2 = pcode[line][code2 + 2];
+            stack.push(main[main[n1] + n2]);
+            code2 += 2;
+            break;
+          case 115 /* ldvr */:
+            n1 = pcode[line][code2 + 1];
+            n2 = pcode[line][code2 + 2];
+            stack.push(main[main[main[n1] + n2]]);
+            code2 += 2;
+            break;
+          case 116 /* ldag */:
+            n1 = pcode[line][code2 + 1];
+            stack.push(n1);
+            code2 += 1;
+            break;
+          case 117 /* ldav */:
+            n1 = pcode[line][code2 + 1];
+            n2 = pcode[line][code2 + 2];
+            stack.push(main[n1] + n2);
+            code2 += 2;
+            break;
+          case 118 /* lstr */:
+            code2 += 1;
+            n1 = pcode[line][code2];
+            n2 = code2 + n1;
+            s1 = "";
+            while (code2 < n2) {
+              code2 += 1;
+              s1 += String.fromCharCode(pcode[line][code2]);
+            }
+            makeHeapString(s1);
+            break;
+          case 119 /* stvg */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              main[pcode[line][code2 + 1]] = n1;
+              code2 += 1;
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 120 /* stvv */:
+            n1 = pcode[line][code2 + 1];
+            n2 = pcode[line][code2 + 2];
+            n3 = stack.pop();
+            if (n3 !== void 0) {
+              main[main[n1] + n2] = n3;
+              code2 += 2;
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 121 /* stvr */:
+            n1 = pcode[line][code2 + 1];
+            n2 = pcode[line][code2 + 2];
+            n3 = stack.pop();
+            if (n3 !== void 0) {
+              main[main[main[n1] + n2]] = n3;
+              code2 += 2;
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 122 /* lptr */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              stack.push(main[n1]);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 123 /* sptr */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              main[n2] = n1;
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 124 /* zptr */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              zero(n1, n2);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 125 /* cptr */:
+            n3 = stack.pop();
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0 && n3 !== void 0) {
+              copy(n1, n2, n3);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 126 /* cstr */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              n4 = main[n2 - 1];
+              n3 = main[n1];
+              copy(n1, n2, Math.min(n3, n4) + 1);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 127 /* test */:
+            n2 = stack[stack.length - 1];
+            n1 = stack[stack.length - 2];
+            if (n1 !== void 0 && n2 !== void 0) {
+              if (n1 < 0 || n1 > main[n2]) {
+                console.log(`n1: ${n1}, n2: ${n2}, memory[n2]: ${main[n2]}`);
+                throw new MachineError(`Array index out of range (${line}, ${code2}).`);
+              }
+            }
+            break;
+          case 128 /* jump */:
+            line = pcode[line][code2 + 1] - 1;
+            code2 = -1;
+            break;
+          case 129 /* ifno */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              if (n1 === 0) {
+                line = pcode[line][code2 + 1] - 1;
+                code2 = -1;
+              } else {
+                code2 += 1;
+              }
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 130 /* halt */:
+            halt();
+            return;
+          case 131 /* subr */:
+            if (getHeapGlobal() === -1) {
+              setHeapGlobal(getHeapPerm());
+            }
+            returnStack.push(line + 1);
+            line = pcode[line][code2 + 1] - 1;
+            code2 = -1;
+            break;
+          case 132 /* retn */:
+            n1 = returnStack.pop();
+            if (n1 !== void 0) {
+              line = n1;
+              code2 = -1;
+            } else {
+              throw new MachineError("RETN called on empty return stack.");
+            }
+            break;
+          case 133 /* pssr */:
+            subroutineStack.push(pcode[line][code2 + 1]);
+            code2 += 1;
+            break;
+          case 134 /* plsr */:
+            subroutineStack.pop();
+            break;
+          case 135 /* psrj */:
+            stack.push(line + 1);
+            break;
+          case 136 /* plrj */:
+            returnStack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              line = n1 - 1;
+              code2 = -1;
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 137 /* ldmt */:
+            stack.push(memoryStack.length - 1);
+            break;
+          case 138 /* stmt */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              memoryStack.push(n1);
+              setStackTop(n1);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 139 /* memc */:
+            n1 = pcode[line][code2 + 1];
+            n2 = pcode[line][code2 + 2];
+            n3 = memoryStack.pop();
+            if (n3 !== void 0) {
+              if (n3 + n2 > options.stackSize) {
+                throw new MachineError("Memory stack has overflowed into memory heap. Probable cause is unterminated recursion.");
+              }
+              memoryStack.push(main[n1]);
+              setStackTop(main[n1]);
+              main[n1] = n3;
+              memoryStack.push(n3 + n2);
+              setStackTop(n3 + n2);
+              code2 += 2;
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 140 /* memr */:
+            memoryStack.pop();
+            n1 = pcode[line][code2 + 1];
+            n2 = memoryStack.pop();
+            if (n2 !== void 0) {
+              memoryStack.push(main[n1]);
+              setStackTop(main[n1]);
+              main[n1] = n2;
+              code2 += 2;
+            } else {
+              throw new MachineError("MEMR called on empty memory stack.");
+            }
+            break;
+          case 141 /* hfix */:
+            heapFix();
+            break;
+          case 142 /* hclr */:
+            break;
+          case 143 /* hrst */:
+            heapReset();
+            break;
+          case 144 /* canv */:
+            n4 = stack.pop();
+            n3 = stack.pop();
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0 && n3 !== void 0 && n4 !== void 0) {
+              sizey = n4;
+              sizex = n3;
+              starty = n2;
+              startx = n1;
+              send("canvas", {
+                startx,
+                starty,
+                sizex,
+                sizey,
+                width,
+                height,
+                doubled
+              });
+              setTurtX(Math.round(startx + sizex / 2));
+              setTurtY(Math.round(starty + sizey / 2));
+              setTurtD(0);
+              send("turtxChanged", getTurtX());
+              send("turtyChanged", getTurtY());
+              send("turtdChanged", getTurtD());
+              coords.push([getTurtX(), getTurtY()]);
+              drawCount = options.drawCountMax;
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 145 /* reso */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              if (Math.min(n1, n2) <= options.smallSize) {
+                n1 *= 2;
+                n2 *= 2;
+                doubled = true;
+              } else {
+                doubled = false;
+              }
+              width = n1;
+              height = n2;
+              send("resolution", { width: n1, height: n2 });
+              send("blank", "#FFFFFF");
+              drawCount = options.drawCountMax;
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 146 /* udat */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              bool1 = n1 !== 0;
+              update = bool1;
+              if (bool1) {
+                drawCount = options.drawCountMax;
+              }
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 147 /* seed */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              if (n1 === 0) {
+                stack.push(seed);
+              } else {
+                seed = n1;
+                stack.push(n1);
+              }
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 152 /* trac */:
+            stack.pop();
+            break;
+          case 153 /* memw */:
+            stack.pop();
+            break;
+          case 154 /* dump */:
+            send("memoryDumped", dump());
+            if (options.showMemoryOnDump) {
+              send("selectTab", "memory");
+            }
+            break;
+          case 155 /* peek */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              stack.push(main[n1]);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 156 /* poke */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              main[n1] = n2;
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 160 /* inpt */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              if (n1 < 0) {
+                stack.push(query[-n1]);
+              } else {
+                stack.push(keys[n1]);
+              }
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 161 /* iclr */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              if (n1 < 0) {
+                query[-n1] = -1;
+              } else if (n1 === 0) {
+                main[main[1] + 1] = main[1] + 3;
+                main[main[1] + 2] = main[1] + 3;
+              } else {
+                keys[n1] = -1;
+              }
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 162 /* bufr */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              if (n1 > 0) {
+                n2 = getHeapTemp() + 3;
+                stack.push(getHeapTemp() + 1);
+                main[getHeapTemp() + 1] = n1 + n2;
+                main[getHeapTemp() + 2] = n2 + 1;
+                main[getHeapTemp() + 3] = n2 + 1;
+                main.fill(0, n2 + 1, n2 + n1);
+                setHeapTemp(n2 + n1);
+                setHeapMax(getHeapTemp());
+              }
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 163 /* read */:
+            n1 = stack.pop();
+            n2 = main[1];
+            n3 = main[main[1]];
+            s1 = "";
+            r = main[n2 + 1];
+            g = main[n2 + 2];
+            if (n1 !== void 0) {
+              if (n1 === 0) {
+                while (r !== g) {
+                  s1 += String.fromCharCode(main[r]);
+                  r = r < n3 ? r + 1 : n3 + 3;
+                }
+              } else {
+                while (r !== g && s1.length <= n1) {
+                  s1 += String.fromCharCode(main[r]);
+                  if (r < n3) {
+                    r += 1;
+                  } else {
+                    r = n3 + 3;
+                  }
+                }
+                main[n2 + 1] = r;
+              }
+              makeHeapString(s1);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 164 /* rdln */:
+            n1 = Math.pow(2, 31) - 1;
+            code2 += 1;
+            if (code2 === pcode[line].length) {
+              line += 1;
+              code2 = 0;
+            }
+            readlineTimeoutID = window.setTimeout(execute, n1);
+            window.addEventListener("keyup", readline);
+            return;
+          case 165 /* kech */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              bool1 = n1 !== 0;
+              keyecho = bool1;
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 166 /* outp */:
+            n3 = stack.pop();
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0 && n3 !== void 0) {
+              bool2 = n3 !== 0;
+              bool1 = n1 !== 0;
+              send("output", { clear: bool1, colour: hex(n2) });
+              if (bool2) {
+                send("selectTab", "output");
+              } else {
+                send("selectTab", "canvas");
+              }
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 167 /* cons */:
+            n3 = stack.pop();
+            n2 = stack.pop();
+            if (n2 !== void 0 && n3 !== void 0) {
+              bool1 = n2 !== 0;
+              send("console", { clear: bool1, colour: hex(n3) });
+            }
+            break;
+          case 168 /* prnt */:
+            n3 = stack.pop();
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0 && n3 !== void 0) {
+              s1 = getHeapString(n1);
+              send("print", { turtle: turtle(), string: s1, font: n2, size: n3 });
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 169 /* writ */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              s1 = getHeapString(n1);
+              send("write", s1);
+              send("log", s1);
+              if (options.showOutputOnWrite) {
+                send("selectTab", "output");
+              }
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 170 /* newl */:
+            send("write", "\n");
+            send("log", "\n");
+            break;
+          case 171 /* curs */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              send("cursor", n1);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 172 /* time */:
+            n1 = Date.now();
+            n1 = n1 - startTime;
+            stack.push(n1);
+            break;
+          case 173 /* tset */:
+            n1 = Date.now();
+            n2 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              startTime = n1 - n2;
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            break;
+          case 174 /* wait */:
+            n1 = stack.pop();
+            if (n1 !== void 0) {
+              code2 += 1;
+              if (code2 === pcode[line].length) {
+                line += 1;
+                code2 = 0;
+              }
+              window.setTimeout(execute, n1);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            return;
+          case 175 /* tdet */:
+            n2 = stack.pop();
+            n1 = stack.pop();
+            if (n1 !== void 0 && n2 !== void 0) {
+              stack.push(0);
+              code2 += 1;
+              if (code2 === pcode[line].length) {
+                line += 1;
+                code2 = 0;
+              }
+              detectKeycode = n2;
+              detectTimeoutID = window.setTimeout(execute, n1);
+              window.addEventListener("keyup", detect);
+            } else {
+              throw new MachineError("Stack operation called on empty stack.");
+            }
+            return;
+          case 176 /* chdr */:
+          case 177 /* file */:
+          case 178 /* diry */:
+          case 179 /* open */:
+          case 180 /* clos */:
+          case 181 /* fbeg */:
+          case 182 /* eof */:
+          case 183 /* eoln */:
+          case 184 /* frds */:
+          case 185 /* frln */:
+          case 186 /* fwrs */:
+          case 187 /* fwln */:
+          case 188 /* ffnd */:
+          case 189 /* fdir */:
+          case 190 /* fnxt */:
+          case 191 /* fmov */:
+            throw new MachineError("File processing has not yet been implemented in the online Turtle System. We are working on introducing this very soon. In the meantime, please run this program using the downloable system.");
+          default:
+            console.log(line);
+            console.log(code2);
+            throw new MachineError(`Unknown PCode 0x${pcode[line][code2].toString(16)}.`);
+        }
+        codeCount += 1;
+        code2 += 1;
+        if (!pcode[line]) {
+          throw new MachineError("The program has tried to jump to a line that does not exist. This is either a bug in our compiler, or in your assembled code.");
+        }
+        if (code2 === pcode[line].length) {
+          line += 1;
+          code2 = 0;
+        }
+      }
+    } catch (error) {
+      halt();
+      send("error", error);
+    }
+    setTimeout(execute, 0);
+  }
+  function storeKey(event) {
+    if (event.key === "Backspace") {
+      event.preventDefault();
+      const buffer = main[1];
+      if (buffer > 0) {
+        if (main[buffer + 1] !== main[buffer + 2]) {
+          if (main[buffer + 2] === buffer + 3) {
+            main[buffer + 2] = main[buffer];
+          } else {
+            main[buffer + 2] -= 1;
+          }
+          if (keyecho) {
+            send("backspace");
+          }
+        }
+        if (main[buffer + 2] >= main[buffer + 1]) {
+          keys[0] = main[buffer + 2] - main[buffer + 1];
+        } else {
+          keys[0] = main[buffer + 2] - main[buffer + 1] + main[buffer] - buffer - 2;
+        }
+      }
+    }
+    if (event.key === "ArrowUp" || event.key === "ArrowDown" || event.key === "ArrowLeft" || event.key === "ArrowRight") {
+      event.preventDefault();
+    }
+    const keycode2 = event.keyCode;
+    query[9] = keycode2;
+    query[10] = 128;
+    if (event.shiftKey) {
+      query[10] += 8;
+    }
+    if (event.altKey) {
+      query[10] += 16;
+    }
+    if (event.ctrlKey) {
+      query[10] += 32;
+    }
+    keys[keycode2] = query[10];
+  }
+  function releaseKey(event) {
+    const keycode2 = event.keyCode;
+    query[9] = -Math.abs(query[9]);
+    query[10] = -Math.abs(query[10]);
+    keys[keycode2] = -Math.abs(keys[keycode2]);
+  }
+  function putInBuffer(event) {
+    const keycode2 = event.keyCode;
+    const buffer = main[1];
+    if (buffer > 0) {
+      let next = 0;
+      if (main[buffer + 2] === main[buffer]) {
+        next = buffer + 3;
+      } else {
+        next = main[buffer + 2] + 1;
+      }
+      if (next !== main[buffer + 1]) {
+        main[main[buffer + 2]] = keycode2;
+        main[buffer + 2] = next;
+        if (main[buffer + 2] >= main[buffer + 1]) {
+          keys[0] = main[buffer + 2] - main[buffer + 1];
+        } else {
+          keys[0] = main[buffer + 2] - main[buffer + 1] + main[buffer] - buffer - 2;
+        }
+        if (keyecho) {
+          send("log", String.fromCharCode(keycode2));
+        }
+      }
+    }
+  }
+  function storeMouseXY(event) {
+    switch (event.type) {
+      case "mousemove":
+        query[7] = virtx(event.clientX);
+        query[8] = virty(event.clientY);
+        break;
+      case "touchmove":
+      case "touchstart":
+        query[7] = virtx(event.touches[0].clientX);
+        query[8] = virty(event.touches[0].clientY);
+        break;
+    }
+  }
+  function storeClickXY(event) {
+    const now = Date.now();
+    query[4] = 128;
+    if (event.shiftKey) {
+      query[4] += 8;
+    }
+    if (event.altKey) {
+      query[4] += 16;
+    }
+    if (event.ctrlKey) {
+      query[4] += 32;
+    }
+    if (now - query[11] < 300) {
+      query[4] += 64;
+    }
+    query[11] = now;
+    switch (event.type) {
+      case "mousedown":
+        query[5] = virtx(event.clientX);
+        query[6] = virty(event.clientY);
+        switch (event.button) {
+          case 0:
+            query[4] += 1;
+            query[1] = query[4];
+            query[2] = -1;
+            query[3] = -1;
+            break;
+          case 1:
+            query[4] += 4;
+            query[1] = -1;
+            query[2] = -1;
+            query[3] = query[4];
+            break;
+          case 2:
+            query[4] += 2;
+            query[1] = -1;
+            query[2] = query[4];
+            query[3] = -1;
+            break;
+        }
+        break;
+      case "touchstart":
+        query[5] = virtx(event.touches[0].clientX);
+        query[6] = virty(event.touches[0].clientY);
+        query[4] += 1;
+        query[1] = query[4];
+        query[2] = -1;
+        query[3] = -1;
+        storeMouseXY(event);
+        break;
+    }
+  }
+  function releaseClickXY(event) {
+    query[4] = -query[4];
+    switch (event.type) {
+      case "mouseup":
+        switch (event.button) {
+          case 0:
+            query[1] = -query[1];
+            break;
+          case 1:
+            query[2] = -query[3];
+            break;
+          case 2:
+            query[2] = -query[2];
+            break;
+        }
+        break;
+      case "touchend":
+        query[1] = -query[1];
+        break;
+    }
+  }
+  function preventDefault(event) {
+    event.preventDefault();
+  }
+  function detect(event) {
+    if (event.keyCode === detectKeycode) {
+      stack.pop();
+      stack.push(-1);
+      window.clearTimeout(detectTimeoutID);
+      execute();
+    }
+  }
+  function readline(event) {
+    if (event.key === "Enter") {
+      const bufferAddress = main[1];
+      const bufferEndAddress = main[main[1]];
+      let string2 = "";
+      let readNextAddress = main[bufferAddress + 1];
+      const readLastAddress = main[bufferAddress + 2];
+      while (readNextAddress !== readLastAddress && main[readNextAddress] !== 13) {
+        string2 += String.fromCharCode(main[readNextAddress]);
+        readNextAddress = readNextAddress < bufferEndAddress ? readNextAddress + 1 : bufferEndAddress + 3;
+      }
+      main[bufferAddress + 1] = readNextAddress < bufferEndAddress ? readNextAddress + 1 : bufferEndAddress + 3;
+      makeHeapString(string2);
+      window.clearTimeout(readlineTimeoutID);
+      execute();
+    }
+  }
+  function turtle() {
+    return {
+      x: turtx(getTurtX()),
+      y: turty(getTurtY()),
+      d: getTurtD(),
+      a: getTurtA(),
+      p: turtt(getTurtT()),
+      c: hex(getTurtC())
+    };
+  }
+  function turtx(x) {
+    const exact = (x - startx) * width / sizex;
+    return doubled ? Math.round(exact) + 1 : Math.round(exact);
+  }
+  function turty(y) {
+    const exact = (y - starty) * height / sizey;
+    return doubled ? Math.round(exact) + 1 : Math.round(exact);
+  }
+  function turtt(t) {
+    return doubled ? t * 2 : t;
+  }
+  function vcoords(coords2) {
+    return [turtx(coords2[0]), turty(coords2[1])];
+  }
+  function virtx(x) {
+    const { left, width: width2 } = canvas.getBoundingClientRect();
+    const exact = (x - left) * sizex / width2 + startx;
+    return Math.round(exact);
+  }
+  function virty(y) {
+    const { height: height2, top } = canvas.getBoundingClientRect();
+    const exact = (y - top) * sizey / height2 + starty;
+    return Math.round(exact);
+  }
+
+  // client/lexer/token.ts
+  var Token = class {
+    constructor(type8, content, line2, character) {
+      this.type = type8;
+      this.content = content;
+      this.line = line2;
+      this.character = character;
+    }
+  };
+
+  // client/constants/commands.ts
+  var Command = class {
+    constructor(names, code3, parameters7, returns, category, level, description) {
+      this.names = names;
+      this.code = code3;
+      this.parameters = parameters7;
+      this.returns = returns;
+      this.category = category;
+      this.level = level;
+      this.description = description;
+    }
+    get type() {
+      return this.returns === null ? "procedure" : "function";
+    }
+  };
+  var Parameter = class {
+    constructor(name, type8, isReferenceParameter, length) {
+      this.name = name;
+      this.type = type8;
+      this.isReferenceParameter = isReferenceParameter;
+      this.length = length;
+    }
+  };
+  var commands = [
+    new Command({ BASIC: "FORWARD", C: "forward", Java: "forward", Pascal: "forward", Python: "forward", TypeScript: "forward" }, [91 /* fwrd */], [new Parameter("n", "integer", false, 1)], null, 0, 0, "Moves the Turtle forward <code>n</code> units, drawing as it goes (unless the pen is up)."),
+    new Command({ BASIC: "BACK", C: "back", Java: "back", Pascal: "back", Python: "back", TypeScript: "back" }, [92 /* back */], [new Parameter("n", "integer", false, 1)], null, 0, 0, "Moves the Turtle back <code>n</code> units, drawing as it goes (unless the pen is up)."),
+    new Command({ BASIC: "LEFT", C: "left", Java: "left", Pascal: "left", Python: "left", TypeScript: "left" }, [93 /* left */], [new Parameter("n", "integer", false, 1)], null, 0, 0, "Rotates the Turtle left by <code>n</code> degrees."),
+    new Command({ BASIC: "RIGHT", C: "right", Java: "right", Pascal: "right", Python: "right", TypeScript: "right" }, [94 /* rght */], [new Parameter("n", "integer", false, 1)], null, 0, 0, "Rotates the Turtle right by <code>n</code> degrees."),
+    new Command({ BASIC: "DRAWXY", C: "drawxy", Java: "drawXY", Pascal: "drawxy", Python: "drawxy", TypeScript: "drawXY" }, [90 /* drxy */], [
+      new Parameter("x", "integer", false, 1),
+      new Parameter("y", "integer", false, 1)
+    ], null, 0, 1, "Moves the Turtle in a straight line to a point <code>x</code> units away along the x-axis and <code>y</code> units away along the y-axis, drawing as it goes (unless the pen is up)."),
+    new Command({ BASIC: "MOVEXY", C: "movexy", Java: "moveXY", Pascal: "movexy", Python: "movexy", TypeScript: "moveXY" }, [89 /* mvxy */], [
+      new Parameter("x", "integer", false, 1),
+      new Parameter("y", "integer", false, 1)
+    ], null, 0, 1, "Moves the Turtle in a straight line to a point <code>x</code> units away along the x-axis and <code>y</code> units away along the y-axis, <em>without</em> drawing (regardless of the current pen status)."),
+    new Command({ BASIC: "HOME", C: "home", Java: "home", Pascal: "home", Python: "home", TypeScript: "home" }, [80 /* home */], [], null, 1, 0, "Moves the Turtle back to its starting position in the centre of the canvas, facing north, drawing as it goes (unless the pen is up)."),
+    new Command({ BASIC: "SETX", C: "setx", Java: "setX", Pascal: "setx", Python: "setx", TypeScript: "setX" }, [81 /* setx */], [new Parameter("x", "integer", false, 1)], null, 1, 0, "Sets the Turtle&rsquo;s <code>x</code> coordinate directly (without movement or drawing on the canvas). This can also be achieved by direct assignment of the global variable <code>turtx</code>."),
+    new Command({ BASIC: "SETY", C: "sety", Java: "setY", Pascal: "sety", Python: "sety", TypeScript: "setY" }, [82 /* sety */], [new Parameter("y", "integer", false, 1)], null, 1, 0, "Sets the Turtle&rsquo;s <code>y</code> coordinate directly (without movement or drawing on the canvas). This can also be achieved by direct assignment of the global variable <code>turty</code>."),
+    new Command({ BASIC: "SETXY", C: "setxy", Java: "setXY", Pascal: "setxy", Python: "setxy", TypeScript: "setXY" }, [88 /* toxy */], [
+      new Parameter("x", "integer", false, 1),
+      new Parameter("y", "integer", false, 1)
+    ], null, 1, 0, "Sets the Turtle&rsquo;s <code>x</code> and <code>y</code> coordinates directly (without movement or drawing on the canvas). This can also be achieved by direct assingment of the global variables <code>turtx</code> and <code>turty</code>."),
+    new Command({ BASIC: "DIRECTION", C: "direction", Java: "direction", Pascal: "direction", Python: "direction", TypeScript: "direction" }, [83 /* setd */], [new Parameter("n", "integer", false, 1)], null, 1, 0, "Sets the Turtle&rsquo;s direction to <code>n</code> degrees (0 for north, 90 for east, 180 for south, 270 for west). This can also be achieved by direct assignment of the global variable <code>turtd</code>. Note that the number of degrees in a circle (360 by default) can be changed with the <code>angles</code> command."),
+    new Command({ BASIC: "ANGLES", C: "angles", Java: "angles", Pascal: "angles", Python: "angles", TypeScript: "angles" }, [84 /* angl */], [new Parameter("degrees", "integer", false, 1)], null, 1, 1, "Sets the number of <code>degrees</code> in a circle (360 by default)."),
+    new Command({ BASIC: "TURNXY", C: "turnxy", Java: "turnXY", Pascal: "turnxy", Python: "turnxy", TypeScript: "turnXY" }, [95 /* turn */], [
+      new Parameter("x", "integer", false, 1),
+      new Parameter("y", "integer", false, 1)
+    ], null, 1, 1, "Turns the Turtle to face the point <code>x</code> units away alongthe x-axis and <code>y</code> units away along the y-axis."),
+    new Command({ BASIC: "CIRCLE", C: "circle", Java: "circle", Pascal: "circle", Python: "circle", TypeScript: "circle" }, [107 /* circ */], [new Parameter("radius", "integer", false, 1)], null, 2, 0, "Draws a circle outline in the Turtle&rsquo;s current colour and thickness, of the given <code>radius</code>, centred on the Turtle&rsquo;s current location."),
+    new Command({ BASIC: "BLOT", C: "blot", Java: "blot", Pascal: "blot", Python: "blot", TypeScript: "blot" }, [108 /* blot */], [new Parameter("radius", "integer", false, 1)], null, 2, 0, "Draws a filled circle in the Turtle&rsquo;s current colour, of the given <code>radius</code>, centred on the Turtle&rsquo;s current location."),
+    new Command({ BASIC: "ELLIPSE", C: "ellipse", Java: "ellipse", Pascal: "ellipse", Python: "ellipse", TypeScript: "ellipse" }, [109 /* elps */], [
+      new Parameter("Xradius", "integer", false, 1),
+      new Parameter("Yradius", "integer", false, 1)
+    ], null, 2, 0, "Draws an ellipse outline in the Turtle&rsquo;s current colour and thickness, of the given <code>Xradius</code> and <code>Yradius</code>, centred on the Turtle&rsquo;s current location."),
+    new Command({ BASIC: "ELLBLOT", C: "ellblot", Java: "ellblot", Pascal: "ellblot", Python: "ellblot", TypeScript: "ellblot" }, [110 /* eblt */], [
+      new Parameter("Xradius", "integer", false, 1),
+      new Parameter("Yradius", "integer", false, 1)
+    ], null, 2, 0, "Draws a filled ellipse in the Turtle&rsquo;s current colour, of the given <code>Xradius</code> and <code>Yradius</code>, centred on the Turtle&rsquo;s current location."),
+    new Command({ BASIC: "POLYLINE", C: "polyline", Java: "polyline", Pascal: "polyline", Python: "polyline", TypeScript: "polyline" }, [105 /* poly */], [new Parameter("n", "integer", false, 1)], null, 2, 1, "Draws a polygon outline in the Turtle&rsquo;s current colour and thickness, connecting the last <code>n</code> locations that the Turtle has visited."),
+    new Command({ BASIC: "POLYGON", C: "polygon", Java: "polygon", Pascal: "polygon", Python: "polygon", TypeScript: "polygon" }, [106 /* pfil */], [new Parameter("n", "integer", false, 1)], null, 2, 1, "Draws a filled polygon in the Turtle&rsquo;s current colour and thickness, connecting the last <code>n</code> locations that the Turtle has visited."),
+    new Command({ BASIC: "FORGET", C: "forget", Java: "forget", Pascal: "forget", Python: "forget", TypeScript: "forget" }, [104 /* frgt */], [new Parameter("n", "integer", false, 1)], null, 2, 1, "Makes the Turtle &ldquo;forget&rdquo; the last <code>n</code> points it has visited. Used in conjunction with <code>polyline</code> and <code>polygon</code>."),
+    new Command({ BASIC: "REMEMBER", C: "remember", Java: "remember", Pascal: "remember", Python: "remember", TypeScript: "remember" }, [103 /* rmbr */], [], null, 2, 1, "Makes the Turtle &ldquo;remember&rdquo; its current location. This is only necessary if its current location was set by a direct assignment of the global variables <code>turtx</code> and <code>turty</code>; when using the standard moving commands, the Turtle automatically remembers where it has been."),
+    new Command({ BASIC: "BOX", C: "box", Java: "box", Pascal: "box", Python: "box", TypeScript: "box" }, [111 /* box */], [
+      new Parameter("x", "integer", false, 1),
+      new Parameter("y", "integer", false, 1),
+      new Parameter("colour", "integer", false, 1),
+      new Parameter("border", "boolean", false, 1)
+    ], null, 2, 1, "Draws a box of width <code>x</code> and height <code>y</code>, with the top left corner in the Turtle&rsquo;s current location, filled with the specified <code>colour</code>. If <code>border</code> is <code>true</code>, a border is drawn around the box in the Turtle&rsquo;s current colour and and thickness. This is intended to be used with the <code>print</code> command, to provide a box for framing text."),
+    new Command({ BASIC: "COLOUR", C: "colour", Java: "colour", Pascal: "colour", Python: "colour", TypeScript: "colour" }, [87 /* colr */], [new Parameter("colour", "integer", false, 1)], null, 3, 0, "Sets the <code>colour</code> of the Turtle&rsquo;s pen. Takes as an argument either an RGB value, or one of the Turtle System&rsquo;s fifty predefined colour constants (see the <b>Colours</b> tab). This can also be achieved by direct assignment of the global variable <code>turtc</code>."),
+    new Command({ BASIC: "RNDCOL", C: "randcol", Java: "randCol", Pascal: "randcol", Python: "randcol", TypeScript: "randCol" }, [7 /* rand */, 4 /* incr */, 101 /* rgb */, 87 /* colr */], [new Parameter("n", "integer", false, 1)], null, 3, 0, "Assigns a random colour to the Turte&rsquo;s pen, between 1 and <code>n</code> (maximum 50). The colours are taken from the Turtle System&rsquo;s fifty predefined colours, which are each assigned a number between 1 and 50 (see the <b>Colours</b> tab)."),
+    new Command({ BASIC: "THICKNESS", C: "thickness", Java: "thickness", Pascal: "thickness", Python: "thickness", TypeScript: "thickness" }, [85 /* thik */], [new Parameter("thickness", "integer", false, 1)], null, 3, 0, "Sets the <code>thickness</code> of the Turtle&rsquo;s pen (for line drawing, and outlines of circles, ellipses, boxes, and polygons). This can also be achieved by direct assignment of the global variable <code>turtt</code>."),
+    new Command({ BASIC: "PENUP", C: "penup", Java: "penUp", Pascal: "penup", Python: "penup", TypeScript: "penUp" }, [112 /* ldin */, 0, 86 /* pen */], [], null, 3, 0, "Lifts the Turtle&rsquo;s pen, so that subsequent movement will not draw a line on the Canvas."),
+    new Command({ BASIC: "PENDOWN", C: "pendown", Java: "penDown", Pascal: "pendown", Python: "pendown", TypeScript: "penDown" }, [112 /* ldin */, -1, 86 /* pen */], [], null, 3, 0, "Lowers the Turtle&rsquo;s pen, so that subsequent movement will draw a line on the Canvas."),
+    new Command({ BASIC: "OUTPUT", C: "output", Java: "output", Pascal: "output", Python: "output", TypeScript: "output" }, [166 /* outp */], [
+      new Parameter("clear", "boolean", false, 1),
+      new Parameter("colour", "integer", false, 1),
+      new Parameter("tofront", "boolean", false, 1)
+    ], null, 3, 1, "Modifies the textual output. If the first argument is <code>true</code>, it clears any existing text. The second argument specifies the background colour, and the third argument is for switching the display. If the third argument is <code>true</code>, it switches to the <b>Output</b> tab, while if it is <code>false</code>, it switches to the <b>Canvas and Console</b> tab."),
+    new Command({ BASIC: "CONSOLE", C: "console", Java: "console", Pascal: "console", Python: "console", TypeScript: "console" }, [167 /* cons */], [
+      new Parameter("clear", "boolean", false, 1),
+      new Parameter("colour", "integer", false, 1)
+    ], null, 3, 1, "Modifies the Console; if the first argument is <code>true</code>, it clears any existing text, while the second argument specifies the background colour."),
+    new Command({ BASIC: "RGB", C: "rgb", Java: "rgb", Pascal: "rgb", Python: "rgb", TypeScript: "rgb" }, [101 /* rgb */], [new Parameter("colour", "integer", false, 1)], "integer", 3, 2, "Returns the RGB value of the input <code>colour</code> (an integer between 1 and 50). For example, <code>rgb(red)=255</code>."),
+    new Command({ BASIC: "MIXCOLS", C: "mixcols", Java: "mixCols", Pascal: "mixcols", Python: "mixcols", TypeScript: "mixCols" }, [102 /* mixc */], [
+      new Parameter("colour1", "integer", false, 1),
+      new Parameter("colour1", "integer", false, 1),
+      new Parameter("proportion1", "integer", false, 1),
+      new Parameter("proportion2", "integer", false, 1)
+    ], "integer", 3, 2, "Mixes the given colours in the given proportions."),
+    new Command({ BASIC: "NEWTURTLE", C: "newturtle", Java: "newTurtle", Pascal: "newturtle", Python: "newturtle", TypeScript: "newTurtle" }, [112 /* ldin */, 0, 123 /* sptr */], [new Parameter("array", "integer", false, 5)], null, 3, 2, "Points the Turtle to a custom array in memory (this must be an array of five integers, corresponding to the Turtle&rsquo;s five properties, <code>turtx</code>, <code>turty</code>, <code>turtd</code>, <code>turtt</code>, and <code>turtc</code>). Use repeatedly to simulate multiple Turtles."),
+    new Command({ BASIC: "OLDTURTLE", C: "oldturtle", Java: "oldTurtle", Pascal: "oldturtle", Python: "oldturtle", TypeScript: "oldTurtle" }, [229 /* oldt */], [], null, 3, 2, "Points the Turtle back to the default (built-in) array in memory. Use in conjunction with <code>newturtle</code>."),
+    new Command({ BASIC: "UPDATE", C: "update", Java: "update", Pascal: "update", Python: "update", TypeScript: "update" }, [112 /* ldin */, -1, 146 /* udat */], [], null, 4, 0, "Makes the Machine update the Canvas, and continue updating with all subsequent drawing commands. Used in conjunction with <em>noupdate</em>."),
+    new Command({ BASIC: "NOUPDATE", C: "noupdate", Java: "noUpdate", Pascal: "noupdate", Python: "noupdate", TypeScript: "noUpdate" }, [112 /* ldin */, 0, 146 /* udat */], [], null, 4, 0, "Makes the Machine refrain from updating the Canvas when executing all subsequent drawing commands, until <em>update</em> is called. Use this to create smooth animations, by queueing up several drawing commands to execute simultaneously."),
+    new Command({ BASIC: "BLANK", C: "blank", Java: "blank", Pascal: "blank", Python: "blank", TypeScript: "blank" }, [96 /* blnk */], [new Parameter("colour", "integer", false, 1)], null, 4, 0, "Blanks the entire Canvas with the specified <code>colour</code>."),
+    new Command({ BASIC: "CANVAS", C: "canvas", Java: "canvas", Pascal: "canvas", Python: "canvas", TypeScript: "canvas" }, [144 /* canv */], [
+      new Parameter("x1", "integer", false, 1),
+      new Parameter("y1", "integer", false, 1),
+      new Parameter("x2", "integer", false, 1),
+      new Parameter("y2", "integer", false, 1)
+    ], null, 4, 1, "Sets the top left Canvas coordinate to <code>(x1,y1)</code>, and the Canvas width and height to <code>x2</code> and <code>y2</code> respectively. Note that the width and height fix the number of virtual points on the Canvas, not the number of actual pixels."),
+    new Command({ BASIC: "RESOLUTION", C: "resolution", Java: "resolution", Pascal: "resolution", Python: "resolution", TypeScript: "resolution" }, [145 /* reso */], [
+      new Parameter("x", "integer", false, 1),
+      new Parameter("y", "integer", false, 1)
+    ], null, 4, 1, "Sets the Canvas resolution, i.e. the number of actual pixels in the <code>x</code> and <code>y</code> dimensions. To be used in conjunction with the <code>canvas</code> command, typically to set the number of actual pixels equal to the number of virtual points on the Canvas."),
+    new Command({ BASIC: "PIXSET", C: "pixset", Java: "pixSet", Pascal: "pixset", Python: "pixset", TypeScript: "pixSet" }, [100 /* pixs */], [
+      new Parameter("x", "integer", false, 1),
+      new Parameter("y", "integer", false, 1),
+      new Parameter("colour", "integer", false, 1)
+    ], null, 4, 2, "Sets the <code>colour</code> at point <code>(x,y)</code>."),
+    new Command({ BASIC: "PIXCOL", C: "pixcol", Java: "pixCol", Pascal: "pixcol", Python: "pixcol", TypeScript: "pixCol" }, [99 /* pixc */], [
+      new Parameter("x", "integer", false, 1),
+      new Parameter("y", "integer", false, 1)
+    ], "integer", 4, 2, "Returns the RGB value of the colour at point <code>(x,y)</code>."),
+    new Command({ BASIC: "RECOLOUR", C: "recolour", Java: "recolour", Pascal: "recolour", Python: "recolour", TypeScript: "recolour" }, [97 /* rcol */], [
+      new Parameter("x", "integer", false, 1),
+      new Parameter("y", "integer", false, 1),
+      new Parameter("colour", "integer", false, 1)
+    ], null, 4, 2, "Floods the Canvas with the specified <code>colour</code>, starting at point <code>(x,y)</code>, until reaching any different colour."),
+    new Command({ BASIC: "FILL", C: "fill", Java: "fill", Pascal: "fill", Python: "fill", TypeScript: "fill" }, [98 /* fill */], [
+      new Parameter("x", "integer", false, 1),
+      new Parameter("y", "integer", false, 1),
+      new Parameter("colour", "integer", false, 1),
+      new Parameter("boundary", "integer", false, 1)
+    ], null, 4, 2, "Floods the Canvas with the specified <code>colour</code>, starting at point <code>(x,y)</code>, until reaching the <code>boundary</code> colour."),
+    new Command({ BASIC: "INC", C: null, Java: null, Pascal: "inc", Python: null, TypeScript: null }, [1 /* dupl */, 122 /* lptr */, 4 /* incr */, 2 /* swap */, 123 /* sptr */], [new Parameter("variable", "integer", true, 1)], null, 5, 0, "Increments the specified <code>variable</code> by 1."),
+    new Command({ BASIC: "DEC", C: null, Java: null, Pascal: "dec", Python: null, TypeScript: null }, [1 /* dupl */, 122 /* lptr */, 5 /* decr */, 2 /* swap */, 123 /* sptr */], [new Parameter("variable", "integer", true, 1)], null, 5, 0, "Decrements the specified <code>variable</code> by 1."),
+    new Command({ BASIC: "ABS", C: "abs", Java: "abs", Pascal: "abs", Python: "abs", TypeScript: "abs" }, [24 /* abs */], [new Parameter("n", "integer", false, 1)], "integer", 5, 0, "Returns the absolute value of <code>n</code>, i.e. <code>n</code> if positive, <code>-n</code> if negative."),
+    new Command({ BASIC: "SGN", C: "sign", Java: "sign", Pascal: "sign", Python: "sign", TypeScript: "sign" }, [25 /* sign */], [new Parameter("a", "integer", false, 1)], "integer", 5, 1, "Returns <code>+1</code> if <code>a</code> is positive, <code>-1</code> if <code>a</code> is negative, and <code>0</code> otherwise."),
+    new Command({ BASIC: "MAX", C: "max", Java: "max", Pascal: "max", Python: "max", TypeScript: "max" }, [38 /* maxi */], [
+      new Parameter("a", "integer", false, 1),
+      new Parameter("b", "integer", false, 1)
+    ], "integer", 5, 1, "Returns the maximum of <code>a</code> and <code>b</code>."),
+    new Command({ BASIC: "MIN", C: "min", Java: "min", Pascal: "min", Python: "min", TypeScript: "min" }, [39 /* mini */], [
+      new Parameter("a", "integer", false, 1),
+      new Parameter("b", "integer", false, 1)
+    ], "integer", 5, 1, "Returns the minimum of <code>a</code> and <code>b</code>."),
+    new Command({ BASIC: "SQR", C: "sqrt", Java: "sqrt", Pascal: "sqrt", Python: "sqrt", TypeScript: "sqrt" }, [49 /* sqrt */], [
+      new Parameter("a", "integer", false, 1),
+      new Parameter("mult", "integer", false, 1)
+    ], "integer", 5, 1, "Returns <code>&radic;a</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
+    new Command({ BASIC: "HYPOT", C: "hypot", Java: "hypot", Pascal: "hypot", Python: "hypot", TypeScript: "hypot" }, [50 /* hyp */], [
+      new Parameter("a", "integer", false, 1),
+      new Parameter("b", "integer", false, 1),
+      new Parameter("mult", "integer", false, 1)
+    ], "integer", 5, 1, "Returns <code>&radic;(a<sup>2</sup>+b<sup>2</sup>)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
+    new Command({ BASIC: "RND", C: null, Java: null, Pascal: null, Python: null, TypeScript: null }, [7 /* rand */, 4 /* incr */], [new Parameter("n", "integer", false, 1)], "integer", 5, 1, "Returns a random integer between 1 and <code>n</code>."),
+    new Command({ BASIC: null, C: "rand", Java: "randInt", Pascal: "random", Python: null, TypeScript: "randInt" }, [7 /* rand */], [new Parameter("n", "integer", false, 1)], "integer", 5, 1, "Returns a random non-negative integer less than <code>n</code>."),
+    new Command({ BASIC: null, C: null, Java: null, Pascal: null, Python: "randint", TypeScript: null }, [2 /* swap */, 1 /* dupl */, 3 /* rota */, 4 /* incr */, 2 /* swap */, 27 /* subt */, 7 /* rand */, 26 /* plus */], [
+      new Parameter("a", "integer", false, 1),
+      new Parameter("b", "integer", false, 1)
+    ], "integer", 5, 1, "Returns a random integer between <code>a</code> and <code>b</code>."),
+    new Command({ BASIC: "RNDSEED", C: "srand", Java: "seed", Pascal: "randseed", Python: "seed", TypeScript: "seed" }, [147 /* seed */], [new Parameter("seed", "integer", false, 1)], "integer", 5, 1, "Initialises the random number generator with the given <code>seed</code>, and returns that seed. If <code>seed</code> is 0, the seed is set from the current system clock."),
+    new Command({ BASIC: "POWER", C: "pow", Java: "power", Pascal: "power", Python: "power", TypeScript: "pow" }, [52 /* powr */], [
+      new Parameter("a", "integer", false, 1),
+      new Parameter("b", "integer", false, 1),
+      new Parameter("c", "integer", false, 1),
+      new Parameter("mult", "integer", false, 1)
+    ], "integer", 5, 2, "Returns <code>(a/b)<sup>c</sup></code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
+    new Command({ BASIC: "ROOT", C: "root", Java: "root", Pascal: "root", Python: "root", TypeScript: "root" }, [51 /* root */], [
+      new Parameter("a", "integer", false, 1),
+      new Parameter("b", "integer", false, 1),
+      new Parameter("c", "integer", false, 1),
+      new Parameter("mult", "integer", false, 1)
+    ], "integer", 5, 2, "Returns <code><sup>c</sup>&radic;(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
+    new Command({ BASIC: "DIVMULT", C: "divmult", Java: "divmult", Pascal: "divmult", Python: "divmult", TypeScript: "divmult" }, [48 /* divm */], [
+      new Parameter("a", "integer", false, 1),
+      new Parameter("b", "integer", false, 1),
+      new Parameter("mult", "integer", false, 1)
+    ], "integer", 5, 2, "Returns <code>a/b</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
+    new Command({ BASIC: "MAXINT", C: "maxint", Java: "maxInt", Pascal: "maxint", Python: "maxint", TypeScript: "maxInt" }, [6 /* mxin */], [], "integer", 5, 2, "Returns the maximum integer that the Machine can deal with (2<sup>31</sup>-1)."),
+    new Command({ BASIC: null, C: null, Java: null, Pascal: "shl", Python: null, TypeScript: null }, [22 /* shft */], [
+      new Parameter("number", "integer", false, 1),
+      new Parameter("shift", "integer", false, 1)
+    ], "integer", 5, 2, "Shift bits left."),
+    new Command({ BASIC: null, C: null, Java: null, Pascal: "shr", Python: null, TypeScript: null }, [23 /* neg */, 22 /* shft */], [
+      new Parameter("number", "integer", false, 1),
+      new Parameter("shift", "integer", false, 1)
+    ], "integer", 5, 2, "Shift bits right."),
+    new Command({ BASIC: "SIN", C: "sin", Java: "sin", Pascal: "sin", Python: "sin", TypeScript: "sin" }, [57 /* sin */], [
+      new Parameter("a", "integer", false, 1),
+      new Parameter("b", "integer", false, 1),
+      new Parameter("mult", "integer", false, 1)
+    ], "integer", 6, 1, "Returns <code>sin(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
+    new Command({ BASIC: "COS", C: "cos", Java: "cos", Pascal: "cos", Python: "cos", TypeScript: "cos" }, [58 /* cos */], [
+      new Parameter("a", "integer", false, 1),
+      new Parameter("b", "integer", false, 1),
+      new Parameter("mult", "integer", false, 1)
+    ], "integer", 6, 1, "Returns <code>cos(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
+    new Command({ BASIC: "TAN", C: "tan", Java: "tan", Pascal: "tan", Python: "tan", TypeScript: "tan" }, [59 /* tan */], [
+      new Parameter("a", "integer", false, 1),
+      new Parameter("b", "integer", false, 1),
+      new Parameter("mult", "integer", false, 1)
+    ], "integer", 6, 1, "Returns <code>tan(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
+    new Command({ BASIC: "PI", C: "pi", Java: "pi", Pascal: "pi", Python: "pi", TypeScript: "PI" }, [63 /* pi */], [new Parameter("mult", "integer", false, 1)], "integer", 6, 1, "Returns the value of Pi, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
+    new Command({ BASIC: "EXP", C: "exp", Java: "exp", Pascal: "exp", Python: "exp", TypeScript: "exp" }, [56 /* exp */], [
+      new Parameter("a", "integer", false, 1),
+      new Parameter("b", "integer", false, 1),
+      new Parameter("mult", "integer", false, 1)
+    ], "integer", 6, 1, "Returns <code>a<sup>b</sup></code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
+    new Command({ BASIC: "LN", C: "log", Java: "log", Pascal: "ln", Python: "log", TypeScript: "log" }, [55 /* ln */], [
+      new Parameter("a", "integer", false, 1),
+      new Parameter("b", "integer", false, 1),
+      new Parameter("mult", "integer", false, 1)
+    ], "integer", 6, 1, "Returns <code>ln(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
+    new Command({ BASIC: "ANTILOG", C: "antilog", Java: "antilog", Pascal: "antilog", Python: "antilog", TypeScript: "antilog" }, [54 /* alog */], [
+      new Parameter("a", "integer", false, 1),
+      new Parameter("b", "integer", false, 1),
+      new Parameter("mult", "integer", false, 1)
+    ], "integer", 6, 2, "Returns <code>antilog<sub>10</sub>(a/b)</code> - i.e. <code>10<sup>a/b</sub></code> - multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
+    new Command({ BASIC: "LOG10", C: "log10", Java: "log10", Pascal: "log10", Python: "log10", TypeScript: "log10" }, [53 /* log */], [
+      new Parameter("a", "integer", false, 1),
+      new Parameter("b", "integer", false, 1),
+      new Parameter("mult", "integer", false, 1)
+    ], "integer", 6, 2, "Returns <code>log<sub>10</sub>(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
+    new Command({ BASIC: "ASN", C: "asin", Java: "asin", Pascal: "arcsin", Python: "asin", TypeScript: "asin" }, [60 /* asin */], [
+      new Parameter("a", "integer", false, 1),
+      new Parameter("b", "integer", false, 1),
+      new Parameter("mult", "integer", false, 1)
+    ], "integer", 6, 2, "Returns <code>arcsin(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
+    new Command({ BASIC: "ACS", C: "acos", Java: "acos", Pascal: "arccos", Python: "acos", TypeScript: "acos" }, [61 /* acos */], [
+      new Parameter("a", "integer", false, 1),
+      new Parameter("b", "integer", false, 1),
+      new Parameter("mult", "integer", false, 1)
+    ], "integer", 6, 2, "Returns <code>arccos(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
+    new Command({ BASIC: "ATN", C: "atan", Java: "atan", Pascal: "arctan", Python: "atan", TypeScript: "atan" }, [62 /* atan */], [
+      new Parameter("a", "integer", false, 1),
+      new Parameter("b", "integer", false, 1),
+      new Parameter("mult", "integer", false, 1)
+    ], "integer", 6, 2, "Returns <code>arctan(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
+    new Command({ BASIC: "WRITE", C: "write", Java: "write", Pascal: "write", Python: "write", TypeScript: "write" }, [169 /* writ */], [new Parameter("string", "string", false, 1)], null, 7, 0, "Writes the input <code>string</code> to the console and textual output area of the System."),
+    new Command({ BASIC: "WRITELN", C: "writeline", Java: "writeLine", Pascal: "writeln", Python: "writeline", TypeScript: "writeLine" }, [169 /* writ */, 170 /* newl */], [new Parameter("string", "string", false, 1)], null, 7, 0, "Writes the input <code>string</code> to the console and textual output area of the System, followed by a line break."),
+    new Command({ BASIC: "PRINT", C: "print", Java: "print", Pascal: "print", Python: "print", TypeScript: "print" }, [168 /* prnt */], [
+      new Parameter("string", "string", false, 1),
+      new Parameter("font", "integer", false, 1),
+      new Parameter("size", "integer", false, 1)
+    ], null, 7, 0, "Prints the input <code>string</code> in the Turtle&rsquo;s current colour and at the Turtle&rsquo;s current location, in the specified <code>font</code> and <code>size</code>. Can be used in conjunction with the <code>box</code> drawing command. For a list of available fonts, see the <b>Constants</b> tab."),
+    new Command({ BASIC: "LCASE$", C: "strlwr", Java: "toLowerCase", Pascal: "lowercase", Python: "lower", TypeScript: "toLowerCase" }, [112 /* ldin */, 1, 66 /* case */], [new Parameter("string", "string", false, 1)], "string", 7, 1, "Returns the input <code>string</code> as all lowercase."),
+    new Command({ BASIC: "UCASE$", C: "strupr", Java: "toUpperCase", Pascal: "uppercase", Python: "upper", TypeScript: "toUpperCase" }, [112 /* ldin */, 2, 66 /* case */], [new Parameter("string", "string", false, 1)], "string", 7, 1, "Returns the input <code>string</code> as all uppercase."),
+    new Command({ BASIC: "CCASE$", C: "strcap", Java: "capitalize", Pascal: "initcap", Python: "capitalize", TypeScript: "capitalize" }, [112 /* ldin */, 3, 66 /* case */], [new Parameter("string", "string", false, 1)], "string", 7, 1, "Returns the input <code>string</code> with the first letter capitalized."),
+    new Command({ BASIC: "TCASE$", C: "strtitle", Java: "toTitleCase", Pascal: "titlecase", Python: "title", TypeScript: "toTitleCase" }, [112 /* ldin */, 4, 66 /* case */], [new Parameter("string", "string", false, 1)], "string", 7, 1, "Returns the input <code>string</code> in title case (i.e. the first letter of each word capitalized)."),
+    new Command({ BASIC: "SCASE$", C: "strswap", Java: "swapCase", Pascal: "swapcase", Python: "swapcase", TypeScript: "swapCase" }, [112 /* ldin */, 5, 66 /* case */], [new Parameter("string", "string", false, 1)], "string", 7, 1, "Returns the input <code>string</code> with all the cases swapped."),
+    new Command({ BASIC: "LEN", C: "strlen", Java: "length", Pascal: "length", Python: "len", TypeScript: "length" }, [65 /* slen */], [new Parameter("string", "string", false, 1)], "integer", 7, 1, "Returns the length of the input <code>string</code> (i.e. the number of characters)."),
+    new Command({ BASIC: "DEL$", C: null, Java: null, Pascal: "delete", Python: null, TypeScript: null }, [68 /* dels */], [
+      new Parameter("string", "string", false, 1),
+      new Parameter("index", "integer", false, 1),
+      new Parameter("length", "integer", false, 1)
+    ], "string", 7, 2, "Returns the input <code>string</code> with some characters removed, starting at the given <code>index</code> and of the specified <code>length</code>."),
+    new Command({ BASIC: null, C: "strdel", Java: "delete", Pascal: null, Python: "delete", TypeScript: "delete" }, [2 /* swap */, 4 /* incr */, 2 /* swap */, 68 /* dels */], [
+      new Parameter("string", "string", false, 1),
+      new Parameter("index", "integer", false, 1),
+      new Parameter("length", "integer", false, 1)
+    ], "string", 7, 2, "Returns the input <code>string</code> with some characters removed, starting at the given <code>index</code> and of the specified <code>length</code>."),
+    new Command({ BASIC: "LEFT$", C: null, Java: null, Pascal: null, Python: null, TypeScript: null }, [112 /* ldin */, 1, 2 /* swap */, 67 /* copy */], [
+      new Parameter("string", "string", false, 1),
+      new Parameter("length", "integer", false, 1)
+    ], "string", 7, 2, "Returns a copy of the characters in the input <code>string</code>, starting on the left and of the specified <code>length</code>."),
+    new Command({ BASIC: "MID$", C: null, Java: null, Pascal: "copy", Python: null, TypeScript: null }, [67 /* copy */], [
+      new Parameter("string", "string", false, 1),
+      new Parameter("index", "integer", false, 1),
+      new Parameter("length", "integer", false, 1)
+    ], "string", 7, 2, "Returns a copy of the characters in the input <code>string</code>, starting at the given <code>index</code> and of the specified <code>length</code>."),
+    new Command({ BASIC: null, C: "strcpy", Java: "copy", Pascal: null, Python: "copy", TypeScript: "copy" }, [2 /* swap */, 4 /* incr */, 2 /* swap */, 67 /* copy */], [
+      new Parameter("string", "string", false, 1),
+      new Parameter("index", "integer", false, 1),
+      new Parameter("length", "integer", false, 1)
+    ], "string", 7, 2, "Returns a copy of the characters in the input <code>string</code>, starting at the given <code>index</code> and of the specified <code>length</code>."),
+    new Command({ BASIC: "RIGHT$", C: null, Java: null, Pascal: null, Python: null, TypeScript: null }, [2 /* swap */, 1 /* dupl */, 65 /* slen */, 4 /* incr */, 3 /* rota */, 27 /* subt */, 6 /* mxin */, 67 /* copy */], [
+      new Parameter("string", "string", false, 1),
+      new Parameter("length", "integer", false, 1)
+    ], "string", 7, 2, "Returns a copy of the characters in the input <code>string</code>, starting on the right and of the specified <code>length</code>."),
+    new Command({ BASIC: "INSERT$", C: null, Java: null, Pascal: null, Python: null, TypeScript: null }, [3 /* rota */, 3 /* rota */, 69 /* inss */], [
+      new Parameter("string", "string", false, 1),
+      new Parameter("index", "integer", false, 1),
+      new Parameter("substr", "string", false, 1)
+    ], "string", 7, 2, "Returns the input <code>string</code> with the specified <code>substring</code> inserted at the given <code>index</code>."),
+    new Command({ BASIC: null, C: "strins", Java: "insert", Pascal: null, Python: "insert", TypeScript: "insert" }, [3 /* rota */, 3 /* rota */, 2 /* swap */, 3 /* rota */, 4 /* incr */, 69 /* inss */], [
+      new Parameter("string", "string", false, 1),
+      new Parameter("substr", "string", false, 1),
+      new Parameter("index", "integer", false, 1)
+    ], "string", 7, 2, "Returns the input <code>string</code> with the specified <code>substring</code> inserted at the given <code>index</code>."),
+    new Command({ BASIC: null, C: null, Java: null, Pascal: "insert", Python: null, TypeScript: null }, [69 /* inss */], [
+      new Parameter("substr", "string", false, 1),
+      new Parameter("string", "string", false, 1),
+      new Parameter("index", "integer", false, 1)
+    ], "string", 7, 2, "Returns the input <code>string</code> with the specified <code>substring</code> inserted at the given <code>index</code>."),
+    new Command({ BASIC: "PAD$", C: "strpad", Java: "pad", Pascal: "pad", Python: "pad", TypeScript: null }, [72 /* spad */], [
+      new Parameter("string", "string", false, 1),
+      new Parameter("padding", "string", false, 1),
+      new Parameter("length", "integer", false, 1)
+    ], "string", 7, 2, "Returns the input <code>string</code> with the input <code>padding</code> added either before or after to make a string of minimum given <code>length</cope>. The <code>padding</code> is placed before if <code>length</code> is positive, after if it is negative."),
+    new Command({ BASIC: null, C: null, Java: null, Pascal: null, Python: null, TypeScript: "padStart" }, [72 /* spad */], [
+      new Parameter("string", "string", false, 1),
+      new Parameter("padding", "string", false, 1),
+      new Parameter("length", "integer", false, 1)
+    ], "string", 7, 2, "Returns the input <code>string</code> with the input <code>padding</code> added before to make a string of minimum given <code>length</cope>."),
+    new Command({ BASIC: null, C: null, Java: null, Pascal: null, Python: null, TypeScript: "padEnd" }, [23 /* neg */, 72 /* spad */], [
+      new Parameter("string", "string", false, 1),
+      new Parameter("padding", "string", false, 1),
+      new Parameter("length", "integer", false, 1)
+    ], "string", 7, 2, "Returns the input <code>string</code> with the input <code>padding</code> added after to make a string of minimum given <code>length</cope>."),
+    new Command({ BASIC: "REPLACE$", C: "strrepl", Java: "replace", Pascal: "replace", Python: "replace", TypeScript: null }, [71 /* repl */], [
+      new Parameter("string", "string", false, 1),
+      new Parameter("substr", "string", false, 1),
+      new Parameter("replace", "string", false, 1),
+      new Parameter("n", "integer", false, 1)
+    ], "string", 7, 2, "Returns the input <code>string</code> with up to <code>n</code> occurences of <code>substring</code> replaced by <code>replace</code>. Set <code>n</code> equal to <code>0</code> to replace every occurence."),
+    new Command({ BASIC: "INSTR", C: null, Java: null, Pascal: null, Python: null, TypeScript: null }, [2 /* swap */, 70 /* poss */], [
+      new Parameter("string", "string", false, 1),
+      new Parameter("substr", "string", false, 1)
+    ], "integer", 7, 2, "Searches for the input <code>substring</code> within the given <code>string</code>; returns the index of the first character if found, 0 otherwise."),
+    new Command({ BASIC: null, C: "strpos", Java: "indexOf", Pascal: null, Python: "find", TypeScript: "indexOf" }, [2 /* swap */, 70 /* poss */, 5 /* decr */], [
+      new Parameter("string", "string", false, 1),
+      new Parameter("substr", "string", false, 1)
+    ], "integer", 7, 2, "Searches for the input <code>substring</code> within the given <code>string</code>; returns the index of the first character if found, 0 otherwise."),
+    new Command({ BASIC: null, C: null, Java: null, Pascal: "pos", Python: null, TypeScript: null }, [70 /* poss */], [
+      new Parameter("substr", "string", false, 1),
+      new Parameter("string", "string", false, 1)
+    ], "integer", 7, 2, "Searches for the input <code>substring</code> within the given <code>string</code>; returns the index of the first character if found, 0 otherwise."),
+    new Command({ BASIC: "STR$", C: "itoa", Java: "toString", Pascal: "str", Python: "str", TypeScript: "toString" }, [11 /* itos */], [new Parameter("n", "integer", false, 1)], "string", 8, 0, "Returns the integer <code>n</code> as a string, e.g. <code>str(12)='12'</code>."),
+    new Command({ BASIC: "VAL", C: "atoi", Java: "parseInt", Pascal: "val", Python: "int", TypeScript: "parseInt" }, [112 /* ldin */, 0, 13 /* sval */], [new Parameter("string", "string", false, 1)], "integer", 8, 0, "Returns the input <code>string</code> as an integer, e.g. <code>val('12')=12</code>. Returns <code>0</code> if the string cannot be converted (i.e. if it is not an integer string)."),
+    new Command({ BASIC: "VALDEF", C: "atoidef", Java: "parseIntDef", Pascal: "valdef", Python: "intdef", TypeScript: "parseIntDef" }, [13 /* sval */], [
+      new Parameter("string", "string", false, 1),
+      new Parameter("default", "integer", false, 1)
+    ], "integer", 8, 0, "Returns the input <code>string</code> as an integer, e.g. <code>val('12')=12</code>. Returns the specified <code>default</code> value if the string cannot be converted (i.e. if it is not an integer string)."),
+    new Command({ BASIC: "QSTR$", C: "qitoa", Java: "toStringQ", Pascal: "qstr", Python: "qstr", TypeScript: "toStringQ" }, [14 /* qtos */], [
+      new Parameter("a", "integer", false, 1),
+      new Parameter("b", "integer", false, 1),
+      new Parameter("decplaces", "integer", false, 1)
+    ], "string", 8, 1, "Returns the value of <code>a/b</code> to the specified number of decimal places, as a decimal string, e.g. <code>qstr(2,3,4)='0.6667'</code>."),
+    new Command({ BASIC: "QVAL", C: "qatoi", Java: "parseIntQ", Pascal: "qval", Python: "qint", TypeScript: "parseIntQ" }, [15 /* qval */], [
+      new Parameter("string", "string", false, 1),
+      new Parameter("mult", "integer", false, 1),
+      new Parameter("default", "integer", false, 1)
+    ], "integer", 8, 1, "Returns the input decimal <code>string</code> as an integer, multiplied by <code>mult</code> and rounded to the nearest integer, e.g. <code>qval('1.5',10)=15</code>. Returns the specified <code>default</code> value if the string cannot be converted (i.e. if it is not a decimal string)."),
+    new Command({ BASIC: "CHR$", C: null, Java: null, Pascal: null, Python: "chr", TypeScript: "fromCharCode" }, [9 /* ctos */], [new Parameter("n", "integer", false, 1)], "string", 8, 2, "Returns the character with ASCII character code <code>n</code>."),
+    new Command({ BASIC: null, C: null, Java: "fromCharCode", Pascal: "chr", Python: null, TypeScript: null }, [], [new Parameter("n", "integer", false, 1)], "character", 8, 2, "Returns the character with ASCII character code <code>n</code>."),
+    new Command({ BASIC: "ASC", C: null, Java: "charCode", Pascal: null, Python: "ord", TypeScript: "charCode" }, [10 /* sasc */], [new Parameter("char", "string", false, 1)], "integer", 8, 2, "Returns the ASCII code of the input character, or of the first character of the input string."),
+    new Command({ BASIC: null, C: null, Java: null, Pascal: "ord", Python: null, TypeScript: null }, [], [new Parameter("char", "character", false, 1)], "integer", 8, 2, "Returns the ASCII code of the input character."),
+    new Command({ BASIC: null, C: null, Java: null, Pascal: "boolint", Python: null, TypeScript: null }, [], [new Parameter("boolean", "boolean", false, 1)], "integer", 8, 2, "Returns the input <code>boolean</code> as an integer (-1 for <code>true</code>, 0 for <code>false</code>)."),
+    new Command({ BASIC: null, C: null, Java: null, Pascal: null, Python: "int", TypeScript: null }, [], [new Parameter("boolean", "boolean", false, 1)], "integer", 8, 2, "Returns the input <code>boolean</code> as an integer (1 for <code>true</code>, 0 for <code>false</code>)."),
+    new Command({ BASIC: null, C: null, Java: null, Pascal: null, Python: "bool", TypeScript: null }, [112 /* ldin */, 0, 33 /* noeq */], [new Parameter("integer", "integer", false, 1)], "boolean", 8, 2, "Returns the input <code>integer</code> as a boolean (0 is <code>false</code>, everything else is <code>true</code>)."),
+    new Command({ BASIC: "HEX$", C: "itoahex", Java: "toStringHex", Pascal: "hexstr", Python: "hex", TypeScript: "toStringHex" }, [12 /* hexs */], [
+      new Parameter("n", "integer", false, 1),
+      new Parameter("minlength", "integer", false, 1)
+    ], "string", 8, 2, "Returns a string representation of integer <code>n</code> in hexadecimal format, padded with leading zeros as up to <code>minlength</code>, e.g. <code>hexstr(255,6)='0000FF'</code>."),
+    new Command({ BASIC: "PAUSE", C: "pause", Java: "pause", Pascal: "pause", Python: "pause", TypeScript: "pause" }, [174 /* wait */], [new Parameter("m", "integer", false, 1)], null, 9, 0, "Makes the Turtle Machine wait <code>m</code> milliseconds before performing the next operation. This is useful for controlling the speed of animations."),
+    new Command({ BASIC: "HALT", C: "exit", Java: "halt", Pascal: "halt", Python: "halt", TypeScript: "halt" }, [130 /* halt */], [], null, 9, 0, "Halts the program."),
+    new Command({ BASIC: "GETLINE$", C: "gets", Java: "readLine", Pascal: "readln", Python: "readline", TypeScript: "readLine" }, [164 /* rdln */], [], "string", 9, 0, "Waits for the RETURN key to be pressed, then returns everything in the keybuffer up to (and not including) the new line character."),
+    new Command({ BASIC: "INPUT$", C: "scan", Java: "input", Pascal: "input", Python: "input", TypeScript: "input" }, [169 /* writ */, 170 /* newl */, 164 /* rdln */], [new Parameter("prompt", "string", false, 1)], "string", 9, 0, "Gives an input prompt, then returns the input when the RETURN key is pressed (using the keybuffer)."),
+    new Command({ BASIC: "CURSOR", C: "cursor", Java: "cursor", Pascal: "cursor", Python: "cursor", TypeScript: "cursor" }, [171 /* curs */], [new Parameter("cursorcode", "integer", false, 1)], null, 9, 1, "Sets which cursor to display (1-15) when the mouse pointer is over the canvas. 0 hides the cursor; any value outside the range 0-15 resets the default cursor. For a list of available cursors, see the <b>Cursors</b> tab."),
+    new Command({ BASIC: "KEYECHO", C: "keyecho", Java: "keyEcho", Pascal: "keyecho", Python: "keyecho", TypeScript: "keyEcho" }, [165 /* kech */], [new Parameter("on", "boolean", false, 1)], null, 9, 1, "Turns the keyboard echo to the console on (<code>true</code>) or off (<code>false</code>)."),
+    new Command({ BASIC: "DETECT", C: "detect", Java: "detect", Pascal: "detect", Python: "detect", TypeScript: "detect" }, [175 /* tdet */], [
+      new Parameter("inputcode", "integer", false, 1),
+      new Parameter("m", "integer", false, 1)
+    ], "integer", 9, 1, "Waits a maximum of <code>m</code> milliseconds for the key with the specified <code>inputcode</code> to be pressed; returns its current input value if pressed (and stops waiting), and <code>0</code> otherwise."),
+    new Command({ BASIC: "GET$", C: "get", Java: "read", Pascal: "read", Python: "read", TypeScript: "read" }, [163 /* read */], [new Parameter("n", "integer", false, 1)], "string", 9, 1, "Returns the first <code>n</code> characters from the keybuffer as a string."),
+    new Command({ BASIC: "TIME", C: "time", Java: "time", Pascal: "time", Python: "time", TypeScript: "time" }, [172 /* time */], [], "integer", 9, 1, "Returns the time (in milliseconds) since the program began."),
+    new Command({ BASIC: "TIMESET", C: "timeset", Java: "timeSet", Pascal: "timeset", Python: "timeset", TypeScript: "timeSet" }, [173 /* tset */], [new Parameter("m", "integer", false, 1)], null, 9, 1, "Artificially sets the time since the program began to <code>m</code> milliseconds."),
+    new Command({ BASIC: "RESET", C: "reset", Java: "reset", Pascal: "reset", Python: "reset", TypeScript: "reset" }, [161 /* iclr */], [new Parameter("\\inputcode", "integer", false, 1)], null, 9, 2, "Resets the specified <code>\\inputcode</code> (<code>\\mousex</code>, <code>\\mousey</code>, <code>\\backspace</code>, <code>\\enter</code>, etc.) to its initial value (i.e. -1)."),
+    new Command({ BASIC: "STATUS", C: "status", Java: "status", Pascal: "status", Python: "status", TypeScript: "status" }, [PCode.stat], [new Parameter("\\inputcode", "integer", false, 1)], "integer", 9, 2, "Returns the <code>?kshift</code> value for the most recent press/click of the input with the specified <code>\\inputcode</code>."),
+    new Command({ BASIC: "KEYBUFFER", C: "keybuffer", Java: "keyBuffer", Pascal: "keybuffer", Python: "keybuffer", TypeScript: "keyBuffer" }, [162 /* bufr */, 112 /* ldin */, 1, 123 /* sptr */, 141 /* hfix */], [new Parameter("n", "integer", false, 1)], null, 9, 2, "Creates a new custom keybuffer of length <code>n</code>. A keybuffer of length 32 is available by default; use this command if you need a larger buffer."),
+    new Command({ BASIC: "CHDIR", C: null, Java: null, Pascal: "chdir", Python: null, TypeScript: null }, [176 /* chdr */], [new Parameter("directory name", "string", false, 1)], null, 10, 1, "Changes the current directory."),
+    new Command({ BASIC: "RMDIR", C: null, Java: null, Pascal: "rmdir", Python: null, TypeScript: null }, [112 /* ldin */, 1, 178 /* diry */, 112 /* ldin */, 128, 34 /* less */], [new Parameter("subdirectory name", "string", false, 1)], "boolean", 10, 1, "Removes a subdirectory."),
+    new Command({ BASIC: "MKDIR", C: null, Java: null, Pascal: "mkdir", Python: null, TypeScript: null }, [112 /* ldin */, 2, 178 /* diry */, 112 /* ldin */, 127, 35 /* more */], [new Parameter("subdirectory name", "string", false, 1)], "boolean", 10, 1, "Creates a subdirectory."),
+    new Command({ BASIC: null, C: null, Java: null, Pascal: "openfile", Python: null, TypeScript: null }, [179 /* open */], [
+      new Parameter("filename", "string", false, 1),
+      new Parameter("mode", "integer", false, 1)
+    ], "integer", 10, 1, "Opens a file (1: read, 2: append, 3: write)."),
+    new Command({ BASIC: "OPENIN", C: null, Java: null, Pascal: null, Python: null, TypeScript: null }, [112 /* ldin */, 1, 179 /* open */], [new Parameter("filename", "string", false, 1)], "integer", 10, 1, "Open a file for reading."),
+    new Command({ BASIC: "OPENUP", C: null, Java: null, Pascal: null, Python: null, TypeScript: null }, [112 /* ldin */, 2, 179 /* open */], [new Parameter("filename", "string", false, 1)], "integer", 10, 1, "Opens a file for appending."),
+    new Command({ BASIC: "OPENOUT", C: null, Java: null, Pascal: null, Python: null, TypeScript: null }, [112 /* ldin */, 4, 179 /* open */], [new Parameter("filename", "string", false, 1)], "integer", 10, 1, "Opens a file for writing."),
+    new Command({ BASIC: "CLOSE#", C: null, Java: null, Pascal: "closefile", Python: null, TypeScript: null }, [180 /* clos */], [new Parameter("file handle", "integer", false, 1)], null, 10, 1, "Closes a file."),
+    new Command({ BASIC: "DELETEFILE", C: null, Java: null, Pascal: "deletefile", Python: null, TypeScript: null }, [112 /* ldin */, 1, 177 /* file */, 112 /* ldin */, 128, 34 /* less */], [new Parameter("filename", "string", false, 1)], "boolean", 10, 1, "Deletes a file."),
+    new Command({ BASIC: "FREAD#", C: null, Java: null, Pascal: "fread", Python: null, TypeScript: null }, [184 /* frds */], [
+      new Parameter("file handle", "integer", false, 1),
+      new Parameter("n", "integer", false, 1)
+    ], "string", 10, 1, "Reads n characters (maximum) from a file."),
+    new Command({ BASIC: "FREADLN#", C: null, Java: null, Pascal: "freadln", Python: null, TypeScript: null }, [185 /* frln */], [new Parameter("file handle", "integer", false, 1)], "string", 10, 1, "Reads a line from a file."),
+    new Command({ BASIC: "FWRITE#", C: null, Java: null, Pascal: "fwrite", Python: null, TypeScript: null }, [186 /* fwrs */], [
+      new Parameter("file handle", "integer", false, 1),
+      new Parameter("string", "string", false, 1)
+    ], null, 10, 1, "Writes a string to a file."),
+    new Command({ BASIC: "FWRITELN#", C: null, Java: null, Pascal: "fwriteln", Python: null, TypeScript: null }, [187 /* fwln */], [
+      new Parameter("file handle", "integer", false, 1),
+      new Parameter("string", "string", false, 1)
+    ], null, 10, 1, "Writes a line to a file."),
+    new Command({ BASIC: "EOF#", C: null, Java: null, Pascal: "eof", Python: null, TypeScript: null }, [182 /* eof */], [new Parameter("file handle", "integer", false, 1)], "boolean", 10, 1, "Tests for the end of file."),
+    new Command({ BASIC: "CHECKDIR", C: null, Java: null, Pascal: "checkdir", Python: null, TypeScript: null }, [112 /* ldin */, 0, 178 /* diry */, 112 /* ldin */, 127, 35 /* more */], [
+      new Parameter("directory name", "string", false, 1),
+      new Parameter("code", "integer", false, 1)
+    ], "integer", 10, 2, "Creates/deletes/checks a directory."),
+    new Command({ BASIC: "CHECKFILE", C: null, Java: null, Pascal: "checkfile", Python: null, TypeScript: null }, [112 /* ldin */, 0, 177 /* file */, 112 /* ldin */, 127, 35 /* more */], [
+      new Parameter("filename", "string", false, 1),
+      new Parameter("code", "integer", false, 1)
+    ], "integer", 10, 2, "Creates/deletes/checks a file."),
+    new Command({ BASIC: "COPYFILE", C: null, Java: null, Pascal: "copyfile", Python: null, TypeScript: null }, [112 /* ldin */, 3, 191 /* fmov */], [
+      new Parameter("old name", "string", false, 1),
+      new Parameter("new name", "string", false, 1)
+    ], "boolean", 10, 2, "Copies a file."),
+    new Command({ BASIC: "DIREXISTS", C: null, Java: null, Pascal: "direxists", Python: null, TypeScript: null }, [112 /* ldin */, 0, 178 /* diry */, 112 /* ldin */, 127, 35 /* more */], [new Parameter("subdirectory name", "string", false, 1)], "boolean", 10, 2, "Checks whether a subdirectory exists."),
+    new Command({ BASIC: "FILEEXISTS", C: null, Java: null, Pascal: "fileexists", Python: null, TypeScript: null }, [112 /* ldin */, 0, 177 /* file */, 112 /* ldin */, 127, 35 /* more */], [new Parameter("filename", "string", false, 1)], "boolean", 10, 2, "Checks whether a file exists."),
+    new Command({ BASIC: "FINDDIR", C: null, Java: null, Pascal: "finddir", Python: null, TypeScript: null }, [1 /* dupl */, 122 /* lptr */, 3 /* rota */, 189 /* fdir */, 2 /* swap */, 3 /* rota */, 123 /* sptr */], [
+      new Parameter("directory name pattern", "string", false, 1),
+      new Parameter("file handle", "integer", false, 1)
+    ], "string", 10, 2, "Finds the first directory matching the pattern."),
+    new Command({ BASIC: "FINDFIRST", C: null, Java: null, Pascal: "findfirst", Python: null, TypeScript: null }, [1 /* dupl */, 122 /* lptr */, 3 /* rota */, 188 /* ffnd */, 2 /* swap */, 3 /* rota */, 123 /* sptr */], [
+      new Parameter("filename pattern", "string", false, 1),
+      new Parameter("file handle", "integer", false, 1)
+    ], "string", 10, 2, "Finds the first file matching the pattern."),
+    new Command({ BASIC: "FINDNEXT", C: null, Java: null, Pascal: "findnext", Python: null, TypeScript: null }, [190 /* fnxt */], [new Parameter("file handle", "integer", false, 1)], "string", 10, 2, "Finds the next file/directory matching a pattern."),
+    new Command({ BASIC: "RENAMEFILE", C: null, Java: null, Pascal: "renamefile", Python: null, TypeScript: null }, [112 /* ldin */, 1, 191 /* fmov */], [
+      new Parameter("old filename", "string", false, 1),
+      new Parameter("new filename", "string", false, 1)
+    ], "boolean", 10, 2, "Rename file"),
+    new Command({ BASIC: "MOVEFILE", C: null, Java: null, Pascal: "movefile", Python: null, TypeScript: null }, [112 /* ldin */, 2, 191 /* fmov */], [
+      new Parameter("old filename", "string", false, 1),
+      new Parameter("new filename", "string", false, 1)
+    ], "boolean", 10, 2, "Moves a file."),
+    new Command({ BASIC: "RESTARTFILE", C: null, Java: null, Pascal: "restartfile", Python: null, TypeScript: null }, [181 /* fbeg */], [new Parameter("file handle", "integer", false, 1)], null, 10, 2, "Restarts reading a file."),
+    new Command({ BASIC: "EOLN#", C: null, Java: null, Pascal: "eoln", Python: null, TypeScript: null }, [183 /* eoln */], [new Parameter("file handle", "integer", false, 1)], "boolean", 10, 2, "Tests for end of line in a file."),
+    new Command({ BASIC: "DUMP", C: "dump", Java: "dump", Pascal: "dump", Python: "dump", TypeScript: "dump" }, [154 /* dump */], [], null, 11, 2, "&ldquo;Dumps&rdquo; the current memory state into the display in the memory tab."),
+    new Command({ BASIC: "HEAPRESET", C: "heapreset", Java: "heapReset", Pascal: "heapreset", Python: "heapreset", TypeScript: "heapReset" }, [143 /* hrst */], [], null, 11, 2, "Resets the memory heap to the initial global value."),
+    new Command({ BASIC: "ADDRESS", C: "address", Java: "address", Pascal: "address", Python: "address", TypeScript: "address" }, [], [new Parameter("variable", "integer", true, 1)], "integer", 11, 2, "Returns the address in memory of the given <code>variable</code>."),
+    new Command({ BASIC: "PEEK", C: "peek", Java: "peek", Pascal: "peek", Python: "peek", TypeScript: "peek" }, [155 /* peek */], [new Parameter("address", "integer", false, 1)], "integer", 11, 2, "Peek at the value of the memory at the given <code>address</code>."),
+    new Command({ BASIC: "POKE", C: "poke", Java: "poke", Pascal: "poke", Python: "poke", TypeScript: "poke" }, [156 /* poke */], [
+      new Parameter("address", "integer", false, 1),
+      new Parameter("value", "integer", false, 1)
+    ], null, 11, 2, "Poke the <code>value</code> into the memory at the given <code>address</code>."),
+    new Command({ BASIC: "TRACE", C: "trace", Java: "trace", Pascal: "trace", Python: "trace", TypeScript: "trace" }, [152 /* trac */], [new Parameter("on", "boolean", false, 1)], null, 11, 2, "Turns the PCode trace facility on (<code>true</code>) or off (<code>false</code>)."),
+    new Command({ BASIC: "WATCH", C: "watch", Java: "watch", Pascal: "watch", Python: "watch", TypeScript: "watch" }, [153 /* memw */], [new Parameter("address", "integer", false, 1)], null, 11, 2, "Sets an <code>address</code> in memory for the trace facility to watch.")
+  ];
+
+  // client/constants/inputs.ts
+  var Input = class {
+    constructor(name, value) {
+      this.names = {
+        BASIC: name.length > 2 ? name.toUpperCase() : name,
+        C: name,
+        Java: name,
+        Pascal: name,
+        Python: name,
+        TypeScript: name
+      };
+      this.value = value;
+    }
+  };
+  var inputs = [
+    new Input("?kshift", -10),
+    new Input("?key", -9),
+    new Input("?mousey", -8),
+    new Input("?mousex", -7),
+    new Input("?clicky", -6),
+    new Input("?clickx", -5),
+    new Input("?click", -4),
+    new Input("?mmouse", -3),
+    new Input("?rmouse", -2),
+    new Input("?lmouse", -1),
+    new Input("\\keybuffer", 0),
+    new Input("\\backspace", 8),
+    new Input("\\tab", 9),
+    new Input("\\enter", 13),
+    new Input("\\return", 13),
+    new Input("\\shift", 16),
+    new Input("\\ctrl", 17),
+    new Input("\\alt", 18),
+    new Input("\\pause", 19),
+    new Input("\\capslock", 20),
+    new Input("\\escape", 27),
+    new Input("\\space", 32),
+    new Input("\\pgup", 33),
+    new Input("\\pgdn", 34),
+    new Input("\\end", 35),
+    new Input("\\home", 36),
+    new Input("\\left", 37),
+    new Input("\\up", 38),
+    new Input("\\right", 39),
+    new Input("\\down", 40),
+    new Input("\\insert", 45),
+    new Input("\\delete", 46),
+    new Input("\\0", 48),
+    new Input("\\1", 49),
+    new Input("\\2", 50),
+    new Input("\\3", 51),
+    new Input("\\4", 52),
+    new Input("\\5", 53),
+    new Input("\\6", 54),
+    new Input("\\7", 55),
+    new Input("\\8", 56),
+    new Input("\\9", 57),
+    new Input("\\a", 65),
+    new Input("\\b", 66),
+    new Input("\\c", 67),
+    new Input("\\d", 68),
+    new Input("\\e", 69),
+    new Input("\\f", 70),
+    new Input("\\g", 71),
+    new Input("\\h", 72),
+    new Input("\\i", 73),
+    new Input("\\j", 74),
+    new Input("\\k", 75),
+    new Input("\\l", 76),
+    new Input("\\m", 77),
+    new Input("\\n", 78),
+    new Input("\\o", 79),
+    new Input("\\p", 80),
+    new Input("\\q", 81),
+    new Input("\\r", 82),
+    new Input("\\s", 83),
+    new Input("\\t", 84),
+    new Input("\\u", 85),
+    new Input("\\v", 86),
+    new Input("\\w", 87),
+    new Input("\\x", 88),
+    new Input("\\y", 89),
+    new Input("\\z", 90),
+    new Input("\\lwin", 91),
+    new Input("\\rwin", 92),
+    new Input("\\#0", 96),
+    new Input("\\#1", 97),
+    new Input("\\#2", 98),
+    new Input("\\#3", 99),
+    new Input("\\#4", 100),
+    new Input("\\#5", 101),
+    new Input("\\#6", 102),
+    new Input("\\#7", 103),
+    new Input("\\#8", 104),
+    new Input("\\#9", 105),
+    new Input("\\multiply", 106),
+    new Input("\\add", 107),
+    new Input("\\subtract", 109),
+    new Input("\\decimal", 110),
+    new Input("\\divide", 111),
+    new Input("\\f1", 112),
+    new Input("\\f2", 113),
+    new Input("\\f3", 114),
+    new Input("\\f4", 115),
+    new Input("\\f5", 116),
+    new Input("\\f6", 117),
+    new Input("\\f7", 118),
+    new Input("\\f8", 119),
+    new Input("\\f9", 120),
+    new Input("\\f10", 121),
+    new Input("\\f11", 122),
+    new Input("\\f12", 123),
+    new Input("\\numlock", 144),
+    new Input("\\scrolllock", 145),
+    new Input("\\semicolon", 186),
+    new Input("\\equals", 187),
+    new Input("\\comma", 188),
+    new Input("\\dash", 189),
+    new Input("\\fullstop", 190),
+    new Input("\\forwardslash", 191),
+    new Input("\\singlequote", 192),
+    new Input("\\openbracket", 219),
+    new Input("\\backslash", 220),
+    new Input("\\closebracket", 221),
+    new Input("\\hash", 222),
+    new Input("\\backtick", 223)
+  ];
+
+  // client/constants/keywords.ts
+  var Keyword = class {
+    constructor(category, level, name) {
+      this.category = category;
+      this.level = level;
+      this.name = name;
+    }
+  };
+  var BASIC = [
+    new Keyword(20, 0, "IF"),
+    new Keyword(20, 0, "ELSE"),
+    new Keyword(20, 0, "FOR"),
+    new Keyword(20, 1, "REPEAT"),
+    new Keyword(20, 1, "WHILE"),
+    new Keyword(20, 1, "DEF"),
+    new Keyword(21, 1, "LOCAL"),
+    new Keyword(21, 2, "PRIVATE"),
+    new Keyword(22, 0, "RETURN"),
+    new Keyword(22, 0, "CONST"),
+    new Keyword(22, 0, "DIM"),
+    new Keyword(22, 0, "END"),
+    new Keyword(22, 0, "ENDPROC"),
+    new Keyword(22, 0, "THEN"),
+    new Keyword(22, 0, "ENDIF"),
+    new Keyword(22, 0, "TO"),
+    new Keyword(22, 0, "STEP"),
+    new Keyword(22, 0, "NEXT"),
+    new Keyword(22, 0, "UNTIL"),
+    new Keyword(22, 0, "ENDWHILE")
+  ];
+  var C = [
+    new Keyword(20, 0, "if"),
+    new Keyword(20, 0, "else"),
+    new Keyword(20, 0, "for"),
+    new Keyword(20, 1, "while"),
+    new Keyword(20, 1, "do"),
+    new Keyword(22, 0, "const"),
+    new Keyword(22, 0, "return")
+  ];
+  var Java = [
+    new Keyword(20, 0, "if"),
+    new Keyword(20, 0, "else"),
+    new Keyword(20, 0, "for"),
+    new Keyword(20, 1, "while"),
+    new Keyword(20, 1, "do"),
+    new Keyword(22, 0, "class"),
+    new Keyword(22, 0, "final"),
+    new Keyword(22, 0, "return")
+  ];
+  var Pascal = [
+    new Keyword(20, 0, "if"),
+    new Keyword(20, 0, "else"),
+    new Keyword(20, 0, "for"),
+    new Keyword(20, 1, "repeat"),
+    new Keyword(20, 1, "while"),
+    new Keyword(20, 1, "procedure"),
+    new Keyword(20, 2, "function"),
+    new Keyword(22, 0, "program"),
+    new Keyword(22, 0, "var"),
+    new Keyword(22, 0, "const"),
+    new Keyword(22, 0, "array"),
+    new Keyword(22, 0, "of"),
+    new Keyword(22, 0, "begin"),
+    new Keyword(22, 0, "end"),
+    new Keyword(22, 0, "then"),
+    new Keyword(22, 0, "to"),
+    new Keyword(22, 0, "downto"),
+    new Keyword(22, 0, "do"),
+    new Keyword(22, 0, "until")
+  ];
+  var Python = [
+    new Keyword(20, 0, "if"),
+    new Keyword(20, 0, "else"),
+    new Keyword(20, 0, "elif"),
+    new Keyword(20, 0, "for"),
+    new Keyword(20, 1, "while"),
+    new Keyword(20, 1, "def"),
+    new Keyword(21, 1, "global"),
+    new Keyword(21, 2, "nonlocal"),
+    new Keyword(22, 0, "in"),
+    new Keyword(22, 0, "pass"),
+    new Keyword(22, 0, "return")
+  ];
+  var TypeScript = [
+    new Keyword(20, 0, "if"),
+    new Keyword(20, 0, "else"),
+    new Keyword(20, 0, "for"),
+    new Keyword(20, 1, "while"),
+    new Keyword(20, 1, "do"),
+    new Keyword(20, 1, "function"),
+    new Keyword(22, 0, "var"),
+    new Keyword(22, 0, "const"),
+    new Keyword(22, 0, "return")
+  ];
+  var keywords = { BASIC, C, Java, Pascal, Python, TypeScript };
+
+  // client/lexer/tokenize.ts
+  function tokenize(code3, language2) {
+    const tokens = [];
+    let line2 = 1;
+    let character = 1;
+    while (code3.length > 0) {
+      const token = spaces(code3, language2, line2, character) || newline(code3, language2, line2, character) || comment(code3, language2, line2, character) || operatorOrDelimiter(code3, language2, line2, character) || string(code3, language2, line2, character) || boolean(code3, language2, line2, character) || binary(code3, language2, line2, character) || octal(code3, language2, line2, character) || hexadecimal(code3, language2, line2, character) || decimal(code3, language2, line2, character) || keyword(code3, language2, line2, character) || type(code3, language2, line2, character) || keycode(code3, language2, line2, character) || query2(code3, language2, line2, character) || turtle2(code3, language2, line2, character) || identifier(code3, language2, line2, character) || illegal(code3, language2, line2, character);
+      tokens.push(token);
+      code3 = code3.slice(token.content.length);
+      if (token.type === "newline") {
+        line2 += 1;
+        character = 1;
+      } else {
+        character += token.content.length;
+      }
+    }
+    return tokens;
+  }
+  function spaces(code3, language2, line2, character) {
+    const test = code3.match(/^( +)/);
+    return test ? new Token("spaces", test[0], line2, character) : false;
+  }
+  function newline(code3, language2, line2, character) {
+    const test = code3[0] === "\n";
+    return test ? new Token("newline", "\n", line2, character) : false;
+  }
+  function comment(code3, language2, line2, character) {
+    switch (language2) {
+      case "BASIC":
+        const startBASIC = code3.match(/^REM/);
+        return startBASIC ? new Token("comment", code3.split("\n")[0], line2, character) : false;
+      case "C":
+      case "Java":
+      case "TypeScript":
+        const startCorTS = code3.match(/^\/\//);
+        return startCorTS ? new Token("comment", code3.split("\n")[0], line2, character) : false;
+      case "Pascal":
+        const start = code3[0] === "{";
+        const end = code3.match(/}/);
+        if (start && end) {
+          return new Token("comment", code3.slice(0, end.index + 1), line2, character);
+        }
+        if (start) {
+          return new Token("unterminated-comment", code3.split("\n")[0], line2, character);
+        }
+        return false;
+      case "Python":
+        const startPython = code3.match(/^#/);
+        return startPython ? new Token("comment", code3.split("\n")[0], line2, character) : false;
+    }
+  }
+  function operatorOrDelimiter(code3, language2, line2, character) {
+    switch (language2) {
+      case "BASIC":
+      case "C":
+      case "Java":
+      case "TypeScript":
+        return operator(code3, language2, line2, character) || delimiter(code3, language2, line2, character);
+      case "Pascal":
+        return operator(code3, language2, line2, character) || delimiter(code3, language2, line2, character);
+      case "Python":
+        return delimiter(code3, language2, line2, character) || operator(code3, language2, line2, character);
+    }
+  }
+  function operator(code3, language2, line2, character) {
+    const tests = {
+      BASIC: /^(\+|-|\*|\/|DIV\b|MOD\b|=|<>|<=|>=|<|>|ANDL\b|ORL\b|NOT\b|AND\b|OR\b|EOR\b)/,
+      C: /^(\+|-|\*|\/|div\b|%|==|!=|<=|>=|<|>|=|!|&&|\|\||~|&|\||\^)/,
+      Java: /^(\+|-|\*|\/|div\b|%|==|!=|<=|>=|<|>|=|!|&&|\|\||~|&|\||\^)/,
+      Pascal: /^(\+|-|\*|\/|div\b|mod\b|=|<>|<=|>=|<|>|:=|andl\b|orl\b|not\b|and\b|or\b|xor\b)/i,
+      Python: /^(\+|-|\*|\/\/|\/|%|==|!=|<=|>=|<|>|=|not\b|and\b|or\b|~|&|\||\^)/,
+      TypeScript: /^(\+|-|\*|\/|div\b|%|==|!=|<=|>=|<|>|=|!|&&|\|\||~|&|\||\^)/
+    };
+    const test = code3.match(tests[language2]);
+    return test ? new Token("operator", test[0], line2, character) : false;
+  }
+  function delimiter(code3, language2, line2, character) {
+    const tests = {
+      BASIC: /^(\(|\)|,|:)/,
+      C: /^(\(|\)|{|}|\[|\]|,|;)/,
+      Java: /^(\(|\)|{|}|\[|\]|,|;)/,
+      Pascal: /^(\(|\)|\[|\]|,|:|;|\.\.|\.)/,
+      Python: /^(\(|\)|\[|\]|,|:|;|->)/,
+      TypeScript: /^(\(|\)|{|}|\[|\]|,|;|:)/
+    };
+    const test = code3.match(tests[language2]);
+    return test ? new Token("delimiter", test[0], line2, character) : false;
+  }
+  function string(code3, language2, line2, character) {
+    code3 = code3.split("\n")[0];
+    switch (language2) {
+      case "BASIC":
+      case "Pascal":
+        if (code3[0] === "'" || code3[0] === '"') {
+          const quote = code3[0];
+          let length = 1;
+          let end = false;
+          while (code3[length] && !end) {
+            if (code3[length] === "\n") {
+              return new Token("unterminated-string", code3.slice(0, length), line2, character);
+            }
+            if (code3[length] !== quote) {
+              length += 1;
+            } else {
+              length += 1;
+              if (code3[length] !== quote) {
+                end = true;
+              } else {
+                length += 1;
+              }
+            }
+          }
+          if (!end) {
+            return new Token("unterminated-string", code3.slice(0, length), line2, character);
+          }
+          return new Token("string", code3.slice(0, length), line2, character);
+        }
+        return false;
+      case "C":
+      case "Java":
+      case "Python":
+      case "TypeScript":
+        const start1 = code3[0] === "'";
+        const start2 = code3[0] === '"';
+        const end1 = code3.match(/[^\\](')/);
+        const end2 = code3.match(/[^\\](")/);
+        if (start1 && end1) {
+          return new Token("string", code3.slice(0, end1.index + 2), line2, character);
+        }
+        if (start1) {
+          return new Token("unterminated-string", code3.split("\n")[0], line2, character);
+        }
+        if (start2 && end2) {
+          return new Token("string", code3.slice(0, end2.index + 2), line2, character);
+        }
+        if (start2) {
+          return new Token("unterminated-string", code3.split("\n")[0], line2, character);
+        }
+        return false;
+    }
+  }
+  function boolean(code3, language2, line2, character) {
+    const tests = {
+      BASIC: /^(TRUE|FALSE)\b/,
+      C: /^(true|false)\b/,
+      Java: /^(true|false)\b/,
+      Pascal: /^(true|false)\b/i,
+      Python: /^(True|False)\b/,
+      TypeScript: /^(true|false)\b/
+    };
+    const test = code3.match(tests[language2]);
+    return test ? new Token("boolean", test[0], line2, character) : false;
+  }
+  function binary(code3, language2, line2, character) {
+    switch (language2) {
+      case "BASIC":
+      case "Pascal":
+        const good = code3.match(/^(%[01]+)\b/);
+        const bad = code3.match(/^(0b[01]+)\b/);
+        if (good) {
+          return new Token("binary", good[0], line2, character);
+        }
+        if (bad) {
+          return new Token("bad-binary", bad[0], line2, character);
+        }
+        return false;
+      case "C":
+      case "Java":
+      case "Python":
+      case "TypeScript":
+        const test = code3.match(/^(0b[01]+)\b/);
+        if (test) {
+          return new Token("binary", test[0], line2, character);
+        }
+        return false;
+    }
+  }
+  function octal(code3, language2, line2, character) {
+    switch (language2) {
+      case "BASIC":
+        return false;
+      case "Pascal":
+        const goodPascal = code3.match(/^(&[0-7]+)\b/);
+        const badPascal = code3.match(/^(0o[0-7]+)\b/);
+        if (goodPascal) {
+          return new Token("octal", goodPascal[0], line2, character);
+        }
+        if (badPascal) {
+          return new Token("bad-octal", badPascal[0], line2, character);
+        }
+        return false;
+      case "C":
+      case "Java":
+      case "Python":
+      case "TypeScript":
+        const testPython = code3.match(/^(0o[0-7]+)\b/);
+        if (testPython) {
+          return new Token("octal", testPython[0], line2, character);
+        }
+        return false;
+    }
+  }
+  function hexadecimal(code3, language2, line2, character) {
+    const bads = {
+      BASIC: /^((\$|(0x))[A-Fa-f0-9]+)\b/,
+      C: /^((&|#|\$)[A-Fa-f0-9]+)\b/,
+      Java: /^((&|#|\$)[A-Fa-f0-9]+)\b/,
+      Pascal: /^((&|(0x))[A-Fa-f0-9]+)\b/,
+      Python: /^((&|#|\$)[A-Fa-f0-9]+)\b/,
+      TypeScript: /^((&|#|\$)[A-Fa-f0-9]+)\b/
+    };
+    const goods = {
+      BASIC: /^((&|#)[A-Fa-f0-9]+)\b/,
+      C: /^((0x|#)[A-Fa-f0-9]+)\b/,
+      Java: /^((0x|#)[A-Fa-f0-9]+)\b/,
+      Pascal: /^((\$|#)[A-Fa-f0-9]+)\b/,
+      Python: /^(0x[A-Fa-f0-9]+)\b/,
+      TypeScript: /^((0x|#)[A-Fa-f0-9]+)\b/
+    };
+    const bad = code3.match(bads[language2]);
+    const good = code3.match(goods[language2]);
+    if (bad) {
+      return new Token("bad-hexadecimal", bad[0], line2, character);
+    }
+    if (good) {
+      return new Token("hexadecimal", good[0], line2, character);
+    }
+    return false;
+  }
+  function decimal(code3, language2, line2, character) {
+    const good = code3.match(/^(\d+)\b/);
+    const bad = code3.match(/^(\d+\.\d+)/);
+    if (bad) {
+      return new Token("real", bad[0], line2, character);
+    }
+    if (good) {
+      return new Token("decimal", good[0], line2, character);
+    }
+    return false;
+  }
+  function keyword(code3, language2, line2, character) {
+    const names = keywords[language2].map((x) => x.name).join("|");
+    const regex = language2 === "Pascal" ? new RegExp(`^(${names})\\b`, "i") : new RegExp(`^(${names})\\b`);
+    const test = code3.match(regex);
+    return test ? new Token("keyword", test[0], line2, character) : false;
+  }
+  function type(code3, language2, line2, character) {
+    let test = null;
+    switch (language2) {
+      case "C":
+        test = code3.match(/^(void|bool|char|int|string)\b/);
+        break;
+      case "Java":
+        test = code3.match(/^(void|boolean|char|int|String)\b/);
+        break;
+      case "Pascal":
+        test = code3.match(/^(boolean|char|integer|string)\b/i);
+        break;
+      case "TypeScript":
+        test = code3.match(/^(void|boolean|number|string)\b/);
+        break;
+    }
+    return test ? new Token("type", test[0], line2, character) : false;
+  }
+  function keycode(code3, language2, line2, character) {
+    const names = inputs.filter((x) => x.value >= 0).map((x) => x.names[language2].replace(/\\/, "\\\\")).join("|");
+    const regex = language2 === "Pascal" ? new RegExp(`^(${names})\\b`, "i") : new RegExp(`^(${names})\\b`);
+    const good = code3.match(regex);
+    const bad = code3.match(/^(\\[#a-zA-Z0-9]*)\b/);
+    if (good) {
+      return new Token("keycode", good[0], line2, character);
+    }
+    if (bad) {
+      return new Token("bad-keycode", bad[0], line2, character);
+    }
+    return false;
+  }
+  function query2(code3, language2, line2, character) {
+    const names = inputs.filter((x) => x.value < 0).map((x) => x.names[language2].replace(/\?/, "\\?")).join("|");
+    const regex = language2 === "Pascal" ? new RegExp(`^(${names})\\b`, "i") : new RegExp(`^(${names})\\b`);
+    const good = code3.match(regex);
+    const bad = code3.match(/^(\?[#a-zA-Z0-9]*)\b/);
+    if (good) {
+      return new Token("query", good[0], line2, character);
+    }
+    if (bad) {
+      return new Token("bad-query", bad[0], line2, character);
+    }
+    return false;
+  }
+  function turtle2(code3, language2, line2, character) {
+    const tests = {
+      BASIC: /^(turt[xydatc]%)/,
+      C: /^(turt[xydatc])\b/,
+      Java: /^(turt[xydatc])\b/,
+      Pascal: /^(turt[xydatc])\b/i,
+      Python: /^(turt[xydatc])\b/,
+      TypeScript: /^(turt[xydatc])\b/
+    };
+    const test = code3.match(tests[language2]);
+    return test ? new Token("turtle", test[0], line2, character) : false;
+  }
+  function identifier(code3, language2, line2, character) {
+    const test = language2 === "BASIC" ? code3.match(/^([_a-zA-Z][_a-zA-Z0-9]*\$\d*|[_a-zA-Z][_a-zA-Z0-9]*%?)/) : code3.match(/^([_a-zA-Z][_a-zA-Z0-9]*)\b/);
+    if (test) {
+      const name = language2 === "Pascal" ? test[0].toLowerCase() : test[0];
+      const colour2 = colours.find((x) => x.names[language2] === name);
+      const command2 = commands.find((x) => x.names[language2] === name);
+      if (colour2) {
+        return new Token("colour", test[0], line2, character);
+      }
+      if (command2) {
+        return new Token("command", test[0], line2, character);
+      }
+      if (language2 === "Python" && name === "range") {
+        return new Token("command", test[0], line2, character);
+      }
+      return new Token("identifier", test[0], line2, character);
+    }
+    return false;
+  }
+  function illegal(code3, language2, line2, character) {
+    return new Token("illegal", code3.split(/\s/)[0], line2, character);
+  }
+
+  // client/lexer/lexeme.ts
+  var LexemeClass = class {
+    constructor(line2, character, content) {
+      this.line = line2;
+      this.character = character;
+      this.content = content;
+    }
+  };
+  var NewlineLexeme = class extends LexemeClass {
+    constructor(token) {
+      super(token.line, token.character, "[newline]");
+      this.type = "newline";
+    }
+  };
+  var IndentLexeme = class extends LexemeClass {
+    constructor(token) {
+      super(token.line, token.character, "[dedent]");
+      this.type = "indent";
+    }
+  };
+  var DedentLexeme = class extends LexemeClass {
+    constructor(token) {
+      super(token.line, token.character, "[dedent]");
+      this.type = "dedent";
+    }
+  };
+  var CommentLexeme = class extends LexemeClass {
+    constructor(token, language2) {
+      super(token.line, token.character, token.content);
+      this.type = "comment";
+      this.subtype = null;
+      switch (language2) {
+        case "BASIC":
+          this.value = token.content.slice(3).trim();
+          break;
+        case "C":
+        case "Java":
+        case "TypeScript":
+          this.value = token.content.slice(2).trim();
+          break;
+        case "Pascal":
+          this.value = token.content.slice(1, -1).trim();
+          break;
+        case "Python":
+          this.value = token.content.slice(1).trim();
+          break;
+      }
+    }
+  };
+  var KeywordLexeme = class extends LexemeClass {
+    constructor(token) {
+      super(token.line, token.character, token.content);
+      this.type = "keyword";
+      this.subtype = token.content.toLowerCase();
+    }
+  };
+  var TypeLexeme = class extends LexemeClass {
+    constructor(token) {
+      super(token.line, token.character, token.content);
+      this.type = "type";
+      this.subtype = null;
+      switch (token.content) {
+        case "bool":
+        case "boolean":
+          this.subtype = "boolean";
+          break;
+        case "char":
+          this.subtype = "character";
+          break;
+        case "int":
+        case "integer":
+        case "number":
+          this.subtype = "integer";
+          break;
+        case "string":
+        case "String":
+          this.subtype = "string";
+          break;
+      }
+    }
+  };
+  var OperatorLexeme = class extends LexemeClass {
+    constructor(token, language2) {
+      super(token.line, token.character, token.content);
+      this.type = "operator";
+      this.subtype = "asgn";
+      switch (token.content.toLowerCase()) {
+        case "+":
+          this.subtype = "plus";
+          break;
+        case "-":
+          this.subtype = "subt";
+          break;
+        case "*":
+          this.subtype = "mult";
+          break;
+        case "/":
+          this.subtype = "divr";
+          break;
+        case "div":
+        case "//":
+          this.subtype = "div";
+          break;
+        case "mod":
+        case "%":
+          this.subtype = "mod";
+          break;
+        case "=":
+          this.subtype = language2 === "BASIC" || language2 === "Pascal" ? "eqal" : "asgn";
+          break;
+        case "==":
+          this.subtype = "eqal";
+          break;
+        case "<>":
+        case "!=":
+          this.subtype = "noeq";
+          break;
+        case "<=":
+          this.subtype = "lseq";
+          break;
+        case ">=":
+          this.subtype = "mreq";
+          break;
+        case "<":
+          this.subtype = "less";
+          break;
+        case ">":
+          this.subtype = "more";
+          break;
+        case "not":
+        case "~":
+        case "!":
+          this.subtype = "not";
+          break;
+        case "and":
+          this.subtype = language2 === "Python" ? "andl" : "and";
+          break;
+        case "or":
+          this.subtype = language2 === "Python" ? "orl" : "or";
+          break;
+        case "andl":
+        case "&&":
+          this.subtype = "andl";
+          break;
+        case "&":
+          this.subtype = "and";
+          break;
+        case "orl":
+        case "||":
+          this.subtype = "orl";
+          break;
+        case "|":
+          this.subtype = "or";
+          break;
+        case "eor":
+        case "xor":
+        case "^":
+          this.subtype = "xor";
+          break;
+      }
+    }
+  };
+  var DelimiterLexeme = class extends LexemeClass {
+    constructor(token) {
+      super(token.line, token.character, token.content);
+      this.type = "delimiter";
+      this.subtype = token.content;
+    }
+  };
+  var BooleanLexeme = class extends LexemeClass {
+    constructor(token, language2) {
+      super(token.line, token.character, token.content);
+      this.type = "literal";
+      this.subtype = "boolean";
+      if (language2 === "C" || language2 === "Python") {
+        this.value = token.content.toLowerCase() === "true" ? 1 : 0;
+      } else {
+        this.value = token.content.toLowerCase() === "true" ? -1 : 0;
+      }
+    }
+  };
+  var IntegerLexeme = class extends LexemeClass {
+    constructor(token, radix) {
+      super(token.line, token.character, token.content);
+      this.type = "literal";
+      this.subtype = "integer";
+      const firstNonInteger = token.content.match(/[^0-9]/);
+      const trimmedContent = firstNonInteger ? token.content.slice((firstNonInteger.index || 0) + 1) : token.content;
+      this.value = parseInt(trimmedContent, radix);
+      this.radix = radix;
+    }
+  };
+  var CharacterLexeme = class extends LexemeClass {
+    constructor(lexeme) {
+      super(lexeme.line, lexeme.character, lexeme.content);
+      this.type = "literal";
+      this.subtype = "character";
+      this.value = lexeme.value.charCodeAt(0);
+    }
+  };
+  var StringLexeme = class extends LexemeClass {
+    constructor(token, language2) {
+      super(token.line, token.character, token.content);
+      this.type = "literal";
+      this.subtype = "string";
+      switch (language2) {
+        case "BASIC":
+          this.value = token.content.slice(1, -1).replace(/""/g, '"');
+          break;
+        case "Pascal":
+          if (token.content[0] === "'") {
+            this.value = token.content.slice(1, -1).replace(/''/g, "'");
+          } else {
+            this.value = token.content.slice(1, -1).replace(/""/g, '"');
+          }
+          break;
+        case "C":
+        case "Java":
+          this.value = token.content.slice(1, -1).replace(/\\('|")/g, "$1");
+          break;
+        case "Python":
+        case "TypeScript":
+          this.value = token.content.slice(1, -1).replace(/\\('|")/g, "$1");
+          break;
+      }
+    }
+  };
+  var KeycodeLexeme = class extends LexemeClass {
+    constructor(token, language2) {
+      super(token.line, token.character, token.content);
+      this.type = "input";
+      this.subtype = "keycode";
+      this.value = language2 === "Pascal" ? token.content.toLowerCase() : token.content;
+    }
+  };
+  var QueryLexeme = class extends LexemeClass {
+    constructor(token, language2) {
+      super(token.line, token.character, token.content);
+      this.type = "input";
+      this.subtype = "query";
+      this.value = language2 === "Pascal" ? token.content.toLowerCase() : token.content;
+    }
+  };
+  var IdentifierLexeme = class extends LexemeClass {
+    constructor(token, language2) {
+      super(token.line, token.character, token.content);
+      this.type = "identifier";
+      this.subtype = token.type === "turtle" ? "turtle" : "identifier";
+      this.value = language2 === "Pascal" ? token.content.toLowerCase() : token.content;
+    }
+  };
+
+  // client/lexer/lexify.ts
+  function lexify(code3, language2) {
+    const tokens = typeof code3 === "string" ? tokenize(code3, language2) : code3;
+    const lexemes = [];
+    const indents = [0];
+    let index = 0;
+    let indent = indents[0];
+    while (index < tokens.length) {
+      switch (tokens[index].type) {
+        case "spaces":
+          break;
+        case "newline":
+          if (language2 === "BASIC" || language2 === "Python" || language2 === "TypeScript") {
+            if (lexemes[lexemes.length - 1]) {
+              if (lexemes[lexemes.length - 1].type !== "newline" && lexemes[lexemes.length - 1].type !== "comment") {
+                lexemes.push(new NewlineLexeme(tokens[index]));
+              }
+            }
+            while (tokens[index + 1] && tokens[index + 1].type === "newline") {
+              index += 1;
+            }
+          }
+          if (language2 === "Python") {
+            indent = tokens[index + 1] && tokens[index + 1].type === "spaces" ? tokens[index + 1].content.length : 0;
+            if (indent > indents[indents.length - 1]) {
+              indents.push(indent);
+              lexemes.push(new IndentLexeme(tokens[index + 1]));
+            } else {
+              while (indent < indents[indents.length - 1]) {
+                indents.pop();
+                lexemes.push(new DedentLexeme(tokens[index + 1] || tokens[index]));
+              }
+              if (indent !== indents[indents.length - 1]) {
+                throw new CompilerError(`Inconsistent indentation at line ${(tokens[index + 1] || tokens[index]).line}.`);
+              }
+            }
+          }
+          break;
+        case "comment":
+          lexemes.push(new CommentLexeme(tokens[index], language2));
+          if (language2 === "BASIC" || language2 === "Python") {
+            lexemes.push(new NewlineLexeme(tokens[index + 1] || tokens[index]));
+          }
+          break;
+        case "keyword":
+          lexemes.push(new KeywordLexeme(tokens[index]));
+          break;
+        case "type":
+          lexemes.push(new TypeLexeme(tokens[index]));
+          break;
+        case "operator":
+          lexemes.push(new OperatorLexeme(tokens[index], language2));
+          break;
+        case "delimiter":
+          lexemes.push(new DelimiterLexeme(tokens[index]));
+          break;
+        case "string":
+          const stringLexeme = new StringLexeme(tokens[index], language2);
+          const isCharacter = stringLexeme.value.length === 1;
+          if (isCharacter && (language2 === "C" || language2 === "Java" || language2 === "Pascal")) {
+            lexemes.push(new CharacterLexeme(stringLexeme));
+          } else {
+            lexemes.push(stringLexeme);
+          }
+          break;
+        case "boolean":
+          lexemes.push(new BooleanLexeme(tokens[index], language2));
+          break;
+        case "binary":
+          lexemes.push(new IntegerLexeme(tokens[index], 2));
+          break;
+        case "octal":
+          lexemes.push(new IntegerLexeme(tokens[index], 8));
+          break;
+        case "hexadecimal":
+          lexemes.push(new IntegerLexeme(tokens[index], 16));
+          break;
+        case "decimal":
+          lexemes.push(new IntegerLexeme(tokens[index], 10));
+          break;
+        case "keycode":
+          lexemes.push(new KeycodeLexeme(tokens[index], language2));
+          break;
+        case "query":
+          lexemes.push(new QueryLexeme(tokens[index], language2));
+          break;
+        case "command":
+        case "turtle":
+        case "colour":
+        case "identifier":
+          lexemes.push(new IdentifierLexeme(tokens[index], language2));
+          break;
+        case "unterminated-comment":
+          throw new CompilerError("Unterminated comment.", tokens[index]);
+        case "unterminated-string":
+          throw new CompilerError("Unterminated string.", tokens[index]);
+        case "bad-binary":
+        case "bad-octal":
+        case "bad-hexadecimal":
+          throw new CompilerError("Ill-formed integer literal.", tokens[index]);
+        case "real":
+          throw new CompilerError("The Turtle System does not support real numbers.", tokens[index]);
+        case "bad-keycode":
+          throw new CompilerError("Unrecognised input keycode.", tokens[index]);
+        case "bad-query":
+          throw new CompilerError("Unrecognised input query.", tokens[index]);
+        case "illegal":
+          throw new CompilerError("Illegal character in this context.", tokens[index]);
+      }
+      index += 1;
+    }
+    return lexemes;
+  }
+
+  // client/parser/basic/identifier.ts
+  function identifier2(lexemes) {
+    const identifier8 = lexemes.get();
+    if (!identifier8) {
+      throw new CompilerError("{lex} must be followed by an identifier.", lexemes.get(-1));
+    }
+    if (identifier8.type !== "identifier") {
+      throw new CompilerError("{lex} is not a valid identifier.", identifier8);
+    }
+    if (identifier8.subtype === "turtle") {
+      throw new CompilerError("{lex} is already the name of a predefined Turtle property.", identifier8);
+    }
+    lexemes.next();
+    return identifier8.content;
+  }
+  function subroutineName(lexemes) {
+    const name = identifier2(lexemes);
+    let subroutineType;
+    if (name.slice(0, 4) === "PROC") {
+      subroutineType = "procedure";
+    } else if (name.slice(0, 2) === "FN") {
+      subroutineType = "function";
+    } else {
+      throw new CompilerError('{lex} is not a valid subroutine name. (Procedure names must begin with "PROC", and function names must begin with "FN".)', lexemes.get(-1));
+    }
+    const test = name.match(/\$(\d+)$/);
+    let type8 = "boolint";
+    let stringLength = 32;
+    if (name.slice(-1) === "$") {
+      type8 = "string";
+    } else if (test) {
+      type8 = "string";
+      stringLength = parseInt(test[1], 10);
+    }
+    return [name, subroutineType, type8, stringLength];
+  }
+  function variableName(lexemes) {
+    const name = identifier2(lexemes);
+    const test = name.match(/\$(\d+)$/);
+    let type8;
+    let stringLength = 32;
+    if (name.slice(-1) === "%") {
+      type8 = "boolint";
+    } else if (name.slice(-1) === "$") {
+      type8 = "string";
+    } else if (test) {
+      type8 = "string";
+      stringLength = parseInt(test[1], 10);
+    } else {
+      throw new CompilerError('{lex} is not the name of any recognised command or a valid variable name. (Boolean and integer variables end with "%", and string variables end with "$".)', lexemes.get(-1));
+    }
+    return [name, type8, stringLength];
+  }
+
+  // client/parser/definitions/routine.ts
+  var Routine = class {
+    constructor(language2, name) {
+      this.name = "!";
+      this.index = 0;
+      this.start = 0;
+      this.end = 0;
+      this.constants = [];
+      this.variables = [];
+      this.subroutines = [];
+      this.statements = [];
+      this.language = language2;
+      if (name) {
+        this.name = language2 === "Pascal" ? name.toLowerCase() : name;
+      }
+    }
+    get parameters() {
+      return this.variables.filter((x) => x.isParameter);
+    }
+    get memoryNeeded() {
+      return this.variables.reduce((x, y) => x + y.length, 0);
+    }
+    get allSubroutines() {
+      const allSubroutines = [];
+      for (const subroutine8 of this.subroutines) {
+        allSubroutines.push(...subroutine8.allSubroutines);
+        allSubroutines.push(subroutine8);
+      }
+      return allSubroutines;
+    }
+  };
+
+  // client/parser/definitions/program.ts
+  var Program = class extends Routine {
+    constructor(language2, name) {
+      super(language2, name);
+      this.baseGlobals = 12;
+      this.baseOffset = 11;
+    }
+    get turtleAddress() {
+      const subroutinePointers = this.allSubroutines.some((x) => x.type === "function") ? this.allSubroutines.length + 1 : this.allSubroutines.length;
+      return subroutinePointers + this.baseGlobals;
+    }
+    turt(name) {
+      const fullname = this.language === "BASIC" ? `turt${name}%` : `turt${name}`;
+      const variable7 = new Variable(fullname, this);
+      variable7.type = "integer";
+      variable7.typeIsCertain = true;
+      variable7.turtle = ["x", "y", "d", "a", "t", "c"].indexOf(name) + 1;
+      return variable7;
+    }
+    get turtleVariables() {
+      return [
+        this.turt("x"),
+        this.turt("y"),
+        this.turt("d"),
+        this.turt("a"),
+        this.turt("t"),
+        this.turt("c")
+      ];
+    }
+    get resultAddress() {
+      return this.allSubroutines.length + this.baseGlobals;
+    }
+  };
+
+  // client/parser/definitions/variable.ts
+  var Variable = class {
+    constructor(name, routine) {
+      this.isParameter = false;
+      this.isReferenceParameter = false;
+      this.isPointer = false;
+      this.type = "boolint";
+      this.stringLength = 32;
+      this.arrayDimensions = [];
+      this.name = routine.language === "Pascal" ? name.toLowerCase() : name;
+      this.routine = routine;
+      this.typeIsCertain = routine.language === "Python" ? false : true;
+    }
+    get isArray() {
+      return this.arrayDimensions.length > 0;
+    }
+    get isGlobal() {
+      return this.routine instanceof Program;
+    }
+    get baseLength() {
+      return this.type === "string" ? this.stringLength + 3 : 1;
+    }
+    get elementLength() {
+      return this.arrayDimensions.length > 1 ? 1 : this.baseLength;
+    }
+    get elementCount() {
+      return this.isArray ? this.arrayDimensions[0][1] - this.arrayDimensions[0][0] + 1 : 0;
+    }
+    get length() {
+      if (this.isReferenceParameter || this.isPointer) {
+        return 1;
+      }
+      if (this.isArray) {
+        return this.subVariables[0].length * this.elementCount + 2;
+      }
+      return this.baseLength;
+    }
+    get subVariables() {
+      const subVariables = [];
+      if (this.isArray) {
+        for (let i2 = 0; i2 < this.elementCount; i2 += 1) {
+          const subVariable = new SubVariable(this, i2);
+          subVariables.push(subVariable);
+        }
+      }
+      return subVariables;
+    }
+    get address() {
+      const arrayIndex = this.routine.variables.indexOf(this);
+      const routine = new Routine(this.routine.language);
+      routine.variables = this.routine.variables.slice(0, arrayIndex);
+      return this.routine instanceof Program ? this.routine.turtleAddress + this.routine.turtleVariables.length + routine.memoryNeeded + 1 : routine.memoryNeeded + 1;
+    }
+    get lengthByteAddress() {
+      return this.address + 1;
+    }
+  };
+  var SubVariable = class extends Variable {
+    constructor(variable7, index) {
+      super(`${variable7.name}_${index.toString(10)}`, variable7.routine);
+      this.variable = variable7;
+      this.index = index;
+      this.type = variable7.type;
+      this.isParameter = variable7.isParameter;
+      this.isReferenceParameter = variable7.isReferenceParameter;
+      this.stringLength = variable7.stringLength;
+      this.arrayDimensions = variable7.arrayDimensions.slice(1);
+      this.private = variable7.private;
+    }
+    get address() {
+      return this.variable.lengthByteAddress + this.index + 1;
+    }
+    get lengthByteAddress() {
+      const base = this.variable.lengthByteAddress + this.variable.elementCount + 1;
+      return base + (this.length - 1) * this.index;
+    }
+  };
+
+  // client/parser/definitions/subroutine.ts
+  var Subroutine = class extends Routine {
+    constructor(lexeme, parent, name) {
+      super(parent.language, name);
+      this.level = -1;
+      this.hasReturnStatement = false;
+      this.globals = [];
+      this.nonlocals = [];
+      this.indent = 0;
+      this.startLine = 0;
+      this.lexeme = lexeme;
+      this.parent = parent;
+      this.typeIsCertain = parent.language === "Python" ? false : true;
+    }
+    get program() {
+      return this.parent instanceof Program ? this.parent : this.parent.program;
+    }
+    get result() {
+      return this.variables.find((x) => this.language === "Pascal" ? x.name === "result" : x.name === "!result");
+    }
+    get returns() {
+      return this.result ? this.result.type : null;
+    }
+    get type() {
+      return this.result === void 0 ? "procedure" : "function";
+    }
+    get address() {
+      return this.index + this.program.baseOffset;
+    }
+  };
+
+  // client/parser/find.ts
+  function constant(routine, name) {
+    const searchName = routine.language === "Pascal" ? name.toLowerCase() : name;
+    const match = routine.constants.find((x) => x.name === searchName);
+    if (match) {
+      return match;
+    }
+    if (routine instanceof Subroutine) {
+      return constant(routine.parent, name);
+    }
+  }
+  function colour(routine, name) {
+    const tempName = routine.language === "Pascal" ? name.toLowerCase() : name;
+    const searchName = tempName.replace(/gray$/, "grey").replace(/GRAY$/, "GREY");
+    return colours.find((x) => x.names[routine.language] === searchName);
+  }
+  function input2(routine, name) {
+    const searchName = routine.language === "Pascal" ? name.toLowerCase() : name;
+    return inputs.find((x) => x.names[routine.language] === searchName);
+  }
+  function variable(routine, name) {
+    const searchName = routine.language === "Pascal" ? name.toLowerCase() : name;
+    const turtleVariables = routine instanceof Program ? routine.turtleVariables : routine.program.turtleVariables;
+    const turtleVariable = turtleVariables.find((x) => x.name === searchName);
+    if (turtleVariable) {
+      return turtleVariable;
+    }
+    if (routine.language === "Python" && routine instanceof Subroutine) {
+      const isGlobal = routine.globals.indexOf(name) > -1;
+      if (isGlobal) {
+        return variable(routine.program, name);
+      }
+    }
+    let match = routine.variables.find((x) => x.name === name);
+    if (match === void 0 && routine instanceof Subroutine) {
+      match = variable(routine.parent, name);
+    }
+    if (match) {
+      if (match.private && match.private !== routine) {
+        return void 0;
+      }
+      return match;
+    }
+  }
+  function isDuplicate(routine, name) {
+    const searchName = routine.language === "Pascal" ? name.toLowerCase() : name;
+    if (routine.constants.some((x) => x.name === searchName))
+      return true;
+    if (routine.language === "Python" && routine instanceof Subroutine) {
+      if (routine.globals.some((x) => x === searchName))
+        return true;
+      if (routine.nonlocals.some((x) => x === searchName))
+        return true;
+    }
+    if (routine.variables.some((x) => x.name === searchName))
+      return true;
+    if (routine.subroutines.some((x) => x.name === searchName))
+      return true;
+    return false;
+  }
+  function subroutine(routine, name) {
+    const searchName = routine.language === "Pascal" ? name.toLowerCase() : name;
+    const match = routine.subroutines.find((x) => x.name === searchName);
+    if (match) {
+      return match;
+    }
+    if (routine instanceof Subroutine) {
+      if (routine.name === searchName) {
+        return routine;
+      }
+      return subroutine(routine.parent, searchName);
+    }
+  }
+  function nativeCommand(routine, name) {
+    const searchName = routine.language === "Pascal" ? name.toLowerCase() : name;
+    return commands.find((x) => x.names[routine.language] === searchName);
+  }
+  function command(routine, name) {
+    return subroutine(routine, name) || nativeCommand(routine, name);
+  }
+
+  // client/parser/basic/body.ts
+  function body(lexemes, routine) {
+    lexemes.index = routine.start;
+    while (lexemes.index < routine.end) {
+      routine.statements.push(statement(lexemes.get(), lexemes, routine));
+    }
+  }
+
+  // client/parser/definitions/statement.ts
+  var VariableAssignment = class {
+    constructor(lexeme, variable7, indexes, value) {
+      this.statementType = "variableAssignment";
+      this.lexeme = lexeme;
+      this.variable = variable7;
+      this.indexes = indexes;
+      this.value = value;
+    }
+  };
+  var ProcedureCall = class {
+    constructor(lexeme, command2) {
+      this.statementType = "procedureCall";
+      this.arguments = [];
+      this.lexeme = lexeme;
+      this.command = command2;
+    }
+  };
+  var IfStatement = class {
+    constructor(lexeme, condition) {
+      this.statementType = "ifStatement";
+      this.ifStatements = [];
+      this.elseStatements = [];
+      this.variables = [];
+      this.constants = [];
+      this.lexeme = lexeme;
+      this.condition = condition;
+    }
+  };
+  var ForStatement = class {
+    constructor(lexeme, initialisation, condition, change) {
+      this.statementType = "forStatement";
+      this.statements = [];
+      this.variables = [];
+      this.constants = [];
+      this.lexeme = lexeme;
+      this.initialisation = initialisation;
+      this.condition = condition;
+      this.change = change;
+    }
+  };
+  var RepeatStatement = class {
+    constructor(lexeme, condition) {
+      this.statementType = "repeatStatement";
+      this.statements = [];
+      this.variables = [];
+      this.constants = [];
+      this.lexeme = lexeme;
+      this.condition = condition;
+    }
+  };
+  var WhileStatement = class {
+    constructor(lexeme, condition) {
+      this.statementType = "whileStatement";
+      this.statements = [];
+      this.variables = [];
+      this.constants = [];
+      this.lexeme = lexeme;
+      this.condition = condition;
+    }
+  };
+  var ReturnStatement = class {
+    constructor(lexeme, routine, value) {
+      this.statementType = "returnStatement";
+      this.lexeme = lexeme;
+      this.routine = routine;
+      this.value = value;
+    }
+  };
+  var PassStatement = class {
+    constructor() {
+      this.statementType = "passStatement";
+    }
+  };
+
+  // client/parser/definitions/operators.ts
+  function type2(operator4) {
+    switch (operator4) {
+      case "plus":
+        return "integer";
+      case "scat":
+        return "string";
+      case "subt":
+        return "integer";
+      case "or":
+        return "boolint";
+      case "orl":
+        return "boolint";
+      case "xor":
+        return "boolint";
+      case "and":
+        return "boolint";
+      case "andl":
+        return "boolint";
+      case "div":
+        return "integer";
+      case "divr":
+        return "integer";
+      case "mod":
+        return "integer";
+      case "mult":
+        return "integer";
+      case "neg":
+        return "integer";
+      default:
+        return "boolean";
+    }
+  }
+  var operators = [
+    ["eqal", "less", "lseq", "more", "mreq", "noeq", "seql", "sles", "sleq", "smor", "smeq", "sneq"],
+    ["plus", "scat", "subt", "or", "orl", "xor"],
+    ["and", "andl", "div", "divr", "mod", "mult"],
+    ["neg", "not"]
+  ];
+  function operator2(lexeme, level) {
+    return operators[level].find((x) => lexeme.type === "operator" && lexeme.subtype === x);
+  }
+  function stringOperator(operator4) {
+    switch (operator4) {
+      case "eqal":
+        return "seql";
+      case "less":
+        return "sles";
+      case "lseq":
+        return "sleq";
+      case "more":
+        return "smor";
+      case "mreq":
+        return "smeq";
+      case "noeq":
+        return "sneq";
+      case "plus":
+        return "scat";
+      default:
+        return operator4;
+    }
+  }
+
+  // client/parser/definitions/expression.ts
+  var IntegerValue = class {
+    constructor(lexeme) {
+      this.expressionType = "integer";
+      this.lexeme = lexeme;
+      this.value = lexeme.value;
+    }
+    get type() {
+      return this.lexeme.subtype;
+    }
+  };
+  var StringValue = class {
+    constructor(lexeme) {
+      this.expressionType = "string";
+      this.type = "string";
+      this.lexeme = lexeme;
+      this.value = lexeme.value;
+    }
+  };
+  var InputValue = class {
+    constructor(lexeme, input3) {
+      this.expressionType = "input";
+      this.type = "integer";
+      this.lexeme = lexeme;
+      this.input = input3;
+    }
+  };
+  var ColourValue = class {
+    constructor(lexeme, colour2) {
+      this.expressionType = "colour";
+      this.type = "integer";
+      this.lexeme = lexeme;
+      this.colour = colour2;
+    }
+  };
+  var ConstantValue = class {
+    constructor(lexeme, constant7) {
+      this.expressionType = "constant";
+      this.indexes = [];
+      this.lexeme = lexeme;
+      this.constant = constant7;
+    }
+    get type() {
+      switch (this.constant.language) {
+        case "C":
+        case "Java":
+        case "Pascal":
+          return this.constant.type === "string" && this.indexes.length > 0 ? "character" : this.constant.type;
+        default:
+          return this.constant.type;
+      }
+    }
+  };
+  var VariableAddress = class {
+    constructor(lexeme, variable7) {
+      this.expressionType = "address";
+      this.indexes = [];
+      this.type = "integer";
+      this.lexeme = lexeme;
+      this.variable = variable7;
+    }
+  };
+  var VariableValue = class {
+    constructor(lexeme, variable7) {
+      this.expressionType = "variable";
+      this.indexes = [];
+      this.lexeme = lexeme;
+      this.variable = variable7;
+    }
+    get type() {
+      switch (this.variable.routine.language) {
+        case "C":
+        case "Java":
+        case "Pascal":
+          return this.variable.type === "string" && this.indexes.length > this.variable.arrayDimensions.length ? "character" : this.variable.type;
+        default:
+          return this.variable.type;
+      }
+    }
+  };
+  var FunctionCall = class {
+    constructor(lexeme, command2) {
+      this.expressionType = "function";
+      this.arguments = [];
+      this.lexeme = lexeme;
+      this.command = command2;
+      this.type = command2.returns || "boolint";
+    }
+  };
+  var CompoundExpression = class {
+    constructor(lexeme, left, right, operator4) {
+      this.expressionType = "compound";
+      this.lexeme = lexeme;
+      this.left = left;
+      this.right = right;
+      this.operator = operator4;
+      this.type = type2(operator4);
+    }
+  };
+  var CastExpression = class {
+    constructor(lexeme, type8, expression3) {
+      this.expressionType = "cast";
+      this.lexeme = lexeme;
+      this.type = type8;
+      this.expression = expression3;
+    }
+  };
+
+  // client/parser/call.ts
+  function procedureCall(lexeme, lexemes, routine, command2) {
+    if (command2.type === "function") {
+      throw new CompilerError("{lex} is a function, not a procedure.", lexeme);
+    }
+    if (command2 instanceof Subroutine) {
+      command2.typeIsCertain = true;
+    }
+    const procedureCall3 = new ProcedureCall(lexeme, command2);
+    brackets(lexeme, lexemes, routine, procedureCall3);
+    if (procedureCall3.command instanceof Subroutine && procedureCall3.command !== routine) {
+      if (routine.language === "BASIC" && procedureCall3.command.statements.length === 0) {
+        const previousLexemeIndex = lexemes.index;
+        body(lexemes, procedureCall3.command);
+        lexemes.index = previousLexemeIndex;
+      }
+    }
+    return procedureCall3;
+  }
+  function functionCall(lexeme, lexemes, routine, command2) {
+    if (command2 instanceof Subroutine && !command2.typeIsCertain) {
+      command2.typeIsCertain = true;
+      command2.variables.unshift(new Variable("!result", routine));
+    }
+    if (command2.type === "procedure") {
+      throw new CompilerError("{lex} is a procedure, not a function.", lexemes.get(-1));
+    }
+    const functionCall2 = new FunctionCall(lexeme, command2);
+    brackets(lexeme, lexemes, routine, functionCall2);
+    if (functionCall2.command instanceof Subroutine && functionCall2.command !== routine) {
+      if (routine.language === "BASIC" && functionCall2.command.statements.length === 0) {
+        const previousLexemeIndex = lexemes.index;
+        body(lexemes, functionCall2.command);
+        lexemes.index = previousLexemeIndex;
+      }
+    }
+    return functionCall2;
+  }
+  function brackets(lexeme, lexemes, routine, commandCall) {
+    if (commandCall.command.parameters.length > 0) {
+      if (!lexemes.get() || lexemes.get()?.content !== "(") {
+        throw new CompilerError("Opening bracket missing after command {lex}.", lexeme);
+      }
+      lexemes.next();
+      _arguments(lexemes, routine, commandCall);
+    } else {
+      if (routine.language === "BASIC" || routine.language === "Pascal") {
+        if (lexemes.get() && lexemes.get()?.content === "(") {
+          throw new CompilerError("Command {lex} takes no arguments.", lexemes.get(-1));
+        }
+      } else {
+        const openBracket = lexemes.get();
+        const closeBracket = lexemes.get(1);
+        if (!openBracket || openBracket.content !== "(") {
+          throw new CompilerError("Opening bracket missing after command {lex}.", lexemes.get(-1));
+        }
+        if (!closeBracket || closeBracket.type === "newline" || closeBracket.content === ";") {
+          throw new CompilerError("Closing bracket missing after command {lex}.", lexemes.get(-1));
+        }
+        if (closeBracket.content !== ")") {
+          throw new CompilerError("Command {lex} takes no arguments.", lexemes.get(-1));
+        }
+        lexemes.next();
+        lexemes.next();
+      }
+    }
+  }
+  function _arguments(lexemes, routine, commandCall) {
+    const commandName = commandCall.command instanceof Command ? commandCall.command.names[routine.language] : commandCall.command.name;
+    const argsExpected = commandCall.command.parameters.length;
+    let argsGiven = 0;
+    while (argsGiven < argsExpected && lexemes.get()?.content !== ")") {
+      const parameter = commandCall.command.parameters[argsGiven];
+      let argument = expression(lexemes, routine);
+      if (commandCall.command instanceof Command) {
+        switch (commandCall.command.names[routine.language]?.toLowerCase()) {
+          case "address":
+            break;
+          case "length":
+            if (!(argument instanceof VariableValue) || !argument.variable.isArray) {
+              argument = typeCheck(argument, parameter);
+            }
+            break;
+          default:
+            argument = typeCheck(argument, parameter);
+            break;
+        }
+      } else {
+        argument = typeCheck(argument, parameter);
+      }
+      commandCall.arguments.push(argument);
+      argsGiven += 1;
+      if (argsGiven < argsExpected) {
+        if (!lexemes.get()) {
+          throw new CompilerError("Comma needed after parameter.", argument.lexeme);
+        }
+        if (lexemes.get()?.content === ")") {
+          throw new CompilerError(`Not enough arguments given for command "${commandName}".`, commandCall.lexeme);
+        }
+        if (lexemes.get()?.content !== ",") {
+          throw new CompilerError("Comma needed after parameter.", argument.lexeme);
+        }
+        lexemes.next();
+      }
+    }
+    if (argsGiven < argsExpected) {
+      throw new CompilerError("Too few arguments given for command {lex}.", commandCall.lexeme);
+    }
+    if (lexemes.get()?.content === ",") {
+      throw new CompilerError("Too many arguments given for command {lex}.", commandCall.lexeme);
+    }
+    if (lexemes.get()?.content !== ")") {
+      throw new CompilerError("Closing bracket missing after command {lex}.", commandCall.lexeme);
+    }
+    lexemes.next();
+  }
+
+  // client/parser/expression.ts
+  function typeCheck(found, expected) {
+    const expectedType = typeof expected === "string" ? expected : expected.type;
+    if (expected instanceof Variable && !expected.typeIsCertain) {
+      expected.type = found.type;
+      expected.typeIsCertain = true;
+      return found;
+    }
+    if (expected instanceof FunctionCall && expected.command instanceof Subroutine && (!expected.command.typeIsCertain || expected.command.result && !expected.command.result.typeIsCertain)) {
+      const result = expected.command.result;
+      if (result) {
+        result.type = found.type;
+        result.typeIsCertain = true;
+      } else {
+        const result2 = new Variable("!result", expected.command);
+        result2.type = found.type;
+        result2.typeIsCertain = true;
+        expected.command.variables.unshift(result2);
+      }
+      expected.command.typeIsCertain = true;
+      return found;
+    }
+    if (found instanceof VariableValue && !found.variable.typeIsCertain) {
+      found.variable.type = expectedType;
+      found.variable.typeIsCertain = true;
+      return found;
+    }
+    if (found instanceof FunctionCall && found.command instanceof Subroutine && (!found.command.typeIsCertain || found.command.result && !found.command.result.typeIsCertain)) {
+      const result = found.command.result;
+      if (result) {
+        result.type = found.type;
+        result.typeIsCertain = true;
+      } else {
+        const result2 = new Variable("!result", found.command);
+        result2.type = found.type;
+        result2.typeIsCertain = true;
+        found.command.variables.unshift(result2);
+      }
+      found.command.typeIsCertain = true;
+      return found;
+    }
+    if (found.type === expectedType) {
+      return found;
+    }
+    if (expectedType === "string" && found.type === "character") {
+      return new CastExpression(found.lexeme, "string", found);
+    }
+    if (expectedType === "character" && found.type === "string") {
+      return found;
+    }
+    if (expectedType === "character" && found.type === "integer") {
+      return found;
+    }
+    if (expectedType === "integer" && found.type === "character") {
+      return found;
+    }
+    if (expectedType === "boolint" && (found.type === "boolean" || found.type === "integer")) {
+      return found;
+    }
+    if (found.type === "boolint" && (expectedType === "boolean" || expectedType === "integer")) {
+      return found;
+    }
+    throw new CompilerError(`Type error: '${expectedType}' expected but '${found.type}' found.`, found.lexeme);
+  }
+  function expression(lexemes, routine, level = 0) {
+    if (level > 2) {
+      return factor(lexemes, routine);
+    }
+    let exp = expression(lexemes, routine, level + 1);
+    while (lexemes.get() && operator2(lexemes.get(), level)) {
+      const lexeme = lexemes.get();
+      let op = operator2(lexeme, level);
+      lexemes.next();
+      let nextExp = expression(lexemes, routine, level + 1);
+      exp = typeCheck(exp, nextExp.type);
+      nextExp = typeCheck(nextExp, exp.type);
+      if (exp.type === "string" || nextExp.type === "string") {
+        op = stringOperator(op);
+      }
+      if (exp.type === "character" || nextExp.type === "character") {
+        if (op === "plus") {
+          op = stringOperator(op);
+        }
+      }
+      exp = new CompoundExpression(lexeme, exp, nextExp, op);
+    }
+    return exp;
+  }
+  function factor(lexemes, routine) {
+    const lexeme = lexemes.get();
+    let exp;
+    switch (lexeme.type) {
+      case "operator":
+        switch (lexeme.subtype) {
+          case "subt":
+            lexemes.next();
+            exp = factor(lexemes, routine);
+            exp = typeCheck(exp, "integer");
+            return new CompoundExpression(lexeme, null, exp, "neg");
+          case "not":
+            lexemes.next();
+            exp = factor(lexemes, routine);
+            exp = typeCheck(exp, "boolint");
+            return new CompoundExpression(lexeme, null, exp, "not");
+          case "and": {
+            if (routine.language !== "C") {
+              throw new CompilerError("Expression cannot begin with {lex}.", lexemes.get());
+            }
+            lexemes.next();
+            exp = factor(lexemes, routine);
+            if (!(exp instanceof VariableValue)) {
+              throw new CompilerError('Address operator "&" must be followed by a variable.', lexeme);
+            }
+            const variableAddress2 = new VariableAddress(exp.lexeme, exp.variable);
+            variableAddress2.indexes.push(...exp.indexes);
+            return variableAddress2;
+          }
+          default:
+            throw new CompilerError("Expression cannot begin with {lex}.", lexeme);
+        }
+      case "literal":
+        lexemes.next();
+        return lexeme.subtype === "string" ? new StringValue(lexeme) : new IntegerValue(lexeme);
+      case "input": {
+        const input3 = input2(routine, lexeme.content);
+        if (input3) {
+          lexemes.next();
+          return new InputValue(lexeme, input3);
+        }
+        throw new CompilerError("{lex} is not a valid input code.", lexeme);
+      }
+      case "identifier": {
+        const constant7 = constant(routine, lexeme.value);
+        if (constant7) {
+          const constantValue2 = new ConstantValue(lexeme, constant7);
+          lexemes.next();
+          const open = routine.language === "BASIC" ? "(" : "[";
+          const close = routine.language === "BASIC" ? ")" : "]";
+          if (lexemes.get() && lexemes.get()?.content === open) {
+            if (constant7.type === "string") {
+              lexemes.next();
+              let exp2 = expression(lexemes, routine);
+              exp2 = typeCheck(exp2, "integer");
+              constantValue2.indexes.push(exp2);
+              if (!lexemes.get() || lexemes.get()?.content !== close) {
+                throw new CompilerError(`Closing bracket "${close}" missing after string variable index.`, exp2.lexeme);
+              }
+              lexemes.next();
+            } else {
+              throw new CompilerError("{lex} is not a string constant.", lexeme);
+            }
+          }
+          return constantValue2;
+        }
+        const variable7 = variable(routine, lexeme.value);
+        if (variable7) {
+          const variableValue2 = new VariableValue(lexeme, variable7);
+          lexemes.next();
+          const open = routine.language === "BASIC" ? "(" : "[";
+          const close = routine.language === "BASIC" ? ")" : "]";
+          if (lexemes.get() && lexemes.get()?.content === open) {
+            if (variable7.isArray) {
+              lexemes.next();
+              while (lexemes.get() && lexemes.get()?.content !== close) {
+                let exp2 = expression(lexemes, routine);
+                exp2 = typeCheck(exp2, "integer");
+                variableValue2.indexes.push(exp2);
+                if (routine.language === "BASIC" || routine.language === "Pascal") {
+                  if (lexemes.get()?.content === ",") {
+                    lexemes.next();
+                    if (lexemes.get()?.content === close) {
+                      throw new CompilerError("Trailing comma at the end of array indexes.", lexemes.get(-1));
+                    }
+                  }
+                } else {
+                  if (lexemes.get()?.content === close && lexemes.get(1)?.content === open) {
+                    lexemes.next();
+                    lexemes.next();
+                  }
+                }
+              }
+              if (!lexemes.get()) {
+                throw new CompilerError(`Closing bracket "${close}" needed after array indexes.`, lexemes.get(-1));
+              }
+              lexemes.next();
+            } else if (variable7.type === "string") {
+              lexemes.next();
+              exp = expression(lexemes, routine);
+              exp = typeCheck(exp, "integer");
+              variableValue2.indexes.push(exp);
+              if (!lexemes.get() || lexemes.get()?.content !== close) {
+                throw new CompilerError(`Closing bracket "${close}" missing after string variable index.`, exp.lexeme);
+              }
+              lexemes.next();
+            } else {
+              throw new CompilerError("{lex} is not a string or array variable.", lexeme);
+            }
+          }
+          if (variable7.isArray) {
+            const allowedIndexes = variable7.type === "string" ? variable7.arrayDimensions.length + 1 : variable7.arrayDimensions.length;
+            if (variableValue2.indexes.length > allowedIndexes) {
+              throw new CompilerError("Too many indexes for array variable {lex}.", lexeme);
+            }
+          }
+          return variableValue2;
+        }
+        const colour2 = colour(routine, lexeme.value);
+        if (colour2) {
+          lexemes.next();
+          return new ColourValue(lexeme, colour2);
+        }
+        const command2 = command(routine, lexeme.value);
+        if (command2) {
+          lexemes.next();
+          return functionCall(lexeme, lexemes, routine, command2);
+        }
+        throw new CompilerError("{lex} is not defined.", lexeme);
+      }
+      default:
+        if ((routine.language === "C" || routine.language === "Java") && lexemes.get()?.content === "(" && lexemes.get(1)?.type === "type") {
+          lexemes.next();
+          const typeLexeme = lexemes.get();
+          const type8 = typeLexeme.subtype;
+          if (type8 === null) {
+            throw new CompilerError("Expression cannot be cast as void.", typeLexeme);
+          }
+          lexemes.next();
+          if (lexemes.get()?.content !== ")") {
+            throw new CompilerError('Type in type cast expression must be followed by a closing bracket ")".', typeLexeme);
+          }
+          lexemes.next();
+          exp = expression(lexemes, routine);
+          if (type8 !== exp.type) {
+            if (type8 === "boolean" && exp.type === "character") {
+              throw new CompilerError("Characters cannot be cast as booleans.", typeLexeme);
+            }
+            if (type8 === "boolean" && exp.type === "string") {
+              throw new CompilerError("Strings cannot be cast as booleans.", typeLexeme);
+            }
+            if (type8 === "string" && exp.type === "boolean") {
+              throw new CompilerError("Booleans cannot be cast as strings.", typeLexeme);
+            }
+            if (type8 === "character" && exp.type === "boolean") {
+              throw new CompilerError("Booleans cannot be cast as characters.", typeLexeme);
+            }
+            if (type8 === "character" && exp.type === "string") {
+              throw new CompilerError("Strings cannot be cast as characters.", typeLexeme);
+            }
+            exp = new CastExpression(typeLexeme, type8, exp);
+          }
+          return exp;
+        } else if (lexemes.get()?.content === "(") {
+          lexemes.next();
+          exp = expression(lexemes, routine);
+          if (lexemes.get() && lexemes.get()?.content === ")") {
+            lexemes.next();
+            return exp;
+          } else {
+            throw new CompilerError("Closing bracket missing after expression.", exp.lexeme);
+          }
+        } else {
+          throw new CompilerError("Expression cannot begin with {lex}.", lexeme);
+        }
+    }
+  }
+
+  // client/parser/evaluate.ts
+  function evaluate(expression3, language2, context2) {
+    const True = language2 === "BASIC" || language2 === "Pascal" ? -1 : 1;
+    const False = 0;
+    switch (expression3.expressionType) {
+      case "address":
+      case "variable":
+        if (context2 === "constant") {
+          throw new CompilerError("Constant value cannot refer to any variables.", expression3.lexeme);
+        } else if (context2 === "string") {
+          throw new CompilerError("String size specification cannot refer to any variables.", expression3.lexeme);
+        } else if (context2 === "array") {
+          throw new CompilerError("Array size specification cannot refer to any variables.", expression3.lexeme);
+        } else {
+          throw new CompilerError("FOR loop step change specification cannot refer to any variables.", expression3.lexeme);
+        }
+      case "function":
+        if (context2 === "constant") {
+          throw new CompilerError("Constant value cannot invoke any functions.", expression3.lexeme);
+        } else if (context2 === "string") {
+          throw new CompilerError("String size specification cannot invoke any functions.", expression3.lexeme);
+        } else if (context2 === "array") {
+          throw new CompilerError("Array size specification cannot invoke any functions.", expression3.lexeme);
+        } else {
+          throw new CompilerError("FOR loop step change specification cannot invoke any functions.", expression3.lexeme);
+        }
+      case "constant":
+        return expression3.constant.value;
+      case "integer":
+      case "string":
+        return expression3.value;
+      case "input":
+        return expression3.input.value;
+      case "colour":
+        return expression3.colour.value;
+      case "cast":
+        return evaluate(expression3.expression, language2, context2);
+      case "compound":
+        const left = expression3.left ? evaluate(expression3.left, language2, context2) : null;
+        const right = evaluate(expression3.right, language2, context2);
+        switch (expression3.operator) {
+          case "eqal":
+          case "seql":
+            return left === right ? True : False;
+          case "less":
+          case "sles":
+            return left < right ? True : False;
+          case "lseq":
+          case "sleq":
+            return left <= right ? True : False;
+          case "more":
+          case "smor":
+            return left > right ? True : False;
+          case "mreq":
+          case "smeq":
+            return left >= right ? True : False;
+          case "noeq":
+          case "sneq":
+            return left !== right ? True : False;
+          case "plus":
+            return left + right;
+          case "scat":
+            return left + right;
+          case "subt":
+            return left ? left - right : -right;
+          case "neg":
+            return -right;
+          case "not":
+            return right === 0 ? True : False;
+          case "or":
+            return left | right;
+          case "orl":
+            return left || right;
+          case "xor":
+            return left ^ right;
+          case "and":
+            return left & right;
+          case "andl":
+            return left && right;
+          case "div":
+            return Math.floor(left / right);
+          case "divr":
+            return Math.round(left / right);
+          case "mod":
+            return left % right;
+          case "mult":
+            return left * right;
+        }
+    }
+  }
+
+  // client/parser/basic/variable.ts
+  function variable2(lexemes, routine) {
+    const [name, type8, stringLength] = variableName(lexemes);
+    if (isDuplicate(routine, name)) {
+      throw new CompilerError("{lex} is already defined in the current scope.", lexemes.get(-1));
+    }
+    const variable7 = new Variable(name, routine);
+    variable7.type = type8;
+    variable7.stringLength = stringLength;
+    return variable7;
+  }
+  function array(lexemes, routine) {
+    const foo = variable2(lexemes, routine);
+    if (!lexemes.get()) {
+      throw new CompilerError('"DIM" variable identifier must be followed by dimensions in brackets.', lexemes.get(-1));
+    }
+    if (lexemes.get()?.content !== "(") {
+      throw new CompilerError('"DIM" variable identifier must be followed by dimensions in brackets.', lexemes.get());
+    }
+    lexemes.next();
+    while (lexemes.get()?.content !== ")") {
+      if (!lexemes.get()) {
+        throw new CompilerError("Expected array size specification.", lexemes.get(-1));
+      }
+      if (lexemes.get()?.type === "newline") {
+        throw new CompilerError("Array declaration must be one a single line.", lexemes.get(-1));
+      }
+      const exp = expression(lexemes, routine);
+      typeCheck(exp, "integer");
+      const value = evaluate(exp, "BASIC", "array");
+      if (typeof value === "string") {
+        throw new CompilerError("Array size must be an integer.", lexemes.get());
+      }
+      if (value <= 0) {
+        throw new CompilerError("Array size must be positive.", lexemes.get());
+      }
+      foo.arrayDimensions.push([0, value]);
+      if (lexemes.get()?.content === ",") {
+        lexemes.next();
+        if (lexemes.get()?.content === ")") {
+          throw new CompilerError("Trailing comma in array size specification.", lexemes.get());
+        }
+      }
+    }
+    if (!lexemes.get() || lexemes.get()?.content !== ")") {
+      throw new CompilerError("Closing bracket missing after array size specification.", lexemes.get(-1));
+    }
+    if (foo.arrayDimensions.length === 0) {
+      throw new CompilerError("Expected array size specification.", lexemes.get());
+    }
+    lexemes.next();
+    return foo;
+  }
+  function variables(lexemes, routine) {
+    const variables3 = [];
+    while (lexemes.get()?.type !== "newline") {
+      variables3.push(variable2(lexemes, routine));
+      if (lexemes.get()?.content === ",") {
+        lexemes.next();
+        if (!lexemes.get() || lexemes.get()?.type === "newline") {
+          throw new CompilerError("Trailing comma at end of line.", lexemes.get(-1));
+        }
+      }
+    }
+    return variables3;
+  }
+
+  // client/parser/definitions/constant.ts
+  var Constant = class {
+    constructor(language2, name, value) {
+      this.name = language2 === "Pascal" ? name.toLowerCase() : name;
+      this.language = language2;
+      this.value = value;
+    }
+    get type() {
+      return typeof this.value === "number" ? "boolint" : "string";
+    }
+  };
+
+  // client/parser/basic/constant.ts
+  function constant2(lexemes, routine) {
+    const foo = variable2(lexemes, routine);
+    if (!lexemes.get() || lexemes.get()?.content !== "=") {
+      throw new CompilerError("Constant must be assigned a value.", lexemes.get(-1));
+    }
+    lexemes.next();
+    let exp = expression(lexemes, routine);
+    const value = evaluate(exp, "BASIC", "constant");
+    exp = typeCheck(exp, foo.type);
+    return new Constant("BASIC", foo.name, value);
+  }
+
+  // client/parser/basic/statement.ts
+  function newLine(lexemes) {
+    if (lexemes.get() && lexemes.get()?.type !== "newline") {
+      throw new CompilerError("Statement must be on a new line.", lexemes.get());
+    }
+    while (lexemes.get()?.type === "newline") {
+      lexemes.next();
+    }
+  }
+  function statement(lexeme, lexemes, routine, oneLine = false) {
+    let statement8;
+    switch (lexeme.type) {
+      case "newline":
+        statement8 = new PassStatement();
+        break;
+      case "operator":
+        if (lexeme.subtype === "eqal") {
+          lexeme.subtype = "asgn";
+          lexemes.next();
+          statement8 = returnStatement(lexeme, lexemes, routine);
+        } else {
+          throw new CompilerError("Statement cannot begin with {lex}.", lexeme);
+        }
+        break;
+      case "identifier":
+        statement8 = simpleStatement(lexeme, lexemes, routine);
+        break;
+      case "keyword":
+        switch (lexeme.subtype) {
+          case "const":
+            lexemes.next();
+            routine.constants.push(constant2(lexemes, routine));
+            statement8 = new PassStatement();
+            break;
+          case "dim":
+            lexemes.next();
+            routine.variables.push(array(lexemes, routine));
+            statement8 = new PassStatement();
+            break;
+          case "local":
+            if (routine instanceof Program) {
+              throw new CompilerError("Main program cannot declare any LOCAL variables.", lexemes.get());
+            }
+            lexemes.next();
+            routine.variables.push(...variables(lexemes, routine));
+            statement8 = new PassStatement();
+            break;
+          case "private": {
+            if (routine instanceof Program) {
+              throw new CompilerError("Main program cannot declare any PRIVATE variables.", lexemes.get());
+            }
+            lexemes.next();
+            const privateVariables = variables(lexemes, routine);
+            for (const privateVariable of privateVariables) {
+              privateVariable.private = routine;
+            }
+            routine.program.variables.push(...privateVariables);
+            statement8 = new PassStatement();
+            break;
+          }
+          case "if":
+            lexemes.next();
+            statement8 = ifStatement(lexeme, lexemes, routine);
+            break;
+          case "for":
+            lexemes.next();
+            statement8 = forStatement(lexeme, lexemes, routine);
+            break;
+          case "repeat":
+            lexemes.next();
+            statement8 = repeatStatement(lexeme, lexemes, routine);
+            break;
+          case "while":
+            lexemes.next();
+            statement8 = whileStatement(lexeme, lexemes, routine);
+            break;
+          case "def":
+            if (routine instanceof Program) {
+              throw new CompilerError('Subroutines must be defined after program "END".', lexeme);
+            }
+            throw new CompilerError("Subroutines cannot contain any nested subroutine definitions.", lexeme);
+          default:
+            throw new CompilerError("Statement cannot begin with {lex}.", lexemes.get());
+        }
+        break;
+      default:
+        throw new CompilerError("Statement cannot begin with {lex}.", lexemes.get());
+    }
+    if (!oneLine && lexemes.get()) {
+      if (lexemes.get()?.content === ":" || lexemes.get()?.type === "newline") {
+        while (lexemes.get()?.content === ":" || lexemes.get()?.type === "newline") {
+          lexemes.next();
+        }
+      } else {
+        throw new CompilerError("Statements must be separated by a colon or placed on different lines.", lexemes.get());
+      }
+    }
+    return statement8;
+  }
+  function simpleStatement(lexeme, lexemes, routine) {
+    const foo = command(routine, lexeme.content);
+    if (foo) {
+      lexemes.next();
+      return procedureCall(lexeme, lexemes, routine, foo);
+    }
+    const bar = variable(routine, lexeme.content);
+    if (bar) {
+      lexemes.next();
+      return variableAssignment(lexeme, lexemes, routine, bar);
+    }
+    const program3 = routine instanceof Program ? routine : routine.program;
+    const baz = variable2(lexemes, program3);
+    program3.variables.push(baz);
+    return variableAssignment(lexeme, lexemes, routine, baz);
+  }
+  function variableAssignment(variableLexeme, lexemes, routine, variable7) {
+    const indexes = [];
+    if (lexemes.get()?.content === "(") {
+      if (variable7.isArray) {
+        lexemes.next();
+        while (lexemes.get() && lexemes.get()?.content !== ")") {
+          let exp = expression(lexemes, routine);
+          exp = typeCheck(exp, "integer");
+          indexes.push(exp);
+          if (lexemes.get()?.content === ",") {
+            lexemes.next();
+            if (lexemes.get()?.content === ")") {
+              throw new CompilerError("Trailing comma at the end of array indexes.", lexemes.get(-1));
+            }
+          }
+        }
+        if (!lexemes.get()) {
+          throw new CompilerError('Closing bracket ")" needed after array indexes.', lexemes.get(-1));
+        }
+        lexemes.next();
+      } else {
+        throw new CompilerError("{lex} is not an array variable.", variableLexeme);
+      }
+    }
+    if (variable7.isArray) {
+      const allowedIndexes = variable7.type === "string" ? variable7.arrayDimensions.length + 1 : variable7.arrayDimensions.length;
+      if (indexes.length > allowedIndexes) {
+        throw new CompilerError("Too many indexes for array variable {lex}.", variableLexeme);
+      }
+    }
+    const assignmentLexeme = lexemes.get();
+    if (!assignmentLexeme) {
+      throw new CompilerError('Variable must be followed by assignment operator "=".', lexemes.get(-1));
+    }
+    if (assignmentLexeme.type !== "operator" || assignmentLexeme.content !== "=") {
+      throw new CompilerError('Variable must be followed by assignment operator "=".', assignmentLexeme);
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError(`Variable "${variable7.name}" must be assigned a value.`, lexemes.get(-1));
+    }
+    let value = expression(lexemes, routine);
+    value = typeCheck(value, variable7.type);
+    return new VariableAssignment(assignmentLexeme, variable7, indexes, value);
+  }
+  function returnStatement(lexeme, lexemes, routine) {
+    if (routine instanceof Program) {
+      throw new CompilerError("Statement in the main program cannot begin with {lex}.", lexeme);
+    }
+    if (routine.type !== "function") {
+      throw new CompilerError("Procedures cannot return a value.", lexeme);
+    }
+    let value = expression(lexemes, routine);
+    value = typeCheck(value, routine.returns);
+    return new ReturnStatement(lexeme, routine, value);
+  }
+  function ifStatement(lexeme, lexemes, routine) {
+    let oneLine;
+    if (!lexemes.get()) {
+      throw new CompilerError('"IF" must be followed by a boolean expression.', lexeme);
+    }
+    let condition = expression(lexemes, routine);
+    condition = typeCheck(condition, "boolean");
+    if (!lexemes.get()) {
+      throw new CompilerError('"IF ..." must be followed by "THEN".', lexemes.get(-1));
+    }
+    if (lexemes.get()?.content !== "THEN") {
+      throw new CompilerError('"IF ..." must be followed by "THEN".', lexemes.get());
+    }
+    lexemes.next();
+    const ifStatement8 = new IfStatement(lexeme, condition);
+    const firstInnerLexeme = lexemes.get();
+    if (!firstInnerLexeme) {
+      throw new CompilerError('No statements found after "IF ... THEN".', lexemes.get());
+    }
+    if (firstInnerLexeme.type === "newline") {
+      while (lexemes.get()?.type === "newline") {
+        lexemes.next();
+      }
+      ifStatement8.ifStatements.push(...block(lexemes, routine, "IF"));
+      oneLine = false;
+    } else {
+      oneLine = true;
+      ifStatement8.ifStatements.push(statement(firstInnerLexeme, lexemes, routine, oneLine));
+    }
+    if (lexemes.get() && lexemes.get()?.content === "ELSE") {
+      lexemes.next();
+      const firstInnerLexeme2 = lexemes.get();
+      if (!firstInnerLexeme2) {
+        throw new CompilerError('No statements found after "ELSE".', lexemes.get(-1));
+      }
+      if (oneLine) {
+        if (firstInnerLexeme2.type === "newline") {
+          throw new CompilerError('Statement following "ELSE" cannot be on a new line.', lexemes.get(1));
+        }
+        ifStatement8.elseStatements.push(statement(firstInnerLexeme2, lexemes, routine, oneLine));
+      } else {
+        if (firstInnerLexeme2.type !== "newline") {
+          throw new CompilerError('Statement following "ELSE" must be on a new line.', firstInnerLexeme2);
+        }
+        while (lexemes.get()?.type === "newline") {
+          lexemes.next();
+        }
+        ifStatement8.elseStatements.push(...block(lexemes, routine, "ELSE"));
+      }
+    }
+    return ifStatement8;
+  }
+  function forStatement(lexeme, lexemes, routine) {
+    const variableLexeme = lexemes.get();
+    if (!variableLexeme) {
+      throw new CompilerError('"FOR" must be followed by an integer variable.', lexeme);
+    }
+    if (variableLexeme.type !== "identifier") {
+      throw new CompilerError('"FOR" must be followed by an integer variable.', variableLexeme);
+    }
+    if (variableLexeme.subtype === "turtle") {
+      throw new CompilerError('Turtle attribute cannot be used as a "FOR" variable.', variableLexeme);
+    }
+    let foo = variable(routine, variableLexeme.content);
+    if (!foo) {
+      const program3 = routine instanceof Program ? routine : routine.program;
+      foo = variable2(lexemes, program3);
+      program3.variables.push(foo);
+    } else {
+      lexemes.next();
+    }
+    if (foo.type !== "integer" && foo.type !== "boolint") {
+      throw new CompilerError("{lex} is not an integer variable.", lexemes.get());
+    }
+    const initialisation = variableAssignment(variableLexeme, lexemes, routine, foo);
+    if (!lexemes.get()) {
+      throw new CompilerError('"FOR" loop initialisation must be followed by "TO".', lexemes.get(-1));
+    }
+    if (lexemes.get()?.content !== "TO") {
+      throw new CompilerError('"FOR" loop initialisation must be followed by "TO".', lexemes.get());
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError('"TO" must be followed by an integer (or integer constant).', lexemes.get(-1));
+    }
+    let finalValue = expression(lexemes, routine);
+    finalValue = typeCheck(finalValue, "integer");
+    const oneToken = new Token("decimal", "1", lexeme.line, -1);
+    const assignmentToken = new Token("operator", "=", lexeme.line, -1);
+    const plusToken = new Token("operator", "+", lexeme.line, -1);
+    const lseqToken = new Token("operator", "<=", lexeme.line, -1);
+    const mreqToken = new Token("operator", ">=", lexeme.line, -1);
+    const oneLexeme = new IntegerLexeme(oneToken, 10);
+    const assignmentLexeme = new OperatorLexeme(assignmentToken, "BASIC");
+    const plusLexeme = new OperatorLexeme(plusToken, "BASIC");
+    const lseqLexeme = new OperatorLexeme(lseqToken, "BASIC");
+    const mreqLexeme = new OperatorLexeme(mreqToken, "BASIC");
+    const left = new VariableValue(variableLexeme, foo);
+    const right = new IntegerValue(oneLexeme);
+    let change = new VariableAssignment(assignmentLexeme, foo, [], new CompoundExpression(plusLexeme, left, right, "plus"));
+    let condition = new CompoundExpression(lseqLexeme, left, finalValue, "lseq");
+    if (lexemes.get() && lexemes.get()?.content === "STEP") {
+      lexemes.next();
+      if (!lexemes.get()) {
+        throw new CompilerError('"STEP" instruction must be followed by an integer value.', lexemes.get(-1));
+      }
+      let stepValue = expression(lexemes, routine);
+      typeCheck(stepValue, "integer");
+      const evaluatedStepValue = evaluate(stepValue, "BASIC", "step");
+      if (evaluatedStepValue === 0) {
+        throw new CompilerError("Step value cannot be zero.", stepValue.lexeme);
+      }
+      change = new VariableAssignment(assignmentLexeme, foo, [], new CompoundExpression(plusLexeme, left, stepValue, "plus"));
+      if (evaluatedStepValue < 0) {
+        condition = new CompoundExpression(mreqLexeme, left, finalValue, "mreq");
+      } else {
+        condition = new CompoundExpression(lseqLexeme, left, finalValue, "lseq");
+      }
+    }
+    const forStatement8 = new ForStatement(lexeme, initialisation, condition, change);
+    const firstInnerLexeme = lexemes.get();
+    if (!firstInnerLexeme) {
+      throw new CompilerError('No statements found after "FOR" loop initialisation.', lexeme);
+    }
+    if (firstInnerLexeme.type === "newline") {
+      while (lexemes.get()?.type === "newline") {
+        lexemes.next();
+      }
+      forStatement8.statements.push(...block(lexemes, routine, "FOR"));
+    } else {
+      forStatement8.statements.push(statement(firstInnerLexeme, lexemes, routine));
+    }
+    return forStatement8;
+  }
+  function repeatStatement(lexeme, lexemes, routine) {
+    let repeatStatements;
+    const firstInnerLexeme = lexemes.get();
+    if (!firstInnerLexeme) {
+      throw new CompilerError('No statements found after "REPEAT".', lexeme);
+    }
+    if (firstInnerLexeme.type === "newline") {
+      while (lexemes.get()?.type === "newline") {
+        lexemes.next();
+      }
+      repeatStatements = block(lexemes, routine, "REPEAT");
+    } else {
+      repeatStatements = [statement(firstInnerLexeme, lexemes, routine)];
+    }
+    if (!lexemes.get()) {
+      throw new CompilerError('"UNTIL" must be followed by a boolean expression.', lexemes.get(-1));
+    }
+    let condition = expression(lexemes, routine);
+    condition = typeCheck(condition, "boolean");
+    const repeatStatement4 = new RepeatStatement(lexeme, condition);
+    repeatStatement4.statements.push(...repeatStatements);
+    return repeatStatement4;
+  }
+  function whileStatement(lexeme, lexemes, routine) {
+    if (!lexemes.get()) {
+      throw new CompilerError('"WHILE" must be followed by a boolean expression.', lexemes.get(-1));
+    }
+    let condition = expression(lexemes, routine);
+    condition = typeCheck(condition, "boolean");
+    const whileStatement8 = new WhileStatement(lexeme, condition);
+    const firstInnerLexeme = lexemes.get();
+    if (!firstInnerLexeme) {
+      throw new CompilerError('No commands found after "WHILE ... DO".', lexemes.get(-1));
+    }
+    if (firstInnerLexeme.type === "newline") {
+      while (lexemes.get()?.type === "newline") {
+        lexemes.next();
+      }
+      whileStatement8.statements.push(...block(lexemes, routine, "WHILE"));
+    } else {
+      whileStatement8.statements.push(statement(firstInnerLexeme, lexemes, routine));
+    }
+    return whileStatement8;
+  }
+  function block(lexemes, routine, start) {
+    const statements = [];
+    let end = false;
+    if (!lexemes.get()) {
+      throw new CompilerError(`No commands found after "${start}".`, lexemes.get(-1));
+    }
+    while (!end && lexemes.index < routine.end) {
+      const lexeme = lexemes.get();
+      end = blockEndCheck(start, lexeme);
+      if (end) {
+        if (lexeme.content !== "ELSE") {
+          lexemes.next();
+        }
+      } else {
+        statements.push(statement(lexeme, lexemes, routine));
+      }
+    }
+    if (!end) {
+      throw new CompilerError(`Unterminated "${start}" statement.`, lexemes.get(-1));
+    }
+    return statements;
+  }
+  function blockEndCheck(start, lexeme) {
+    switch (lexeme.content) {
+      case "ELSE":
+        if (start !== "IF") {
+          throw new CompilerError('"ELSE" does not have any matching "IF".', lexeme);
+        }
+        return true;
+      case "ENDIF":
+        if (start !== "IF" && start !== "ELSE") {
+          throw new CompilerError('"ENDIF" does not have any matching "IF".', lexeme);
+        }
+        return true;
+      case "NEXT":
+        if (start !== "FOR") {
+          throw new CompilerError('"NEXT" does not have any matching "FOR".', lexeme);
+        }
+        return true;
+      case "UNTIL":
+        if (start !== "REPEAT") {
+          throw new CompilerError('"UNTIL" does not have any matching "REPEAT".', lexeme);
+        }
+        return true;
+      case "ENDWHILE":
+        if (start !== "WHILE") {
+          throw new CompilerError('"ENDWHILE" does not have any matching "WHILE".', lexeme);
+        }
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  // client/parser/basic/subroutine.ts
+  function subroutine2(lexeme, lexemes, program3) {
+    const [name, subroutineType, type8, stringLength] = subroutineName(lexemes);
+    const subroutine8 = new Subroutine(lexeme, program3, name);
+    subroutine8.index = program3.subroutines.length + 1;
+    if (subroutineType === "function") {
+      const returnVariable = new Variable("!result", subroutine8);
+      returnVariable.type = type8;
+      returnVariable.stringLength = stringLength;
+      subroutine8.variables.push(returnVariable);
+    }
+    if (lexemes.get()?.content === "(") {
+      lexemes.next();
+      subroutine8.variables.push(...parameters(lexemes, subroutine8));
+    }
+    if (!lexemes.get()) {
+      throw new CompilerError("No statements found after subroutine declaration.", lexemes.get(-1));
+    }
+    newLine(lexemes);
+    subroutine8.start = lexemes.index;
+    let finished = false;
+    if (subroutine8.type === "procedure") {
+      while (lexemes.get() && !finished) {
+        finished = lexemes.get()?.content === "ENDPROC";
+        lexemes.next();
+      }
+    } else {
+      while (lexemes.get() && !finished) {
+        if (lexemes.get()?.content === "=" && lexemes.get(-1)?.type === "newline") {
+          finished = true;
+          while (lexemes.get() && lexemes.get()?.type !== "newline") {
+            lexemes.next();
+          }
+        } else {
+          lexemes.next();
+        }
+      }
+    }
+    subroutine8.end = subroutine8.type === "procedure" ? lexemes.index - 2 : lexemes.index;
+    if (!finished) {
+      if (subroutine8.type === "procedure") {
+        throw new CompilerError(`Procedure "${subroutine8.name}" does not have an end (expected "ENDPROC").`, lexemes.lexemes[subroutine8.start]);
+      }
+      throw new CompilerError(`Function "${subroutine8.name}" does not have an end (expected "=<expression>").`, lexemes.lexemes[subroutine8.end]);
+    }
+    newLine(lexemes);
+    return subroutine8;
+  }
+  function parameters(lexemes, subroutine8) {
+    const parameters7 = [];
+    while (lexemes.get()?.content !== ")") {
+      let isReferenceParameter = false;
+      if (lexemes.get()?.content === "RETURN") {
+        isReferenceParameter = true;
+        lexemes.next();
+      }
+      const parameter = variable2(lexemes, subroutine8);
+      parameter.isParameter = true;
+      parameter.isReferenceParameter = isReferenceParameter;
+      if (lexemes.get()?.content === "(") {
+        parameter.arrayDimensions.push([0, 0]);
+        lexemes.next();
+        if (!lexemes.get() || lexemes.get()?.content !== ")") {
+          throw new CompilerError("Closing bracket missing after array parameter specification.", lexemes.get(-1));
+        }
+        lexemes.next();
+      }
+      parameters7.push(parameter);
+      if (lexemes.get()?.content === ",") {
+        lexemes.next();
+      }
+    }
+    if (lexemes.get()?.content !== ")") {
+      throw new CompilerError("Closing bracket missing after method parameters.", lexemes.get(-1));
+    }
+    lexemes.next();
+    return parameters7;
+  }
+
+  // client/parser/basic/parser.ts
+  function basic(lexemes) {
+    const program3 = new Program("BASIC");
+    const endLexemeIndex = lexemes.lexemes.findIndex((x) => x.content === "END");
+    if (endLexemeIndex < 0) {
+      throw new CompilerError('Program must end with keyword "END".');
+    }
+    program3.end = endLexemeIndex;
+    lexemes.index = endLexemeIndex + 1;
+    while (lexemes.get()) {
+      if (lexemes.get()?.type === "newline") {
+        lexemes.next();
+      } else if (lexemes.get()?.content === "DEF") {
+        lexemes.next();
+        program3.subroutines.push(subroutine2(lexemes.get(-1), lexemes, program3));
+      } else {
+        throw new CompilerError('Only subroutine definitions are permissible after program "END".', lexemes.get());
+      }
+    }
+    body(lexemes, program3);
+    for (const subroutine8 of program3.subroutines) {
+      if (subroutine8.statements.length === 0) {
+        body(lexemes, subroutine8);
+      }
+    }
+    return program3;
+  }
+
+  // client/parser/c/type.ts
+  function type3(lexemes) {
+    const typeLexeme = lexemes.get();
+    if (!typeLexeme) {
+      throw new CompilerError('Expected type definition ("bool", "char", "int", "string", or "void").', lexemes.get(-1));
+    }
+    if (typeLexeme.type !== "type") {
+      throw new CompilerError('{lex} is not a valid type definition (expected "bool", "char", "int", "string", or "void").', typeLexeme);
+    }
+    const type8 = typeLexeme.subtype;
+    lexemes.next();
+    let stringLength = 32;
+    if (lexemes.get()?.content === "[") {
+      lexemes.next();
+      const integerLexeme = lexemes.get();
+      if (!integerLexeme) {
+        throw new CompilerError("Expecting string size specification.", lexemes.get(-1));
+      }
+      if (integerLexeme.type !== "literal" || integerLexeme.subtype !== "integer") {
+        throw new CompilerError("String size must be an integer.", lexemes.get());
+      }
+      if (integerLexeme.value <= 0) {
+        throw new CompilerError("String size must be greater than zero.", lexemes.get());
+      }
+      stringLength = integerLexeme.value;
+      lexemes.next();
+      if (!lexemes.get()) {
+        throw new CompilerError('Closing bracket "]" missing after string size specification.', lexemes.get(-1));
+      }
+      if (lexemes.get()?.content !== "]") {
+        throw new CompilerError('Closing bracket "]" missing after string size specification.', lexemes.get());
+      }
+      lexemes.next();
+    }
+    return [type8, stringLength];
+  }
+
+  // client/parser/c/identifier.ts
+  function identifier3(lexemes, routine) {
+    const identifier8 = lexemes.get();
+    if (!identifier8) {
+      throw new CompilerError("{lex} must be followed by an identifier.", lexemes.get(-1));
+    }
+    if (identifier8.type !== "identifier") {
+      throw new CompilerError("{lex} is not a valid identifier.", identifier8);
+    }
+    if (identifier8.subtype === "turtle") {
+      throw new CompilerError("{lex} is already the name of a predefined Turtle property.", identifier8);
+    }
+    if (isDuplicate(routine, identifier8.value)) {
+      throw new CompilerError("{lex} is already defined in the current scope.", identifier8);
+    }
+    lexemes.next();
+    return identifier8.value;
+  }
+
+  // client/parser/c/constant.ts
+  function constant3(lexemes, routine) {
+    const [constantType] = type3(lexemes);
+    if (constantType === null) {
+      throw new CompilerError('Constant type cannot be void (expected "bool", "char", "int", or "string").', lexemes.get());
+    }
+    const name = identifier3(lexemes, routine);
+    if (!lexemes.get()) {
+      throw new CompilerError(`Constant ${name} must be assigned a value.`, lexemes.get(-1));
+    }
+    if (lexemes.get()?.content === "[") {
+      throw new CompilerError("Constant cannot be an array.", lexemes.get(-1));
+    }
+    if (lexemes.get()?.content !== "=") {
+      throw new CompilerError(`Constant ${name} must be assigned a value.`, lexemes.get());
+    }
+    lexemes.next();
+    const exp = expression(lexemes, routine);
+    typeCheck(exp, constantType);
+    const value = evaluate(exp, "C", "constant");
+    return new Constant("C", name, value);
+  }
+
+  // client/parser/c/variable.ts
+  function variable3(lexemes, routine) {
+    const typeLexeme = lexemes.get();
+    const [variableType, stringLength] = type3(lexemes);
+    if (variableType === null) {
+      throw new CompilerError('Variable cannot be void (expected "boolean", "char", "int", or "String").', lexemes.get());
+    }
+    let isPointer = false;
+    if (lexemes.get()?.content === "*") {
+      lexemes.next();
+      isPointer = true;
+    }
+    const name = identifier3(lexemes, routine);
+    const variable7 = new Variable(name, routine);
+    variable7.type = variableType;
+    variable7.stringLength = stringLength;
+    variable7.isPointer = isPointer;
+    while (lexemes.get()?.content === "[") {
+      lexemes.next();
+      if (!lexemes.get()) {
+        throw new CompilerError('Opening bracket "[" must be followed by an array size.', lexemes.get(-1));
+      }
+      const exp = expression(lexemes, routine);
+      typeCheck(exp, "integer");
+      const value = evaluate(exp, "C", "array");
+      if (typeof value === "string") {
+        throw new CompilerError("Array size must be an integer.", lexemes.get());
+      }
+      if (value <= 0) {
+        throw new CompilerError("Array size must be positive.", lexemes.get());
+      }
+      variable7.arrayDimensions.push([0, value - 1]);
+      if (!lexemes.get()) {
+        throw new CompilerError('Array size specification must be followed by closing bracket "]".', lexemes.get(-1));
+      }
+      if (lexemes.get()?.content !== "]") {
+        throw new CompilerError('Array size specification must be followed by closing bracket "]".', lexemes.get());
+      }
+      lexemes.next();
+    }
+    if (type3 === null && variable7.arrayDimensions.length > 0) {
+      throw new CompilerError("Array of void is not allowed.", typeLexeme);
+    }
+    return variable7;
+  }
+
+  // client/parser/c/statement.ts
+  function eosCheck(lexemes) {
+    if (!lexemes.get() || lexemes.get()?.content !== ";") {
+      throw new CompilerError("Statement must be followed by a semicolon.", lexemes.get(-1));
+    }
+    lexemes.next();
+  }
+  function statement2(lexeme, lexemes, routine) {
+    let statement8;
+    switch (lexeme.type) {
+      case "identifier":
+      case "type":
+        statement8 = simpleStatement2(lexeme, lexemes, routine);
+        eosCheck(lexemes);
+        break;
+      case "keyword":
+        switch (lexeme.subtype) {
+          case "const":
+            statement8 = simpleStatement2(lexeme, lexemes, routine);
+            eosCheck(lexemes);
+            break;
+          case "return":
+            lexemes.next();
+            statement8 = returnStatement2(lexeme, lexemes, routine);
+            break;
+          case "if":
+            lexemes.next();
+            statement8 = ifStatement2(lexeme, lexemes, routine);
+            break;
+          case "else":
+            throw new CompilerError('Statement cannot begin with "else". If you have an "if" above, you may be missing a closing bracket "}".', lexemes.get());
+          case "for":
+            lexemes.next();
+            statement8 = forStatement2(lexeme, lexemes, routine);
+            break;
+          case "do":
+            lexemes.next();
+            statement8 = doStatement(lexeme, lexemes, routine);
+            break;
+          case "while":
+            lexemes.next();
+            statement8 = whileStatement2(lexeme, lexemes, routine);
+            break;
+          default:
+            throw new CompilerError("Statement cannot begin with {lex}.", lexeme);
+        }
+        break;
+      default:
+        throw new CompilerError("Statement cannot begin with {lex}.", lexeme);
+    }
+    return statement8;
+  }
+  function simpleStatement2(lexeme, lexemes, routine) {
+    switch (lexeme.type) {
+      case "keyword":
+        lexemes.next();
+        routine.constants.push(constant3(lexemes, routine));
+        return new PassStatement();
+      case "type":
+        const variableLexeme = lexemes.get(1);
+        const foo = variable3(lexemes, routine);
+        routine.variables.push(foo);
+        if (lexemes.get()?.content === "=") {
+          return variableAssignment2(variableLexeme, lexemes, routine, foo);
+        } else {
+          return new PassStatement();
+        }
+      case "identifier":
+        const bar = variable(routine, lexeme.value);
+        const baz = command(routine, lexeme.value);
+        if (bar) {
+          lexemes.next();
+          return variableAssignment2(lexeme, lexemes, routine, bar);
+        } else if (baz) {
+          lexemes.next();
+          const statement8 = procedureCall(lexeme, lexemes, routine, baz);
+          return statement8;
+        } else {
+          throw new CompilerError("{lex} is not defined.", lexemes.get());
+        }
+    }
+  }
+  function variableAssignment2(variableLexeme, lexemes, routine, variable7) {
+    const indexes = [];
+    if (lexemes.get()?.content === "[") {
+      if (variable7.isArray) {
+        lexemes.next();
+        while (lexemes.get() && lexemes.get()?.content !== "]") {
+          let exp = expression(lexemes, routine);
+          exp = typeCheck(exp, "integer");
+          indexes.push(exp);
+          if (lexemes.get()?.content === "]" && lexemes.get(1)?.content === "[") {
+            lexemes.next();
+            lexemes.next();
+          }
+        }
+        if (!lexemes.get()) {
+          throw new CompilerError('Closing bracket "]" needed after array indexes.', lexemes.get(-1));
+        }
+        lexemes.next();
+      } else if (variable7.type === "string") {
+        lexemes.next();
+        let exp = expression(lexemes, routine);
+        exp = typeCheck(exp, "integer");
+        indexes.push(exp);
+        if (!lexemes.get() || lexemes.get()?.content !== "]") {
+          throw new CompilerError('Closing bracket "]" missing after string variable index.', exp.lexeme);
+        }
+        lexemes.next();
+      } else {
+        throw new CompilerError("{lex} is not a string or array variable.", variableLexeme);
+      }
+    }
+    if (variable7.isArray) {
+      const allowedIndexes = variable7.type === "string" ? variable7.arrayDimensions.length + 1 : variable7.arrayDimensions.length;
+      if (indexes.length > allowedIndexes) {
+        throw new CompilerError("Too many indexes for array variable {lex}.", variableLexeme);
+      }
+    }
+    const assignmentLexeme = lexemes.get();
+    if (!assignmentLexeme) {
+      throw new CompilerError('Variable must be followed by assignment operator "=".', lexemes.get(-1));
+    }
+    if (assignmentLexeme.type !== "operator" || assignmentLexeme.content !== "=") {
+      throw new CompilerError('Variable must be followed by assignment operator "=".', assignmentLexeme);
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError(`Variable "${variable7.name}" must be assigned a value.`, assignmentLexeme);
+    }
+    let value = expression(lexemes, routine);
+    const variableValue2 = new VariableValue(variableLexeme, variable7);
+    variableValue2.indexes.push(...indexes);
+    value = typeCheck(value, variableValue2.type);
+    return new VariableAssignment(assignmentLexeme, variable7, indexes, value);
+  }
+  function returnStatement2(returnLexeme, lexemes, routine) {
+    if (routine.type !== "function") {
+      throw new CompilerError("Procedures cannot return a value.", lexemes.get());
+    }
+    let value = expression(lexemes, routine);
+    value = typeCheck(value, routine.returns);
+    eosCheck(lexemes);
+    routine.hasReturnStatement = true;
+    return new ReturnStatement(returnLexeme, routine, value);
+  }
+  function ifStatement2(ifLexeme, lexemes, routine) {
+    if (!lexemes.get() || lexemes.get()?.content !== "(") {
+      throw new CompilerError('"if" must be followed by an opening bracket "(".', ifLexeme);
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError('"if (" must be followed by a Boolean expression.', lexemes.get(-1));
+    }
+    let condition = expression(lexemes, routine);
+    condition = typeCheck(condition, "boolean");
+    if (!lexemes.get() || lexemes.get()?.content !== ")") {
+      throw new CompilerError('"if (..." must be followed by a closing bracket ")".', lexemes.get(-1));
+    }
+    lexemes.next();
+    const ifStatement8 = new IfStatement(ifLexeme, condition);
+    if (!lexemes.get() || lexemes.get()?.content !== "{") {
+      throw new CompilerError('"if (...)" must be followed by an opening curly bracket "{".', lexemes.get(-1));
+    }
+    lexemes.next();
+    ifStatement8.ifStatements.push(...block2(lexemes, routine));
+    if (lexemes.get() && lexemes.get()?.content === "else") {
+      lexemes.next();
+      if (!lexemes.get() || lexemes.get()?.content !== "{") {
+        throw new CompilerError('"else" must be followed by an opening bracket "{".', lexemes.get(-1));
+      }
+      lexemes.next();
+      ifStatement8.elseStatements.push(...block2(lexemes, routine));
+    }
+    return ifStatement8;
+  }
+  function forStatement2(forLexeme, lexemes, routine) {
+    if (!lexemes.get() || lexemes.get()?.content !== "(") {
+      throw new CompilerError('"for" must be followed by an opening bracket "(".', lexemes.get(-1));
+    }
+    lexemes.next();
+    const firstInitialisationLexeme = lexemes.get();
+    if (!firstInitialisationLexeme) {
+      throw new CompilerError('"for" conditions must begin with a variable assignment.', lexemes.get(-1));
+    }
+    if (firstInitialisationLexeme.type !== "identifier" && firstInitialisationLexeme.type !== "type") {
+      throw new CompilerError('"for" conditions must begin with a variable assignment.', lexemes.get());
+    }
+    const initialisation = simpleStatement2(firstInitialisationLexeme, lexemes, routine);
+    if (!(initialisation instanceof VariableAssignment)) {
+      throw new CompilerError('"for" conditions must begin with a variable assignment.', lexemes.get(-1));
+    }
+    if (initialisation.variable.type !== "integer") {
+      throw new CompilerError("Loop variable must be an integer.", lexemes.get());
+    }
+    eosCheck(lexemes);
+    if (!lexemes.get()) {
+      throw new CompilerError('"for (...;" must be followed by a loop condition.', lexemes.get(-1));
+    }
+    let condition = expression(lexemes, routine);
+    condition = typeCheck(condition, "boolean");
+    eosCheck(lexemes);
+    const firstChangeLexeme = lexemes.get();
+    if (!firstChangeLexeme) {
+      throw new CompilerError('"for" conditions must begin with a variable assignment.', lexemes.get(-1));
+    }
+    if (firstChangeLexeme.type !== "identifier" && firstChangeLexeme.type !== "type") {
+      throw new CompilerError('"for" conditions must begin with a variable assignment.', firstChangeLexeme);
+    }
+    const change = simpleStatement2(firstChangeLexeme, lexemes, routine);
+    if (!(change instanceof VariableAssignment)) {
+      throw new CompilerError('"for" loop variable must be changed on each loop.', lexemes.get(-1));
+    }
+    if (change.variable !== initialisation.variable) {
+      throw new CompilerError("Initial loop variable and change loop variable must be the same.", lexemes.get(-1));
+    }
+    if (!lexemes.get() || lexemes.get()?.content !== ")") {
+      throw new CompilerError('Closing bracket ")" missing after "for" loop initialisation.', lexemes.get(-1));
+    }
+    lexemes.next();
+    const forStatement8 = new ForStatement(forLexeme, initialisation, condition, change);
+    if (!lexemes.get() || lexemes.get()?.content !== "{") {
+      throw new CompilerError('"for (...)" must be followed by an opening bracket "{".', lexemes.get(-1));
+    }
+    lexemes.next();
+    forStatement8.statements.push(...block2(lexemes, routine));
+    return forStatement8;
+  }
+  function doStatement(doLexeme, lexemes, routine) {
+    if (!lexemes.get() || lexemes.get()?.content !== "{") {
+      throw new CompilerError('"do" must be followed by an opening bracket "{".', lexemes.get(-1));
+    }
+    lexemes.next();
+    const repeatStatements = block2(lexemes, routine);
+    if (!lexemes.get() || lexemes.get()?.content !== "while") {
+      throw new CompilerError('"do { ... }" must be followed by "while".', lexemes.get(-1));
+    }
+    lexemes.next();
+    if (!lexemes.get() || lexemes.get()?.content !== "(") {
+      throw new CompilerError('"while" must be followed by an opening bracket "(".', lexemes.get(-1));
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError('"while (" must be followed by a boolean expression.', lexemes.get(-1));
+    }
+    let condition = expression(lexemes, routine);
+    condition = typeCheck(condition, "boolean");
+    const notToken = new Token("operator", "!", condition.lexeme.line, condition.lexeme.character);
+    const notLexeme = new OperatorLexeme(notToken, "C");
+    condition = new CompoundExpression(notLexeme, null, condition, "not");
+    if (!lexemes.get() || lexemes.get()?.content !== ")") {
+      throw new CompilerError('"while (..." must be followed by a closing bracket ")".', lexemes.get(-1));
+    }
+    lexemes.next();
+    eosCheck(lexemes);
+    const repeatStatement4 = new RepeatStatement(doLexeme, condition);
+    repeatStatement4.statements.push(...repeatStatements);
+    return repeatStatement4;
+  }
+  function whileStatement2(whileLexeme, lexemes, routine) {
+    if (!lexemes.get() || lexemes.get()?.content !== "(") {
+      throw new CompilerError('"while" must be followed by an opening bracket "(".', lexemes.get(-1));
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError('"while (" must be followed by a Boolean expression.', lexemes.get(-1));
+    }
+    let condition = expression(lexemes, routine);
+    condition = typeCheck(condition, "boolean");
+    if (!lexemes.get() || lexemes.get()?.content !== ")") {
+      throw new CompilerError('"while (..." must be followed by a closing bracket ")".', lexemes.get(-1));
+    }
+    lexemes.next();
+    const whileStatement8 = new WhileStatement(whileLexeme, condition);
+    if (!lexemes.get() || lexemes.get()?.content !== "{") {
+      throw new CompilerError('"while (...)" must be followed by an opening curly bracket "{".', lexemes.get(-1));
+    }
+    lexemes.next();
+    whileStatement8.statements.push(...block2(lexemes, routine));
+    return whileStatement8;
+  }
+  function block2(lexemes, routine) {
+    const statements = [];
+    while (lexemes.get() && lexemes.get()?.content !== "}") {
+      statements.push(statement2(lexemes.get(), lexemes, routine));
+    }
+    if (lexemes.get()?.content === "}") {
+      lexemes.next();
+    } else {
+      throw new CompilerError('Closing bracket "}" missing after statement block.', lexemes.get(-1));
+    }
+    return statements;
+  }
+
+  // client/parser/c/subroutine.ts
+  function subroutine3(lexeme, lexemes, program3) {
+    const [subroutineType, stringLength] = type3(lexemes);
+    const name = identifier3(lexemes, program3);
+    const subroutine8 = new Subroutine(lexeme, program3, name);
+    subroutine8.index = program3.subroutines.length + 1;
+    if (subroutineType !== null) {
+      const variable7 = new Variable("!result", subroutine8);
+      variable7.type = subroutineType;
+      variable7.stringLength = stringLength;
+      subroutine8.variables.push(variable7);
+    }
+    subroutine8.variables.push(...parameters2(lexemes, subroutine8));
+    if (!lexemes.get()) {
+      throw new CompilerError('Method parameters must be followed by an opening bracket "{".', lexemes.get(-1));
+    }
+    if (lexemes.get()?.content !== "{") {
+      throw new CompilerError('Method parameters must be followed by an opening bracket "{".', lexemes.get());
+    }
+    lexemes.next();
+    subroutine8.start = lexemes.index;
+    let brackets2 = 0;
+    while (lexemes.get() && brackets2 >= 0) {
+      if (lexemes.get()?.content === "{") {
+        brackets2 += 1;
+      } else if (lexemes.get()?.content === "}") {
+        brackets2 -= 1;
+      }
+      lexemes.next();
+    }
+    subroutine8.end = lexemes.index - 1;
+    return subroutine8;
+  }
+  function parameters2(lexemes, subroutine8) {
+    if (!lexemes.get()) {
+      throw new CompilerError("Opening bracket missing after method name.", lexemes.get(-1));
+    }
+    if (lexemes.get()?.content !== "(") {
+      throw new CompilerError("Opening bracket missing after method name.", lexemes.get());
+    }
+    lexemes.next();
+    const parameters7 = [];
+    while (lexemes.get()?.content !== ")") {
+      const parameter = variable3(lexemes, subroutine8);
+      parameter.isParameter = true;
+      parameters7.push(parameter);
+      if (lexemes.get()?.content === ",") {
+        lexemes.next();
+      }
+    }
+    if (lexemes.get()?.content !== ")") {
+      throw new CompilerError("Closing bracket missing after method parameters.", lexemes.get(-1));
+    }
+    lexemes.next();
+    return parameters7;
+  }
+
+  // client/parser/c/parser.ts
+  function c(lexemes) {
+    const program3 = new Program("C");
+    while (lexemes.get()) {
+      const lexeme = lexemes.get();
+      const lexemeIndex = lexemes.index;
+      switch (lexeme.type) {
+        case "keyword":
+          if (lexeme.subtype === "const") {
+            lexemes.next();
+            program3.constants.push(constant3(lexemes, program3));
+            eosCheck(lexemes);
+          } else {
+            throw new CompilerError("Program can only contain constant definitions, variable declarations, and subroutine defintions.", lexeme);
+          }
+          break;
+        case "type":
+          type3(lexemes);
+          identifier3(lexemes, program3);
+          if (lexemes.get()?.content === "(") {
+            lexemes.index = lexemeIndex;
+            program3.subroutines.push(subroutine3(lexeme, lexemes, program3));
+          } else {
+            lexemes.index = lexemeIndex;
+            program3.statements.push(simpleStatement2(lexeme, lexemes, program3));
+            eosCheck(lexemes);
+          }
+          break;
+        default:
+          throw new CompilerError("Program can only contain constant definitions, variable declarations, and subroutine defintions.", lexeme);
+      }
+    }
+    for (const subroutine8 of program3.allSubroutines) {
+      lexemes.index = subroutine8.start;
+      while (lexemes.index < subroutine8.end) {
+        subroutine8.statements.push(statement2(lexemes.get(), lexemes, subroutine8));
+      }
+    }
+    if (!program3.subroutines.some((x) => x.name === "main")) {
+      throw new CompilerError('Program does not contain any "main" method.');
+    }
+    return program3;
+  }
+
+  // client/parser/java/program.ts
+  function program(lexemes) {
+    const [keyword2, identifier8, openingBracket] = lexemes.lexemes.slice(0, 3);
+    const closingBracket = lexemes.lexemes[lexemes.lexemes.length - 1];
+    if (!keyword2) {
+      throw new CompilerError('Program must begin with keyword "class".');
+    }
+    if (keyword2.content !== "class") {
+      throw new CompilerError('Program must begin with keyword "class".', keyword2);
+    }
+    if (!identifier8) {
+      throw new CompilerError("{lex} must be followed by a program name.", keyword2);
+    }
+    if (identifier8.type !== "identifier") {
+      throw new CompilerError("{lex} is not a valid program name.", identifier8);
+    }
+    if (identifier8.subtype === "turtle") {
+      throw new CompilerError("{lex} is the name of a predefined Turtle attribute, and cannot be used as the name of the program.", identifier8);
+    }
+    const firstCharacterCode = identifier8.content.charCodeAt(0);
+    if (firstCharacterCode < 65 || firstCharacterCode > 90) {
+      throw new CompilerError("Program name must begin with a capital letter.", identifier8);
+    }
+    if (!openingBracket) {
+      throw new CompilerError('Program name must be followed by an opening bracket "{".', identifier8);
+    }
+    if (openingBracket.content !== "{") {
+      throw new CompilerError('Program name must be followed by an opening bracket "{".', openingBracket);
+    }
+    if (!closingBracket) {
+      throw new CompilerError('Program must end with a closing bracket "}".', lexemes.lexemes[lexemes.lexemes.length - 1]);
+    }
+    if (closingBracket.content !== "}") {
+      throw new CompilerError('Program must end with a closing bracket "}".', lexemes.lexemes[lexemes.lexemes.length]);
+    }
+    const prog = new Program("Java", identifier8.content);
+    prog.start = 3;
+    prog.end = lexemes.lexemes.length - 1;
+    return prog;
+  }
+
+  // client/parser/java/type.ts
+  function type4(lexemes, routine) {
+    const typeLexeme = lexemes.get();
+    if (!typeLexeme) {
+      throw new CompilerError('Expected type definition ("boolean", "char", "int", "String", or "void").', lexemes.get(-1));
+    }
+    if (typeLexeme.type !== "type") {
+      throw new CompilerError('{lex} is not a valid type definition (expected "boolean", "char", "int", "String", or "void").', lexemes.get(-1));
+    }
+    const type8 = typeLexeme.subtype;
+    lexemes.next();
+    let stringLength = 32;
+    if (type8 === "string") {
+      if (lexemes.get()?.content === "(") {
+        lexemes.next();
+        const integer = lexemes.get();
+        if (!integer) {
+          throw new CompilerError("Expected string size specification.", lexemes.get(-1));
+        }
+        if (integer.type !== "literal" || integer.subtype !== "integer") {
+          throw new CompilerError("String size must be an integer.", integer);
+        }
+        if (integer.value <= 0) {
+          throw new CompilerError("String size must be greater than zero.", integer);
+        }
+        stringLength = integer.value;
+        lexemes.next();
+        if (!lexemes.get()) {
+          throw new CompilerError('Closing bracket ")" missing after string size specification.', lexemes.get(-1));
+        }
+        if (lexemes.get()?.content !== ")") {
+          throw new CompilerError('Closing bracket ")" missing after string size specification.', lexemes.get());
+        }
+        lexemes.next();
+      }
+    }
+    const arrayDimensions = [];
+    while (lexemes.get()?.content === "[") {
+      lexemes.next();
+      if (!lexemes.get()) {
+        throw new CompilerError('Opening bracket "[" must be followed by an array size.', lexemes.get(-1));
+      }
+      const exp = expression(lexemes, routine);
+      typeCheck(exp, "integer");
+      const value = evaluate(exp, "Java", "array");
+      if (typeof value === "string") {
+        throw new CompilerError("Array size must be an integer.", lexemes.get());
+      }
+      if (value <= 0) {
+        throw new CompilerError("Array size must be positive.", lexemes.get());
+      }
+      arrayDimensions.push([0, value - 1]);
+      if (!lexemes.get()) {
+        throw new CompilerError('Array size specification must be followed by closing bracket "]".', lexemes.get(-1));
+      }
+      if (lexemes.get()?.content !== "]") {
+        throw new CompilerError('Array size specification must be followed by closing bracket "]".', lexemes.get());
+      }
+      lexemes.next();
+    }
+    if (type8 === null && arrayDimensions.length > 0) {
+      throw new CompilerError("Array of void is not allowed.", typeLexeme);
+    }
+    return [type8, stringLength, arrayDimensions];
+  }
+
+  // client/parser/java/identifier.ts
+  function identifier4(lexemes, routine) {
+    const identifier8 = lexemes.get();
+    if (!identifier8) {
+      throw new CompilerError("{lex} must be followed by an identifier.", lexemes.get(-1));
+    }
+    if (identifier8.type !== "identifier") {
+      throw new CompilerError("{lex} is not a valid identifier.", identifier8);
+    }
+    if (identifier8.subtype === "turtle") {
+      throw new CompilerError("{lex} is already the name of a predefined Turtle property.", identifier8);
+    }
+    if (isDuplicate(routine, identifier8.value)) {
+      throw new CompilerError("{lex} is already defined in the current scope.", identifier8);
+    }
+    lexemes.next();
+    return identifier8.value;
+  }
+
+  // client/parser/java/constant.ts
+  function constant4(lexemes, routine) {
+    const [constantType, , arrayDimensions] = type4(lexemes, routine);
+    if (constantType === null) {
+      throw new CompilerError('Constant type cannot be void (expected "boolean", "char", "int", or "String").', lexemes.get());
+    }
+    if (arrayDimensions.length > 0) {
+      throw new CompilerError("Constant cannot be an array.", lexemes.get());
+    }
+    const name = identifier4(lexemes, routine);
+    if (!lexemes.get()) {
+      throw new CompilerError(`Constant ${name} must be assigned a value.`, lexemes.get(-1));
+    }
+    if (lexemes.get()?.content !== "=") {
+      throw new CompilerError(`Constant ${name} must be assigned a value.`, lexemes.get());
+    }
+    lexemes.next();
+    const exp = expression(lexemes, routine);
+    typeCheck(exp, constantType);
+    const value = evaluate(exp, "Java", "constant");
+    return new Constant("Java", name, value);
+  }
+
+  // client/parser/java/variable.ts
+  function variable4(lexemes, routine) {
+    const [variableType, stringLength, arrayDimensions] = type4(lexemes, routine);
+    if (variableType === null) {
+      throw new CompilerError('Variable cannot be void (expected "boolean", "char", "int", or "String").', lexemes.get());
+    }
+    const name = identifier4(lexemes, routine);
+    const variable7 = new Variable(name, routine);
+    variable7.type = variableType;
+    variable7.stringLength = stringLength;
+    variable7.arrayDimensions = arrayDimensions;
+    return variable7;
+  }
+
+  // client/parser/java/statement.ts
+  function eosCheck2(lexemes) {
+    if (!lexemes.get() || lexemes.get()?.content !== ";") {
+      throw new CompilerError("Statement must be followed by a semicolon.", lexemes.get(-1));
+    }
+    lexemes.next();
+  }
+  function statement3(lexeme, lexemes, routine) {
+    let statement8;
+    switch (lexeme.type) {
+      case "identifier":
+      case "type":
+        statement8 = simpleStatement3(lexeme, lexemes, routine);
+        eosCheck2(lexemes);
+        break;
+      case "keyword":
+        switch (lexeme.subtype) {
+          case "final":
+            statement8 = simpleStatement3(lexeme, lexemes, routine);
+            eosCheck2(lexemes);
+            break;
+          case "return":
+            lexemes.next();
+            statement8 = returnStatement3(lexeme, lexemes, routine);
+            break;
+          case "if":
+            lexemes.next();
+            statement8 = ifStatement3(lexeme, lexemes, routine);
+            break;
+          case "else":
+            throw new CompilerError('Statement cannot begin with "else". If you have an "if" above, you may be missing a closing bracket "}".', lexeme);
+          case "for":
+            lexemes.next();
+            statement8 = forStatement3(lexeme, lexemes, routine);
+            break;
+          case "do":
+            lexemes.next();
+            statement8 = doStatement2(lexeme, lexemes, routine);
+            break;
+          case "while":
+            lexemes.next();
+            statement8 = whileStatement3(lexeme, lexemes, routine);
+            break;
+          default:
+            throw new CompilerError("Statement cannot begin with {lex}.", lexeme);
+        }
+        break;
+      default:
+        throw new CompilerError("Statement cannot begin with {lex}.", lexeme);
+    }
+    return statement8;
+  }
+  function simpleStatement3(lexeme, lexemes, routine) {
+    switch (lexeme.type) {
+      case "keyword":
+        lexemes.next();
+        routine.constants.push(constant4(lexemes, routine));
+        return new PassStatement();
+      case "type":
+        const variableLexeme = lexemes.get(1);
+        const foo = variable4(lexemes, routine);
+        routine.variables.push(foo);
+        if (lexemes.get()?.content === "=") {
+          return variableAssignment3(variableLexeme, lexemes, routine, foo);
+        } else {
+          return new PassStatement();
+        }
+      case "identifier":
+        const bar = variable(routine, lexeme.value);
+        const baz = command(routine, lexeme.value);
+        if (bar) {
+          lexemes.next();
+          return variableAssignment3(lexeme, lexemes, routine, bar);
+        } else if (baz) {
+          lexemes.next();
+          const statement8 = procedureCall(lexeme, lexemes, routine, baz);
+          return statement8;
+        } else {
+          throw new CompilerError("{lex} is not defined.", lexemes.get());
+        }
+    }
+  }
+  function variableAssignment3(variableLexeme, lexemes, routine, variable7) {
+    const indexes = [];
+    if (lexemes.get()?.content === "[") {
+      if (variable7.isArray) {
+        lexemes.next();
+        while (lexemes.get() && lexemes.get()?.content !== "]") {
+          let exp = expression(lexemes, routine);
+          exp = typeCheck(exp, "integer");
+          indexes.push(exp);
+          if (lexemes.get()?.content === "]" && lexemes.get(1)?.content === "[") {
+            lexemes.next();
+            lexemes.next();
+          }
+        }
+        if (!lexemes.get()) {
+          throw new CompilerError('Closing bracket "]" needed after array indexes.', lexemes.get(-1));
+        }
+        lexemes.next();
+      } else if (variable7.type === "string") {
+        lexemes.next();
+        let exp = expression(lexemes, routine);
+        exp = typeCheck(exp, "integer");
+        indexes.push(exp);
+        if (!lexemes.get() || lexemes.get()?.content !== "]") {
+          throw new CompilerError('Closing bracket "]" missing after string variable index.', exp.lexeme);
+        }
+        lexemes.next();
+      } else {
+        throw new CompilerError("{lex} is not a string or array variable.", variableLexeme);
+      }
+    }
+    if (variable7.isArray) {
+      const allowedIndexes = variable7.type === "string" ? variable7.arrayDimensions.length + 1 : variable7.arrayDimensions.length;
+      if (indexes.length > allowedIndexes) {
+        throw new CompilerError("Too many indexes for array variable {lex}.", variableLexeme);
+      }
+    }
+    const assignmentLexeme = lexemes.get();
+    if (!assignmentLexeme) {
+      throw new CompilerError('Variable must be followed by assignment operator "=".', lexemes.get(-1));
+    }
+    if (assignmentLexeme.type !== "operator" || assignmentLexeme.content !== "=") {
+      throw new CompilerError('Variable must be followed by assignment operator "=".', assignmentLexeme);
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError(`Variable "${variable7.name}" must be assigned a value.`, lexemes.get(-1));
+    }
+    let value = expression(lexemes, routine);
+    const variableValue2 = new VariableValue(variableLexeme, variable7);
+    variableValue2.indexes.push(...indexes);
+    value = typeCheck(value, variableValue2.type);
+    return new VariableAssignment(assignmentLexeme, variable7, indexes, value);
+  }
+  function returnStatement3(returnLexeme, lexemes, routine) {
+    if (routine.type !== "function") {
+      throw new CompilerError("Procedures cannot return a value.", lexemes.get());
+    }
+    let value = expression(lexemes, routine);
+    value = typeCheck(value, routine.returns);
+    eosCheck2(lexemes);
+    routine.hasReturnStatement = true;
+    return new ReturnStatement(returnLexeme, routine, value);
+  }
+  function ifStatement3(ifLexeme, lexemes, routine) {
+    if (!lexemes.get() || lexemes.get()?.content !== "(") {
+      throw new CompilerError('"if" must be followed by an opening bracket "(".', lexemes.get(-1));
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError('"if (" must be followed by a Boolean expression.', lexemes.get(-1));
+    }
+    let condition = expression(lexemes, routine);
+    condition = typeCheck(condition, "boolean");
+    if (!lexemes.get() || lexemes.get()?.content !== ")") {
+      throw new CompilerError('"if (..." must be followed by a closing bracket ")".', lexemes.get(-1));
+    }
+    lexemes.next();
+    const ifStatement8 = new IfStatement(ifLexeme, condition);
+    if (!lexemes.get() || lexemes.get()?.content !== "{") {
+      throw new CompilerError('"if (...)" must be followed by an opening curly bracket "{".', lexemes.get(-1));
+    }
+    lexemes.next();
+    ifStatement8.ifStatements.push(...block3(lexemes, routine));
+    if (lexemes.get() && lexemes.get()?.content === "else") {
+      lexemes.next();
+      if (!lexemes.get() || lexemes.get()?.content !== "{") {
+        throw new CompilerError('"else" must be followed by an opening bracket "{".', lexemes.get(-1));
+      }
+      lexemes.next();
+      ifStatement8.elseStatements.push(...block3(lexemes, routine));
+    }
+    return ifStatement8;
+  }
+  function forStatement3(forLexeme, lexemes, routine) {
+    if (!lexemes.get() || lexemes.get()?.content !== "(") {
+      throw new CompilerError('"for" must be followed by an opening bracket "(".', lexemes.get(-1));
+    }
+    lexemes.next();
+    const firstInitialisationLexeme = lexemes.get();
+    if (!firstInitialisationLexeme) {
+      throw new CompilerError('"for" conditions must begin with a variable assignment.', lexemes.get(-1));
+    }
+    if (firstInitialisationLexeme.type !== "identifier" && firstInitialisationLexeme.type !== "type") {
+      throw new CompilerError('"for" conditions must begin with a variable assignment.', lexemes.get());
+    }
+    const initialisation = simpleStatement3(firstInitialisationLexeme, lexemes, routine);
+    if (!(initialisation instanceof VariableAssignment)) {
+      throw new CompilerError('"for" conditions must begin with a variable assignment.', lexemes.get(-1));
+    }
+    if (initialisation.variable.type !== "integer") {
+      throw new CompilerError("Loop variable must be an integer.", lexemes.get());
+    }
+    eosCheck2(lexemes);
+    if (!lexemes.get()) {
+      throw new CompilerError('"for (...;" must be followed by a loop condition.', lexemes.get(-1));
+    }
+    let condition = expression(lexemes, routine);
+    condition = typeCheck(condition, "boolean");
+    eosCheck2(lexemes);
+    const firstChangeLexeme = lexemes.get();
+    if (!firstChangeLexeme) {
+      throw new CompilerError('"for" conditions must begin with a variable assignment.', lexemes.get(-1));
+    }
+    if (firstChangeLexeme.type !== "identifier" && firstChangeLexeme.type !== "type") {
+      throw new CompilerError('"for" conditions must begin with a variable assignment.', firstChangeLexeme);
+    }
+    const change = simpleStatement3(firstChangeLexeme, lexemes, routine);
+    if (!(change instanceof VariableAssignment)) {
+      throw new CompilerError('"for" loop variable must be changed on each loop.', lexemes.get(-1));
+    }
+    if (change.variable !== initialisation.variable) {
+      throw new CompilerError("Initial loop variable and change loop variable must be the same.", lexemes.get(-1));
+    }
+    if (!lexemes.get() || lexemes.get()?.content !== ")") {
+      throw new CompilerError('Closing bracket ")" missing after "for" loop initialisation.', lexemes.get(-1));
+    }
+    lexemes.next();
+    const forStatement8 = new ForStatement(forLexeme, initialisation, condition, change);
+    if (!lexemes.get() || lexemes.get()?.content !== "{") {
+      throw new CompilerError('"for (...)" must be followed by an opening bracket "{".', lexemes.get(-1));
+    }
+    lexemes.next();
+    forStatement8.statements.push(...block3(lexemes, routine));
+    return forStatement8;
+  }
+  function doStatement2(doLexeme, lexemes, routine) {
+    if (!lexemes.get() || lexemes.get()?.content !== "{") {
+      throw new CompilerError('"do" must be followed by an opening bracket "{".', lexemes.get(-1));
+    }
+    lexemes.next();
+    const repeatStatements = block3(lexemes, routine);
+    if (!lexemes.get() || lexemes.get()?.content !== "while") {
+      throw new CompilerError('"do { ... }" must be followed by "while".', lexemes.get(-1));
+    }
+    lexemes.next();
+    if (!lexemes.get() || lexemes.get()?.content !== "(") {
+      throw new CompilerError('"while" must be followed by an opening bracket "(".', lexemes.get(-1));
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError('"while (" must be followed by a boolean expression.', lexemes.get(-1));
+    }
+    let condition = expression(lexemes, routine);
+    condition = typeCheck(condition, "boolean");
+    const notToken = new Token("operator", "!", condition.lexeme.line, condition.lexeme.character);
+    const notLexeme = new OperatorLexeme(notToken, "C");
+    condition = new CompoundExpression(notLexeme, null, condition, "not");
+    if (!lexemes.get() || lexemes.get()?.content !== ")") {
+      throw new CompilerError('"while (..." must be followed by a closing bracket ")".', lexemes.get(-1));
+    }
+    lexemes.next();
+    eosCheck2(lexemes);
+    const repeatStatement4 = new RepeatStatement(doLexeme, condition);
+    repeatStatement4.statements.push(...repeatStatements);
+    return repeatStatement4;
+  }
+  function whileStatement3(whileLexeme, lexemes, routine) {
+    if (!lexemes.get() || lexemes.get()?.content !== "(") {
+      throw new CompilerError('"while" must be followed by an opening bracket "(".', lexemes.get(-1));
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError('"while (" must be followed by a Boolean expression.', lexemes.get(-1));
+    }
+    let condition = expression(lexemes, routine);
+    condition = typeCheck(condition, "boolean");
+    if (!lexemes.get() || lexemes.get()?.content !== ")") {
+      throw new CompilerError('"while (..." must be followed by a closing bracket ")".', lexemes.get(-1));
+    }
+    lexemes.next();
+    const whileStatement8 = new WhileStatement(whileLexeme, condition);
+    if (!lexemes.get() || lexemes.get()?.content !== "{") {
+      throw new CompilerError('"while (...)" must be followed by an opening curly bracket "{".', lexemes.get(-1));
+    }
+    lexemes.next();
+    whileStatement8.statements.push(...block3(lexemes, routine));
+    return whileStatement8;
+  }
+  function block3(lexemes, routine) {
+    const statements = [];
+    while (lexemes.get() && lexemes.get()?.content !== "}") {
+      statements.push(statement3(lexemes.get(), lexemes, routine));
+    }
+    if (lexemes.get()?.content === "}") {
+      lexemes.next();
+    } else {
+      throw new CompilerError('Closing bracket "}" missing after statement block.', lexemes.get(-1));
+    }
+    return statements;
+  }
+
+  // client/parser/java/subroutine.ts
+  function subroutine4(lexeme, lexemes, program3) {
+    const [subroutineType, stringLength, arrayDimensions] = type4(lexemes, program3);
+    const name = identifier4(lexemes, program3);
+    if (arrayDimensions.length > 0) {
+      throw new CompilerError("Methods cannot return arrays.", lexemes.get(-1));
+    }
+    const subroutine8 = new Subroutine(lexeme, program3, name);
+    subroutine8.index = program3.subroutines.length + 1;
+    if (subroutineType !== null) {
+      const variable7 = new Variable("!result", subroutine8);
+      variable7.type = subroutineType;
+      variable7.stringLength = stringLength;
+      subroutine8.variables.push(variable7);
+    }
+    subroutine8.variables.push(...parameters3(lexemes, subroutine8));
+    if (!lexemes.get()) {
+      throw new CompilerError('Method parameters must be followed by an opening bracket "{".', lexemes.get(-1));
+    }
+    if (lexemes.get()?.content !== "{") {
+      throw new CompilerError('Method parameters must be followed by an opening bracket "{".', lexemes.get());
+    }
+    lexemes.next();
+    subroutine8.start = lexemes.index;
+    let brackets2 = 0;
+    while (lexemes.get() && brackets2 >= 0) {
+      if (lexemes.get()?.content === "{") {
+        brackets2 += 1;
+      } else if (lexemes.get()?.content === "}") {
+        brackets2 -= 1;
+      }
+      lexemes.next();
+    }
+    subroutine8.end = lexemes.index - 1;
+    return subroutine8;
+  }
+  function parameters3(lexemes, subroutine8) {
+    if (!lexemes.get()) {
+      throw new CompilerError("Opening bracket missing after method name.", lexemes.get(-1));
+    }
+    if (lexemes.get()?.content !== "(") {
+      throw new CompilerError("Opening bracket missing after method name.", lexemes.get());
+    }
+    lexemes.next();
+    const parameters7 = [];
+    while (lexemes.get()?.content !== ")") {
+      const parameter = variable4(lexemes, subroutine8);
+      parameter.isParameter = true;
+      parameters7.push(parameter);
+      if (lexemes.get()?.content === ",") {
+        lexemes.next();
+      }
+    }
+    if (lexemes.get()?.content !== ")") {
+      throw new CompilerError("Closing bracket missing after method parameters.", lexemes.get(-1));
+    }
+    lexemes.next();
+    return parameters7;
+  }
+
+  // client/parser/java/parser.ts
+  function java(lexemes) {
+    const prog = program(lexemes);
+    lexemes.index = prog.start;
+    while (lexemes.index < prog.end) {
+      const lexeme = lexemes.get();
+      const lexemeIndex = lexemes.index;
+      switch (lexeme.type) {
+        case "keyword":
+          if (lexeme.subtype === "final") {
+            lexemes.next();
+            prog.constants.push(constant4(lexemes, prog));
+            eosCheck2(lexemes);
+          } else {
+            throw new CompilerError("Program can only contain constant definitions, variable declarations, and subroutine defintions.", lexeme);
+          }
+          break;
+        case "type":
+          type4(lexemes, prog);
+          identifier4(lexemes, prog);
+          if (lexemes.get()?.content === "(") {
+            lexemes.index = lexemeIndex;
+            prog.subroutines.push(subroutine4(lexeme, lexemes, prog));
+          } else {
+            lexemes.index = lexemeIndex;
+            prog.statements.push(simpleStatement3(lexeme, lexemes, prog));
+            eosCheck2(lexemes);
+          }
+          break;
+        default:
+          throw new CompilerError("Program can only contain constant definitions, variable declarations, and subroutine defintions.", lexeme);
+      }
+    }
+    for (const subroutine8 of prog.allSubroutines) {
+      lexemes.index = subroutine8.start;
+      while (lexemes.index < subroutine8.end) {
+        subroutine8.statements.push(statement3(lexemes.get(), lexemes, subroutine8));
+      }
+    }
+    if (!prog.subroutines.some((x) => x.name === "main")) {
+      throw new CompilerError('Program does not contain any "main" method.');
+    }
+    return prog;
+  }
+
+  // client/parser/pascal/identifier.ts
+  function identifier5(lexemes, routine) {
+    const identifier8 = lexemes.get();
+    if (!identifier8) {
+      throw new CompilerError("{lex} must be followed by an identifier.", lexemes.get(-1));
+    }
+    if (identifier8.type !== "identifier") {
+      throw new CompilerError("{lex} is not a valid identifier.", identifier8);
+    }
+    if (identifier8.subtype === "turtle") {
+      throw new CompilerError("{lex} is already the name of a predefined Turtle property.", identifier8);
+    }
+    if (isDuplicate(routine, identifier8.value)) {
+      throw new CompilerError("{lex} is already defined in the current scope.", identifier8);
+    }
+    lexemes.next();
+    return identifier8.value;
+  }
+
+  // client/parser/pascal/statement.ts
+  function semicolon(lexemes, compulsory = false, context2 = "statement") {
+    if (compulsory && (!lexemes.get() || lexemes.get()?.content !== ";")) {
+      throw new CompilerError(`Semicolon needed after ${context2}.`, lexemes.get(-1));
+    }
+    while (lexemes.get() && lexemes.get()?.content === ";") {
+      lexemes.next();
+    }
+  }
+  function eosCheck3(lexemes) {
+    const noSemiAfter = ["begin", "do", ".", "repeat", ";", "then"];
+    const noSemiBefore = ["else", "end", ";", "until"];
+    if (lexemes.get()) {
+      if (lexemes.get()?.content !== ";") {
+        if (noSemiAfter.indexOf(lexemes.get(-1)?.content?.toLowerCase()) === -1) {
+          if (noSemiBefore.indexOf(lexemes.get()?.content?.toLowerCase()) === -1) {
+            throw new CompilerError("Semicolon needed after command.", lexemes.get());
+          }
+        }
+      } else {
+        while (lexemes.get() && lexemes.get()?.content === ";") {
+          lexemes.next();
+        }
+      }
+    }
+  }
+  function statement4(lexeme, lexemes, routine) {
+    let statement8;
+    switch (lexeme.type) {
+      case "identifier":
+        statement8 = simpleStatement4(lexeme, lexemes, routine);
+        break;
+      case "keyword":
+        switch (lexeme.subtype) {
+          case "if":
+            lexemes.next();
+            statement8 = ifStatement4(lexeme, lexemes, routine);
+            break;
+          case "for":
+            lexemes.next();
+            statement8 = forStatement4(lexeme, lexemes, routine);
+            break;
+          case "repeat":
+            lexemes.next();
+            statement8 = repeatStatement2(lexeme, lexemes, routine);
+            break;
+          case "while":
+            lexemes.next();
+            statement8 = whileStatement4(lexeme, lexemes, routine);
+            break;
+          default:
+            throw new CompilerError("Statement cannot begin with {lex}.", lexeme);
+        }
+        break;
+      default:
+        throw new CompilerError("Statement cannot begin with {lex}.", lexeme);
+    }
+    eosCheck3(lexemes);
+    return statement8;
+  }
+  function simpleStatement4(lexeme, lexemes, routine) {
+    const constant7 = constant(routine, lexeme.value);
+    if (constant7) {
+      throw new CompilerError("{lex} is a constant, not a variable.", lexeme);
+    }
+    const variable7 = variable(routine, lexeme.value);
+    if (variable7) {
+      lexemes.next();
+      return variableAssignment4(lexeme, lexemes, routine, variable7);
+    }
+    const command2 = command(routine, lexeme.value);
+    if (command2) {
+      lexemes.next();
+      return procedureCall(lexeme, lexemes, routine, command2);
+    }
+    throw new CompilerError("Identifier {lex} is not defined.", lexeme);
+  }
+  function variableAssignment4(variableLexeme, lexemes, routine, variable7) {
+    const indexes = [];
+    if (lexemes.get()?.content === "[") {
+      if (variable7.isArray) {
+        lexemes.next();
+        while (lexemes.get() && lexemes.get()?.content !== "]") {
+          let exp = expression(lexemes, routine);
+          exp = typeCheck(exp, "integer");
+          indexes.push(exp);
+          if (lexemes.get()?.content === ",") {
+            lexemes.next();
+            if (lexemes.get()?.content === "]") {
+              throw new CompilerError("Trailing comma at the end of array indexes.", lexemes.get(-1));
+            }
+          }
+        }
+        if (!lexemes.get()) {
+          throw new CompilerError('Closing bracket "]" needed after array indexes.', lexemes.get(-1));
+        }
+        lexemes.next();
+      } else if (variable7.type === "string") {
+        lexemes.next();
+        let exp = expression(lexemes, routine);
+        exp = typeCheck(exp, "integer");
+        indexes.push(exp);
+        if (!lexemes.get() || lexemes.get()?.content !== "]") {
+          throw new CompilerError('Closing bracket "]" missing after string variable index.', exp.lexeme);
+        }
+        lexemes.next();
+      } else {
+        throw new CompilerError("{lex} is not a string or array variable.", variableLexeme);
+      }
+    }
+    if (variable7.isArray) {
+      const allowedIndexes = variable7.type === "string" ? variable7.arrayDimensions.length + 1 : variable7.arrayDimensions.length;
+      if (indexes.length > allowedIndexes) {
+        throw new CompilerError("Too many indexes for array variable {lex}.", variableLexeme);
+      }
+    }
+    const assignmentLexeme = lexemes.get();
+    if (!assignmentLexeme || assignmentLexeme.type !== "operator" || assignmentLexeme.subtype !== "asgn") {
+      throw new CompilerError('Variable must be followed by assignment operator ":=".', variableLexeme);
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError(`Variable "${variable7.name}" must be assigned a value.`, assignmentLexeme);
+    }
+    const typeToCheck = variable7.type === "string" && indexes.length > 0 ? "character" : variable7.type;
+    let value = expression(lexemes, routine);
+    value = typeCheck(value, typeToCheck);
+    return new VariableAssignment(assignmentLexeme, variable7, indexes, value);
+  }
+  function ifStatement4(ifLexeme, lexemes, routine) {
+    if (!lexemes.get()) {
+      throw new CompilerError('"IF" must be followed by a boolean expression.', ifLexeme);
+    }
+    let condition = expression(lexemes, routine);
+    condition = typeCheck(condition, "boolean");
+    const ifStatement8 = new IfStatement(ifLexeme, condition);
+    if (!lexemes.get() || lexemes.get()?.content?.toLowerCase() !== "then") {
+      throw new CompilerError('"IF ..." must be followed by "THEN".', condition.lexeme);
+    }
+    lexemes.next();
+    const firstSubLexeme = lexemes.get();
+    if (!firstSubLexeme) {
+      throw new CompilerError('No commands found after "IF ... THEN".', lexemes.get(-1));
+    }
+    if (firstSubLexeme.content?.toLowerCase() === "begin") {
+      lexemes.next();
+      ifStatement8.ifStatements.push(...block4(lexemes, routine, "begin"));
+    } else {
+      ifStatement8.ifStatements.push(statement4(firstSubLexeme, lexemes, routine));
+    }
+    if (lexemes.get() && lexemes.get()?.content?.toLowerCase() === "else") {
+      lexemes.next();
+      const firstSubLexeme2 = lexemes.get();
+      if (!firstSubLexeme2) {
+        throw new CompilerError('No commands found after "ELSE".', lexemes.get(-1));
+      }
+      if (firstSubLexeme2.content?.toLowerCase() === "begin") {
+        lexemes.next();
+        ifStatement8.elseStatements.push(...block4(lexemes, routine, "begin"));
+      } else {
+        ifStatement8.elseStatements.push(statement4(firstSubLexeme2, lexemes, routine));
+      }
+    }
+    return ifStatement8;
+  }
+  function forStatement4(forLexeme, lexemes, routine) {
+    const variableLexeme = lexemes.get();
+    if (!variableLexeme) {
+      throw new CompilerError('"FOR" must be followed by an integer variable.', forLexeme);
+    }
+    if (variableLexeme.type !== "identifier") {
+      throw new CompilerError('"FOR" must be followed by an integer variable.', variableLexeme);
+    }
+    if (variableLexeme.subtype === "turtle") {
+      throw new CompilerError('Turtle attribute cannot be used as a "FOR" variable.', variableLexeme);
+    }
+    const variable7 = variable(routine, variableLexeme.value);
+    if (!variable7) {
+      throw new CompilerError("Variable {lex} has not been declared.", variableLexeme);
+    }
+    if (variable7.type !== "integer" && variable7.type !== "boolint") {
+      throw new CompilerError("{lex} is not an integer variable.", variableLexeme);
+    }
+    if (variable7.isArray) {
+      throw new CompilerError("FOR variable cannot be an array or array element.", variableLexeme);
+    }
+    lexemes.next();
+    const initialisation = variableAssignment4(variableLexeme, lexemes, routine, variable7);
+    const toLexeme = lexemes.get();
+    const toOrDownTo = toLexeme?.content?.toLowerCase();
+    if (!toLexeme || toOrDownTo !== "to" && toOrDownTo !== "downto") {
+      throw new CompilerError('"FOR ... := ..." must be followed by "TO" or "DOWNTO".', initialisation.lexeme);
+    }
+    const oneToken = new Token("decimal", "1", forLexeme.line, -1);
+    const assignmentToken = new Token("operator", "=", forLexeme.line, -1);
+    const operatorToken = new Token("operator", toOrDownTo === "to" ? "+" : "-", forLexeme.line, -1);
+    const oneLexeme = new IntegerLexeme(oneToken, 10);
+    const assignmentLexeme = new OperatorLexeme(assignmentToken, "Pascal");
+    const plusLexeme = new OperatorLexeme(operatorToken, "Pascal");
+    const left = new VariableValue(variableLexeme, variable7);
+    const right = new IntegerValue(oneLexeme);
+    const changeOperator = toOrDownTo === "to" ? "plus" : "subt";
+    const value = new CompoundExpression(plusLexeme, left, right, changeOperator);
+    const change = new VariableAssignment(assignmentLexeme, variable7, [], value);
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError(`"${toOrDownTo.toUpperCase()}" must be followed by an integer (or integer constant).`, toLexeme);
+    }
+    let finalValue = expression(lexemes, routine);
+    finalValue = typeCheck(finalValue, "integer");
+    const comparisonToken = new Token("operator", toOrDownTo === "to" ? "<=" : ">=", forLexeme.line, -1);
+    const comparisonLexeme = new OperatorLexeme(comparisonToken, "Pascal");
+    const comparisonOperator = toOrDownTo === "to" ? "lseq" : "mreq";
+    const condition = new CompoundExpression(comparisonLexeme, left, finalValue, comparisonOperator);
+    const forStatement8 = new ForStatement(forLexeme, initialisation, condition, change);
+    const doLexeme = lexemes.get();
+    if (!doLexeme) {
+      throw new CompilerError('"FOR" loop range must be followed by "DO".', lexemes.get(-1));
+    }
+    lexemes.next();
+    const firstSubLexeme = lexemes.get();
+    if (!firstSubLexeme) {
+      throw new CompilerError('No commands found after "FOR" loop initialisation.', doLexeme);
+    }
+    if (firstSubLexeme.content?.toLowerCase() === "begin") {
+      lexemes.next();
+      forStatement8.statements.push(...block4(lexemes, routine, "begin"));
+    } else {
+      forStatement8.statements.push(statement4(firstSubLexeme, lexemes, routine));
+    }
+    return forStatement8;
+  }
+  function repeatStatement2(repeatLexeme, lexemes, routine) {
+    const repeatStatements = block4(lexemes, routine, "repeat");
+    if (!lexemes.get()) {
+      throw new CompilerError('"UNTIL" must be followed by a boolean expression.', lexemes.get(-1));
+    }
+    let condition = expression(lexemes, routine);
+    condition = typeCheck(condition, "boolean");
+    const repeatStatement4 = new RepeatStatement(repeatLexeme, condition);
+    repeatStatement4.statements.push(...repeatStatements);
+    return repeatStatement4;
+  }
+  function whileStatement4(whileLexeme, lexemes, routine) {
+    if (!lexemes.get()) {
+      throw new CompilerError('"WHILE" must be followed by a boolean expression.', whileLexeme);
+    }
+    let condition = expression(lexemes, routine);
+    condition = typeCheck(condition, "boolean");
+    const whileStatement8 = new WhileStatement(whileLexeme, condition);
+    if (!lexemes.get()) {
+      throw new CompilerError('"WHILE ..." must be followed by "DO".', condition.lexeme);
+    }
+    if (lexemes.get()?.content !== "do") {
+      throw new CompilerError('"WHILE ..." must be followed by "DO".', lexemes.get());
+    }
+    lexemes.next();
+    const firstSubLexeme = lexemes.get();
+    if (!firstSubLexeme) {
+      throw new CompilerError('No commands found after "WHILE" loop initialisation.', lexemes.get(-1));
+    }
+    if (lexemes.get()?.content?.toLowerCase() === "begin") {
+      lexemes.next();
+      whileStatement8.statements.push(...block4(lexemes, routine, "begin"));
+    } else {
+      whileStatement8.statements.push(statement4(firstSubLexeme, lexemes, routine));
+    }
+    return whileStatement8;
+  }
+  function block4(lexemes, routine, start) {
+    const statements = [];
+    let end = false;
+    if (!lexemes.get()) {
+      throw new CompilerError(`No commands found after "${start.toUpperCase()}".`, lexemes.get(-1));
+    }
+    while (!end && lexemes.get()) {
+      const lexeme = lexemes.get();
+      end = blockEndCheck2(start, lexeme);
+      if (end) {
+        lexemes.next();
+      } else {
+        statements.push(statement4(lexeme, lexemes, routine));
+      }
+    }
+    if (!end) {
+      if (start === "begin") {
+        throw new CompilerError('"BEGIN" does not have any matching "END".', lexemes.get(-1));
+      }
+      throw new CompilerError('"REPEAT" does not have any matching "UNTIL".', lexemes.get(-1));
+    }
+    return statements;
+  }
+  function blockEndCheck2(start, lexeme) {
+    switch (lexeme.content.toLowerCase()) {
+      case "end":
+        if (start !== "begin") {
+          throw new CompilerError('"END" does not have any matching "BEGIN".', lexeme);
+        }
+        return true;
+      case "until":
+        if (start !== "repeat") {
+          throw new CompilerError('"UNTIL" does not have any matching "REPEAT".', lexeme);
+        }
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  // client/parser/pascal/constant.ts
+  function constant5(lexemes, routine) {
+    const name = identifier5(lexemes, routine);
+    if (!lexemes.get() || lexemes.get()?.content !== "=") {
+      throw new CompilerError("Constant must be assigned a value.", lexemes.get(-1));
+    }
+    lexemes.next();
+    let exp = expression(lexemes, routine);
+    const value = evaluate(exp, "Pascal", "constant");
+    const foo = new Constant("Pascal", name, value);
+    semicolon(lexemes, true, "constant definition");
+    return foo;
+  }
+
+  // client/parser/pascal/type.ts
+  function type5(lexemes, routine, isParameter) {
+    if (!lexemes.get()) {
+      throw new CompilerError('Expected type specification (": <type>").', lexemes.get(-1));
+    }
+    if (lexemes.get()?.content !== ":") {
+      throw new CompilerError('Expected type specification (": <type>").', lexemes.get());
+    }
+    lexemes.next();
+    const arrayDimensions = [];
+    if (lexemes.get()?.content === "array") {
+      if (isParameter) {
+        while (lexemes.get()?.content === "array") {
+          arrayDimensions.push([0, 0]);
+          lexemes.next();
+          if (!lexemes.get() || lexemes.get()?.content !== "of") {
+            throw new CompilerError('Keyword "array" must be followed by "of".', lexemes.get(-1));
+          }
+          lexemes.next();
+        }
+      } else {
+        lexemes.next();
+        if (!lexemes.get() && lexemes.get()?.content !== "[") {
+          throw new CompilerError('Keyword "array" must be followed by array dimensions.', lexemes.get(-1));
+        }
+        lexemes.next();
+        while (lexemes.get() && lexemes.get()?.content !== "]") {
+          const startExp = expression(lexemes, routine);
+          typeCheck(startExp, "integer");
+          const start = evaluate(startExp, "Pascal", "array");
+          if (!lexemes.get() || lexemes.get()?.content !== "..") {
+            throw new CompilerError('Array start index must be followed by ".." then the end index.', lexemes.get(-1));
+          }
+          lexemes.next();
+          const endExp = expression(lexemes, routine);
+          typeCheck(endExp, "integer");
+          const end = evaluate(endExp, "Pascal", "array");
+          arrayDimensions.push([start, end]);
+          if (lexemes.get()?.content === ",") {
+            lexemes.next();
+          } else if (lexemes.get()?.content !== "]") {
+            throw new CompilerError("Comma missing between array dimensions.", lexemes.get(-1));
+          }
+        }
+        if (!lexemes.get()) {
+          throw new CompilerError('Closing bracket "]" missing after array dimensions specification.', lexemes.get(-1));
+        }
+        lexemes.next();
+        if (!lexemes.get() || lexemes.get()?.content?.toLowerCase() !== "of") {
+          throw new CompilerError('"array[...]" must be followed by "of".', lexemes.get(-1));
+        }
+        lexemes.next();
+      }
+    }
+    const typeLexeme = lexemes.get();
+    if (!typeLexeme) {
+      throw new CompilerError('Expected type definition ("array", "boolean", "char", "integer", or "string").', lexemes.get(-1));
+    }
+    if (typeLexeme.type !== "type") {
+      throw new CompilerError('{lex} is not a valid type definition (expected "array", "boolean", "char", "integer", or "string").', lexemes.get());
+    }
+    const type8 = typeLexeme.subtype;
+    lexemes.next();
+    let stringLength = 32;
+    if (type8 === "string") {
+      if (lexemes.get()?.content === "[") {
+        lexemes.next();
+        const stringLengthExp = expression(lexemes, routine);
+        typeCheck(stringLengthExp, "integer");
+        stringLength = evaluate(stringLengthExp, "Pascal", "string");
+        if (!lexemes.get()) {
+          throw new CompilerError('Closing bracket "]" missing after string size specification.', lexemes.get(-1));
+        }
+        if (lexemes.get()?.content !== "]") {
+          throw new CompilerError('Closing bracket "]" missing after string size specification.', lexemes.get());
+        }
+        lexemes.next();
+      }
+    }
+    return [type8, stringLength, arrayDimensions];
+  }
+
+  // client/parser/pascal/variable.ts
+  function variables2(lexemes, routine) {
+    const vars = [];
+    while (lexemes.get() && lexemes.get()?.content !== ":") {
+      const name = identifier5(lexemes, routine);
+      vars.push(new Variable(name, routine));
+      if (lexemes.get()?.content === ",") {
+        lexemes.next();
+      } else if (lexemes.get()?.type === "identifier") {
+        throw new CompilerError("Comma missing between variable names.", lexemes.get());
+      }
+    }
+    const [variableType, stringLength, arrayDimensions] = type5(lexemes, routine, false);
+    for (const foo of vars) {
+      foo.type = variableType;
+      foo.stringLength = stringLength;
+      foo.arrayDimensions = arrayDimensions;
+    }
+    semicolon(lexemes, true, "variable declaration");
+    if (lexemes.get() && lexemes.get()?.type === "identifier") {
+      vars.push(...variables2(lexemes, routine));
+    }
+    return vars;
+  }
+
+  // client/parser/pascal/subroutine.ts
+  function subroutine5(lexeme, lexemes, parent) {
+    const isFunction = lexeme.subtype === "function";
+    const name = identifier5(lexemes, parent);
+    const sub = new Subroutine(lexeme, parent, name);
+    sub.index = subroutineIndex(sub);
+    if (lexemes.get()?.content === "(") {
+      lexemes.next();
+      sub.variables.push(...parameters4(lexemes, sub));
+    }
+    if (isFunction) {
+      const [returnType, stringLength, arrayDimensions] = type5(lexemes, sub, false);
+      if (arrayDimensions.length > 0) {
+        throw new CompilerError("Functions cannot return arrays.", lexemes.get(-1));
+      }
+      const foo = new Variable("result", sub);
+      foo.type = returnType;
+      foo.stringLength = stringLength;
+      sub.variables.unshift(foo);
+    }
+    semicolon(lexemes, true, `${sub.type} definition`);
+    let begun = false;
+    while (lexemes.get() && lexemes.get()?.content?.toLowerCase() !== "end") {
+      const lexeme2 = lexemes.get();
+      switch (lexeme2.type) {
+        case "keyword":
+          switch (lexeme2.subtype) {
+            case "var":
+              lexemes.next();
+              sub.variables.push(...variables2(lexemes, sub));
+              break;
+            case "procedure":
+            case "function":
+              lexemes.next();
+              sub.subroutines.push(subroutine5(lexeme2, lexemes, sub));
+              break;
+            case "begin":
+              begun = true;
+              lexemes.next();
+              while (lexemes.get() && lexemes.get()?.content?.toLowerCase() !== "end") {
+                const lexeme3 = lexemes.get();
+                sub.statements.push(statement4(lexeme3, lexemes, sub));
+              }
+              break;
+            default:
+              if (!begun) {
+                throw new CompilerError(`Keyword "begin" missing for ${sub.type} ${sub.name}.`, lexemes.get());
+              }
+              throw new CompilerError("{lex} makes no sense here.", lexemes.get());
+          }
+          break;
+        default:
+          if (!begun) {
+            throw new CompilerError(`Keyword "begin" missing for ${sub.type} ${sub.name}.`, lexemes.get());
+          }
+          throw new CompilerError("{lex} makes no sense here.", lexemes.get());
+      }
+    }
+    if (!begun) {
+      throw new CompilerError(`Keyword "begin" missing for ${sub.type} ${sub.name}.`, lexemes.get(-1));
+    }
+    if (!lexemes.get()) {
+      throw new CompilerError(`Keyword "end" missing for ${sub.type} ${sub.name}.`, lexemes.get(-1));
+    }
+    lexemes.next();
+    semicolon(lexemes, true, `${sub.type} end`);
+    return sub;
+  }
+  function subroutineIndex(subroutine8) {
+    return subroutine8.parent instanceof Program ? subroutine8.parent.allSubroutines.length + 1 : subroutineIndex(subroutine8.parent) + subroutine8.allSubroutines.length + 1;
+  }
+  function parameters4(lexemes, subroutine8) {
+    const parameters7 = [];
+    while (lexemes.get() && lexemes.get()?.content !== ")") {
+      subroutine8.variables.push(...parameterSet(lexemes, subroutine8));
+      if (lexemes.get() && lexemes.get()?.content === ";") {
+        lexemes.next();
+        if (lexemes.get()?.content === ")") {
+          throw new CompilerError("Trailing semicolon at end of parameter list.", lexemes.get());
+        }
+      } else if (lexemes.get()?.type === "identifier") {
+        throw new CompilerError("Semicolon missing between parameters.", lexemes.get());
+      }
+    }
+    if (lexemes.get()?.content !== ")") {
+      throw new CompilerError(`Closing bracket missing after ${subroutine8.type} parameters.`, lexemes.get(-1));
+    }
+    lexemes.next();
+    return parameters7;
+  }
+  function parameterSet(lexemes, subroutine8) {
+    const parameters7 = [];
+    let isReferenceParameter = false;
+    if (lexemes.get()?.content === "var") {
+      isReferenceParameter = true;
+      lexemes.next();
+    }
+    while (lexemes.get() && lexemes.get()?.content !== ":") {
+      const name = identifier5(lexemes, subroutine8);
+      parameters7.push(new Variable(name, subroutine8));
+      if (lexemes.get()?.content === ",") {
+        lexemes.next();
+      } else if (lexemes.get()?.type === "identifier") {
+        throw new CompilerError("Comma missing between parameter names.", lexemes.get());
+      }
+    }
+    const [parameterType, stringLength, arrayDimensions] = type5(lexemes, subroutine8, true);
+    for (const foo of parameters7) {
+      foo.type = parameterType;
+      foo.stringLength = stringLength;
+      foo.arrayDimensions = arrayDimensions;
+      foo.isParameter = true;
+      foo.isReferenceParameter = isReferenceParameter;
+    }
+    return parameters7;
+  }
+
+  // client/parser/pascal/parser.ts
+  function pascal(lexemes) {
+    const program3 = new Program("Pascal");
+    const programLexeme = lexemes.get();
+    if (!programLexeme || programLexeme.type !== "keyword" || programLexeme.subtype !== "program") {
+      throw new CompilerError('Program must begin with keyword "PROGRAM".', lexemes.get());
+    }
+    lexemes.next();
+    program3.name = identifier5(lexemes, program3);
+    semicolon(lexemes, true, "program declaration");
+    let begun = false;
+    while (lexemes.get() && lexemes.get()?.content.toLowerCase() !== "end") {
+      const lexeme = lexemes.get();
+      switch (lexeme.type) {
+        case "keyword":
+          switch (lexeme.subtype) {
+            case "const": {
+              if (program3.variables.length > 0) {
+                throw new CompilerError("Constant definitions must be placed above any variable declarations.", lexemes.get());
+              }
+              if (program3.subroutines.length > 0) {
+                throw new CompilerError("Constant definitions must be placed above any subroutine definitions.", lexemes.get());
+              }
+              lexemes.next();
+              const constantsSoFar = program3.constants.length;
+              while (lexemes.get()?.type === "identifier") {
+                program3.constants.push(constant5(lexemes, program3));
+              }
+              if (program3.constants.length === constantsSoFar) {
+                throw new CompilerError('"CONST" must be followed by an identifier.', lexemes.get(-1));
+              }
+              break;
+            }
+            case "var":
+              if (program3.subroutines.length > 0) {
+                throw new CompilerError("Variable declarations must be placed above any subroutine definitions.", lexemes.get());
+              }
+              lexemes.next();
+              program3.variables.push(...variables2(lexemes, program3));
+              break;
+            case "procedure":
+            case "function":
+              lexemes.next();
+              program3.subroutines.push(subroutine5(lexeme, lexemes, program3));
+              break;
+            case "begin":
+              begun = true;
+              lexemes.next();
+              while (lexemes.get() && lexemes.get()?.content?.toLowerCase() !== "end") {
+                const lexeme2 = lexemes.get();
+                program3.statements.push(statement4(lexeme2, lexemes, program3));
+              }
+              break;
+            default:
+              if (!begun) {
+                throw new CompilerError('Keyword "begin" missing for main program.', lexemes.get());
+              }
+              throw new CompilerError("{lex} makes no sense here.", lexemes.get());
+          }
+          break;
+        default:
+          if (!begun) {
+            throw new CompilerError('Keyword "begin" missing for main program.', lexemes.get());
+          }
+          throw new CompilerError("{lex} makes no sense here.", lexemes.get());
+      }
+    }
+    if (!begun) {
+      throw new CompilerError('Keyword "begin" missing for main program.', lexemes.get(-1));
+    }
+    if (!lexemes.get()) {
+      throw new CompilerError('Keyword "end" missing after main program.', lexemes.get(-1));
+    }
+    lexemes.next();
+    if (!lexemes.get() || lexemes.get()?.content !== ".") {
+      throw new CompilerError('Full stop missing after program "end".', lexemes.get(-1));
+    }
+    if (lexemes.get(1)) {
+      throw new CompilerError('No text can appear after program "end".', lexemes.get(1));
+    }
+    return program3;
+  }
+
+  // client/parser/python/identifier.ts
+  function identifier6(lexemes, routine, duplicateCheck) {
+    const identifier8 = lexemes.get();
+    if (!identifier8) {
+      throw new CompilerError("{lex} must be followed by an identifier.", lexemes.get(-1));
+    }
+    if (identifier8.type !== "identifier") {
+      throw new CompilerError("{lex} is not a valid identifier.", identifier8);
+    }
+    if (duplicateCheck) {
+      if (identifier8.subtype === "turtle") {
+        throw new CompilerError("{lex} is already the name of a Turtle attribute.", identifier8);
+      }
+      if (isDuplicate(routine, identifier8.value)) {
+        throw new CompilerError("{lex} is already the name of a variable or subroutine in the current scope.", identifier8);
+      }
+    }
+    lexemes.next();
+    return identifier8.value;
+  }
+
+  // client/parser/python/type.ts
+  function type6(lexemes, routine) {
+    const lexeme = lexemes.get();
+    let stringLength = 32;
+    if (!lexeme) {
+      throw new CompilerError("Expecting type specification.", lexemes.get(-1));
+    }
+    switch (lexeme.content) {
+      case "bool":
+        lexemes.next();
+        return [false, "boolean", stringLength, []];
+      case "int":
+        lexemes.next();
+        return [false, "integer", stringLength, []];
+      case "str":
+        lexemes.next();
+        if (lexemes.get()?.content === "[") {
+          lexemes.next();
+          const integer = lexemes.get();
+          if (!integer) {
+            throw new CompilerError("Expected string size specification.", lexemes.get(-1));
+          }
+          if (integer.type !== "literal" || integer.subtype !== "integer") {
+            throw new CompilerError("String size must be an integer.", integer);
+          }
+          if (integer.value <= 0) {
+            throw new CompilerError("String size must be greater than zero.", integer);
+          }
+          stringLength = integer.value;
+          lexemes.next();
+          if (!lexemes.get()) {
+            throw new CompilerError('Closing bracket "]" missing after string size specification.', lexemes.get(-1));
+          }
+          if (lexemes.get()?.content !== "]") {
+            throw new CompilerError('Closing bracket "]" missing after string size specification.', lexemes.get());
+          }
+          lexemes.next();
+        }
+        return [false, "string", stringLength, []];
+      case "final":
+        throw new CompilerError('"Final" must be written with a capital "F".', lexeme);
+      case "Final":
+        lexemes.next();
+        return [true, "boolint", stringLength, []];
+      case "list":
+        throw new CompilerError('"List" must be written with a capital "L".', lexeme);
+      case "List": {
+        lexemes.next();
+        if (!lexemes.get()) {
+          throw new CompilerError('"List" must be followed by a type in square brackets.', lexeme);
+        }
+        if (lexemes.get()?.content !== "[") {
+          throw new CompilerError('"List" must be followed by a type in square brackets.', lexemes.get());
+        }
+        lexemes.next();
+        const arrayType = type6(lexemes, routine);
+        if (arrayType[0]) {
+          throw new CompilerError("List type cannot be constant.", lexemes.get());
+        }
+        if (!lexemes.get()) {
+          throw new CompilerError("List type must be followed by a length specification.", lexemes.get(-1));
+        }
+        if (lexemes.get()?.content !== ",") {
+          throw new CompilerError("List type must be followed by a comma, then a length specification.", lexemes.get());
+        }
+        lexemes.next();
+        const exp = expression(lexemes, routine);
+        typeCheck(exp, "integer");
+        const value = evaluate(exp, "Python", "array");
+        if (typeof value === "string") {
+          throw new CompilerError("List length must be an integer.", exp.lexeme);
+        }
+        if (value <= 0) {
+          throw new CompilerError("List length must be positive.", exp.lexeme);
+        }
+        arrayType[3].push([0, value - 1]);
+        if (!lexemes.get()) {
+          throw new CompilerError("List type must be followed by closing square brackets.", lexemes.get(-1));
+        }
+        if (lexemes.get()?.content !== "]") {
+          throw new CompilerError("List type must be followed by closing square brackets.", lexemes.get());
+        }
+        lexemes.next();
+        return arrayType;
+      }
+      default:
+        throw new CompilerError('{lex} is not a valid type specification (expected "bool", "int", or "str")', lexemes.get());
+    }
+  }
+
+  // client/parser/python/variable.ts
+  function variable5(lexemes, routine) {
+    const name = identifier6(lexemes, routine, true);
+    if (lexemes.get() && lexemes.get()?.content === ":") {
+      lexemes.next();
+      const [isConstant, variableType, stringLength, arrayDimensions] = type6(lexemes, routine);
+      if (isConstant) {
+        return new Constant("Python", name, 0);
+      }
+      const variable7 = new Variable(name, routine);
+      variable7.type = variableType;
+      variable7.typeIsCertain = true;
+      variable7.stringLength = stringLength;
+      variable7.arrayDimensions = arrayDimensions;
+      return variable7;
+    }
+    return new Variable(name, routine);
+  }
+
+  // client/parser/python/subroutine.ts
+  function subroutine6(lexeme, lexemes, parent, baseIndent) {
+    const name = identifier6(lexemes, parent, true);
+    const program3 = parent instanceof Program ? parent : parent.program;
+    const subroutine8 = new Subroutine(lexeme, parent, name);
+    subroutine8.index = program3.allSubroutines.length + 1;
+    subroutine8.variables.push(...parameters5(lexemes, subroutine8));
+    if (lexemes.get()?.content === "->") {
+      lexemes.next();
+      const [isConstant, returnType, stringLength, arrayDimensions] = type6(lexemes, parent);
+      if (isConstant) {
+        throw new CompilerError("Functions cannot return constant values.", lexemes.get());
+      }
+      if (arrayDimensions.length > 0) {
+        throw new CompilerError("Functions cannot return arrays.", lexemes.get(-1));
+      }
+      const variable7 = new Variable("!result", subroutine8);
+      variable7.type = returnType;
+      variable7.typeIsCertain = true;
+      variable7.stringLength = stringLength;
+      subroutine8.variables.unshift(variable7);
+      subroutine8.typeIsCertain = true;
+    }
+    if (!lexemes.get()) {
+      throw new CompilerError('Subroutine declaration must be followed by a colon ":".', lexemes.get(-1));
+    }
+    if (lexemes.get()?.content !== ":") {
+      throw new CompilerError('Subroutine declaration must be followed by a colon ":".', lexemes.get());
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError("No statements found after subroutine definition.", lexemes.get(-1));
+    }
+    if (lexemes.get()?.type !== "newline") {
+      throw new CompilerError("Subroutine definition must be followed by a line break.", lexemes.get());
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError("No statements found after subroutine definition.", lexemes.get(-1));
+    }
+    if (lexemes.get()?.type !== "indent") {
+      throw new CompilerError("Indent needed after subroutine definition.", lexemes.get());
+    }
+    subroutine8.indent = baseIndent + 1;
+    lexemes.next();
+    subroutine8.start = lexemes.index;
+    let indents = 0;
+    while (lexemes.get() && indents >= 0) {
+      if (lexemes.get()?.type === "indent") {
+        indents += 1;
+      } else if (lexemes.get()?.type === "dedent") {
+        indents -= 1;
+      }
+      lexemes.next();
+    }
+    subroutine8.end = lexemes.index - 1;
+    return subroutine8;
+  }
+  function parameters5(lexemes, routine) {
+    if (!lexemes.get()) {
+      throw new CompilerError('Opening bracket "(" missing after function name.', lexemes.get(-1));
+    }
+    if (lexemes.get()?.content !== "(") {
+      throw new CompilerError('Opening bracket "(" missing after function name.', lexemes.get());
+    }
+    lexemes.next();
+    const parameters7 = [];
+    while (lexemes.get()?.content !== ")") {
+      const parameter = variable5(lexemes, routine);
+      if (parameter instanceof Constant) {
+        throw new CompilerError("Subroutine parameters cannot be constants.", lexemes.get(-1));
+      }
+      parameter.isParameter = true;
+      parameters7.push(parameter);
+      if (lexemes.get()?.content === ",") {
+        lexemes.next();
+      }
+    }
+    if (lexemes.get()?.content !== ")") {
+      throw new CompilerError("Closing bracket missing after function parameters.", lexemes.get(-1));
+    }
+    lexemes.next();
+    return parameters7;
+  }
+
+  // client/parser/python/identifiers.ts
+  function identifiers(lexemes, routine, context2) {
+    const names = [];
+    const name = identifier6(lexemes, routine, false);
+    names.push(name);
+    if (lexemes.get()?.content === ",") {
+      lexemes.next();
+      names.push(...identifiers(lexemes, routine, context2));
+    } else if (lexemes.get()?.type === "identifier") {
+      throw new CompilerError(`Comma missing between ${context2} variable declarations.`, lexemes.get(-1));
+    }
+    return names;
+  }
+
+  // client/parser/python/statement.ts
+  function eosCheck4(lexemes) {
+    if (lexemes.get()) {
+      if (lexemes.get()?.content === ";") {
+        lexemes.next();
+        while (lexemes.get()?.type === "newline") {
+          lexemes.next();
+        }
+      } else if (lexemes.get()?.type === "newline") {
+        while (lexemes.get()?.type === "newline") {
+          lexemes.next();
+        }
+      } else {
+        throw new CompilerError("Statement must be separated by a semicolon or placed on a new line.", lexemes.get());
+      }
+    }
+  }
+  function statement5(lexeme, lexemes, routine) {
+    let statement8;
+    switch (lexeme.type) {
+      case "newline":
+        lexemes.next();
+        statement8 = new PassStatement();
+        break;
+      case "identifier": {
+        const foo = variable(routine, lexemes.get()?.content);
+        const bar = command(routine, lexemes.get()?.content);
+        if (foo) {
+          lexemes.next();
+          statement8 = variableAssignment5(lexeme, lexemes, routine, foo);
+        } else if (bar) {
+          lexemes.next();
+          statement8 = procedureCall(lexeme, lexemes, routine, bar);
+        } else {
+          statement8 = variableDeclaration(lexeme, lexemes, routine);
+        }
+        eosCheck4(lexemes);
+        break;
+      }
+      case "keyword":
+        switch (lexeme.subtype) {
+          case "def": {
+            const sub = subroutine(routine, lexemes.get(1)?.content);
+            lexemes.index = sub.end + 1;
+            statement8 = new PassStatement();
+            break;
+          }
+          case "global":
+          case "nonlocal":
+            lexemes.next();
+            if (routine instanceof Program) {
+              throw new CompilerError("{lex} statements can only occur inside a subroutine.", lexemes.get(-1));
+            }
+            if (lexemes.get(-1)?.content === "global") {
+              routine.globals.push(...identifiers(lexemes, routine, "global"));
+            } else {
+              routine.nonlocals.push(...identifiers(lexemes, routine, "nonlocal"));
+            }
+            statement8 = new PassStatement();
+            eosCheck4(lexemes);
+            break;
+          case "return":
+            lexemes.next();
+            statement8 = returnStatement4(lexeme, lexemes, routine);
+            break;
+          case "if":
+            lexemes.next();
+            statement8 = ifStatement5(lexeme, lexemes, routine);
+            break;
+          case "else":
+            throw new CompilerError('Statement cannot begin with "else". If you have an "if" above, this line may need to be indented more.', lexemes.get());
+          case "for":
+            lexemes.next();
+            statement8 = forStatement5(lexeme, lexemes, routine);
+            break;
+          case "while":
+            lexemes.next();
+            statement8 = whileStatement5(lexeme, lexemes, routine);
+            break;
+          case "pass":
+            lexemes.next();
+            eosCheck4(lexemes);
+            statement8 = new PassStatement();
+            break;
+          default:
+            throw new CompilerError("Statement cannot begin with {lex}.", lexeme);
+        }
+        break;
+      case "indent":
+        throw new CompilerError("Statement cannot be indented.", lexeme);
+      default:
+        throw new CompilerError("Statement cannot begin with {lex}.", lexeme);
+    }
+    return statement8;
+  }
+  function variableAssignment5(variableLexeme, lexemes, routine, variable7) {
+    const indexes = [];
+    if (lexemes.get()?.content === "[") {
+      if (variable7.isArray) {
+        lexemes.next();
+        while (lexemes.get() && lexemes.get()?.content !== "]") {
+          let exp = expression(lexemes, routine);
+          exp = typeCheck(exp, variable7);
+          indexes.push(exp);
+          if (lexemes.get()?.content === "]" && lexemes.get(1)?.content === "[") {
+            lexemes.next();
+            lexemes.next();
+          }
+        }
+        if (!lexemes.get()) {
+          throw new CompilerError('Closing bracket "]" needed after array indexes.', lexemes.get(-1));
+        }
+        lexemes.next();
+      } else if (variable7.type === "string") {
+        lexemes.next();
+        let exp = expression(lexemes, routine);
+        exp = typeCheck(exp, variable7);
+        indexes.push(exp);
+        if (!lexemes.get() || lexemes.get()?.content !== "]") {
+          throw new CompilerError('Closing bracket "]" missing after string variable index.', exp.lexeme);
+        }
+        lexemes.next();
+      } else {
+        throw new CompilerError("{lex} is not a string or array variable.", variableLexeme);
+      }
+    }
+    if (variable7.isArray) {
+      const allowedIndexes = variable7.type === "string" ? variable7.arrayDimensions.length + 1 : variable7.arrayDimensions.length;
+      if (indexes.length > allowedIndexes) {
+        throw new CompilerError("Too many indexes for array variable {lex}.", variableLexeme);
+      }
+    }
+    const assignmentLexeme = lexemes.get();
+    if (!assignmentLexeme) {
+      throw new CompilerError('Variable must be followed by assignment operator "=".', lexemes.get(-1));
+    }
+    if (assignmentLexeme.content === ":") {
+      if (variable7.turtle) {
+        throw new CompilerError("{lex} is the name of a predefined Turtle attribute, and cannot be given a type hit.", lexemes.get(-1));
+      }
+      throw new CompilerError("Type of variable {lex} has already been given.", lexemes.get(-1));
+    }
+    if (assignmentLexeme.content === "[") {
+      throw new CompilerError("{lex} is not a string or list variable.", lexemes.get(-1));
+    }
+    if (assignmentLexeme.type !== "operator" || assignmentLexeme.subtype !== "asgn") {
+      throw new CompilerError('Variable must be followed by assignment operator "=".', lexemes.get());
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError(`Variable "${variable7.name}" must be assigned a value.`, lexemes.get(-1));
+    }
+    let value = expression(lexemes, routine);
+    const variableValue2 = new VariableValue(variableLexeme, variable7);
+    variableValue2.indexes.push(...indexes);
+    value = typeCheck(value, variable7);
+    return new VariableAssignment(assignmentLexeme, variable7, indexes, value);
+  }
+  function variableDeclaration(variableLexeme, lexemes, routine) {
+    const foo = variable5(lexemes, routine);
+    if (foo instanceof Constant) {
+      if (!lexemes.get()) {
+        throw new CompilerError("Constant must be assigned a value.", lexemes.get(-1));
+      }
+      if (lexemes.get()?.content !== "=") {
+        throw new CompilerError("Constant must be assigned a value.", lexemes.get());
+      }
+      lexemes.next();
+      const exp = expression(lexemes, routine);
+      foo.value = evaluate(exp, "Python", "constant");
+      routine.constants.push(foo);
+      return new PassStatement();
+    }
+    routine.variables.push(foo);
+    if (lexemes.get()?.content === "=") {
+      return variableAssignment5(variableLexeme, lexemes, routine, foo);
+    }
+    return new PassStatement();
+  }
+  function returnStatement4(returnLexeme, lexemes, routine) {
+    if (routine instanceof Program) {
+      throw new CompilerError("Programs cannot return a value.", lexemes.get());
+    }
+    let value = expression(lexemes, routine);
+    if (routine.returns !== null) {
+      value = typeCheck(value, routine.returns);
+    } else {
+      const result = new Variable("!result", routine);
+      result.type = value.type;
+      result.typeIsCertain = true;
+      routine.typeIsCertain = true;
+      routine.variables.unshift(result);
+    }
+    eosCheck4(lexemes);
+    routine.hasReturnStatement = true;
+    return new ReturnStatement(returnLexeme, routine, value);
+  }
+  function ifStatement5(ifLexeme, lexemes, routine) {
+    if (!lexemes.get()) {
+      throw new CompilerError('"if" must be followed by a Boolean expression.', ifLexeme);
+    }
+    let condition = expression(lexemes, routine);
+    condition = typeCheck(condition, "boolean");
+    if (!lexemes.get()) {
+      throw new CompilerError('"if <expression>" must be followed by a colon.', condition.lexeme);
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError('No statements found after "if <expression>:".', lexemes.get(-1));
+    }
+    if (lexemes.get()?.type !== "newline") {
+      throw new CompilerError('Statements following "if <expression>:" must be on a new line.', lexemes.get());
+    }
+    lexemes.next();
+    const ifStatement8 = new IfStatement(ifLexeme, condition);
+    if (!lexemes.get()) {
+      throw new CompilerError('No statements found after "if <expression>:".', lexemes.get(-1));
+    }
+    if (lexemes.get()?.type !== "indent") {
+      throw new CompilerError('Statements following "if <expression>:" must be indented.', lexemes.get());
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError('No statements found after "if <expression>:".', lexemes.get(-1));
+    }
+    ifStatement8.ifStatements.push(...block5(lexemes, routine));
+    if (lexemes.get() && lexemes.get()?.content === "else") {
+      lexemes.next();
+      if (!lexemes.get()) {
+        throw new CompilerError('"else" must be followed by a colon.', lexemes.get(-1));
+      }
+      if (lexemes.get()?.content !== ":") {
+        throw new CompilerError('"else" must be followed by a colon.', lexemes.get());
+      }
+      lexemes.next();
+      if (!lexemes.get()) {
+        throw new CompilerError('No statements found after "else:".', lexemes.get(-1));
+      }
+      if (lexemes.get()?.type !== "newline") {
+        throw new CompilerError('Statements following "else:" must be on a new line.', lexemes.get());
+      }
+      lexemes.next();
+      if (!lexemes.get()) {
+        throw new CompilerError('No statements found after "else:".', lexemes.get(-1));
+      }
+      if (lexemes.get()?.type !== "indent") {
+        throw new CompilerError('Statements following "else:" must be indented.', lexemes.get());
+      }
+      lexemes.next();
+      if (!lexemes.get()) {
+        throw new CompilerError('No statements found after "else:".', lexemes.get(-1));
+      }
+      ifStatement8.elseStatements.push(...block5(lexemes, routine));
+    }
+    return ifStatement8;
+  }
+  function forStatement5(forLexeme, lexemes, routine) {
+    const variableLexeme = lexemes.get();
+    if (!variableLexeme) {
+      throw new CompilerError('"for" must be followed by an integer variable.', lexemes.get(-1));
+    }
+    if (variableLexeme.type !== "identifier") {
+      throw new CompilerError("{lex} is not a valid variable name.", lexemes.get());
+    }
+    let variable7 = variable(routine, lexemes.get()?.content);
+    if (!variable7) {
+      variable7 = new Variable(lexemes.get()?.content, routine);
+      variable7.type = "integer";
+      variable7.typeIsCertain = true;
+      routine.variables.push(variable7);
+    }
+    if (!variable7.typeIsCertain) {
+      variable7.type = "integer";
+      variable7.typeIsCertain = true;
+    }
+    if (variable7.type !== "integer") {
+      throw new CompilerError("Loop variable must be an integer.", lexemes.get());
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError('"for <variable>" must be followed by "in".', lexemes.get(-1));
+    }
+    if (lexemes.get()?.content !== "in") {
+      throw new CompilerError('"for <variable>" must be followed by "in".', lexemes.get());
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError('"for <variable> in" must be followed by a range specification.', lexemes.get(-1));
+    }
+    if (lexemes.get()?.content !== "range") {
+      throw new CompilerError('"for <variable> in" must be followed by a range specification.', lexemes.get());
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError('"range" must be followed by an opening bracket.', lexemes.get(-1));
+    }
+    if (lexemes.get()?.content !== "(") {
+      throw new CompilerError('"range" must be followed by an opening bracket.', lexemes.get());
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError('Missing first argument to the "range" function.', lexemes.get(-1));
+    }
+    let initialValue = expression(lexemes, routine);
+    initialValue = typeCheck(initialValue, "integer");
+    const assignmentToken = new Token("operator", "=", forLexeme.line, -1);
+    const assignmentLexeme = new OperatorLexeme(assignmentToken, "Python");
+    const initialisation = new VariableAssignment(assignmentLexeme, variable7, [], initialValue);
+    if (!lexemes.get()) {
+      throw new CompilerError("Argument must be followed by a comma.", lexemes.get(-1));
+    }
+    if (lexemes.get()?.content === ")") {
+      throw new CompilerError('Too few arguments for "range" function.', lexemes.get());
+    }
+    if (lexemes.get()?.content !== ",") {
+      throw new CompilerError("Argument must be followed by a comma.", lexemes.get());
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError('Too few arguments for "range" function.', lexemes.get(-1));
+    }
+    let finalValue = expression(lexemes, routine);
+    finalValue = typeCheck(finalValue, "integer");
+    if (!lexemes.get()) {
+      throw new CompilerError("Argument must be followed by a comma.", lexemes.get(-1));
+    }
+    if (lexemes.get()?.content === ")") {
+      throw new CompilerError('Too few arguments for "range" function.', lexemes.get());
+    }
+    if (lexemes.get()?.content !== ",") {
+      throw new CompilerError("Argument must be followed by a comma.", lexemes.get());
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError('Too few arguments for "range" function.', lexemes.get(-1));
+    }
+    const stepValue = expression(lexemes, routine);
+    typeCheck(stepValue, "integer");
+    const evaluatedStepValue = evaluate(stepValue, "Python", "step");
+    if (evaluatedStepValue === 0) {
+      throw new CompilerError("Step value cannot be zero.", stepValue.lexeme);
+    }
+    const left = new VariableValue(variableLexeme, variable7);
+    const plusToken = new Token("operator", "+", forLexeme.line, -1);
+    const lessToken = new Token("operator", "<", forLexeme.line, -1);
+    const moreToken = new Token("operator", ">", forLexeme.line, -1);
+    const plusLexeme = new OperatorLexeme(plusToken, "Python");
+    const lessLexeme = new OperatorLexeme(lessToken, "Python");
+    const moreLexeme = new OperatorLexeme(moreToken, "Python");
+    const change = new VariableAssignment(assignmentLexeme, variable7, [], new CompoundExpression(plusLexeme, left, stepValue, "plus"));
+    const condition = evaluatedStepValue < 0 ? new CompoundExpression(moreLexeme, left, finalValue, "more") : new CompoundExpression(lessLexeme, left, finalValue, "less");
+    if (!lexemes.get()) {
+      throw new CompilerError('Closing bracket needed after "range" function arguments.', lexemes.get(-1));
+    }
+    if (lexemes.get()?.content === ",") {
+      throw new CompilerError('Too many arguments for "range" function.', lexemes.get());
+    }
+    if (lexemes.get()?.content !== ")") {
+      throw new CompilerError('Closing bracket needed after "range" function arguments.', lexemes.get());
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError('"for <variable> in range(...)" must be followed by a colon.', lexemes.get(-1));
+    }
+    if (lexemes.get()?.content !== ":") {
+      throw new CompilerError('"for <variable> in range(...)" must be followed by a colon.', lexemes.get());
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError('No statements found after "for <variable> in range(...):".', lexemes.get(-1));
+    }
+    if (lexemes.get()?.type !== "newline") {
+      throw new CompilerError('Statements following "for <variable> in range(...):" must be on a new line.', lexemes.get());
+    }
+    lexemes.next();
+    const forStatement8 = new ForStatement(forLexeme, initialisation, condition, change);
+    if (!lexemes.get()) {
+      throw new CompilerError('No statements found after "for <variable> in range(...):".', lexemes.get(-1));
+    }
+    if (lexemes.get()?.type !== "indent") {
+      throw new CompilerError('Statements following "for <variable> in range(...):" must be indented.', lexemes.get());
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError('No statements found after "for <variable> in range(...):', lexemes.get(-1));
+    }
+    forStatement8.statements.push(...block5(lexemes, routine));
+    return forStatement8;
+  }
+  function whileStatement5(whileLexeme, lexemes, routine) {
+    if (!lexemes.get()) {
+      throw new CompilerError('"while" must be followed by a Boolean expression.', whileLexeme);
+    }
+    let condition = expression(lexemes, routine);
+    condition = typeCheck(condition, "boolean");
+    if (!lexemes.get()) {
+      throw new CompilerError('"while <expression>" must be followed by a colon.', lexemes.get(-1));
+    }
+    if (lexemes.get()?.content !== ":") {
+      throw new CompilerError('"while <expression>" must be followed by a colon.', lexemes.get());
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError('No statements found after "while <expression>:".', lexemes.get(-1));
+    }
+    if (lexemes.get()?.type !== "newline") {
+      throw new CompilerError('Statements following "while <expression>:" must be on a new line.', lexemes.get());
+    }
+    lexemes.next();
+    const whileStatement8 = new WhileStatement(whileLexeme, condition);
+    if (!lexemes.get()) {
+      throw new CompilerError('No statements found after "while <expression>:".', lexemes.get(-1));
+    }
+    if (lexemes.get()?.type !== "indent") {
+      throw new CompilerError('Statements following "while <expression>:" must be indented.', lexemes.get());
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError('No statements found after "while <expression>:".', lexemes.get(-1));
+    }
+    whileStatement8.statements.push(...block5(lexemes, routine));
+    return whileStatement8;
+  }
+  function block5(lexemes, routine) {
+    const statements = [];
+    while (lexemes.get() && lexemes.get()?.type !== "dedent") {
+      statements.push(statement5(lexemes.get(), lexemes, routine));
+    }
+    if (lexemes.get()) {
+      lexemes.next();
+    }
+    return statements;
+  }
+
+  // client/parser/python/parser.ts
+  function python(lexemes) {
+    const program3 = new Program("Python");
+    program3.end = lexemes.lexemes.length;
+    parseBody(lexemes, program3);
+    checkForUncertainTypes(program3);
+    return program3;
+  }
+  function parseBody(lexemes, routine) {
+    let indents = 0;
+    lexemes.index = routine.start;
+    while (lexemes.index < routine.end) {
+      const lexeme = lexemes.get();
+      lexemes.next();
+      switch (lexeme.type) {
+        case "indent":
+          indents += 1;
+          break;
+        case "dedent":
+          indents -= 1;
+          break;
+        case "keyword":
+          if (lexeme.subtype === "def") {
+            routine.subroutines.push(subroutine6(lexeme, lexemes, routine, indents));
+          }
+          break;
+      }
+    }
+    lexemes.index = routine.start;
+    while (lexemes.index < routine.end) {
+      routine.statements.push(statement5(lexemes.get(), lexemes, routine));
+    }
+    for (const sub of routine.subroutines) {
+      parseBody(lexemes, sub);
+    }
+  }
+  function checkForUncertainTypes(routine) {
+    const untypedVariable = routine.variables.find((x) => !x.typeIsCertain);
+    if (untypedVariable) {
+      console.log(routine);
+      throw new CompilerError(`Could not infer the type of variable ${untypedVariable.name}.`);
+    }
+    routine.subroutines.forEach(checkForUncertainTypes);
+  }
+
+  // client/parser/typescript/identifier.ts
+  function identifier7(lexemes, routine, duplicateCheck) {
+    const identifier8 = lexemes.get();
+    if (!identifier8) {
+      throw new CompilerError("{lex} must be followed by an identifier.", lexemes.get(-1));
+    }
+    if (identifier8.type !== "identifier") {
+      throw new CompilerError("{lex} is not a valid identifier.", identifier8);
+    }
+    if (identifier8.subtype === "turtle") {
+      throw new CompilerError("{lex} is already the name of a predefined Turtle property.", identifier8);
+    }
+    if (duplicateCheck) {
+      if (isDuplicate(routine, identifier8.value)) {
+        throw new CompilerError("{lex} is already defined in the current scope.", identifier8);
+      }
+    }
+    lexemes.next();
+    return identifier8.value;
+  }
+
+  // client/parser/typescript/type.ts
+  function type7(lexemes, routine) {
+    if (!lexemes.get()) {
+      throw new CompilerError('Expected type specification (": <type>").', lexemes.get(-1));
+    }
+    if (lexemes.get()?.content !== ":") {
+      throw new CompilerError('Expected type specification (": <type>").', lexemes.get());
+    }
+    lexemes.next();
+    const typeLexeme = lexemes.get();
+    if (!typeLexeme) {
+      throw new CompilerError('Expected type definition ("boolean", "number", "string", or "void").', lexemes.get(-1));
+    }
+    if (typeLexeme.type !== "type") {
+      throw new CompilerError('{lex} is not a valid type definition (expected "boolean", "number", "string", or "void").', typeLexeme);
+    }
+    const type8 = typeLexeme.subtype;
+    lexemes.next();
+    let stringLength = 32;
+    if (type8 === "string") {
+      if (lexemes.get()?.content === "(") {
+        lexemes.next();
+        const integer = lexemes.get();
+        if (!integer) {
+          throw new CompilerError("Expected string size specification.", lexemes.get(-1));
+        }
+        if (integer.type !== "literal" || integer.subtype !== "integer") {
+          throw new CompilerError("String size must be an integer.", integer);
+        }
+        if (integer.value <= 0) {
+          throw new CompilerError("String size must be greater than zero.", lexemes.get());
+        }
+        stringLength = integer.value;
+        lexemes.next();
+        if (!lexemes.get()) {
+          throw new CompilerError('Closing bracket ")" missing after string size specification.', lexemes.get(-1));
+        }
+        if (lexemes.get()?.content !== ")") {
+          throw new CompilerError('Closing bracket ")" missing after string size specification.', lexemes.get());
+        }
+        lexemes.next();
+      }
+    }
+    let arrayDimensions = [];
+    while (lexemes.get()?.content === "[") {
+      lexemes.next();
+      if (!lexemes.get()) {
+        throw new CompilerError('Opening bracket "[" must be followed by an array size.', lexemes.get(-1));
+      }
+      const exp = expression(lexemes, routine);
+      typeCheck(exp, "integer");
+      const value = evaluate(exp, "TypeScript", "array");
+      if (typeof value === "string") {
+        throw new CompilerError("Array size must be an integer.", lexemes.get());
+      }
+      if (value <= 0) {
+        throw new CompilerError("Array size must be positive.", lexemes.get());
+      }
+      arrayDimensions.push([0, value - 1]);
+      if (!lexemes.get()) {
+        throw new CompilerError('Array size specification must be followed by closing bracket "]".', lexemes.get(-1));
+      }
+      if (lexemes.get()?.content !== "]") {
+        throw new CompilerError('Array size specification must be followed by closing bracket "]".', lexemes.get());
+      }
+      lexemes.next();
+    }
+    if (type8 === null && arrayDimensions.length > 0) {
+      throw new CompilerError("Array of void is not allowed.", typeLexeme);
+    }
+    return [type8, stringLength, arrayDimensions];
+  }
+
+  // client/parser/typescript/constant.ts
+  function constant6(lexemes, routine, duplicateCheck) {
+    const name = identifier7(lexemes, routine, duplicateCheck);
+    const [constantType, , arrayDimensions] = type7(lexemes, routine);
+    if (constantType === null) {
+      throw new CompilerError('Constant type cannot be void (expected "boolean", "number", or "string").', lexemes.get());
+    }
+    if (arrayDimensions.length > 0) {
+      throw new CompilerError("Constant cannot be an array.", lexemes.get());
+    }
+    if (!lexemes.get()) {
+      throw new CompilerError(`Constant ${name} must be assigned a value.`, lexemes.get(-1));
+    }
+    if (lexemes.get()?.content !== "=") {
+      throw new CompilerError(`Constant ${name} must be assigned a value.`, lexemes.get());
+    }
+    lexemes.next();
+    const exp = expression(lexemes, routine);
+    typeCheck(exp, constantType);
+    const value = evaluate(exp, "TypeScript", "constant");
+    return new Constant("TypeScript", name, value);
+  }
+
+  // client/parser/typescript/variable.ts
+  function variable6(lexemes, routine, duplicateCheck) {
+    const name = identifier7(lexemes, routine, duplicateCheck);
+    const [variableType, stringLength, arrayDimensions] = type7(lexemes, routine);
+    if (variableType === null) {
+      throw new CompilerError('Variable cannot be void (expected "boolean", "number", or "string").', lexemes.get());
+    }
+    const variable7 = new Variable(name, routine);
+    variable7.type = variableType;
+    variable7.stringLength = stringLength;
+    variable7.arrayDimensions = arrayDimensions;
+    return variable7;
+  }
+
+  // client/parser/typescript/subroutine.ts
+  function subroutine7(lexeme, lexemes, parent) {
+    const name = identifier7(lexemes, parent, true);
+    const subroutine8 = new Subroutine(lexeme, parent, name);
+    const program3 = parent instanceof Program ? parent : parent.program;
+    subroutine8.index = program3.allSubroutines.length + 1;
+    subroutine8.variables.push(...parameters6(lexemes, subroutine8));
+    const [subroutineType, stringLength, arrayDimensions] = type7(lexemes, parent);
+    if (arrayDimensions.length > 0) {
+      throw new CompilerError("Functions cannot return arrays.", lexemes.get(-1));
+    }
+    if (subroutineType !== null) {
+      const variable7 = new Variable("!result", subroutine8);
+      variable7.type = subroutineType;
+      variable7.stringLength = stringLength;
+      subroutine8.variables.unshift(variable7);
+    }
+    if (!lexemes.get()) {
+      throw new CompilerError('Method parameters must be followed by an opening bracket "{".', lexemes.get(-1));
+    }
+    if (lexemes.get()?.content !== "{") {
+      throw new CompilerError('Method parameters must be followed by an opening bracket "{".', lexemes.get());
+    }
+    lexemes.next();
+    subroutine8.start = lexemes.index;
+    let brackets2 = 0;
+    while (lexemes.get() && brackets2 >= 0) {
+      if (lexemes.get()?.content === "{") {
+        brackets2 += 1;
+      } else if (lexemes.get()?.content === "}") {
+        brackets2 -= 1;
+      }
+      lexemes.next();
+    }
+    subroutine8.end = lexemes.index - 1;
+    return subroutine8;
+  }
+  function parameters6(lexemes, subroutine8) {
+    if (!lexemes.get()) {
+      throw new CompilerError('Opening bracket "(" missing after function name.', lexemes.get(-1));
+    }
+    if (lexemes.get()?.content !== "(") {
+      throw new CompilerError('Opening bracket "(" missing after function name.', lexemes.get());
+    }
+    lexemes.next();
+    const parameters7 = [];
+    while (lexemes.get()?.content !== ")") {
+      const parameter = variable6(lexemes, subroutine8, true);
+      parameter.isParameter = true;
+      parameters7.push(parameter);
+      if (lexemes.get()?.content === ",") {
+        lexemes.next();
+      }
+    }
+    if (lexemes.get()?.content !== ")") {
+      throw new CompilerError("Closing bracket missing after function parameters.", lexemes.get(-1));
+    }
+    lexemes.next();
+    return parameters7;
+  }
+
+  // client/parser/typescript/statement.ts
+  function eosCheck5(lexemes) {
+    if (lexemes.get()) {
+      if (lexemes.get()?.content !== ";" && lexemes.get()?.type !== "newline") {
+        throw new CompilerError("Statement must be followed by a semicolon or placed on a new line.", lexemes.get(-1));
+      }
+      while (lexemes.get()?.content === ";" || lexemes.get()?.type === "newline") {
+        lexemes.next();
+      }
+    }
+  }
+  function statement6(lexeme, lexemes, routine) {
+    let statement8;
+    switch (lexeme.type) {
+      case "newline":
+        lexemes.next();
+        statement8 = new PassStatement();
+        break;
+      case "identifier":
+        statement8 = simpleStatement5(lexeme, lexemes, routine);
+        eosCheck5(lexemes);
+        break;
+      case "keyword":
+        switch (lexeme.subtype) {
+          case "function":
+            const sub = subroutine(routine, lexemes.get(1)?.content);
+            lexemes.index = sub.end + 1;
+            statement8 = new PassStatement();
+            break;
+          case "const":
+          case "var":
+            statement8 = simpleStatement5(lexeme, lexemes, routine);
+            eosCheck5(lexemes);
+            break;
+          case "return":
+            lexemes.next();
+            statement8 = returnStatement5(lexeme, lexemes, routine);
+            break;
+          case "if":
+            lexemes.next();
+            statement8 = ifStatement6(lexeme, lexemes, routine);
+            break;
+          case "else":
+            throw new CompilerError('Statement cannot begin with "else". If you have an "if" above, you may be missing a closing bracket "}".', lexeme);
+          case "for":
+            lexemes.next();
+            statement8 = forStatement6(lexeme, lexemes, routine);
+            break;
+          case "do":
+            lexemes.next();
+            statement8 = doStatement3(lexeme, lexemes, routine);
+            break;
+          case "while":
+            lexemes.next();
+            statement8 = whileStatement6(lexeme, lexemes, routine);
+            break;
+          default:
+            throw new CompilerError("Statement cannot begin with {lex}.", lexeme);
+        }
+        break;
+      default:
+        throw new CompilerError("Statement cannot begin with {lex}.", lexeme);
+    }
+    return statement8;
+  }
+  function simpleStatement5(lexeme, lexemes, routine) {
+    switch (lexeme.type) {
+      case "keyword":
+        switch (lexeme.subtype) {
+          case "const":
+            lexemes.next();
+            constant6(lexemes, routine, false);
+            return new PassStatement();
+          case "var":
+            lexemes.next();
+            const variableLexeme = lexemes.get();
+            const foo2 = variable(routine, variableLexeme.content);
+            variable6(lexemes, routine, false);
+            if (lexemes.get()?.content === "=") {
+              return variableAssignment6(variableLexeme, lexemes, routine, foo2);
+            } else {
+              return new PassStatement();
+            }
+          default:
+            throw new CompilerError("Simple statement cannot begin with {lex}.", lexeme);
+        }
+      case "identifier":
+        const foo = constant(routine, lexeme.value);
+        const bar = variable(routine, lexeme.value);
+        const baz = command(routine, lexeme.value);
+        if (foo) {
+          throw new CompilerError("{lex} is a constant and cannot be assined a new value.", lexeme);
+        } else if (bar) {
+          lexemes.next();
+          return variableAssignment6(lexeme, lexemes, routine, bar);
+        } else if (baz) {
+          lexemes.next();
+          const statement8 = procedureCall(lexeme, lexemes, routine, baz);
+          return statement8;
+        } else {
+          throw new CompilerError("{lex} is not defined.", lexemes.get());
+        }
+    }
+  }
+  function variableAssignment6(variableLexeme, lexemes, routine, variable7) {
+    const indexes = [];
+    if (lexemes.get()?.content === "[") {
+      if (variable7.isArray) {
+        lexemes.next();
+        while (lexemes.get() && lexemes.get()?.content !== "]") {
+          let exp = expression(lexemes, routine);
+          exp = typeCheck(exp, "integer");
+          indexes.push(exp);
+          if (lexemes.get()?.content === "]" && lexemes.get(1)?.content === "[") {
+            lexemes.next();
+            lexemes.next();
+          }
+        }
+        if (!lexemes.get()) {
+          throw new CompilerError('Closing bracket "]" needed after array indexes.', lexemes.get(-1));
+        }
+        lexemes.next();
+      } else if (variable7.type === "string") {
+        lexemes.next();
+        let exp = expression(lexemes, routine);
+        exp = typeCheck(exp, "integer");
+        indexes.push(exp);
+        if (!lexemes.get() || lexemes.get()?.content !== "]") {
+          throw new CompilerError('Closing bracket "]" missing after string variable index.', exp.lexeme);
+        }
+        lexemes.next();
+      } else {
+        throw new CompilerError("{lex} is not a string or array variable.", variableLexeme);
+      }
+    }
+    if (variable7.isArray) {
+      const allowedIndexes = variable7.type === "string" ? variable7.arrayDimensions.length + 1 : variable7.arrayDimensions.length;
+      if (indexes.length > allowedIndexes) {
+        throw new CompilerError("Too many indexes for array variable {lex}.", variableLexeme);
+      }
+    }
+    const assignmentOperator = lexemes.get();
+    if (!assignmentOperator) {
+      throw new CompilerError('Variable must be followed by assignment operator "=".', lexemes.get(-1));
+    }
+    if (assignmentOperator.content === ":") {
+      throw new CompilerError("Type of variable {lex} has already been given.", assignmentOperator);
+    }
+    if (assignmentOperator.content === "[") {
+      throw new CompilerError("{lex} is not a string or array variable.", assignmentOperator);
+    }
+    if (assignmentOperator.type !== "operator" || assignmentOperator.subtype !== "asgn") {
+      throw new CompilerError('Variable must be followed by assignment operator "=".', assignmentOperator);
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError(`Variable "${variable7.name}" must be assigned a value.`, lexemes.get(-1));
+    }
+    let value = expression(lexemes, routine);
+    const variableValue2 = new VariableValue(variableLexeme, variable7);
+    variableValue2.indexes.push(...indexes);
+    value = typeCheck(value, variableValue2.type);
+    return new VariableAssignment(assignmentOperator, variable7, indexes, value);
+  }
+  function returnStatement5(returnLexeme, lexemes, routine) {
+    if (routine instanceof Program) {
+      throw new CompilerError('"RETURN" statements are only valid within the body of a function.', lexemes.get());
+    }
+    if (routine.type !== "function") {
+      throw new CompilerError("Procedures cannot return a value.", lexemes.get());
+    }
+    let value = expression(lexemes, routine);
+    value = typeCheck(value, routine.returns);
+    eosCheck5(lexemes);
+    routine.hasReturnStatement = true;
+    return new ReturnStatement(returnLexeme, routine, value);
+  }
+  function ifStatement6(ifLexeme, lexemes, routine) {
+    if (!lexemes.get() || lexemes.get()?.content !== "(") {
+      throw new CompilerError('"if" must be followed by an opening bracket "(".', lexemes.get(-1));
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError('"if (" must be followed by a Boolean expression.', lexemes.get(-1));
+    }
+    let condition = expression(lexemes, routine);
+    condition = typeCheck(condition, "boolean");
+    if (!lexemes.get() || lexemes.get()?.content !== ")") {
+      throw new CompilerError('"if (..." must be followed by a closing bracket ")".', lexemes.get(-1));
+    }
+    lexemes.next();
+    const ifStatement8 = new IfStatement(ifLexeme, condition);
+    if (!lexemes.get() || lexemes.get()?.content !== "{") {
+      throw new CompilerError('"if (...)" must be followed by an opening curly bracket "{".', lexemes.get(-1));
+    }
+    lexemes.next();
+    ifStatement8.ifStatements.push(...block6(lexemes, routine));
+    if (lexemes.get() && lexemes.get()?.content === "else") {
+      lexemes.next();
+      if (!lexemes.get() || lexemes.get()?.content !== "{") {
+        throw new CompilerError('"else" must be followed by an opening bracket "{".', lexemes.get(-1));
+      }
+      lexemes.next();
+      ifStatement8.elseStatements.push(...block6(lexemes, routine));
+    }
+    return ifStatement8;
+  }
+  function forStatement6(forLexeme, lexemes, routine) {
+    if (!lexemes.get() || lexemes.get()?.content !== "(") {
+      throw new CompilerError('"for" must be followed by an opening bracket "(".', lexemes.get(-1));
+    }
+    lexemes.next();
+    const firstInitialisationLexeme = lexemes.get();
+    if (!firstInitialisationLexeme) {
+      throw new CompilerError('"for" conditions must begin with a variable assignment.', lexemes.get(-1));
+    }
+    if (firstInitialisationLexeme.type !== "keyword" && firstInitialisationLexeme.type !== "identifier") {
+      throw new CompilerError('"for" conditions must begin with a variable assignment.', firstInitialisationLexeme);
+    }
+    const initialisation = simpleStatement5(firstInitialisationLexeme, lexemes, routine);
+    if (!(initialisation instanceof VariableAssignment)) {
+      throw new CompilerError('"for" conditions must begin with a variable assignment.', lexemes.get(-1));
+    }
+    if (initialisation.variable.type !== "integer") {
+      throw new CompilerError("Loop variable must be an integer.", lexemes.get());
+    }
+    if (!lexemes.get() || lexemes.get()?.content !== ";") {
+      throw new CompilerError('"for (..." must be followed by a semicolon.', lexemes.get(-1));
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError('"for (...; ...;" must be followed by a loop condition.', lexemes.get(-1));
+    }
+    let condition = expression(lexemes, routine);
+    condition = typeCheck(condition, "boolean");
+    if (!lexemes.get() || lexemes.get()?.content !== ";") {
+      throw new CompilerError('"for (...; ..." must be followed by a semicolon.', lexemes.get(-1));
+    }
+    lexemes.next();
+    const firstChangeLexeme = lexemes.get();
+    if (!firstChangeLexeme) {
+      throw new CompilerError('"for (...;" must be followed by a loop variable reassignment.', lexemes.get(-1));
+    }
+    if (firstChangeLexeme.type !== "keyword" && firstChangeLexeme.type !== "identifier") {
+      throw new CompilerError('"for (...;" must be followed by a loop variable reassignment.', lexemes.get(-1));
+    }
+    const change = simpleStatement5(firstChangeLexeme, lexemes, routine);
+    if (!(change instanceof VariableAssignment)) {
+      throw new CompilerError('"for (...;" must be followed by a loop variable reassignment.', lexemes.get(-1));
+    }
+    if (change.variable !== initialisation.variable) {
+      throw new CompilerError("Initial loop variable and change loop variable must be the same.", lexemes.get(-1));
+    }
+    if (!lexemes.get() || lexemes.get()?.content !== ")") {
+      throw new CompilerError('"for (...; ...; ..." must be followed by a closing bracket ")".', lexemes.get(-1));
+    }
+    lexemes.next();
+    if (!lexemes.get() || lexemes.get()?.content !== "{") {
+      throw new CompilerError('"for (...; ...; ...)" must be followed by an opening bracket "{".', lexemes.get(-1));
+    }
+    lexemes.next();
+    const forStatement8 = new ForStatement(forLexeme, initialisation, condition, change);
+    forStatement8.statements.push(...block6(lexemes, routine));
+    return forStatement8;
+  }
+  function doStatement3(doLexeme, lexemes, routine) {
+    if (!lexemes.get() || lexemes.get()?.content !== "{") {
+      throw new CompilerError('"do" must be followed by an opening bracket "{".', lexemes.get(-1));
+    }
+    lexemes.next();
+    const repeatStatements = block6(lexemes, routine);
+    if (!lexemes.get() || lexemes.get()?.content !== "while") {
+      throw new CompilerError('"do { ... }" must be followed by "while".', lexemes.get(-1));
+    }
+    lexemes.next();
+    if (!lexemes.get() || lexemes.get()?.content !== "(") {
+      throw new CompilerError('"while" must be followed by an opening bracket "(".', lexemes.get(-1));
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError('"while (" must be followed by a boolean expression.', lexemes.get(-1));
+    }
+    let condition = expression(lexemes, routine);
+    condition = typeCheck(condition, "boolean");
+    const notToken = new Token("operator", "!", condition.lexeme.line, condition.lexeme.character);
+    const notLexeme = new OperatorLexeme(notToken, "TypeScript");
+    condition = new CompoundExpression(notLexeme, null, condition, "not");
+    if (!lexemes.get() || lexemes.get()?.content !== ")") {
+      throw new CompilerError('"while (..." must be followed by a closing bracket ")".', lexemes.get(-1));
+    }
+    lexemes.next();
+    eosCheck5(lexemes);
+    const repeatStatement4 = new RepeatStatement(doLexeme, condition);
+    repeatStatement4.statements.push(...repeatStatements);
+    return repeatStatement4;
+  }
+  function whileStatement6(whileLexeme, lexemes, routine) {
+    if (!lexemes.get() || lexemes.get()?.content !== "(") {
+      throw new CompilerError('"while" must be followed by an opening bracket "(".', lexemes.get(-1));
+    }
+    lexemes.next();
+    if (!lexemes.get()) {
+      throw new CompilerError('"while (" must be followed by a Boolean expression.', lexemes.get(-1));
+    }
+    let condition = expression(lexemes, routine);
+    condition = typeCheck(condition, "boolean");
+    if (!lexemes.get() || lexemes.get()?.content !== ")") {
+      throw new CompilerError('"while (..." must be followed by a closing bracket ")".', lexemes.get(-1));
+    }
+    lexemes.next();
+    const whileStatement8 = new WhileStatement(whileLexeme, condition);
+    if (!lexemes.get() || lexemes.get()?.content !== "{") {
+      throw new CompilerError('"while (...)" must be followed by an opening curly bracket "{".', lexemes.get(-1));
+    }
+    lexemes.next();
+    whileStatement8.statements.push(...block6(lexemes, routine));
+    return whileStatement8;
+  }
+  function block6(lexemes, routine) {
+    const statements = [];
+    while (lexemes.get() && lexemes.get()?.content !== "}") {
+      statements.push(statement6(lexemes.get(), lexemes, routine));
+    }
+    if (lexemes.get()?.content === "}") {
+      lexemes.next();
+    } else {
+      throw new CompilerError('Closing bracket "}" missing after statement block.', lexemes.get(-1));
+    }
+    return statements;
+  }
+
+  // client/parser/typescript/parser.ts
+  function typescript(lexemes) {
+    const program3 = new Program("TypeScript");
+    program3.end = lexemes.lexemes.length;
+    parseBody2(lexemes, program3);
+    return program3;
+  }
+  function parseBody2(lexemes, routine) {
+    lexemes.index = routine.start;
+    while (lexemes.index < routine.end) {
+      const lexeme = lexemes.get();
+      lexemes.next();
+      switch (lexeme.type) {
+        case "keyword":
+          switch (lexeme.subtype) {
+            case "const":
+              routine.constants.push(constant6(lexemes, routine, true));
+              eosCheck5(lexemes);
+              break;
+            case "var":
+              routine.variables.push(variable6(lexemes, routine, true));
+              break;
+            case "function":
+              routine.subroutines.push(subroutine7(lexeme, lexemes, routine));
+              break;
+          }
+      }
+    }
+    lexemes.index = routine.start;
+    while (lexemes.index < routine.end) {
+      routine.statements.push(statement6(lexemes.get(), lexemes, routine));
+    }
+    for (const sub of routine.subroutines) {
+      parseBody2(lexemes, sub);
+    }
+  }
+
+  // client/parser/definitions/lexemes.ts
+  var Lexemes = class {
+    constructor(lexemes) {
+      this.lexemes = lexemes.filter((x) => x.type !== "comment");
+      this.index = 0;
+    }
+    get(offset = 0) {
+      return this.lexemes[this.index + offset];
+    }
+    next() {
+      this.index += 1;
+    }
+  };
+
+  // client/parser/parser.ts
+  function parser(code3, language2) {
+    const rawLexemes = typeof code3 === "string" ? lexify(code3, language2) : code3;
+    const lexemes = new Lexemes(rawLexemes);
+    switch (language2) {
+      case "BASIC":
+        return basic(lexemes);
+      case "C":
+        return c(lexemes);
+      case "Java":
+        return java(lexemes);
+      case "Pascal":
+        return pascal(lexemes);
+      case "Python":
+        return python(lexemes);
+      case "TypeScript":
+        return typescript(lexemes);
+    }
+  }
+
+  // client/constants/categories.ts
+  var Category = class {
+    constructor(index, title, expressions) {
+      this.index = index;
+      this.title = title;
+      this.expressions = expressions[0] && expressions[0] instanceof Subroutine ? expressions : expressions.filter((x) => x.category === index);
+    }
+  };
+  var commandCategories = [
+    new Category(0, "Turtle: relative movement", commands),
+    new Category(1, "Turtle: absolute movement", commands),
+    new Category(2, "Turtle: drawing shapes", commands),
+    new Category(3, "Other Turtle commands", commands),
+    new Category(4, "Canvas operations", commands),
+    new Category(5, "General arithmetic functions", commands),
+    new Category(6, "Trig / exp / log functions", commands),
+    new Category(7, "String operations", commands),
+    new Category(8, "Type conversion routines", commands),
+    new Category(9, "Input and timing routines", commands),
+    new Category(10, "File processing", commands),
+    new Category(11, "Turtle Machine monitoring", commands)
+  ];
+  var keywordCategories = {
+    BASIC: [
+      new Category(20, "Command structures", keywords.BASIC),
+      new Category(21, "Variable scope modifiers", keywords.BASIC)
+    ],
+    C: [
+      new Category(20, "Command structures", keywords.C)
+    ],
+    Java: [
+      new Category(20, "Command structures", keywords.Java)
+    ],
+    Pascal: [
+      new Category(20, "Command structures", keywords.Pascal)
+    ],
+    Python: [
+      new Category(20, "Command structures", keywords.Python),
+      new Category(21, "Variable scope modifiers", keywords.Python)
+    ],
+    TypeScript: [
+      new Category(20, "Command structures", keywords.TypeScript)
+    ]
+  };
+
+  // client/analyser/analyse.ts
+  function analyse_default(lexemes, program3) {
+    const categories = commandCategories.concat(keywordCategories[program3.language]);
+    const usageCategories = categories.map(usageCategory.bind(null, program3.language, lexemes));
+    const subroutineCategory = new Category(30, "Subroutine calls", program3.allSubroutines.slice(1));
+    const subroutineUsageCategory = usageCategory(program3.language, lexemes, subroutineCategory);
+    return usageCategories.concat(subroutineUsageCategory).filter((category) => category.expressions.length > 0);
+  }
+  function usageCategory(language2, lexemes, category) {
+    const filtered = category.expressions.filter(isUsed.bind(null, language2, lexemes));
+    const mapped = filtered.map(usageExpression.bind(null, language2, lexemes));
+    mapped.sort((a2, b) => {
+      return a2.level === b.level ? a2.name.localeCompare(b.name) : a2.level - b.level;
+    });
+    return {
+      category: category.title,
+      expressions: mapped,
+      total: mapped.reduce((x, y) => x + y.count, 0)
+    };
+  }
+  function isUsed(language2, lexemes, expression3) {
+    const name = expression3 instanceof Command ? expression3.names[language2] : expression3.name;
+    if (!name) {
+      return false;
+    }
+    const uses = language2 === "Pascal" ? lexemes.filter((lexeme) => lexeme.content && lexeme.content.toLowerCase() === name.toLowerCase()) : lexemes.filter((lexeme) => lexeme.content === name);
+    return uses.length > 0;
+  }
+  function usageExpression(language2, lexemes, expression3) {
+    const name = expression3 instanceof Command ? expression3.names[language2] : expression3.name;
+    const uses = language2 === "Pascal" ? lexemes.filter((lexeme) => lexeme.content && lexeme.content.toLowerCase() === name.toLowerCase()) : lexemes.filter((lexeme) => lexeme.content === name);
+    uses.sort((a2, b) => a2.line - b.line);
+    return {
+      name: language2 === "Pascal" ? name.toLowerCase() : name,
+      level: expression3.level + 1,
+      count: uses.length,
+      lines: uses.reduce((x, y) => `${x} ${y.line.toString(10)}`, "").trim()
+    };
+  }
+
+  // client/encoder/options.ts
+  var defaultOptions2 = {
+    canvasStartSize: defaults.canvasStartSize,
+    setupDefaultKeyBuffer: defaults.setupDefaultKeyBuffer,
+    turtleAttributesAsGlobals: defaults.turtleAttributesAsGlobals,
+    initialiseLocals: defaults.initialiseLocals,
+    allowCSTR: defaults.allowCSTR,
+    separateReturnStack: defaults.separateReturnStack,
+    separateMemoryControlStack: defaults.separateMemoryControlStack,
+    separateSubroutineRegisterStack: defaults.separateSubroutineRegisterStack
+  };
+
+  // client/encoder/expression.ts
+  function merge(pcode1, pcode2) {
+    if (pcode1.length === 0) {
+      pcode1.push(...pcode2);
+    } else {
+      const last1 = pcode1[pcode1.length - 1];
+      const first2 = pcode2.shift();
+      if (first2)
+        last1.push(...first2);
+      pcode1.push(...pcode2);
+    }
+  }
+  function expression2(exp, program3, options2, reference = false) {
+    switch (exp.expressionType) {
+      case "integer":
+        return [literalIntegerValue(exp, options2)];
+      case "string":
+        return [literalStringValue(exp, options2)];
+      case "input":
+        return [inputValue(exp, options2)];
+      case "colour":
+        return [colourValue(exp, options2)];
+      case "constant":
+        return constantValue(exp, program3, options2);
+      case "address":
+        return variableAddress(exp, program3, options2);
+      case "variable":
+        if (reference) {
+          if (exp.variable.isArray && exp.indexes.length < exp.variable.arrayDimensions.length) {
+            return variableValue(exp, program3, options2);
+          } else if (exp.variable.type === "string" && exp.indexes.length === 0) {
+            return variableValue(exp, program3, options2);
+          } else {
+            return variableAddress(exp, program3, options2);
+          }
+        }
+        return variableValue(exp, program3, options2);
+      case "function":
+        return functionValue(exp, program3, options2);
+      case "compound":
+        return compoundExpression(exp, program3, options2);
+      case "cast":
+        return castExpression(exp, program3, options2);
+    }
+  }
+  function literalIntegerValue(exp, options2) {
+    return [112 /* ldin */, exp.value];
+  }
+  function literalStringValue(exp, options2) {
+    return [118 /* lstr */, exp.value.length].concat(Array.from(exp.value).map((x) => x.charCodeAt(0)));
+  }
+  function inputValue(exp, options2) {
+    return exp.input.value < 0 ? [112 /* ldin */, exp.input.value, 160 /* inpt */] : [112 /* ldin */, exp.input.value];
+  }
+  function colourValue(exp, options2) {
+    return [112 /* ldin */, exp.colour.value];
+  }
+  function constantValue(exp, program3, options2) {
+    const pcode2 = [];
+    if (exp.constant.type === "string") {
+      pcode2.push([118 /* lstr */, exp.constant.value.length].concat(Array.from(exp.constant.value).map((x) => x.charCodeAt(0))));
+      if (exp.indexes.length > 0) {
+        const indexExp = expression2(exp.indexes[0], program3, options2);
+        merge(pcode2, indexExp);
+        if (program3.language === "Pascal") {
+          merge(pcode2, [[5 /* decr */]]);
+        }
+        merge(pcode2, [[2 /* swap */, 127 /* test */, 26 /* plus */, 4 /* incr */, 122 /* lptr */]]);
+      }
+    } else {
+      pcode2.push([112 /* ldin */, exp.constant.value]);
+    }
+    return pcode2;
+  }
+  function variableAddress(exp, program3, options2) {
+    const pcode2 = [];
+    if (exp.variable.isArray && exp.indexes.length > 0) {
+      const baseVariableExp = new VariableValue(exp.lexeme, exp.variable);
+      pcode2.push(...expression2(baseVariableExp, program3, options2));
+      for (let i2 = 0; i2 < exp.indexes.length; i2 += 1) {
+        const index = exp.indexes[i2];
+        const indexExp = expression2(index, program3, options2);
+        merge(pcode2, indexExp);
+        if (exp.variable.arrayDimensions[i2] && exp.variable.arrayDimensions[i2][0] !== 0) {
+          merge(pcode2, [[112 /* ldin */, exp.variable.arrayDimensions[i2][0], 27 /* subt */]]);
+        } else if (exp.variable.arrayDimensions[i2] === void 0) {
+          if (program3.language === "Pascal") {
+            merge(pcode2, [[5 /* decr */]]);
+          }
+        }
+        merge(pcode2, [[2 /* swap */, 127 /* test */, 26 /* plus */, 4 /* incr */]]);
+      }
+    } else if (exp.variable.type === "string" && exp.indexes.length > 0) {
+      pcode2.push(...expression2(exp.indexes[0], program3, options2));
+      if (program3.language === "Pascal") {
+        merge(pcode2, [[5 /* decr */]]);
+      }
+      const baseVariableExp = new VariableValue(exp.lexeme, exp.variable);
+      merge(pcode2, expression2(baseVariableExp, program3, options2));
+      merge(pcode2, [[127 /* test */, 26 /* plus */, 4 /* incr */]]);
+    } else if (exp.variable.turtle) {
+      pcode2.push([116 /* ldag */, program3.turtleAddress + exp.variable.turtle]);
+    } else if (exp.variable.routine instanceof Program) {
+      pcode2.push([116 /* ldag */, exp.variable.address]);
+    } else {
+      pcode2.push([117 /* ldav */, exp.variable.routine.address, exp.variable.address]);
+    }
+    return pcode2;
+  }
+  function variableValue(exp, program3, options2) {
+    let pcode2 = [];
+    if (exp.variable.isArray && exp.indexes.length > 0) {
+      const baseVariableExp = new VariableValue(exp.lexeme, exp.variable);
+      pcode2.push(...expression2(baseVariableExp, program3, options2));
+      for (let i2 = 0; i2 < exp.indexes.length; i2 += 1) {
+        const index = exp.indexes[i2];
+        const indexExp = expression2(index, program3, options2);
+        merge(pcode2, indexExp);
+        if (exp.variable.arrayDimensions[i2] && exp.variable.arrayDimensions[i2][0] !== 0) {
+          merge(pcode2, [[112 /* ldin */, exp.variable.arrayDimensions[i2][0], 27 /* subt */]]);
+        } else if (exp.variable.arrayDimensions[i2] === void 0) {
+          if (program3.language === "Pascal") {
+            merge(pcode2, [[5 /* decr */]]);
+          }
+        }
+        merge(pcode2, [[2 /* swap */, 127 /* test */, 26 /* plus */, 4 /* incr */, 122 /* lptr */]]);
+      }
+    } else if (exp.variable.type === "string" && exp.indexes.length > 0) {
+      pcode2.push(...expression2(exp.indexes[0], program3, options2));
+      if (program3.language === "Pascal") {
+        merge(pcode2, [[5 /* decr */]]);
+      }
+      const baseVariableExp = new VariableValue(exp.lexeme, exp.variable);
+      merge(pcode2, expression2(baseVariableExp, program3, options2));
+      merge(pcode2, [[127 /* test */, 26 /* plus */, 4 /* incr */, 122 /* lptr */]]);
+      if (program3.language === "Python" || program3.language === "TypeScript") {
+        merge(pcode2, [[9 /* ctos */]]);
+      }
+    } else if (exp.variable.turtle) {
+      pcode2.push([113 /* ldvg */, program3.turtleAddress + exp.variable.turtle]);
+    } else if (exp.variable.routine instanceof Program) {
+      pcode2.push([113 /* ldvg */, exp.variable.address]);
+    } else if (exp.variable.isReferenceParameter && !exp.variable.isArray && exp.variable.type !== "string") {
+      pcode2.push([115 /* ldvr */, exp.variable.routine.address, exp.variable.address]);
+    } else {
+      pcode2.push([114 /* ldvv */, exp.variable.routine.address, exp.variable.address]);
+    }
+    if (exp.variable.isPointer) {
+      merge(pcode2, [[155 /* peek */]]);
+    }
+    return pcode2;
+  }
+  function functionValue(exp, program3, options2) {
+    const pcode2 = [];
+    for (let index = 0; index < exp.command.parameters.length; index += 1) {
+      const arg = exp.arguments[index];
+      const param = exp.command.parameters[index];
+      merge(pcode2, expression2(arg, program3, options2, param.isReferenceParameter));
+    }
+    if (exp.command instanceof Subroutine) {
+      merge(pcode2, [[131 /* subr */, exp.command.index]]);
+    } else {
+      merge(pcode2, [exp.command.code.slice()]);
+    }
+    if (exp.command instanceof Subroutine) {
+      pcode2.push([114 /* ldvv */, program3.resultAddress, 1]);
+      if (exp.command.returns === "string") {
+        merge(pcode2, [[8 /* hstr */]]);
+      }
+    }
+    return pcode2;
+  }
+  function compoundExpression(exp, program3, options2) {
+    const left = exp.left ? expression2(exp.left, program3, options2) : null;
+    if (left && exp.right.expressionType === "integer" && exp.right.value === 1) {
+      if (exp.operator === "plus") {
+        merge(left, [[4 /* incr */]]);
+        return left;
+      }
+      if (exp.operator === "subt") {
+        merge(left, [[5 /* decr */]]);
+        return left;
+      }
+    }
+    const right = expression2(exp.right, program3, options2);
+    const op = operator3(exp.operator, program3, options2);
+    if (left) {
+      merge(left, right);
+      merge(left, [op]);
+      return left;
+    }
+    merge(right, [op]);
+    return right;
+  }
+  function castExpression(exp, program3, options2) {
+    const pcode2 = expression2(exp.expression, program3, options2);
+    if (exp.expression.type === "character" && exp.type === "string") {
+      merge(pcode2, [[9 /* ctos */]]);
+    }
+    if (exp.expression.type === "integer" && exp.type === "string") {
+      merge(pcode2, [[11 /* itos */]]);
+    }
+    if (exp.expression.type === "string" && exp.type === "integer") {
+      merge(pcode2, [[112 /* ldin */, 0, 13 /* sval */]]);
+    }
+    return pcode2;
+  }
+  function operator3(op, program3, options2) {
+    switch (op) {
+      case "not":
+        if (program3.language === "C" || program3.language === "Python") {
+          return [112 /* ldin */, 0, 32 /* eqal */];
+        }
+        return [16 /* not */];
+      default:
+        return [PCode[op]];
+    }
+  }
+
+  // client/encoder/statement.ts
+  function statement7(stmt, program3, startLine, options2) {
+    switch (stmt.statementType) {
+      case "variableAssignment":
+        return variableAssignment7(stmt, program3, options2);
+      case "procedureCall":
+        return procedureCall2(stmt, program3, options2);
+      case "ifStatement":
+        return ifStatement7(stmt, program3, startLine, options2);
+      case "forStatement":
+        return forStatement7(stmt, program3, startLine, options2);
+      case "repeatStatement":
+        return repeatStatement3(stmt, program3, startLine, options2);
+      case "whileStatement":
+        return whileStatement7(stmt, program3, startLine, options2);
+      case "returnStatement":
+        return returnStatement6(stmt, program3, options2);
+      case "passStatement":
+        return [];
+    }
+  }
+  function variableAssignment7(stmt, program3, options2) {
+    if (stmt.variable.turtle) {
+      return turtleVariableAssignment(stmt, program3, options2);
+    }
+    if (stmt.variable.isGlobal) {
+      return globalVariableAssignment(stmt, program3, options2);
+    }
+    if (stmt.variable.isPointer) {
+      return pointerVariableAssignment(stmt, program3, options2);
+    }
+    if (stmt.variable.isReferenceParameter && !stmt.variable.isArray && stmt.variable.type !== "string") {
+      return referenceVariableAssignment(stmt, program3, options2);
+    }
+    return localVariableAssignment(stmt, program3, options2);
+  }
+  function turtleVariableAssignment(stmt, program3, options2) {
+    const pcode2 = expression2(stmt.value, program3, options2);
+    merge(pcode2, [[119 /* stvg */, program3.turtleAddress + stmt.variable.turtle]]);
+    return pcode2;
+  }
+  function globalVariableAssignment(stmt, program3, options2) {
+    const pcode2 = expression2(stmt.value, program3, options2);
+    if (stmt.variable.isArray || stmt.variable.type === "string" && stmt.indexes.length > 0) {
+      const exp = new VariableValue(stmt.lexeme, stmt.variable);
+      exp.indexes.push(...stmt.indexes);
+      const element2 = expression2(exp, program3, options2);
+      const lastLine = element2[element2.length - 1];
+      if (stmt.variable.isArray && stmt.variable.type === "string") {
+        lastLine.push(126 /* cstr */);
+      } else {
+        lastLine[lastLine.length - 1] = 123 /* sptr */;
+      }
+      merge(pcode2, element2);
+    } else if (stmt.variable.type === "string") {
+      merge(pcode2, [[113 /* ldvg */, stmt.variable.address, 126 /* cstr */]]);
+    } else {
+      merge(pcode2, [[119 /* stvg */, stmt.variable.address]]);
+    }
+    return pcode2;
+  }
+  function pointerVariableAssignment(stmt, program3, options2) {
+    const variableValue2 = new VariableValue(stmt.lexeme, stmt.variable);
+    const pcode2 = expression2(variableValue2, program3, options2);
+    pcode2[pcode2.length - 1].pop();
+    merge(pcode2, expression2(stmt.value, program3, options2));
+    if (stmt.variable.type === "string") {
+      merge(pcode2, [[126 /* cstr */]]);
+    } else {
+      merge(pcode2, [[156 /* poke */]]);
+    }
+    return pcode2;
+  }
+  function referenceVariableAssignment(stmt, program3, options2) {
+    const pcode2 = expression2(stmt.value, program3, options2);
+    merge(pcode2, [[121 /* stvr */, stmt.variable.routine.address, stmt.variable.address]]);
+    return pcode2;
+  }
+  function localVariableAssignment(stmt, program3, options2) {
+    const pcode2 = expression2(stmt.value, program3, options2);
+    if (stmt.variable.isArray || stmt.variable.type === "string" && stmt.indexes.length > 0) {
+      const exp = new VariableValue(stmt.lexeme, stmt.variable);
+      exp.indexes.push(...stmt.indexes);
+      const element2 = expression2(exp, program3, options2);
+      const lastLine = element2[element2.length - 1];
+      if (stmt.variable.isArray && stmt.variable.type === "string") {
+        lastLine.push(126 /* cstr */);
+      } else {
+        lastLine[lastLine.length - 1] = 123 /* sptr */;
+      }
+      merge(pcode2, element2);
+    } else if (stmt.variable.type === "string") {
+      merge(pcode2, [[114 /* ldvv */, stmt.variable.routine.address, stmt.variable.address, 126 /* cstr */]]);
+    } else {
+      merge(pcode2, [[120 /* stvv */, stmt.variable.routine.address, stmt.variable.address]]);
+    }
+    return pcode2;
+  }
+  function procedureCall2(stmt, program3, options2) {
+    const pcode2 = [];
+    for (let index = 0; index < stmt.command.parameters.length; index += 1) {
+      const arg = stmt.arguments[index];
+      const param = stmt.command.parameters[index];
+      merge(pcode2, expression2(arg, program3, options2, param.isReferenceParameter));
+    }
+    if (stmt.command instanceof Subroutine) {
+      merge(pcode2, [[131 /* subr */, stmt.command.index]]);
+    } else {
+      if (stmt.command.code[0] === 229 /* oldt */) {
+        merge(pcode2, [[112 /* ldin */, program3.turtleAddress, 112 /* ldin */, 0, 123 /* sptr */]]);
+      } else {
+        merge(pcode2, [stmt.command.code.slice()]);
+      }
+    }
+    return pcode2;
+  }
+  function ifStatement7(stmt, program3, startLine, options2) {
+    const firstLines = expression2(stmt.condition, program3, options2);
+    const ifPcode = [];
+    for (const subStmt of stmt.ifStatements) {
+      const subStartLine = startLine + ifPcode.length + firstLines.length;
+      ifPcode.push(...statement7(subStmt, program3, subStartLine, options2));
+    }
+    const elsePcode = [];
+    for (const subStmt of stmt.elseStatements) {
+      const subStartLine = startLine + ifPcode.length + elsePcode.length + firstLines.length + 1;
+      elsePcode.push(...statement7(subStmt, program3, subStartLine, options2));
+    }
+    if (elsePcode.length === 0) {
+      merge(firstLines, [[129 /* ifno */, startLine + ifPcode.length + firstLines.length]]);
+      ifPcode.unshift(...firstLines);
+      return ifPcode;
+    }
+    merge(firstLines, [[129 /* ifno */, startLine + ifPcode.length + firstLines.length + 1]]);
+    const middleLine = [128 /* jump */, startLine + ifPcode.length + elsePcode.length + firstLines.length + 1];
+    ifPcode.unshift(...firstLines);
+    ifPcode.push(middleLine);
+    return ifPcode.concat(elsePcode);
+  }
+  function forStatement7(stmt, program3, startLine, options2) {
+    const pcode2 = [];
+    for (const subStmt of stmt.statements) {
+      const subStartLine = startLine + pcode2.length + 2;
+      pcode2.push(...statement7(subStmt, program3, subStartLine, options2));
+    }
+    const condition = expression2(stmt.condition, program3, options2);
+    merge(condition, [[129 /* ifno */, startLine + pcode2.length + condition.length + 2]]);
+    pcode2.unshift(...condition);
+    pcode2.unshift(...variableAssignment7(stmt.initialisation, program3, options2));
+    pcode2.push(...variableAssignment7(stmt.change, program3, options2));
+    merge(pcode2, [[128 /* jump */, startLine + 1]]);
+    return pcode2;
+  }
+  function repeatStatement3(stmt, program3, startLine, options2) {
+    const pcode2 = [];
+    for (const subStmt of stmt.statements) {
+      const subStartLine = startLine + pcode2.length;
+      pcode2.push(...statement7(subStmt, program3, subStartLine, options2));
+    }
+    const condition = expression2(stmt.condition, program3, options2);
+    merge(condition, [[129 /* ifno */, startLine]]);
+    pcode2.push(...condition);
+    return pcode2;
+  }
+  function whileStatement7(stmt, program3, startLine, options2) {
+    const pcode2 = [];
+    for (const subStmt of stmt.statements) {
+      const subStartLine = startLine + pcode2.length + 1;
+      pcode2.push(...statement7(subStmt, program3, subStartLine, options2));
+    }
+    const condition = expression2(stmt.condition, program3, options2);
+    const nextLine = startLine + pcode2.length + condition.length + 1;
+    merge(condition, [[129 /* ifno */, nextLine]]);
+    pcode2.unshift(...condition);
+    pcode2.push([128 /* jump */, startLine]);
+    return pcode2;
+  }
+  function returnStatement6(stmt, program3, options2) {
+    const variableAssignment8 = new VariableAssignment(stmt.lexeme, stmt.routine.variables[0], [], stmt.value);
+    const pcode2 = localVariableAssignment(variableAssignment8, program3, options2);
+    pcode2.push([
+      113 /* ldvg */,
+      stmt.routine.address,
+      119 /* stvg */,
+      program3.resultAddress,
+      140 /* memr */,
+      stmt.routine.address,
+      134 /* plsr */,
+      132 /* retn */
+    ]);
+    return pcode2;
+  }
+
+  // client/encoder/program.ts
+  function program2(program3, options2 = defaultOptions2) {
+    const startCode = programStart(program3, options2);
+    const subroutinesStartLine = program3.allSubroutines.length > 0 ? startCode.length + 2 : startCode.length + 1;
+    const subroutinesCode = compileSubroutines(program3.allSubroutines, subroutinesStartLine, options2);
+    const programStartLine = subroutinesStartLine + subroutinesCode.length;
+    const innerCode = compileInnerCode(program3, programStartLine, options2);
+    const jumpLine = [[128 /* jump */, startCode.length + subroutinesCode.length + 2]];
+    const pcode2 = subroutinesCode.length > 1 ? startCode.concat(jumpLine).concat(subroutinesCode).concat(innerCode) : startCode.concat(innerCode);
+    backpatchSubroutineCalls(program3, pcode2);
+    if (program3.language === "C" || program3.language === "Java") {
+      const main2 = program3.subroutines.find((x) => x.name === "main");
+      pcode2.push([131 /* subr */, main2.startLine]);
+    }
+    addHCLR(pcode2);
+    pcode2.push([130 /* halt */]);
+    return pcode2;
+  }
+  function programStart(program3, options2) {
+    const pcode2 = [
+      [
+        112 /* ldin */,
+        program3.turtleAddress,
+        1 /* dupl */,
+        1 /* dupl */,
+        112 /* ldin */,
+        0,
+        123 /* sptr */,
+        112 /* ldin */,
+        program3.turtleVariables.length,
+        2 /* swap */,
+        123 /* sptr */,
+        4 /* incr */,
+        112 /* ldin */,
+        program3.memoryNeeded + program3.turtleVariables.length,
+        124 /* zptr */,
+        112 /* ldin */,
+        program3.turtleAddress + program3.memoryNeeded + program3.turtleVariables.length,
+        138 /* stmt */
+      ],
+      [
+        80 /* home */,
+        112 /* ldin */,
+        2,
+        85 /* thik */,
+        112 /* ldin */,
+        360,
+        84 /* angl */,
+        112 /* ldin */,
+        32,
+        162 /* bufr */,
+        112 /* ldin */,
+        1,
+        123 /* sptr */,
+        141 /* hfix */,
+        112 /* ldin */,
+        0,
+        1 /* dupl */,
+        112 /* ldin */,
+        1e3,
+        1 /* dupl */,
+        1 /* dupl */,
+        1 /* dupl */,
+        145 /* reso */,
+        144 /* canv */
+      ]
+    ];
+    for (const variable7 of program3.variables) {
+      const setup = setupGlobalVariable(variable7);
+      if (setup.length > 0) {
+        pcode2.push(...setup);
+      }
+    }
+    return pcode2;
+  }
+  function setupGlobalVariable(variable7) {
+    const pcode2 = [];
+    if (variable7.isArray) {
+      pcode2.push([
+        116 /* ldag */,
+        variable7.lengthByteAddress,
+        119 /* stvg */,
+        variable7.address,
+        112 /* ldin */,
+        variable7.elementCount,
+        119 /* stvg */,
+        variable7.lengthByteAddress
+      ]);
+      for (const subVariable of variable7.subVariables) {
+        const subPcode = setupGlobalVariable(subVariable);
+        if (subPcode.length > 0) {
+          pcode2.push(...subPcode);
+        }
+      }
+    } else if (variable7.type === "string") {
+      pcode2.push([
+        116 /* ldag */,
+        variable7.lengthByteAddress + 1,
+        119 /* stvg */,
+        variable7.address,
+        112 /* ldin */,
+        variable7.stringLength + 1,
+        119 /* stvg */,
+        variable7.lengthByteAddress
+      ]);
+    }
+    return pcode2;
+  }
+  function compileSubroutines(subroutines, startLine, options2) {
+    const pcode2 = [];
+    for (const subroutine8 of subroutines) {
+      subroutine8.startLine = startLine;
+      const startCode = subroutineStartCode(subroutine8, options2);
+      const innerCode = compileInnerCode(subroutine8, startLine + startCode.length, options2);
+      const subroutineCode = startCode.concat(innerCode);
+      if (subroutine8.type === "procedure" || subroutine8.program.language === "Pascal") {
+        const endCode = subroutineEndCode(subroutine8, options2);
+        subroutineCode.push(...endCode);
+      }
+      startLine += subroutineCode.length;
+      pcode2.push(...subroutineCode);
+    }
+    return pcode2;
+  }
+  function compileInnerCode(routine, startLine, options2) {
+    const program3 = routine instanceof Subroutine ? routine.program : routine;
+    const pcode2 = [];
+    for (const stmt of routine.statements) {
+      pcode2.push(...statement7(stmt, program3, startLine + pcode2.length, options2));
+    }
+    return pcode2;
+  }
+  function subroutineStartCode(subroutine8, options2) {
+    const pcode2 = [];
+    pcode2.push([133 /* pssr */, subroutine8.index]);
+    if (subroutine8.variables.length > 0) {
+      pcode2.push([139 /* memc */, subroutine8.address, subroutine8.memoryNeeded]);
+      if (options2.initialiseLocals) {
+        if (subroutine8.variables.length > subroutine8.parameters.length) {
+          pcode2.push([117 /* ldav */, subroutine8.address, 1, 112 /* ldin */, subroutine8.memoryNeeded, 124 /* zptr */]);
+        }
+      }
+      for (const variable7 of subroutine8.variables) {
+        const setup = setupLocalVariable(variable7);
+        if (setup.length > 0) {
+          pcode2.push(...setup);
+        }
+      }
+      if (subroutine8.parameters.length > 0) {
+        pcode2.push([]);
+        for (const parameter of subroutine8.parameters.reverse()) {
+          const lastStartLine = pcode2[pcode2.length - 1];
+          if (parameter.isArray && !parameter.isReferenceParameter) {
+          } else if (parameter.type === "string" && !parameter.isReferenceParameter) {
+            lastStartLine.push(114 /* ldvv */, subroutine8.address, parameter.address, 126 /* cstr */);
+          } else {
+            lastStartLine.push(120 /* stvv */, subroutine8.address, parameter.address);
+          }
+        }
+      }
+    }
+    return pcode2;
+  }
+  function setupLocalVariable(variable7) {
+    const subroutine8 = variable7.routine;
+    const pcode2 = [];
+    if (variable7.isArray && !variable7.isReferenceParameter) {
+      pcode2.push([
+        117 /* ldav */,
+        subroutine8.address,
+        variable7.lengthByteAddress,
+        120 /* stvv */,
+        subroutine8.address,
+        variable7.address,
+        112 /* ldin */,
+        variable7.elementCount,
+        120 /* stvv */,
+        subroutine8.address,
+        variable7.lengthByteAddress
+      ]);
+      for (const subVariable of variable7.subVariables) {
+        const subPcode = setupLocalVariable(subVariable);
+        if (subPcode.length > 0) {
+          pcode2.push(...subPcode);
+        }
+      }
+      return pcode2;
+    }
+    if (variable7.type === "string") {
+      pcode2.push([
+        117 /* ldav */,
+        subroutine8.address,
+        variable7.lengthByteAddress + 1,
+        120 /* stvv */,
+        subroutine8.address,
+        variable7.address,
+        112 /* ldin */,
+        variable7.stringLength + 1,
+        120 /* stvv */,
+        subroutine8.address,
+        variable7.lengthByteAddress
+      ]);
+    }
+    return pcode2;
+  }
+  function subroutineEndCode(subroutine8, options2) {
+    const pcode2 = [];
+    if (subroutine8.type === "function") {
+      pcode2.push(113 /* ldvg */, subroutine8.address, 119 /* stvg */, subroutine8.program.resultAddress);
+    }
+    if (subroutine8.variables.length > 0) {
+      pcode2.push(140 /* memr */, subroutine8.address);
+    }
+    pcode2.push(134 /* plsr */, 132 /* retn */);
+    return [pcode2];
+  }
+  function backpatchSubroutineCalls(program3, pcode2) {
+    for (let i2 = 0; i2 < pcode2.length; i2 += 1) {
+      for (let j = 0; j < pcode2[i2].length; j += 1) {
+        if (pcode2[i2][j - 1] && pcode2[i2][j - 1] === 131 /* subr */) {
+          const subroutine8 = program3.allSubroutines.find((x) => x.index === pcode2[i2][j]);
+          if (subroutine8) {
+            pcode2[i2][j] = subroutine8.startLine;
+          }
+        }
+      }
+    }
+  }
+  function addHCLR(pcode2) {
+    const heapStringCodes = [
+      8 /* hstr */,
+      9 /* ctos */,
+      11 /* itos */,
+      12 /* hexs */,
+      14 /* qtos */,
+      46 /* smax */,
+      47 /* smin */,
+      64 /* scat */,
+      66 /* case */,
+      67 /* copy */,
+      68 /* dels */,
+      69 /* inss */,
+      71 /* repl */,
+      72 /* spad */,
+      118 /* lstr */,
+      163 /* read */,
+      164 /* rdln */,
+      184 /* frds */,
+      185 /* frln */,
+      188 /* ffnd */,
+      189 /* fdir */,
+      190 /* fnxt */
+    ];
+    for (const line2 of pcode2) {
+      let heapStringMade = false;
+      let heapStringNeeded = false;
+      let lastJumpIndex = null;
+      let i2 = 0;
+      while (i2 < line2.length) {
+        if (heapStringCodes.indexOf(line2[i2]) >= 0) {
+          heapStringMade = true;
+        }
+        if (line2[i2] === 131 /* subr */) {
+          heapStringNeeded = true;
+        }
+        if (line2[i2] === 128 /* jump */ || line2[i2] === 129 /* ifno */) {
+          lastJumpIndex = i2;
+        }
+        const args = pcodeArgs(line2[i2]);
+        i2 += args === -1 ? line2[i2 + 1] + 2 : args + 1;
+      }
+      if (heapStringMade && !heapStringNeeded) {
+        if (lastJumpIndex !== null) {
+          line2.splice(lastJumpIndex, 0, 142 /* hclr */);
+        } else if (line2[line2.length - 1] !== 142 /* hclr */) {
+          line2.push(142 /* hclr */);
+        }
+      }
+    }
+  }
+
+  // client/state/index.ts
+  var State = class {
+    #savedSettingsHaveBeenLoaded;
+    #language;
+    #mode;
+    #editorFontFamily;
+    #editorFontSize;
+    #outputFontFamily;
+    #outputFontSize;
+    #includeCommentsInExamples;
+    #loadCorrespondingExample;
+    #assembler;
+    #decimal;
+    #autoCompileOnLoad;
+    #autoRunOnLoad;
+    #autoFormatOnLoad;
+    #alwaysSaveSettings;
+    #commandsCategoryIndex;
+    #showSimpleCommands;
+    #showIntermediateCommands;
+    #showAdvancedCommands;
+    #files;
+    #currentFileIndex;
+    #tokens;
+    #lexemes;
+    #program;
+    #usage;
+    #pcode;
+    #showCanvasOnRun;
+    #showOutputOnWrite;
+    #showMemoryOnDump;
+    #drawCountMax;
+    #codeCountMax;
+    #smallSize;
+    #stackSize;
+    #traceOnRun;
+    #activateHCLR;
+    #preventStackCollision;
+    #rangeCheckArrays;
+    #canvasStartSize;
+    #setupDefaultKeyBuffer;
+    #turtleAttributesAsGlobals;
+    #initialiseLocals;
+    #allowCSTR;
+    #separateReturnStack;
+    #separateMemoryControlStack;
+    #separateSubroutineRegisterStack;
+    constructor() {
+      this.#savedSettingsHaveBeenLoaded = load("savedSettingsHaveBeenLoaded");
+      this.#language = load("language");
+      this.#mode = load("mode");
+      this.#editorFontFamily = load("editorFontFamily");
+      this.#editorFontSize = load("editorFontSize");
+      this.#outputFontFamily = load("outputFontFamily");
+      this.#outputFontSize = load("outputFontSize");
+      this.#includeCommentsInExamples = load("includeCommentsInExamples");
+      this.#loadCorrespondingExample = load("loadCorrespondingExample");
+      this.#assembler = load("assembler");
+      this.#decimal = load("decimal");
+      this.#autoCompileOnLoad = load("autoCompileOnLoad");
+      this.#autoRunOnLoad = load("autoRunOnLoad");
+      this.#autoFormatOnLoad = load("autoFormatOnLoad");
+      this.#alwaysSaveSettings = load("alwaysSaveSettings");
+      this.#commandsCategoryIndex = load("commandsCategoryIndex");
+      this.#showSimpleCommands = load("showSimpleCommands");
+      this.#showIntermediateCommands = load("showIntermediateCommands");
+      this.#showAdvancedCommands = load("showAdvancedCommands");
+      this.#files = load("files");
+      this.#currentFileIndex = load("currentFileIndex");
+      this.#tokens = [];
+      this.#lexemes = [];
+      this.#program = new Program(this.#language, "");
+      this.#usage = [];
+      this.#pcode = [];
+      this.#showCanvasOnRun = load("showCanvasOnRun");
+      this.#showOutputOnWrite = load("showOutputOnWrite");
+      this.#showMemoryOnDump = load("showMemoryOnDump");
+      this.#drawCountMax = load("drawCountMax");
+      this.#codeCountMax = load("codeCountMax");
+      this.#smallSize = load("smallSize");
+      this.#stackSize = load("stackSize");
+      this.#traceOnRun = load("traceOnRun");
+      this.#activateHCLR = load("activateHCLR");
+      this.#preventStackCollision = load("preventStackCollision");
+      this.#rangeCheckArrays = load("rangeCheckArrays");
+      this.#canvasStartSize = load("canvasStartSize");
+      this.#setupDefaultKeyBuffer = load("setupDefaultKeyBuffer");
+      this.#turtleAttributesAsGlobals = load("turtleAttributesAsGlobals");
+      this.#initialiseLocals = load("initialiseLocals");
+      this.#allowCSTR = load("allowCSTR");
+      this.#separateReturnStack = load("separateReturnStack");
+      this.#separateMemoryControlStack = load("separateMemoryControlStack");
+      this.#separateSubroutineRegisterStack = load("separateSubroutineRegisterStack");
+    }
+    async init() {
+      const response = await fetch("/status");
+      const user = await response.json();
+      if (user) {
+        if (!this.savedSettingsHaveBeenLoaded) {
+          await this.loadSavedSettings();
+        }
+      } else {
+        this.savedSettingsHaveBeenLoaded = false;
+        this.alwaysSaveSettings = false;
+      }
+      if (this.#files.length === 0) {
+        this.#files.push(new File(this.language));
+      } else if (this.#files.length === 1 && this.file.code === "") {
+        this.file.language = this.language;
+      } else {
+        this.#tokens = tokenize(this.code, this.language);
+      }
+      if (this.file.compiled) {
+        this.compileCurrentFile();
+      }
+      send("languageChanged");
+      send("modeChanged");
+      send("editorFontFamilyChanged");
+      send("editorFontSizeChanged");
+      send("outputFontFamilyChanged");
+      send("outputFontSizeChanged");
+      send("includeCommentsInExamplesChanged");
+      send("loadCorrespondingExampleChanged");
+      send("assemblerChanged");
+      send("decimalChanged");
+      send("autoCompileOnLoadChanged");
+      send("autoRunOnLoadChanged");
+      send("autoFormatOnLoadChanged");
+      send("alwaysSaveSettingsChanged");
+      send("commandsCategoryIndexChanged");
+      send("showSimpleCommandsChanged");
+      send("showIntermediateCommandsChanged");
+      send("showAdvancedCommandsChanged");
+      send("filesChanged");
+      send("currentFileIndexChanged");
+      send("tokensChanged");
+      send("lexemesChanged");
+      send("programChanged");
+      send("usageChanged");
+      send("pcodeChanged");
+      send("showCanvasOnRunChanged");
+      send("showOutputOnWriteChanged");
+      send("showMemoryOnDumpChanged");
+      send("drawCountMaxChanged");
+      send("codeCountMaxChanged");
+      send("smallSizeChanged");
+      send("stackSizeChanged");
+      send("traceOnRunChanged");
+      send("activateHCLRChanged");
+      send("preventStackCollisionChanged");
+      send("rangeCheckArraysChanged");
+      send("canvasStartSizeChanged");
+      send("setupDefaultKeyBufferChanged");
+      send("turtleAttributesAsGlobalsChanged");
+      send("initialiseLocalsChanged");
+      send("allowCSTRChanged");
+      send("separateReturnStackChanged");
+      send("separateMemoryControlStackChanged");
+      send("separateSubroutineRegisterStackChanged");
+      send("systemReady");
+    }
+    get savedSettingsHaveBeenLoaded() {
+      return this.#savedSettingsHaveBeenLoaded;
+    }
+    get language() {
+      return this.#language;
+    }
+    get mode() {
+      return this.#mode;
+    }
+    get editorFontFamily() {
+      return this.#editorFontFamily;
+    }
+    get editorFontSize() {
+      return this.#editorFontSize;
+    }
+    get outputFontFamily() {
+      return this.#outputFontFamily;
+    }
+    get outputFontSize() {
+      return this.#outputFontSize;
+    }
+    get includeCommentsInExamples() {
+      return this.#includeCommentsInExamples;
+    }
+    get loadCorrespondingExample() {
+      return this.#loadCorrespondingExample;
+    }
+    get assembler() {
+      return this.#assembler;
+    }
+    get decimal() {
+      return this.#decimal;
+    }
+    get autoCompileOnLoad() {
+      return this.#autoCompileOnLoad;
+    }
+    get autoRunOnLoad() {
+      return this.#autoRunOnLoad;
+    }
+    get autoFormatOnLoad() {
+      return this.#autoFormatOnLoad;
+    }
+    get alwaysSaveSettings() {
+      return this.#alwaysSaveSettings;
+    }
+    get commandsCategoryIndex() {
+      return this.#commandsCategoryIndex;
+    }
+    get showSimpleCommands() {
+      return this.#showSimpleCommands;
+    }
+    get showIntermediateCommands() {
+      return this.#showIntermediateCommands;
+    }
+    get showAdvancedCommands() {
+      return this.#showAdvancedCommands;
+    }
+    get files() {
+      return this.#files;
+    }
+    get currentFileIndex() {
+      return this.#currentFileIndex;
+    }
+    get file() {
+      return this.files[this.currentFileIndex];
+    }
+    get filename() {
+      return this.files[this.currentFileIndex].name;
+    }
+    get code() {
+      return this.files[this.currentFileIndex].code;
+    }
+    get tokens() {
+      return this.#tokens;
+    }
+    get lexemes() {
+      return this.#lexemes.filter((x) => x.type !== "comment");
+    }
+    get comments() {
+      return this.#lexemes.filter((x) => x.type === "comment");
+    }
+    get program() {
+      return this.#program;
+    }
+    get usage() {
+      return this.#usage;
+    }
+    get pcode() {
+      return this.#pcode;
+    }
+    get showCanvasOnRun() {
+      return this.#showCanvasOnRun;
+    }
+    get showOutputOnWrite() {
+      return this.#showOutputOnWrite;
+    }
+    get showMemoryOnDump() {
+      return this.#showMemoryOnDump;
+    }
+    get drawCountMax() {
+      return this.#drawCountMax;
+    }
+    get codeCountMax() {
+      return this.#codeCountMax;
+    }
+    get smallSize() {
+      return this.#smallSize;
+    }
+    get stackSize() {
+      return this.#stackSize;
+    }
+    get traceOnRun() {
+      return this.#traceOnRun;
+    }
+    get activateHCLR() {
+      return this.#activateHCLR;
+    }
+    get preventStackCollision() {
+      return this.#preventStackCollision;
+    }
+    get rangeCheckArrays() {
+      return this.#rangeCheckArrays;
+    }
+    get canvasStartSize() {
+      return this.#canvasStartSize;
+    }
+    get setupDefaultKeyBuffer() {
+      return this.#setupDefaultKeyBuffer;
+    }
+    get turtleAttributesAsGlobals() {
+      return this.#turtleAttributesAsGlobals;
+    }
+    get initialiseLocals() {
+      return this.#initialiseLocals;
+    }
+    get allowCSTR() {
+      return this.#allowCSTR;
+    }
+    get separateReturnStack() {
+      return this.#separateReturnStack;
+    }
+    get separateMemoryControlStack() {
+      return this.#separateMemoryControlStack;
+    }
+    get separateSubroutineRegisterStack() {
+      return this.#separateSubroutineRegisterStack;
+    }
+    get machineOptions() {
+      return {
+        showCanvasOnRun: this.showCanvasOnRun,
+        showOutputOnWrite: this.showOutputOnWrite,
+        showMemoryOnDump: this.showMemoryOnDump,
+        drawCountMax: this.drawCountMax,
+        codeCountMax: this.codeCountMax,
+        smallSize: this.smallSize,
+        stackSize: this.stackSize,
+        traceOnRun: this.traceOnRun,
+        activateHCLR: this.activateHCLR,
+        preventStackCollision: this.preventStackCollision,
+        rangeCheckArrays: this.rangeCheckArrays
+      };
+    }
+    get compilerOptions() {
+      return {
+        canvasStartSize: this.canvasStartSize,
+        setupDefaultKeyBuffer: this.setupDefaultKeyBuffer,
+        turtleAttributesAsGlobals: this.turtleAttributesAsGlobals,
+        initialiseLocals: this.initialiseLocals,
+        allowCSTR: this.allowCSTR,
+        separateReturnStack: this.separateReturnStack,
+        separateMemoryControlStack: this.separateMemoryControlStack,
+        separateSubroutineRegisterStack: this.separateSubroutineRegisterStack
+      };
+    }
+    set savedSettingsHaveBeenLoaded(savedSettingsHaveBeenLoaded) {
+      this.#savedSettingsHaveBeenLoaded = savedSettingsHaveBeenLoaded;
+      save("savedSettingsHaveBeenLoaded", savedSettingsHaveBeenLoaded);
+    }
+    set language(language2) {
+      if (!languages.includes(language2)) {
+        send("error", new SystemError(`Unknown language "${language2}".`));
+      }
+      this.#language = language2;
+      save("language", language2);
+      send("languageChanged");
+      this.file.compiled = false;
+      save("files", this.files);
+      send("codeChanged");
+      if (this.files) {
+        if (this.file.example && this.loadCorrespondingExample) {
+          this.openExampleFile(this.file.example);
+        }
+      }
+    }
+    set mode(mode2) {
+      this.#mode = mode2;
+      save("mode", mode2);
+      send("modeChanged");
+    }
+    set editorFontFamily(editorFontFamily) {
+      this.#editorFontFamily = editorFontFamily;
+      save("editorFontFamily", editorFontFamily);
+      send("editorFontFamilyChanged");
+    }
+    set editorFontSize(editorFontSize) {
+      this.#editorFontSize = editorFontSize;
+      save("editorFontSize", editorFontSize);
+      send("editorFontSizeChanged");
+    }
+    set outputFontFamily(outputFontFamily) {
+      this.#outputFontFamily = outputFontFamily;
+      save("outputFontFamily", outputFontFamily);
+      send("outputFontFamilyChanged");
+    }
+    set outputFontSize(outputFontSize) {
+      this.#outputFontSize = outputFontSize;
+      save("outputFontSize", outputFontSize);
+      send("outputFontSizeChanged");
+    }
+    set includeCommentsInExamples(includeCommentsInExamples) {
+      this.#includeCommentsInExamples = includeCommentsInExamples;
+      save("includeCommentsInExamples", includeCommentsInExamples);
+      send("includeCommentsInExamplesChanged");
+    }
+    set loadCorrespondingExample(loadCorrespondingExample) {
+      this.#loadCorrespondingExample = loadCorrespondingExample;
+      save("loadCorrespondingExample", loadCorrespondingExample);
+      send("loadCorrespondingExampleChanged");
+    }
+    set assembler(assembler) {
+      this.#assembler = assembler;
+      save("assembler", assembler);
+      send("pcodeChanged");
+    }
+    set decimal(decimal2) {
+      this.#decimal = decimal2;
+      save("decimal", decimal2);
+      send("pcodeChanged");
+    }
+    set autoCompileOnLoad(autoCompileOnLoad) {
+      this.#autoCompileOnLoad = autoCompileOnLoad;
+      save("autoCompileOnLoad", this.#autoCompileOnLoad);
+      send("autoCompileOnLoadChanged");
+    }
+    set autoRunOnLoad(autoRunOnLoad) {
+      this.#autoRunOnLoad = autoRunOnLoad;
+      save("autoRunOnLoad", this.#autoRunOnLoad);
+      send("autoRunOnLoadChanged");
+    }
+    set autoFormatOnLoad(autoFormatOnLoad) {
+      this.#autoFormatOnLoad = autoFormatOnLoad;
+      save("autoFormatOnLoad", this.#autoFormatOnLoad);
+      send("autoFormatOnLoadChanged");
+    }
+    set alwaysSaveSettings(alwaysSaveSettings) {
+      this.#alwaysSaveSettings = alwaysSaveSettings;
+      save("alwaysSaveSettings", alwaysSaveSettings);
+      send("alwaysSaveSettingsChanged");
+    }
+    set commandsCategoryIndex(commandsCategoryIndex) {
+      this.#commandsCategoryIndex = commandsCategoryIndex;
+      save("commandsCategoryIndex", commandsCategoryIndex);
+      send("commandsCategoryIndexChanged");
+    }
+    set showSimpleCommands(showSimpleCommands) {
+      this.#showSimpleCommands = showSimpleCommands;
+      save("showSimpleCommands", showSimpleCommands);
+      send("showSimpleCommandsChanged");
+    }
+    set showIntermediateCommands(showIntermediateCommands) {
+      this.#showIntermediateCommands = showIntermediateCommands;
+      save("showIntermediateCommands", showIntermediateCommands);
+      send("showIntermediateCommandsChanged");
+    }
+    set showAdvancedCommands(showAdvancedCommands) {
+      this.#showAdvancedCommands = showAdvancedCommands;
+      save("showAdvancedCommands", showAdvancedCommands);
+      send("showAdvancedCommandsChanged");
+    }
+    set files(files) {
+      this.#files = files;
+      save("files", files);
+      send("filesChanged");
+    }
+    set currentFileIndex(currentFileIndex) {
+      this.#currentFileIndex = currentFileIndex;
+      save("currentFileIndex", currentFileIndex);
+      this.#language = this.file.language;
+      save("language", this.file.language);
+      send("languageChanged");
+      if (this.file.compiled) {
+        this.compileCurrentFile();
+      } else {
+        this.tokens = tokenize(this.code, this.language);
+        this.lexemes = [];
+        this.program = new Program(this.language, "");
+        this.usage = [];
+        this.pcode = [];
+      }
+      send("currentFileIndexChanged");
+    }
+    set filename(name) {
+      this.file.name = name;
+      this.file.edited = true;
+      save("files", this.files);
+      send("filenameChanged");
+    }
+    set code(code3) {
+      this.file.code = code3;
+      this.file.edited = true;
+      this.file.compiled = false;
+      this.tokens = tokenize(code3, this.language);
+      save("files", this.files);
+      send("codeChanged");
+    }
+    set tokens(tokens) {
+      this.#tokens = tokens;
+      send("tokensChanged");
+    }
+    set lexemes(lexemes) {
+      this.#lexemes = lexemes;
+      send("lexemesChanged");
+    }
+    set program(program3) {
+      this.#program = program3;
+      send("programChanged");
+    }
+    set usage(usage) {
+      this.#usage = usage;
+      send("usageChanged");
+    }
+    set pcode(pcode2) {
+      this.#pcode = pcode2;
+      send("pcodeChanged");
+    }
+    set showCanvasOnRun(showCanvasOnRun) {
+      this.#showCanvasOnRun = showCanvasOnRun;
+      save("showCanvasOnRun", showCanvasOnRun);
+      send("showCanvasOnRunChanged");
+    }
+    set showOutputOnWrite(showOutputOnWrite) {
+      this.#showOutputOnWrite = showOutputOnWrite;
+      save("showOutputOnWrite", showOutputOnWrite);
+      send("showOutputOnWriteChanged");
+    }
+    set showMemoryOnDump(showMemoryOnDump) {
+      this.#showMemoryOnDump = showMemoryOnDump;
+      save("showMemoryOnDump", showMemoryOnDump);
+      send("showMemoryOnDumpChanged");
+    }
+    set drawCountMax(drawCountMax) {
+      this.#drawCountMax = drawCountMax;
+      save("drawCountMax", drawCountMax);
+      send("drawCountMaxChanged");
+    }
+    set codeCountMax(codeCountMax) {
+      this.#codeCountMax = codeCountMax;
+      save("codeCountMax", codeCountMax);
+      send("codeCountMaxChanged");
+    }
+    set smallSize(smallSize) {
+      this.#smallSize = smallSize;
+      save("smallSize", smallSize);
+      send("smallSizeChanged");
+    }
+    set stackSize(stackSize) {
+      this.#stackSize = stackSize;
+      save("stackSize", stackSize);
+      send("stackSizeChanged");
+    }
+    set traceOnRun(traceOnRun) {
+      this.#traceOnRun = traceOnRun;
+      save("traceOnRun", traceOnRun);
+      send("traceOnRunChanged");
+    }
+    set activateHCLR(activateHCLR) {
+      this.#activateHCLR = activateHCLR;
+      save("activateHCLR", activateHCLR);
+      send("activateHCLRChanged");
+    }
+    set preventStackCollision(preventStackCollision) {
+      this.#preventStackCollision = preventStackCollision;
+      save("preventStackCollision", preventStackCollision);
+      send("preventStackCollisionChanged");
+    }
+    set rangeCheckArrays(rangeCheckArrays) {
+      this.#rangeCheckArrays = rangeCheckArrays;
+      save("rangeCheckArrays", rangeCheckArrays);
+      send("rangeCheckArraysChanged");
+    }
+    set canvasStartSize(canvasStartSize) {
+      this.#canvasStartSize = canvasStartSize;
+      save("canvasStartSize", canvasStartSize);
+      send("canvasStartSizeChanged");
+    }
+    set setupDefaultKeyBuffer(setupDefaultKeyBuffer) {
+      this.#setupDefaultKeyBuffer = setupDefaultKeyBuffer;
+      save("setupDefaultKeyBuffer", setupDefaultKeyBuffer);
+      send("setupDefaultKeyBufferChanged");
+    }
+    set turtleAttributesAsGlobals(turtleAttributesAsGlobals) {
+      this.#turtleAttributesAsGlobals = turtleAttributesAsGlobals;
+      save("turtleAttributesAsGlobals", turtleAttributesAsGlobals);
+      send("turtleAttributesAsGlobalsChanged");
+    }
+    set initialiseLocals(initialiseLocals) {
+      this.#initialiseLocals = initialiseLocals;
+      save("initialiseLocals", initialiseLocals);
+      send("initialiseLocalsChanged");
+    }
+    set allowCSTR(allowCSTR) {
+      this.#allowCSTR = allowCSTR;
+      save("allowCSTR", allowCSTR);
+      send("allowCSTRChanged");
+    }
+    set separateReturnStack(separateReturnStack) {
+      this.#separateReturnStack = separateReturnStack;
+      save("separateReturnStack", separateReturnStack);
+      send("separateReturnStackChanged");
+    }
+    set separateMemoryControlStack(separateMemoryControlStack) {
+      this.#separateMemoryControlStack = separateMemoryControlStack;
+      save("separateMemoryControlStack", separateMemoryControlStack);
+      send("separateMemoryControlStackChanged");
+    }
+    set separateSubroutineRegisterStack(separateSubroutineRegisterStack) {
+      this.#separateSubroutineRegisterStack = separateSubroutineRegisterStack;
+      save("separateSubroutineRegisterStack", separateSubroutineRegisterStack);
+      send("separateSubroutineRegisterStackChanged");
+    }
+    undo() {
+    }
+    redo() {
+    }
+    cut() {
+    }
+    copy() {
+    }
+    paste() {
+    }
+    selectAll() {
+    }
+    async saveSettings() {
+      const response = await fetch("/status");
+      const user = response.ok ? await response.json() : null;
+      if (user) {
+        const settings = {
+          language: this.language,
+          mode: this.mode,
+          editorFontFamily: this.editorFontFamily,
+          editorFontSize: this.editorFontSize,
+          outputFontFamily: this.outputFontFamily,
+          outputFontSize: this.outputFontSize,
+          includeCommentsInExamples: this.includeCommentsInExamples,
+          loadCorrespondingExample: this.loadCorrespondingExample,
+          assembler: this.assembler,
+          decimal: this.decimal,
+          autoCompileOnLoad: this.autoCompileOnLoad,
+          autoRunOnLoad: this.autoRunOnLoad,
+          autoFormatOnLoad: this.autoFormatOnLoad,
+          alwaysSaveSettings: this.alwaysSaveSettings,
+          showCanvasOnRun: this.showCanvasOnRun,
+          showOutputOnWrite: this.showOutputOnWrite,
+          showMemoryOnDump: this.showMemoryOnDump,
+          drawCountMax: this.drawCountMax,
+          codeCountMax: this.codeCountMax,
+          smallSize: this.smallSize,
+          stackSize: this.stackSize,
+          traceOnRun: this.traceOnRun,
+          activateHCLR: this.activateHCLR,
+          preventStackCollision: this.preventStackCollision,
+          rangeCheckArrays: this.rangeCheckArrays,
+          canvasStartSize: this.canvasStartSize,
+          setupDefaultKeyBuffer: this.setupDefaultKeyBuffer,
+          turtleAttributesAsGlobals: this.turtleAttributesAsGlobals,
+          initialiseLocals: this.initialiseLocals,
+          allowCSTR: this.allowCSTR,
+          separateReturnStack: this.separateReturnStack,
+          separateMemoryControlStack: this.separateMemoryControlStack,
+          separateSubroutineRegisterStack: this.separateSubroutineRegisterStack
+        };
+        const response2 = await fetch("/account/update-settings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(settings)
+        });
+        if (response2.ok) {
+          send("closeMenu", "system");
+        } else {
+          send("error", new SystemError("Your settings could not be saved. Please try again later."));
+        }
+      } else {
+        send("error", new SystemError("You must be logged in to save your settings."));
+      }
+    }
+    async loadSavedSettings() {
+      const response = await fetch("/status");
+      const user = response.ok ? await response.json() : null;
+      if (user && user.systemSettings) {
+        this.savedSettingsHaveBeenLoaded = true;
+        this.language = user.systemSettings.language;
+        this.mode = user.systemSettings.mode;
+        this.editorFontFamily = user.systemSettings.editorFontFamily;
+        this.editorFontSize = user.systemSettings.editorFontSize;
+        this.outputFontFamily = user.systemSettings.outputFontFamily;
+        this.outputFontSize = user.systemSettings.outputFontSize;
+        this.includeCommentsInExamples = user.systemSettings.includeCommentsInExamples;
+        this.loadCorrespondingExample = user.systemSettings.loadCorrespondingExample;
+        this.assembler = user.systemSettings.assembler;
+        this.decimal = user.systemSettings.decimal;
+        this.autoCompileOnLoad = user.systemSettings.autoCompileOnLoad;
+        this.autoRunOnLoad = user.systemSettings.autoRunOnLoad;
+        this.autoFormatOnLoad = user.systemSettings.autoFormatOnLoad;
+        this.alwaysSaveSettings = user.systemSettings.alwaysSaveSettings;
+        this.showCanvasOnRun = user.systemSettings.showCanvasOnRun;
+        this.showOutputOnWrite = user.systemSettings.showOutputOnWrite;
+        this.showMemoryOnDump = user.systemSettings.showMemoryOnDump;
+        this.drawCountMax = user.systemSettings.drawCountMax;
+        this.codeCountMax = user.systemSettings.codeCountMax;
+        this.smallSize = user.systemSettings.smallSize;
+        this.stackSize = user.systemSettings.stackSize;
+        this.traceOnRun = user.systemSettings.traceOnRun;
+        this.activateHCLR = user.systemSettings.activateHCLR;
+        this.preventStackCollision = user.systemSettings.preventStackCollision;
+        this.rangeCheckArrays = user.systemSettings.rangeCheckArrays;
+        this.canvasStartSize = user.systemSettings.canvasStartSize;
+        this.setupDefaultKeyBuffer = user.systemSettings.setupDefaultKeyBuffer;
+        this.turtleAttributesAsGlobals = user.systemSettings.turtleAttributesAsGlobals;
+        this.initialiseLocals = user.systemSettings.initialiseLocals;
+        this.allowCSTR = user.systemSettings.allowCSTR;
+        this.separateReturnStack = user.systemSettings.separateReturnStack;
+        this.separateMemoryControlStack = user.systemSettings.separateMemoryControlStack;
+        this.separateSubroutineRegisterStack = user.systemSettings.separateSubroutineRegisterStack;
+      }
+    }
+    resetDefaults() {
+      this.language = defaults.language;
+      this.mode = defaults.mode;
+      this.editorFontFamily = defaults.editorFontFamily;
+      this.editorFontSize = defaults.editorFontSize;
+      this.outputFontFamily = defaults.outputFontFamily;
+      this.outputFontSize = defaults.outputFontSize;
+      this.includeCommentsInExamples = defaults.includeCommentsInExamples;
+      this.loadCorrespondingExample = defaults.loadCorrespondingExample;
+      this.assembler = defaults.assembler;
+      this.decimal = defaults.decimal;
+      this.autoCompileOnLoad = defaults.autoCompileOnLoad;
+      this.autoRunOnLoad = defaults.autoRunOnLoad;
+      this.autoFormatOnLoad = defaults.autoFormatOnLoad;
+      this.alwaysSaveSettings = defaults.alwaysSaveSettings;
+      this.showCanvasOnRun = defaults.showCanvasOnRun;
+      this.showOutputOnWrite = defaults.showOutputOnWrite;
+      this.showMemoryOnDump = defaults.showMemoryOnDump;
+      this.drawCountMax = defaults.drawCountMax;
+      this.codeCountMax = defaults.codeCountMax;
+      this.smallSize = defaults.smallSize;
+      this.stackSize = defaults.stackSize;
+      this.traceOnRun = defaults.traceOnRun;
+      this.activateHCLR = defaults.activateHCLR;
+      this.preventStackCollision = defaults.preventStackCollision;
+      this.rangeCheckArrays = defaults.rangeCheckArrays;
+      this.canvasStartSize = defaults.canvasStartSize;
+      this.setupDefaultKeyBuffer = defaults.setupDefaultKeyBuffer;
+      this.turtleAttributesAsGlobals = defaults.turtleAttributesAsGlobals;
+      this.initialiseLocals = defaults.initialiseLocals;
+      this.allowCSTR = defaults.allowCSTR;
+      this.separateReturnStack = defaults.separateReturnStack;
+      this.separateMemoryControlStack = defaults.separateMemoryControlStack;
+      this.separateSubroutineRegisterStack = defaults.separateSubroutineRegisterStack;
+      send("closeMenu", "system");
+    }
+    addFile(file) {
+      halt();
+      if (this.file && this.file.code === "" && this.file.edited === false) {
+        this.files[this.currentFileIndex] = file;
+        this.files = this.files;
+        send("currentFileIndexChanged");
+      } else {
+        this.files.push(file);
+        this.files = this.files;
+        this.currentFileIndex = this.files.length - 1;
+        this.code = file.code;
+      }
+      send("closeMenu", "system");
+    }
+    closeCurrentFile() {
+      halt();
+      this.files = this.files.slice(0, this.currentFileIndex).concat(this.files.slice(this.currentFileIndex + 1));
+      if (this.files.length === 0) {
+        this.newFile();
+      } else if (this.currentFileIndex > this.files.length - 1) {
+        this.currentFileIndex = this.currentFileIndex - 1;
+      } else {
+        this.currentFileIndex = this.currentFileIndex;
+      }
+      send("closeMenu", "system");
+    }
+    newFile(skeleton = false) {
+      const file = new File(this.language);
+      if (skeleton) {
+        file.code = skeletons[this.language];
+      }
+      this.addFile(file);
+    }
+    openFile(filename, content, example = null) {
+      const file = new File(this.language, example);
+      const bits = filename.split(".");
+      const ext = bits.pop();
+      const name = bits.join(".");
+      let json;
+      switch (ext) {
+        case "tbas":
+        case "tgb":
+          file.language = "BASIC";
+          file.name = name;
+          file.code = content.trim();
+          break;
+        case "tc":
+          file.language = "C";
+          file.name = name;
+          file.code = content.trim();
+          break;
+        case "tjav":
+          file.language = "Java";
+          file.name = name;
+          file.code = content.trim();
+          break;
+        case "tpas":
+        case "tgp":
+          file.language = "Pascal";
+          file.name = name;
+          file.code = content.trim();
+          break;
+        case "tpy":
+        case "tgy":
+          file.language = "Python";
+          file.name = name;
+          file.code = content.trim();
+          break;
+        case "tts":
+          file.language = "TypeScript";
+          file.name = name;
+          file.code = content.trim();
+          break;
+        case "tmx":
+        case "tgx":
+          try {
+            json = JSON.parse(content);
+            if (json.language && json.name && json.code && json.usage && json.pcode) {
+              file.language = json.language;
+              file.name = json.name;
+              file.code = json.code.trim();
+            } else {
+              send("error", new SystemError("Invalid TMX file."));
+            }
+          } catch (ignore) {
+            send("error", new SystemError("Invalid TMX file."));
+          }
+          break;
+        case "tmj":
+        case "tmb":
+        default:
+          throw new SystemError("Invalid file type.");
+      }
+      this.addFile(file);
+      if (json) {
+        this.lexemes = lexify(json.code.trim(), this.language);
+        this.program = parser(this.lexemes, this.language);
+        this.usage = json.usage;
+        this.pcode = json.pcode;
+        this.file.compiled = true;
+      }
+    }
+    openLocalFile() {
+      const state = this;
+      const fileInput = input({
+        type: "file",
+        on: ["change", function() {
+          if (fileInput.files) {
+            const file = fileInput.files[0];
+            const fr = new FileReader();
+            fr.onload = function() {
+              state.openFile(file.name, fr.result);
+            };
+            fr.readAsText(file);
+          }
+        }]
+      });
+      fileInput.click();
+    }
+    openRemoteFile(url) {
+      send("error", new SystemError("Feature not yet available."));
+    }
+    openExampleFile(exampleId) {
+      const example = examples.find((x) => x.id === exampleId);
+      if (!example) {
+        send("error", new SystemError(`Unknown example "${exampleId}".`));
+      } else {
+        const filename = `${example.id}.${extensions[this.language]}`;
+        window.fetch(`/examples/${this.language}/${example.groupId}/${filename}`).then((response) => {
+          if (response.ok) {
+            response.text().then((content) => {
+              this.openFile(filename, content.trim(), exampleId);
+            });
+          } else {
+            send("error", new SystemError(`Example "${exampleId}" is not available for Turtle ${this.language}.`));
+          }
+        });
+      }
+    }
+    openExampleGroup(groupId) {
+      const group = groups.find((x) => x.id === groupId);
+      if (!group) {
+        send("error", new SystemError(`Group ID ${groupId} not found.`));
+      } else {
+        for (const example of group.examples) {
+          this.openExampleFile(example.id);
+        }
+      }
+    }
+    saveLocalFile() {
+      const a2 = document.createElement("a");
+      const blob = new window.Blob([this.file.code], { type: "text/plain;charset=utf-8" });
+      a2.setAttribute("href", URL.createObjectURL(blob));
+      a2.setAttribute("download", this.file.filename);
+      a2.click();
+    }
+    saveRemoteFile() {
+      send("error", new SystemError("Feature not yet available."));
+    }
+    compileCurrentFile() {
+      this.file.language = this.language;
+      try {
+        this.tokens = tokenize(this.code, this.language);
+        this.lexemes = lexify(this.tokens, this.language);
+        this.program = parser(this.lexemes, this.language);
+        this.usage = analyse_default(this.lexemes, this.program);
+        this.pcode = program2(this.program, this.compilerOptions);
+        this.file.language = this.language;
+        this.file.compiled = true;
+        this.files = this.files;
+      } catch (error) {
+        send("error", error);
+      }
+    }
+    backupCode() {
+      this.file.backup = this.file.code;
+    }
+    restoreCode() {
+      if (this.file.code !== this.file.backup) {
+        this.file.compiled = false;
+      }
+      this.file.code = this.file.backup;
+    }
+    dumpMemory() {
+      send("memoryDumped", dump());
+    }
+    playPauseMachine() {
+      if (isRunning()) {
+        if (isPaused()) {
+          play();
+        } else {
+          pause();
+        }
+      } else {
+        if (!this.file.compiled) {
+          this.compileCurrentFile();
+        }
+        if (this.file.compiled) {
+          run(this.pcode, this.machineOptions);
+        }
+      }
+      send("closeMenu", "system");
+    }
+  };
+  var state_default = new State();
+
+  // client/components/view.ts
+  function toggleMenu(id) {
+    const menu = document.querySelector(`[data-menu="${id}"]`);
+    if (menu) {
+      if (menu.classList.contains("open")) {
+        closeMenu(id);
+      } else {
+        openMenu(id);
+      }
+    }
+  }
+  function openMenu(id) {
+    const a2 = document.querySelector(`[data-action="toggleMenu"][data-arg="${id}"]`);
+    const menu = document.querySelector(`[data-menu="${id}"]`);
+    if (a2 && menu) {
+      switch (id) {
+        case "user":
+          closeMenu("site");
+          break;
+        case "site":
+        case "documentation":
+          closeMenu("user");
+          break;
+      }
+      a2.classList.add("open");
+      menu.classList.add("open");
+      const caret = a2.querySelector(".fa-caret-down");
+      if (caret) {
+        caret.classList.remove("fa-caret-down");
+        caret.classList.add("fa-caret-up");
+      }
+    }
+  }
+  function closeMenu(id) {
+    const a2 = document.querySelector(`[data-action="toggleMenu"][data-arg="${id}"]`);
+    const menu = document.querySelector(`[data-menu="${id}"]`);
+    if (a2 && menu) {
+      for (const subMenu of menu.querySelectorAll("[data-menu]")) {
+        closeMenu(subMenu.dataset.menu);
+      }
+      for (const subMenu of menu.querySelectorAll("[data-system-menu]")) {
+        closeSystemMenu(subMenu.dataset.systemMenu);
+      }
+      menu.classList.remove("open");
+      a2.classList.remove("open");
+      const caret = a2.querySelector(".fa-caret-up");
+      if (caret) {
+        caret.classList.remove("fa-caret-up");
+        caret.classList.add("fa-caret-down");
+      }
+    }
+  }
+  function toggleSystemMenu(id) {
+    const menu = document.querySelector(`[data-system-menu="${id}"]`);
+    if (menu) {
+      if (menu.classList.contains("open")) {
+        closeSystemMenu(id);
+      } else {
+        openSystemMenu(id);
+      }
+    }
+  }
+  function openSystemMenu(id) {
+    const a2 = document.querySelector(`[data-action="toggleSystemMenu"][data-arg="${id}"]`);
+    const menu = document.querySelector(`[data-system-menu="${id}"]`);
+    if (a2 && menu) {
+      openMenu("system");
+      const subMenus = a2.parentElement?.parentElement?.querySelectorAll('[data-action="toggleSystemMenu"]');
+      for (const subMenu of subMenus || []) {
+        const id2 = subMenu.dataset.arg;
+        closeSystemMenu(id2);
+      }
+      a2.classList.add("open");
+      menu.classList.add("open");
+    }
+  }
+  function closeSystemMenu(id) {
+    const a2 = document.querySelector(`[data-action="toggleSystemMenu"][data-arg="${id}"]`);
+    const menu = document.querySelector(`[data-system-menu="${id}"]`);
+    if (a2 && menu) {
+      a2.classList.remove("open");
+      menu.classList.remove("open");
+    }
+  }
+  function selectTab(id) {
+    for (const select of document.querySelectorAll('[data-action="selectTab"]')) {
+      for (const option2 of select.children) {
+        if (option2.value === id)
+          option2.selected = true;
+      }
+    }
+    for (const tabPane of document.querySelectorAll(`[data-tab="${id}"]`)) {
+      if (tabPane.parentElement) {
+        for (const sibling of tabPane.parentElement.children) {
+          sibling.classList.remove("active");
+        }
+      }
+      tabPane.classList.add("active");
+    }
+  }
+
+  // client/components/actions.ts
+  var notImplemented = new SystemError("This feature has not yet been implemented in the online system.");
+  for (const element2 of document.querySelectorAll("[data-action]")) {
+    const el = element2;
+    switch (el.dataset.action) {
+      case "toggleMenu":
+        el.addEventListener("click", function() {
+          el.blur();
+          if (el.dataset.arg) {
+            toggleMenu(el.dataset.arg);
+          }
+        });
+        on("toggleMenu", toggleMenu);
+        break;
+      case "openMenu":
+        el.addEventListener("click", function() {
+          el.blur();
+          if (el.dataset.arg) {
+            openMenu(el.dataset.arg);
+          }
+        });
+        on("openMenu", openMenu);
+        break;
+      case "closeMenu":
+        el.addEventListener("click", function() {
+          el.blur();
+          if (el.dataset.arg) {
+            closeMenu(el.dataset.arg);
+          }
+        });
+        on("closeMenu", closeMenu);
+        break;
+      case "closeSiteMenus":
+        el.addEventListener("click", function() {
+          closeMenu("site");
+          closeMenu("documentation");
+          closeMenu("user");
+        });
+        break;
+      case "toggleSystemMenu":
+        el.addEventListener("click", function() {
+          el.blur();
+          if (el.dataset.arg) {
+            toggleSystemMenu(el.dataset.arg);
+          }
+        });
+        on("toggleSystemMenu", toggleSystemMenu);
+        break;
+      case "openSystemMenu":
+        el.addEventListener("click", function() {
+          el.blur();
+          if (el.dataset.arg) {
+            openSystemMenu(el.dataset.arg);
+          }
+        });
+        on("openSystemMenu", openSystemMenu);
+        break;
+      case "closeSystemMenu":
+        el.addEventListener("click", function() {
+          el.blur();
+          if (el.dataset.arg) {
+            closeSystemMenu(el.dataset.arg);
+          }
+        });
+        on("closeSystemMenu", closeSystemMenu);
+        break;
+      case "selectTab":
+        el.addEventListener("change", function() {
+          el.blur();
+          selectTab(el.value);
+        });
+        on("selectTab", selectTab);
+        break;
+      case "maximize":
+        el.addEventListener("click", function() {
+          el.blur();
+          document.body.classList.toggle("fullscreen");
+          if (document.body.classList.contains("fullscreen")) {
+            fill(el, [i({ className: "fa fa-compress", title: "Expand down" })]);
+          } else {
+            fill(el, [i({ className: "fa fa-expand", title: "Maximize" })]);
+          }
+        });
+        break;
+      case "newProgram":
+        el.addEventListener("click", function() {
+          state_default.newFile();
+        });
+        break;
+      case "newSkeletonProgram":
+        el.addEventListener("click", function() {
+          state_default.newFile(true);
+        });
+        break;
+      case "openProgram":
+        el.addEventListener("click", function() {
+          state_default.openLocalFile();
+        });
+        break;
+      case "saveProgram":
+        el.addEventListener("click", function() {
+          state_default.saveLocalFile();
+        });
+        break;
+      case "saveExportFile":
+        el.addEventListener("click", function() {
+          send("error", notImplemented);
+        });
+        break;
+      case "closeProgram":
+        el.addEventListener("click", function() {
+          state_default.closeCurrentFile();
+        });
+        break;
+      case "copyCanvasGraphic":
+        el.addEventListener("click", function() {
+          send("error", notImplemented);
+        });
+        break;
+      case "saveCanvasGraphic":
+        el.addEventListener("click", function() {
+          send("error", notImplemented);
+        });
+        break;
+      case "printProgram":
+        el.addEventListener("click", function() {
+          send("error", notImplemented);
+        });
+        break;
+      case "printOutputText":
+        el.addEventListener("click", function() {
+          send("error", notImplemented);
+        });
+        break;
+      case "printConsoleText":
+        el.addEventListener("click", function() {
+          send("error", notImplemented);
+        });
+        break;
+      case "undo":
+        el.addEventListener("click", function() {
+          state_default.undo();
+        });
+        break;
+      case "redo":
+        el.addEventListener("click", function() {
+          state_default.redo();
+        });
+        break;
+      case "cut":
+        el.addEventListener("click", function() {
+          state_default.cut();
+        });
+        break;
+      case "copy":
+        el.addEventListener("click", function() {
+          state_default.copy();
+        });
+        break;
+      case "paste":
+        el.addEventListener("click", function() {
+          state_default.paste();
+        });
+        break;
+      case "selectAll":
+        el.addEventListener("click", function() {
+          state_default.selectAll();
+        });
+        break;
+      case "findAndReplace":
+        el.addEventListener("click", function() {
+          send("error", notImplemented);
+        });
+        break;
+      case "autoFormat":
+        el.addEventListener("click", function() {
+          send("error", notImplemented);
+        });
+        break;
+      case "storeCopy":
+        el.addEventListener("click", function() {
+          state_default.backupCode();
+        });
+        break;
+      case "restoreCopy":
+        el.addEventListener("click", function() {
+          state_default.restoreCode();
+        });
+        break;
+      case "compile":
+        el.addEventListener("click", function() {
+          state_default.compileCurrentFile();
+        });
+        break;
+      case "savePCodeJson":
+        el.addEventListener("click", function() {
+          send("error", notImplemented);
+        });
+        break;
+      case "savePCodeBinary":
+        el.addEventListener("click", function() {
+          send("error", notImplemented);
+        });
+        break;
+      case "run":
+        el.addEventListener("click", function() {
+          el.blur();
+          state_default.playPauseMachine();
+        });
+        break;
+      case "halt":
+        el.addEventListener("click", function() {
+          el.blur();
+          halt();
+        });
+        break;
+      case "pause":
+        el.addEventListener("click", function() {
+          el.blur();
+          pause();
+        });
+        break;
+      case "resetMachine":
+        el.addEventListener("click", function() {
+          el.blur();
+          reset();
+          closeMenu("system");
+        });
+        break;
+      case "viewMachineOptions":
+        el.addEventListener("click", function() {
+          send("selectTab", "options");
+          closeMenu("system");
+        });
+        break;
+      case "loadAndRunPCode":
+        el.addEventListener("click", function() {
+          send("error", notImplemented);
+        });
+        break;
+      case "saveSettings":
+        el.addEventListener("click", function() {
+          state_default.saveSettings();
+        });
+        break;
+      case "resetSettings":
+        el.addEventListener("click", function() {
+          state_default.resetDefaults();
+        });
+        break;
+      case "dumpMemory":
+        el.addEventListener("click", function() {
+          el.blur();
+          state_default.dumpMemory();
+        });
+        break;
+      default:
+        console.error(`Unknown action '${el.dataset.action}'.`);
+        break;
+    }
+  }
+
+  // client/components/bindings.ts
+  for (const element2 of document.querySelectorAll("[data-binding]")) {
+    switch (element2.dataset.binding) {
+      case "language":
+        fillLanguage(element2);
+        element2.addEventListener("change", function() {
+          state_default.language = element2.value;
+        });
+        on("languageChanged", function() {
+          element2.value = state_default.language;
+        });
+        break;
+      case "mode":
+        element2.addEventListener("change", function() {
+          if (element2.checked) {
+            state_default.mode = element2.value;
+          }
+        });
+        on("modeChanged", function() {
+          if (element2.value === state_default.mode) {
+            element2.checked = true;
+          }
+        });
+        break;
+      case "editorFontFamily":
+        fillFont(element2);
+        element2.addEventListener("change", function() {
+          state_default.editorFontFamily = element2.value;
+        });
+        on("editorFontFamilyChanged", function() {
+          element2.value = state_default.editorFontFamily;
+        });
+        break;
+      case "editorFontSize":
+        element2.addEventListener("change", function() {
+          state_default.editorFontSize = parseInt(element2.value);
+        });
+        on("editorFontSizeChanged", function() {
+          element2.value = state_default.editorFontSize.toString(10);
+        });
+        break;
+      case "outputFontFamily":
+        fillFont(element2);
+        element2.addEventListener("change", function() {
+          state_default.outputFontFamily = element2.value;
+        });
+        on("outputFontFamilyChanged", function() {
+          element2.value = state_default.outputFontFamily;
+        });
+        break;
+      case "outputFontSize":
+        element2.addEventListener("change", function() {
+          state_default.outputFontSize = parseInt(element2.value);
+        });
+        on("outputFontSizeChanged", function() {
+          element2.value = state_default.outputFontSize.toString(10);
+        });
+        break;
+      case "includeCommentsInExamples":
+        disableInput(element2);
+        element2.addEventListener("change", function() {
+          state_default.includeCommentsInExamples = element2.checked;
+        });
+        on("includeCommentsInExamplesChanged", function() {
+          element2.checked = state_default.includeCommentsInExamples;
+        });
+        break;
+      case "loadCorrespondingExample":
+        element2.addEventListener("change", function() {
+          state_default.loadCorrespondingExample = element2.checked;
+        });
+        on("loadCorrespondingExampleChanged", function() {
+          element2.checked = state_default.loadCorrespondingExample;
+        });
+        break;
+      case "assembler":
+        element2.addEventListener("change", function() {
+          if (element2.checked) {
+            state_default.assembler = element2.value === "assembler";
+          }
+        });
+        on("assemblerChanged", function() {
+          if (state_default.assembler) {
+            element2.checked = element2.value === "assembler";
+          } else {
+            element2.checked = element2.value !== "assembler";
+          }
+        });
+        break;
+      case "decimal":
+        element2.addEventListener("change", function() {
+          if (element2.checked) {
+            state_default.decimal = element2.value === "decimal";
+          }
+        });
+        on("decimalChanged", function() {
+          if (state_default.decimal) {
+            element2.checked = element2.value === "decimal";
+          } else {
+            element2.checked = element2.value !== "decimal";
+          }
+        });
+        break;
+      case "autoCompileOnLoad":
+        disableInput(element2);
+        element2.addEventListener("change", function() {
+          state_default.autoCompileOnLoad = element2.checked;
+        });
+        on("autoCompileOnLoadChanged", function() {
+          element2.checked = state_default.autoCompileOnLoad;
+        });
+        break;
+      case "autoRunOnLoad":
+        disableInput(element2);
+        element2.addEventListener("change", function() {
+          state_default.autoRunOnLoad = element2.checked;
+        });
+        on("autoRunOnLoadChanged", function() {
+          element2.checked = state_default.autoRunOnLoad;
+        });
+        break;
+      case "autoFormatOnLoad":
+        disableInput(element2);
+        element2.addEventListener("change", function() {
+          state_default.autoFormatOnLoad = element2.checked;
+        });
+        on("autoFormatOnLoadChanged", function() {
+          element2.checked = state_default.autoFormatOnLoad;
+        });
+        break;
+      case "alwaysSaveSettings":
+        disableInputIfNotLoggedIn(element2);
+        element2.addEventListener("change", function() {
+          state_default.alwaysSaveSettings = element2.checked;
+        });
+        on("alwaysSaveSettingsChanged", function() {
+          element2.checked = state_default.alwaysSaveSettings;
+        });
+        break;
+      case "commandsCategoryIndex":
+        fillCommandsCategory(element2);
+        element2.addEventListener("change", function() {
+          state_default.commandsCategoryIndex = parseInt(element2.value);
+        });
+        on("commandsCategoryIndexChanged", function() {
+          element2.value = state_default.commandsCategoryIndex.toString(10);
+        });
+        break;
+      case "showSimpleCommands":
+        element2.addEventListener("change", function() {
+          state_default.showSimpleCommands = element2.checked;
+        });
+        on("showSimpleCommandsChanged", function() {
+          element2.checked = state_default.showSimpleCommands;
+        });
+        break;
+      case "showIntermediateCommands":
+        element2.addEventListener("change", function() {
+          state_default.showIntermediateCommands = element2.checked;
+        });
+        on("showIntermediateCommandsChanged", function() {
+          element2.checked = state_default.showIntermediateCommands;
+        });
+        break;
+      case "showAdvancedCommands":
+        element2.addEventListener("change", function() {
+          state_default.showAdvancedCommands = element2.checked;
+        });
+        on("showAdvancedCommandsChanged", function() {
+          element2.checked = state_default.showAdvancedCommands;
+        });
+        break;
+      case "currentFileIndex":
+        fillFile(element2);
+        element2.addEventListener("change", function() {
+          state_default.currentFileIndex = parseInt(element2.value);
+        });
+        on("filesChanged", function() {
+          fillFile(element2);
+        });
+        on("currentFileIndexChanged", function() {
+          element2.value = state_default.currentFileIndex.toString(10);
+        });
+        break;
+      case "filename":
+        element2.addEventListener("change", function() {
+          state_default.filename = element2.value;
+        });
+        on("filenameChanged", function() {
+          element2.value = state_default.filename;
+        });
+        break;
+      case "showCanvasOnRun":
+        element2.addEventListener("change", function() {
+          state_default.showCanvasOnRun = element2.checked;
+        });
+        on("showCanvasOnRunChanged", function() {
+          element2.checked = state_default.showCanvasOnRun;
+        });
+        break;
+      case "showOutputOnWrite":
+        element2.addEventListener("change", function() {
+          state_default.showOutputOnWrite = element2.checked;
+        });
+        on("showOutputOnWriteChanged", function() {
+          element2.checked = state_default.showOutputOnWrite;
+        });
+        break;
+      case "showMemoryOnDump":
+        element2.addEventListener("change", function() {
+          state_default.showMemoryOnDump = element2.checked;
+        });
+        on("showMemoryOnDumpChanged", function() {
+          element2.checked = state_default.showMemoryOnDump;
+        });
+        break;
+      case "drawCountMax":
+        element2.addEventListener("change", function() {
+          state_default.drawCountMax = parseInt(element2.value);
+        });
+        on("drawCountMaxChanged", function() {
+          element2.value = state_default.drawCountMax.toString(10);
+        });
+        break;
+      case "codeCountMax":
+        element2.addEventListener("change", function() {
+          state_default.codeCountMax = parseInt(element2.value);
+        });
+        on("codeCountMaxChanged", function() {
+          element2.value = state_default.codeCountMax.toString(10);
+        });
+        break;
+      case "smallSize":
+        element2.addEventListener("change", function() {
+          state_default.smallSize = parseInt(element2.value);
+        });
+        on("smallSizeChanged", function() {
+          element2.value = state_default.smallSize.toString(10);
+        });
+        break;
+      case "stackSize":
+        element2.addEventListener("change", function() {
+          state_default.stackSize = parseInt(element2.value);
+        });
+        on("stackSizeChanged", function() {
+          element2.value = state_default.stackSize.toString(10);
+        });
+        break;
+      case "traceOnRun":
+        disableInput(element2);
+        element2.addEventListener("change", function() {
+          state_default.traceOnRun = element2.checked;
+        });
+        on("traceOnRunChanged", function() {
+          element2.checked = state_default.traceOnRun;
+        });
+        break;
+      case "activateHCLR":
+        disableInput(element2);
+        element2.addEventListener("change", function() {
+          state_default.activateHCLR = element2.checked;
+        });
+        on("activateHCLRChanged", function() {
+          element2.checked = state_default.activateHCLR;
+        });
+        break;
+      case "preventStackCollision":
+        disableInput(element2);
+        element2.addEventListener("change", function() {
+          state_default.preventStackCollision = element2.checked;
+        });
+        on("preventStackCollisionChanged", function() {
+          element2.checked = state_default.preventStackCollision;
+        });
+        break;
+      case "rangeCheckArrays":
+        disableInput(element2);
+        element2.addEventListener("change", function() {
+          state_default.rangeCheckArrays = element2.checked;
+        });
+        on("rangeCheckArraysChanged", function() {
+          element2.checked = state_default.rangeCheckArrays;
+        });
+        break;
+      case "canvasStartSize":
+        element2.addEventListener("change", function() {
+          if (element2.checked) {
+            state_default.canvasStartSize = parseInt(element2.value);
+          }
+        });
+        on("canvasStartSizeChanged", function() {
+          if (element2.value === state_default.canvasStartSize.toString(10)) {
+            element2.checked = true;
+          }
+        });
+        break;
+      case "setupDefaultKeyBuffer":
+        disableInput(element2);
+        element2.addEventListener("change", function() {
+          state_default.setupDefaultKeyBuffer = element2.checked;
+        });
+        on("setupDefaultKeyBufferChanged", function() {
+          element2.checked = state_default.setupDefaultKeyBuffer;
+        });
+        break;
+      case "turtleAttributesAsGlobals":
+        disableInput(element2);
+        element2.addEventListener("change", function() {
+          state_default.turtleAttributesAsGlobals = element2.checked;
+        });
+        on("turtleAttributesAsGlobalsChanged", function() {
+          element2.checked = state_default.turtleAttributesAsGlobals;
+        });
+        break;
+      case "initialiseLocals":
+        disableInput(element2);
+        element2.addEventListener("change", function() {
+          state_default.initialiseLocals = element2.checked;
+        });
+        on("initialiseLocalsChanged", function() {
+          element2.checked = state_default.initialiseLocals;
+        });
+        break;
+      case "allowCSTR":
+        disableInput(element2);
+        element2.addEventListener("change", function() {
+          state_default.allowCSTR = element2.checked;
+        });
+        on("allowCSTRChanged", function() {
+          element2.checked = state_default.allowCSTR;
+        });
+        break;
+      case "separateReturnStack":
+        disableInput(element2);
+        element2.addEventListener("change", function() {
+          state_default.separateReturnStack = element2.checked;
+        });
+        on("separateReturnStackChanged", function() {
+          element2.checked = state_default.separateReturnStack;
+        });
+        break;
+      case "separateMemoryControlStack":
+        disableInput(element2);
+        element2.addEventListener("change", function() {
+          state_default.separateMemoryControlStack = element2.checked;
+        });
+        on("separateMemoryControlStackChanged", function() {
+          element2.checked = state_default.separateMemoryControlStack;
+        });
+        break;
+      case "separateSubroutineRegisterStack":
+        disableInput(element2);
+        element2.addEventListener("change", function() {
+          state_default.separateSubroutineRegisterStack = element2.checked;
+        });
+        on("separateSubroutineRegisterStackChanged", function() {
+          element2.checked = state_default.separateSubroutineRegisterStack;
+        });
+        break;
+      default:
+        console.error(`Unknown data binding '${element2.dataset.binding}'.`);
+        break;
+    }
+  }
+  function fillLanguage(input3) {
+    fill(input3, languages.map((x) => option({ value: x, content: `Turtle ${x}` })));
+  }
+  function fillFont(input3) {
+    fill(input3, [
+      option({ value: "Consolas", content: "Consolas" }),
+      option({ value: "Courier", content: "Courier" }),
+      option({ value: "Lucida Sans Typewriter", content: "Lucida Sans Typewriter" }),
+      option({ value: "Monospace", content: "Monospace" })
+    ]);
+  }
+  function fillCommandsCategory(input3) {
+    fill(input3, commandCategories.map((x) => option({ value: x.index.toString(10), content: `${(x.index + 1).toString(10)}. ${x.title}` })));
+  }
+  function fillFile(input3) {
+    fill(input3, state_default.files.map((file, index) => option({
+      value: index.toString(10),
+      content: `${(index + 1).toString(10).padStart(2, "0")} [${file.language}] ${file.name || "[no name]"}`,
+      selected: state_default.currentFileIndex === index ? "selected" : void 0
+    })));
+  }
+  function disableInput(input3) {
+    input3.setAttribute("disabled", "disabled");
+    if (input3.parentElement) {
+      input3.parentElement.addEventListener("click", function() {
+        send("error", new SystemError("This option cannot yet be modified in the online system."));
+      });
+    }
+  }
+  async function disableInputIfNotLoggedIn(input3) {
+    const response = await fetch("/status");
+    const user = response.ok ? await response.json() : null;
+    if (user === null) {
+      input3.setAttribute("disabled", "disabled");
+      if (input3.parentElement) {
+        input3.parentElement.addEventListener("click", function() {
+          send("error", new SystemError("You must be logged in to change this setting."));
+        });
+      }
+    }
+  }
+
+  // client/components/download.ts
+  var download_default = init2();
+  function init2() {
+    const versionSelect = document.getElementById("version-select");
+    const downloadLink = document.getElementById("download-link");
+    if (versionSelect && downloadLink) {
+      versionSelect.addEventListener("change", () => {
+        const bits = downloadLink.href.split("/");
+        bits.pop();
+        bits.push(versionSelect.value);
+        downloadLink.setAttribute("href", bits.join("/"));
+      });
+    }
+  }
+
+  // client/lexer/highlight.ts
+  function highlight(code3, language2) {
+    const tokens = typeof code3 === "string" ? tokenize(code3, language2) : code3;
+    return tokens.map((token) => {
+      switch (token.type) {
+        case "spaces":
+        case "newline":
+          return token.content;
+        case "unterminated-comment":
+        case "unterminated-string":
+        case "bad-binary":
+        case "bad-octal":
+        case "bad-hexadecimal":
+        case "real":
+        case "bad-keycode":
+        case "bad-query":
+        case "illegal":
+          return `<span class="error">${token.content}</span>`;
+        case "binary":
+        case "octal":
+        case "hexadecimal":
+        case "decimal":
+          return `<span class="integer">${token.content}</span>`;
+        case "colour":
+          const colour2 = colours.find((x) => x.names[language2] === token.content);
+          return colour2 ? `<span class="colour" style="border-color:#${colour2.hex};">${token.content}</span>` : `<span class="colour">${token.content}</span>`;
+        default:
+          return `<span class="${token.type}">${token.content}</span>`;
+      }
+    }).join("");
+  }
+
+  // client/components/languages.ts
+  var codeElements = document.querySelectorAll("code[data-language]");
+  for (const code3 of codeElements) {
+    code3.innerHTML = highlight(code3.innerText, code3.dataset.language);
+  }
+  on("languageChanged", language);
+  function language() {
+    const languageElements = document.querySelectorAll("[data-language]");
+    for (const element2 of languageElements) {
+      if (state_default.language === element2.dataset.language || element2.id === "turtle") {
+        element2.classList.remove("hidden");
+      } else {
+        element2.classList.add("hidden");
+      }
+    }
+  }
+
+  // client/components/modes.ts
+  on("modeChanged", mode);
+  function mode() {
+    const modeElements = document.querySelectorAll("[data-mode]");
+    const guideToc = document.querySelector('[data-component="guide-toc"]');
+    for (const element2 of modeElements) {
+      if (element2.dataset.mode) {
+        const modes = element2.dataset.mode.split(",");
+        if (modes.includes(state_default.mode) || element2.id === "turtle") {
+          element2.classList.remove("hidden");
+        } else {
+          element2.classList.add("hidden");
+          if (element2.classList.contains("system-tab-pane") && element2.classList.contains("active")) {
+            send("selectTab", "canvas");
+          }
+        }
+      }
+    }
+    if (guideToc) {
+      for (const child of guideToc.children) {
+        if (state_default.mode === "simple" || state_default.mode === "normal") {
+          switch (child.value) {
+            case "the-compile-menu":
+            case "the-tabs-menu":
+              child.classList.add("hidden");
+              break;
+            case "the-run-menu":
+              child.innerHTML = "8. The Run Menu";
+              break;
+            case "the-options-menu":
+              child.innerHTML = "9. The Options Menu";
+              break;
+            case "the-examples-menu":
+              child.innerHTML = "10. The Examples Menu";
+              break;
+          }
+        } else {
+          switch (child.value) {
+            case "the-compile-menu":
+            case "the-tabs-menu":
+              child.classList.remove("hidden");
+              break;
+            case "the-run-menu":
+              child.innerHTML = "10. The Run Menu";
+              break;
+            case "the-options-menu":
+              child.innerHTML = "11. The Options Menu";
+              break;
+            case "the-examples-menu":
+              child.innerHTML = "12. The Examples Menu";
+              break;
+          }
+        }
+      }
+    }
+  }
+
+  // client/components/preview.ts
+  var preview_default = init3();
+  function init3() {
+    const preview = document.querySelector("[data-preview]");
+    if (preview && preview.dataset.preview) {
+      const textarea = document.getElementById(preview.dataset.preview);
+      textarea.addEventListener("change", (event) => {
+        const element2 = event.currentTarget;
+        preview.innerHTML = "<p>Dear <strong>{{ firstname }} {{ surname }}</strong>,</p>";
+        preview.innerHTML += element2.value;
+      });
+    }
+  }
+
+  // client/components/reference/colours.ts
+  var coloursTableBody = document.querySelector('[data-component="coloursTableBody"]');
+  if (coloursTableBody) {
+    on("languageChanged", updateTable);
+  }
+  function updateTable() {
+    if (coloursTableBody) {
+      coloursTableBody.innerHTML = "";
+      for (let i2 = 0; i2 < 10; i2 += 1) {
+        coloursTableBody.innerHTML += `<tr>${colours.slice(i2 * 5, i2 * 5 + 5).map(colourTableCells).join("")}</tr>`;
+      }
+    }
+  }
+  function colourTableCells(colour2) {
+    return `
+    <th>${colour2.index}</th>
+    <td style="background:#${colour2.hex};color:${colour2.text}">
+      ${colour2.names[state_default.language]}<br>${hex2(state_default.language, colour2.hex)}
+    </td>`;
+  }
+  function hex2(language2, hex3) {
+    switch (language2) {
+      case "BASIC":
+        return `&${hex3}`;
+      case "Pascal":
+        return `$${hex3}`;
+      case "Python":
+        return `0x${hex3}`;
+    }
+  }
+
+  // client/components/reference/commands.ts
+  var commandsTableBody = document.querySelector('[data-component="commandsTableBody"]');
+  if (commandsTableBody) {
+    on("languageChanged", updateTable2);
+    on("commandsCategoryIndexChanged", updateTable2);
+    on("showSimpleCommandsChanged", updateTable2);
+    on("showIntermediateCommandsChanged", updateTable2);
+    on("showAdvancedCommandsChanged", updateTable2);
+  }
+  function updateTable2() {
+    if (commandsTableBody) {
+      let commands2 = commandCategories[state_default.commandsCategoryIndex].expressions;
+      if (!state_default.showSimpleCommands)
+        commands2 = commands2.filter((x) => x.level !== 0);
+      if (!state_default.showIntermediateCommands)
+        commands2 = commands2.filter((x) => x.level !== 1);
+      if (!state_default.showAdvancedCommands)
+        commands2 = commands2.filter((x) => x.level !== 2);
+      commands2 = commands2.filter((x) => x.names[state_default.language]);
+      fill(commandsTableBody, commands2.map(commandTableRow));
+    }
+  }
+  function commandTableRow(expression3) {
+    const command2 = expression3;
+    return tr({ content: [
+      td({ content: [
+        code({ content: highlight(command2.names[state_default.language], state_default.language) })
+      ] }),
+      td({ content: command2.parameters.map((x) => `<code>${highlight(x.name, state_default.language)}</code> (${x.type})`).join("<br>") }),
+      td({ content: command2.returns || "-" }),
+      td({ content: command2.description })
+    ] });
+  }
+
+  // client/constants/cursors.ts
+  var Cursor = class {
+    constructor(index, name, css) {
+      this.index = index;
+      this.name = name;
+      this.css = css;
+    }
+  };
+  var cursors = [
+    new Cursor(0, "None", "none"),
+    new Cursor(1, "Default", "default"),
+    new Cursor(2, "Pointer", "pointer"),
+    new Cursor(3, "Crosshair", "crosshair"),
+    new Cursor(4, "Text", "text"),
+    new Cursor(5, "Move", "move"),
+    new Cursor(6, "Resize NESW", "nesw-resize"),
+    new Cursor(7, "Resize NS", "ns-resize"),
+    new Cursor(8, "Resize NWSE", "nwse-resize"),
+    new Cursor(9, "Resize EW", "ew-resize"),
+    new Cursor(10, "Resize N", "n-resize"),
+    new Cursor(11, "Wait", "wait"),
+    new Cursor(12, "Progress", "progress"),
+    new Cursor(13, "No Drop", "no-drop"),
+    new Cursor(14, "Forbidden", "not-allowed"),
+    new Cursor(15, "Help", "help")
+  ];
+
+  // client/components/reference/cursors.ts
+  var cursorsTableBody = document.querySelector('[data-component="cursorsTableBody"]');
+  if (cursorsTableBody) {
+    on("languageChanged", updateTable3);
+  }
+  function updateTable3() {
+    if (cursorsTableBody) {
+      fill(cursorsTableBody, [
+        tr({ content: cursors.slice(0, 4).map(cursorTableCells).join("") }),
+        tr({ content: cursors.slice(4, 8).map(cursorTableCells).join("") }),
+        tr({ content: cursors.slice(8, 12).map(cursorTableCells).join("") }),
+        tr({ content: cursors.slice(12, 16).map(cursorTableCells).join("") })
+      ]);
+    }
+  }
+  function cursorTableCells(cursor) {
+    return `<td>${cursor.index}</td><td style="cursor:${cursor.css}">${cursor.name}</td>`;
+  }
+
+  // client/constants/fonts.ts
+  var Font = class {
+    constructor(index, name, css) {
+      this.index = index;
+      this.name = name;
+      this.css = css;
+    }
+  };
+  var fonts = [
+    new Font(0, "Arial", "Arial, sans-serif"),
+    new Font(1, "Arial Black", '"Arial Black", sans-serif'),
+    new Font(2, "Arial Narrow", '"Arial Narrow", sans-serif'),
+    new Font(3, "Bookman Old Style", '"Bookman Old Style", serif'),
+    new Font(4, "Comic Sans MS", '"Comic Sans MS", cursive, sans-serif'),
+    new Font(5, "Courier New", '"Courier New", Courier, monospace'),
+    new Font(6, "Georgia", "Georgia, serif"),
+    new Font(7, "Lucida Bright", '"Lucida Bright", serif'),
+    new Font(8, "Lucida Calligraphy", '"Lucida Calligraphy", cursive, serif'),
+    new Font(9, "Lucida Handwriting", '"Lucida Handwriting", cursive, serif'),
+    new Font(10, "Lucida Sans", '"Lucida Sans Unicode", sans-serif'),
+    new Font(11, "Lucida Sans Typewriter", '"Lucida Sans Typewriter", sans-serif'),
+    new Font(12, "Old English Text MT", '"Old English Text MT", serif'),
+    new Font(13, "Symbol", "Symbol"),
+    new Font(14, "Times New Roman", '"Times New Roman", Times, serif'),
+    new Font(15, "Verdana", "Verdana, Geneva, sans-serif")
+  ];
+
+  // client/components/reference/fonts.ts
+  var fontsTableBody = document.querySelector('[data-component="fontsTableBody"]');
+  if (fontsTableBody) {
+    on("languageChanged", updateTable4);
+  }
+  function updateTable4() {
+    if (fontsTableBody) {
+      fill(fontsTableBody, fonts.map(fontTableRow));
+    }
+  }
+  function fontTableRow(font) {
+    return tr({ style: `font-family: ${font.css};`, content: [
+      td({ content: font.name }),
+      td({ content: font.index.toString(10) }),
+      td({ style: "font-style: italic;", content: (font.index + 16).toString(10) }),
+      td({ style: "font-weight: bold;", content: (font.index + 32).toString(10) }),
+      td({ style: "font-style: italic; font-weight: bold;", content: (font.index + 48).toString(10) }),
+      td({ style: "text-decoration: underline;", content: (font.index + 64).toString(10) }),
+      td({ style: "text-decoration: line-through;", content: (font.index + 128).toString(10) })
+    ] });
+  }
+
+  // client/components/reference/keycodes.ts
+  var keycodesTableBody = document.querySelector('[data-component="keycodesTableBody"]');
+  if (keycodesTableBody) {
+    on("languageChanged", updateTable5);
+  }
+  function updateTable5() {
+    if (keycodesTableBody) {
+      fill(keycodesTableBody, inputs.filter((x) => x.value > 0).map(keycodeTableRow));
+    }
+  }
+  function keycodeTableRow(keycode2) {
+    return tr({ content: [
+      td({ content: [code({ content: keycode2.names[state_default.language] })] }),
+      td({ content: keycode2.value.toString(10) })
+    ] });
+  }
+
+  // client/components/system/canvas.ts
+  var canvas2 = document.querySelector('[data-component="canvas"]');
+  var xcoords = document.querySelector('[data-component="canvasXCoords"]');
+  var ycoords = document.querySelector('[data-component="canvasYCoords"]');
+  if (canvas2 && xcoords && ycoords) {
+    const context2 = canvas2.getContext("2d");
+    const xcoords1 = xcoords.querySelector(":nth-child(1)");
+    const xcoords2 = xcoords.querySelector(":nth-child(2)");
+    const xcoords3 = xcoords.querySelector(":nth-child(3)");
+    const xcoords4 = xcoords.querySelector(":nth-child(4)");
+    const xcoords5 = xcoords.querySelector(":nth-child(5)");
+    const ycoords1 = ycoords.querySelector(":nth-child(1)");
+    const ycoords2 = ycoords.querySelector(":nth-child(2)");
+    const ycoords3 = ycoords.querySelector(":nth-child(3)");
+    const ycoords4 = ycoords.querySelector(":nth-child(4)");
+    const ycoords5 = ycoords.querySelector(":nth-child(5)");
+    setCanvasAndContext(canvas2, context2);
+    on("resolution", function(data) {
+      canvas2.style.imageRendering = data.width < 500 || data.height < 500 ? "pixelated" : "auto";
+      canvas2.width = data.width;
+      canvas2.height = data.height;
+    });
+    on("canvas", function(data) {
+      xcoords1.innerHTML = data.startx.toString(10);
+      xcoords2.innerHTML = Math.round((data.startx + data.sizex) / 4).toString(10);
+      xcoords3.innerHTML = Math.round((data.startx + data.sizex) / 2).toString(10);
+      xcoords4.innerHTML = Math.round((data.startx + data.sizex) / 4 * 3).toString(10);
+      xcoords5.innerHTML = Math.round(data.startx + data.sizex - 1).toString(10);
+      ycoords1.innerHTML = data.starty.toString(10);
+      ycoords2.innerHTML = Math.round((data.starty + data.sizey) / 4).toString(10);
+      ycoords3.innerHTML = Math.round((data.starty + data.sizey) / 2).toString(10);
+      ycoords4.innerHTML = Math.round((data.starty + data.sizey) / 4 * 3).toString(10);
+      ycoords5.innerHTML = Math.round(data.starty + data.sizey - 1).toString(10);
+    });
+    on("cursor", function(code3) {
+      const corrected = code3 < 0 || code3 > 15 ? 1 : code3;
+      canvas2.style.cursor = cursors[corrected].css;
+    });
+    on("print", function(data) {
+      context2.textBaseline = "hanging";
+      context2.fillStyle = data.turtle.c;
+      context2.font = `${data.size}pt ${fonts[data.font & 15].css}`;
+      if ((data.font & 16) > 0) {
+        context2.font = `bold ${context2.font}`;
+      }
+      if ((data.font & 32) > 0) {
+        context2.font = `italic ${context2.font}`;
+      }
+      if ((data.font & 64) > 0) {
+      }
+      if ((data.font & 128) > 0) {
+      }
+      context2.fillText(data.string, data.turtle.x, data.turtle.y);
+    });
+    on("line", function(data) {
+      context2.beginPath();
+      context2.moveTo(data.turtle.x, data.turtle.y);
+      context2.lineTo(data.x, data.y);
+      context2.lineCap = "round";
+      context2.lineWidth = Math.abs(data.turtle.p);
+      context2.strokeStyle = data.turtle.c;
+      context2.stroke();
+    });
+    on("poly", function(data) {
+      context2.beginPath();
+      data.coords.forEach((coords2, index) => {
+        if (index === 0) {
+          context2.moveTo(coords2[0], coords2[1]);
+        } else {
+          context2.lineTo(coords2[0], coords2[1]);
+        }
+      });
+      if (data.fill) {
+        context2.closePath();
+        context2.fillStyle = data.turtle.c;
+        context2.fill();
+      } else {
+        context2.lineCap = "round";
+        context2.lineWidth = Math.abs(data.turtle.p);
+        context2.strokeStyle = data.turtle.c;
+        context2.stroke();
+      }
+    });
+    on("arc", function(data) {
+      context2.beginPath();
+      if (data.x === data.y) {
+        context2.arc(data.turtle.x, data.turtle.y, data.x, 0, 2 * Math.PI, false);
+      } else {
+        context2.save();
+        context2.translate(data.turtle.x - data.x, data.turtle.y - data.y);
+        context2.scale(data.x, data.y);
+        context2.arc(1, 1, 1, 0, 2 * Math.PI, false);
+        context2.restore();
+      }
+      if (data.fill) {
+        context2.fillStyle = data.turtle.c;
+        context2.fill();
+      } else {
+        context2.lineWidth = Math.abs(data.turtle.p);
+        context2.strokeStyle = data.turtle.c;
+        context2.stroke();
+      }
+    });
+    on("box", function(data) {
+      context2.beginPath();
+      context2.moveTo(data.turtle.x, data.turtle.y);
+      context2.lineTo(data.x, data.turtle.y);
+      context2.lineTo(data.x, data.y);
+      context2.lineTo(data.turtle.x, data.y);
+      context2.closePath();
+      context2.fillStyle = data.fill;
+      context2.fill();
+      if (data.border) {
+        context2.lineCap = "round";
+        context2.lineWidth = Math.abs(data.turtle.p);
+        context2.strokeStyle = data.turtle.c;
+        context2.stroke();
+      }
+    });
+    on("pixset", function(data) {
+      const img = context2.createImageData(1, 1);
+      img.data[0] = data.c >> 16 & 255;
+      img.data[1] = data.c >> 8 & 255;
+      img.data[2] = data.c & 255;
+      img.data[3] = 255;
+      context2.putImageData(img, data.x, data.y);
+      if (data.doubled) {
+        context2.putImageData(img, data.x - 1, data.y);
+        context2.putImageData(img, data.x, data.y - 1);
+        context2.putImageData(img, data.x - 1, data.y - 1);
+      }
+    });
+    on("blank", function(colour2) {
+      context2.fillStyle = colour2;
+      context2.fillRect(0, 0, canvas2.width, canvas2.height);
+    });
+    on("flood", function(data) {
+      const img = context2.getImageData(0, 0, canvas2.width, canvas2.height);
+      const pixStack = [];
+      const dx = [0, -1, 1, 0];
+      const dy = [-1, 0, 0, 1];
+      let i2 = 0;
+      let offset = (data.y * canvas2.width + data.x) * 4;
+      const c3 = 256 * 256 * img.data[offset] + 256 * img.data[offset + 1] + img.data[offset + 2];
+      let nextX;
+      let nextY;
+      let nextC;
+      let test1;
+      let test2;
+      let test3;
+      let tx = data.x;
+      let ty = data.y;
+      pixStack.push(tx);
+      pixStack.push(ty);
+      while (pixStack.length > 0) {
+        ty = pixStack.pop();
+        tx = pixStack.pop();
+        for (i2 = 0; i2 < 4; i2 += 1) {
+          nextX = tx + dx[i2];
+          nextY = ty + dy[i2];
+          test1 = nextX > 0 && nextX <= canvas2.width;
+          test2 = nextY > 0 && nextY <= canvas2.height;
+          if (test1 && test2) {
+            offset = (nextY * canvas2.width + nextX) * 4;
+            nextC = 256 * 256 * img.data[offset];
+            nextC += 256 * img.data[offset + 1];
+            nextC += img.data[offset + 2];
+            test1 = nextC !== data.c1;
+            test2 = nextC !== data.c2 || !data.boundary;
+            test3 = nextC === c3 || data.boundary;
+            if (test1 && test2 && test3) {
+              offset = (nextY * canvas2.width + nextX) * 4;
+              img.data[offset] = (data.c1 & 16711680) >> 16;
+              img.data[offset + 1] = (data.c1 & 65280) >> 8;
+              img.data[offset + 2] = data.c1 & 255;
+              pixStack.push(nextX);
+              pixStack.push(nextY);
+            }
+          }
+        }
+      }
+      context2.putImageData(img, 0, 0);
+    });
+  }
+
+  // client/components/system/comments.ts
+  var commentsTableBody = document.querySelector('[data-component="commentsTableBody"]');
+  if (commentsTableBody) {
+    on("lexemesChanged", function() {
+      fill(commentsTableBody, state_default.comments.map(commentTableRow));
+    });
+  }
+  function commentTableRow(comment2) {
+    return tr({ content: [
+      td({ content: comment2.line.toString(10) }),
+      td({ content: comment2.value })
+    ] });
+  }
+
+  // client/components/system/console.ts
+  var console2 = document.querySelector('[data-component="console"]');
+  if (console2) {
+    on("log", function(text) {
+      console2.innerHTML += text;
+      console2.scrollTop = console2.scrollHeight;
+    });
+    on("backspace", function() {
+      console2.innerHTML = console2.innerHTML.slice(0, -1);
+      console2.scrollTop = console2.scrollHeight;
+    });
+    on("console", function(data) {
+      if (data.clear) {
+        console2.innerHTML = "";
+      }
+      console2.style.background = data.colour;
+    });
+  }
+
+  // client/components/system/controls.ts
+  var playButton = document.querySelector('[data-component="runButton"]');
+  var haltButton = document.querySelector('[data-component="haltButton"]');
+  if (playButton && haltButton) {
+    on("played", () => {
+      playButton.innerHTML = '<i class="fa fa-pause"></i>';
+      haltButton.removeAttribute("disabled");
+    });
+    on("paused", () => {
+      playButton.innerHTML = '<i class="fa fa-play"></i>';
+    });
+    on("unpaused", () => {
+      playButton.innerHTML = '<i class="fa fa-pause"></i>';
+    });
+    on("halted", () => {
+      playButton.innerHTML = '<i class="fa fa-play"></i>';
+      haltButton.setAttribute("disabled", "disabled");
+    });
+  }
+
+  // client/components/system/editor.ts
+  var editor = document.querySelector('[data-component="editor"]');
+  if (editor) {
+    let updateCodeDisplay = function() {
+      const lines = state_default.code.split("\n");
+      fill(lineNumbers, lines.map((x, y) => li({ content: (y + 1).toString(10) })));
+      fill(code3, highlight(state_default.tokens, state_default.language));
+      window.requestAnimationFrame(function() {
+        textarea.value = state_default.code;
+        textarea.style.height = `${lines.length * 1.5}em`;
+        textarea.style.width = `${pre.scrollWidth.toString(10)}px`;
+        pre.style.height = `${lines.length * 1.5}em`;
+        lineNumbers.style.height = `${lines.length * 1.5}em`;
+      });
+    };
+    const lineNumbers = editor.querySelector(".line-numbers");
+    const codeWrapper = editor.querySelector(".code-wrapper");
+    const textarea = editor.querySelector("textarea");
+    const pre = editor.querySelector("pre");
+    const code3 = editor.querySelector("code");
+    textarea.addEventListener("keydown", function(event) {
+      if (event.keyCode === 9) {
+        const pos = textarea.selectionStart;
+        const left = textarea.value.slice(0, pos);
+        const right = textarea.value.slice(pos);
+        event.preventDefault();
+        textarea.value = [left, right].join("  ");
+        state_default.code = textarea.value;
+        textarea.selectionStart = pos + 2;
+        textarea.selectionEnd = pos + 2;
+      }
+      if (event.keyCode === 13) {
+        codeWrapper.scrollLeft = 0;
+      }
+    });
+    textarea.addEventListener("input", function() {
+      state_default.code = textarea.value;
+    });
+    on("codeChanged", updateCodeDisplay);
+    on("editorFontFamilyChanged", function() {
+      editor.style.fontFamily = state_default.editorFontFamily;
+      updateCodeDisplay();
+    });
+    on("editorFontSizeChanged", function() {
+      editor.style.fontSize = `${state_default.editorFontSize.toString(10)}px`;
+      updateCodeDisplay();
+    });
+    on("selectAll", function() {
+      textarea.select();
+    });
+    codeWrapper.addEventListener("scroll", function() {
+      lineNumbers.scrollTop = codeWrapper.scrollTop;
+      if (codeWrapper.scrollLeft <= 8) {
+        codeWrapper.scrollLeft = 0;
+      }
+    });
+  }
+
+  // client/components/system/examples.ts
+  var examplesMenu = document.querySelector('[data-component="examplesMenu"]');
+  if (examplesMenu) {
+    const groupLinks = groups.slice(1).map(exampleGroupLink);
+    const groupMenus = groups.slice(1).map(exampleGroupMenu);
+    fill(examplesMenu, groupLinks.concat(groupMenus));
+  }
+  function exampleGroupLink(group) {
+    return a({
+      on: ["click", function() {
+        toggleMenu(group.id);
+      }],
+      "data-action": "toggleMenu",
+      "data-arg": group.id,
+      content: [
+        span({ content: `Examples ${group.index.toString(10)} - ${group.title}` }),
+        i({ className: "fa fa-caret-right", "aria-hidden": "true" })
+      ]
+    });
+  }
+  function exampleGroupMenu(group) {
+    return div({
+      className: "system-sub-menu",
+      "data-menu": group.id,
+      content: [
+        a({
+          on: ["click", function() {
+            closeMenu(group.id);
+          }],
+          "data-action": "closeMenu",
+          "data-arg": group.id,
+          content: [
+            i({ className: "fa fa-caret-left", "aria-hidden": "true" }),
+            span({ content: "back" })
+          ]
+        })
+      ].concat(group.examples.map(exampleLink))
+    });
+  }
+  function exampleLink(example) {
+    return a({
+      on: ["click", function() {
+        state_default.openExampleFile(example.id);
+      }],
+      content: [span({ content: example.names[state_default.language] })]
+    });
+  }
+
+  // client/components/system/memory.ts
+  var stackTableBody = document.querySelector('[data-component="memoryStackTableBody"]');
+  var heapTableBody = document.querySelector('[data-component="memoryHeapTableBody"]');
+  var wrap = 10;
+  if (stackTableBody && heapTableBody) {
+    on("memoryDumped", function(memory) {
+      const stackSplit = [];
+      const heapSplit = [];
+      while (memory.stack.length > 0) {
+        stackSplit.push(memory.stack.splice(0, wrap));
+      }
+      while (memory.heap.length > 0) {
+        heapSplit.push(memory.heap.splice(0, wrap));
+      }
+      fill(stackTableBody, stackSplit.map(tableRow.bind(null, 0)));
+      fill(heapTableBody, heapSplit.map(tableRow.bind(null, memory.heapBase)));
+    });
+  }
+  function tableRow(offset, bytes, index) {
+    const content = bytes.map((byte) => td({ content: byte.toString(10) }));
+    content.unshift(th({ content: (offset + index * wrap).toString(10) }));
+    return tr({ content });
+  }
+
+  // client/components/system/output.ts
+  var output = document.querySelector('[data-component="output"]');
+  if (output) {
+    on("write", function(text) {
+      output.innerHTML += text;
+    });
+    on("output", function(data) {
+      if (data.clear) {
+        output.innerHTML = "";
+      }
+      output.style.background = data.colour;
+    });
+  }
+
+  // client/components/system/pcode.ts
+  var list = document.querySelector('[data-component="pcodeList"]');
+  if (list) {
+    on("pcodeChanged", function() {
+      fill(list, state_default.pcode.map(pcodeListItem));
+    });
+  }
+  function pcodeListItem(line2) {
+    const content = state_default.assembler ? assemble(line2, 0) : line2.reduce((sofar, current) => sofar.concat(cell(current)), []);
+    while (content.length % 10 > 0) {
+      content.push(div());
+    }
+    return li({ content });
+  }
+  function assemble(line2, index) {
+    const hit = PCode[line2[index]];
+    const pcode2 = hit ? [cell(hit.toUpperCase())] : [cell(line2[index])];
+    let args = 0;
+    if (hit) {
+      if (pcodeArgs(line2[index]) < 0) {
+        const length = line2[index + 1];
+        pcode2.push(cell(length));
+        args += 1;
+        while (args <= length) {
+          args += 1;
+          pcode2.push(cell(String.fromCharCode(line2[index + args])));
+        }
+      } else {
+        while (args < pcodeArgs(line2[index])) {
+          args += 1;
+          pcode2.push(cell(line2[index + args]));
+        }
+      }
+    }
+    if (index + args < line2.length - 1) {
+      return pcode2.concat(assemble(line2, index + args + 1));
+    }
+    return pcode2;
+  }
+  function cell(content) {
+    if (content === null || content === void 0) {
+      return div({ content: ":(" });
+    } else if (typeof content === "string") {
+      return div({ content });
+    } else if (state_default.decimal) {
+      return div({ content: content.toString(10) });
+    } else {
+      return div({ content: content.toString(16).toUpperCase() });
+    }
+  }
+
+  // client/components/system/syntax.ts
+  var syntaxTableBody = document.querySelector('[data-component="syntaxTableBody"]');
+  if (syntaxTableBody) {
+    on("lexemesChanged", function() {
+      fill(syntaxTableBody, state_default.lexemes.map(tableBodyRow));
+    });
+  }
+  function tableBodyRow(lexeme, index) {
+    return tr({
+      content: [
+        td({ content: `${index + 1}` }),
+        td({ content: lexeme.line.toString(10) }),
+        td({
+          className: "wide",
+          content: [
+            code({ content: lexeme.content ? highlight(lexeme.content, state_default.language) : "" })
+          ]
+        }),
+        td({ className: "wide", content: `${lexeme.type}${lexeme.subtype ? ` (${lexeme.subtype})` : ""}` })
+      ]
+    });
+  }
+
+  // client/components/system/turtle.ts
+  var turtX = document.querySelector('[data-component="turtxDisplay"]');
+  var turtY = document.querySelector('[data-component="turtyDisplay"]');
+  var turtD = document.querySelector('[data-component="turtdDisplay"]');
+  var turtA = document.querySelector('[data-component="turtaDisplay"]');
+  var turtT = document.querySelector('[data-component="turttDisplay"]');
+  var turtC = document.querySelector('[data-component="turtcDisplay"]');
+  if (turtX && turtY && turtD && turtA && turtT && turtC) {
+    on("turtxChanged", function(x) {
+      turtX.innerHTML = x.toString(10);
+    });
+    on("turtyChanged", function(y) {
+      turtY.innerHTML = y.toString(10);
+    });
+    on("turtdChanged", function(d) {
+      turtD.innerHTML = d.toString(10);
+    });
+    on("turtaChanged", function(a2) {
+      turtA.innerHTML = a2.toString(10);
+    });
+    on("turttChanged", function(t) {
+      const penup = t < 0;
+      const thickness = Math.abs(t);
+      turtT.innerHTML = penup ? `(${thickness.toString(10)})` : thickness.toString(10);
+    });
+    on("turtcChanged", function(c2) {
+      turtC.style.background = c2;
+    });
+  }
+
+  // client/components/system/usage.ts
+  var usageTableBody = document.querySelector('[data-component="usageTableBody"]');
+  if (usageTableBody) {
+    on("usageChanged", function() {
+      fill(usageTableBody, state_default.usage.map(categoryFragment));
+    });
+  }
+  function categoryFragment(category) {
+    return fragment([
+      tr({
+        className: "category-heading",
+        content: [
+          th({ colspan: "4", content: category.category })
+        ]
+      }),
+      fragment(category.expressions.map(expressionRow)),
+      tr({
+        content: [
+          td(),
+          td({ content: "TOTAL:" }),
+          td({ content: category.total.toString(10) }),
+          td()
+        ]
+      })
+    ]);
+  }
+  function expressionRow(expression3) {
+    return tr({
+      content: [
+        td({
+          content: [
+            code({ content: highlight(expression3.name, state_default.language) })
+          ]
+        }),
+        td({ content: expression3.level.toString(10) }),
+        td({ content: expression3.count.toString(10) }),
+        td({ content: expression3.lines.replace(/\s/g, ", ") })
+      ]
+    });
+  }
+
+  // client/index.ts
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function() {
+      navigator.serviceWorker.register("/service-worker.js");
+    });
+  }
+  globalThis.state = state_default;
+  var turtle3 = document.getElementById("turtle");
+  if (turtle3) {
+    if (turtle3.dataset.language) {
+      if (languages.includes(turtle3.dataset.language)) {
+        state_default.language = turtle3.dataset.language;
+      }
+    }
+    if (turtle3.dataset.example) {
+      state_default.openExampleFile(turtle3.dataset.example);
+    }
+    if (turtle3.dataset.file) {
+      state_default.openRemoteFile(turtle3.dataset.file);
+    }
+    on("systemReady", function() {
+      turtle3.classList.remove("hidden");
+    });
+  }
+  window.addEventListener("beforeunload", function() {
+    if (state_default.alwaysSaveSettings) {
+      state_default.saveSettings();
+    }
+  });
+  on("error", function(error) {
+    console.error(error);
+    window.alert(error.message);
+  });
+  state_default.init();
+})();

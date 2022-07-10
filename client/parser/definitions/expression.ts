@@ -15,7 +15,7 @@ import type {
   OperatorLexeme,
   QueryLexeme,
   StringLexeme
-} from '../../lexer/lexeme'
+} from '../../lexer/lexeme.ts'
 import { type } from './operators.ts'
 
 /** expression */

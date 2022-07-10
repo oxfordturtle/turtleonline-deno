@@ -1,8 +1,8 @@
-xOrigin: Final[int] = 500
-yOrigin: Final[int] = 500
-halfWidth: Final[int] = 400
-yScale: Final[int] = 200
-radians: Final[bool] = False # make true for x-axis in radians
+xOrigin: Final = 500
+yOrigin: Final = 500
+halfWidth: Final = 400
+yScale: Final = 200
+radians: Final = False # make true for x-axis in radians
 
 # draws graph axes
 def drawAxes():
@@ -49,16 +49,16 @@ def drawAxes():
 # plots a sine curve
 def plotSineCurve():
   for degrees in range(-180, 181, 1):
-    x: int = xOrigin + divmult(degrees, 180, halfWidth)
-    y: int = yOrigin - sin(degrees, 1, yScale)
+    x = xOrigin + divmult(degrees, 180, halfWidth)
+    y = yOrigin - sin(degrees, 1, yScale)
     setxy(x, y)
   polyline(361)
 
 # plots a cosine curve
 def plotCosineCurve():
   for degrees in range(-180, 181, 1):
-    x: int = xOrigin + divmult(degrees, 180, halfWidth)
-    y: int = yOrigin - cos(degrees, 1, yScale)
+    x = xOrigin + divmult(degrees, 180, halfWidth)
+    y = yOrigin - cos(degrees, 1, yScale)
     setxy(x, y)
   polyline(361)
 
@@ -71,8 +71,8 @@ def plotTanCurve():
       if degrees == 90:
         polyline(179)
       else:
-        x: int = xOrigin + divmult(degrees, 180, halfWidth)
-        y: int = yOrigin - tan(degrees, 1, yScale)
+        x = xOrigin + divmult(degrees, 180, halfWidth)
+        y = yOrigin - tan(degrees, 1, yScale)
         setxy(x, y)
   polyline(90)
 

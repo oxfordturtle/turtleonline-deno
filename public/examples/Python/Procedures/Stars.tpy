@@ -1,5 +1,5 @@
 # draws a star with given points & colour
-def star(points: int, colr: int):
+def star(points, colr):
   # set the size of a "degree" so there
   # are twice as many in a complete circle
   # as there are points in the polygon

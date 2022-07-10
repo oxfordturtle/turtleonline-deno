@@ -1,6 +1,6 @@
-minSize: Final[int] = 70
-maxSize: Final[int] = 130
-shapes: Final[int] = 6
+minSize: Final = 70
+maxSize: Final = 130
+shapes: Final = 6
 x: List[int, shapes]
 y: List[int, shapes]
 d: List[int, shapes]
@@ -10,11 +10,11 @@ dVelocity: List[int, shapes]
 sides: List[int, shapes]
 size: List[int, shapes]
 colr: List[int, shapes]
-xEdge: bool
-yEdge: bool
+xEdge
+yEdge
 
 # draws a polygon, and checks whether it meets the edge of the canvas
-def drawShape (sides: int, size: int, colr: int):
+def drawShape (sides, size, colr):
   global xEdge, yEdge
   xEdge = False
   yEdge = False

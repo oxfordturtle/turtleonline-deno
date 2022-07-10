@@ -1,16 +1,16 @@
-maxcol: int = 40
-scale: int = 250
-pixels: int = 750
-xcentre: int = -500000 # millionths
-ycentre: int = 0 # millionths
-xstart: int = divmult(xcentre, 1000000, scale) - pixels / 2
-ystart: int = divmult(ycentre, 1000000, scale) - pixels / 2
-xfinish: int = xstart + pixels - 1
-yfinish: int = ystart + pixels - 1
-x: int
-y: int
-iterations: int
-temp: int
+maxcol = 40
+scale = 250
+pixels = 750
+xcentre = -500000 # millionths
+ycentre = 0 # millionths
+xstart = divmult(xcentre, 1000000, scale) - pixels / 2
+ystart = divmult(ycentre, 1000000, scale) - pixels / 2
+xfinish = xstart + pixels - 1
+yfinish = ystart + pixels - 1
+x
+y
+iterations
+temp
 canvas(xstart, ystart, pixels, pixels)
 resolution(pixels, pixels)
 timeset(0)

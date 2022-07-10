@@ -1,7 +1,7 @@
-gunlength: int = 1000
-distancecol: int = green
-timecol: int = red
-steps: int = 0
+gunlength = 1000
+distancecol = green
+timecol = red
+steps = 0
 
 def graphaxes():
   thickness(5)
@@ -28,12 +28,12 @@ def graphaxes():
   setxy(9600, 100)
   print('Time', 2, 24)
 
-def plot(x: int, y: int, col: int):
+def plot(x, y, col):
   setxy(700 + x * 100, 4500 - y * 2 / 5)
   colour(col)
   blot(40)
 
-def aim(elevation: int):
+def aim(elevation):
   noupdate()
   setxy(0, 10000)
   colour(cream)
@@ -50,7 +50,7 @@ def aim(elevation: int):
   blot(100)
   update()
 
-def fire(xvel: int, yvel: int, gravity: int, floor: int):
+def fire(xvel, yvel, gravity, floor):
   global steps, turty
   setxy(250, 9750)
   steps = 0

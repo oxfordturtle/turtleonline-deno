@@ -1,5 +1,5 @@
 # draws a polygon with given sides & colour
-def poly(sides: int, colr: int):
+def poly(sides, colr):
   # point Turtle horizontally to right
   direction(90)
   # trace shape with the Turtle

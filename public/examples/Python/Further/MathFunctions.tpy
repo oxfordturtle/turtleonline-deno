@@ -1,10 +1,10 @@
-decimals: Final[int] = 4 # decimal places for display of values
-denominator: Final[int] = 1000000 # denominator gives level of precision
+decimals: Final = 4 # decimal places for display of values
+denominator: Final = 1000000 # denominator gives level of precision
 
 # Writes to the output the value of a mathematical function of a/b,
 # or - in the case of HYPOT (where OP is "," not "/") - of a and b;
 # chr(176) is the degree symbol for sin/cos/tan and their inverses.
-def show(fn: str, op: str, value: int, degrees: int):
+def show(fn, op, value, degrees):
   if degrees == 1:
     writeline(fn + '(' + str(a) + op + str(b) + chr(176) + ') = ' + qstr(value, denominator, decimals))
   else:
@@ -23,8 +23,8 @@ writeline('precision, even though the Turtle functions strictly operate only')
 writeline('on integers and produce integer results.')
 writeline('')
 # set a and b to random values, and display their values and quotient
-a: int = randint(100, 999)
-b: int = randint(100, 999)
+a = randint(100, 999)
+b = randint(100, 999)
 writeline('a = ' + str(a) + ' b = ' + str(b))
 writeline('a / b = ' + str(a) + ' / ' + str(b) + ' = ' + qstr(a, b, decimals))
 writeline('')

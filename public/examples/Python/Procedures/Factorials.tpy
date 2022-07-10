@@ -1,6 +1,6 @@
 # calculates n! recursively - both the
 # parameter n and the result are integers
-def factorial(n: int) -> int:
+def factorial(n):
   if (n == 0):
     return 1
   else:

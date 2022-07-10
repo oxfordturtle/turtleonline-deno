@@ -16,13 +16,13 @@ while (abs(?key) != \escape):
   pass
 timeset(0)
 for count in range(1, 10, 1):
-  x: int = randint(0, 900) + 50
-  y: int = randint(0, 900) + 50
+  x = randint(0, 900) + 50
+  y = randint(0, 900) + 50
   blank(black)
   setxy(x, y)
   colour(rgb(count))
   blot(50)
-  clickcol: int
+  clickcol
   while clickcol != turtc:
     update()
     while ?lmouse <= 0:

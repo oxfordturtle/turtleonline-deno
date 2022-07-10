@@ -1,6 +1,6 @@
-minSize: Final[int] = 70
-maxSize: Final[int] = 130
-balls: Final[int] = 10
+minSize: Final = 70
+maxSize: Final = 130
+balls: Final = 10
 x: List[int, balls]
 y: List[int, balls]
 xVelocity: List[int, balls]

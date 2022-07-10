@@ -1,5 +1,5 @@
-sunRadius: Final[int] = 50000
-planets: Final[int] = 8
+sunRadius: Final = 50000
+planets: Final = 8
 radius: List[int, planets]
 distanceFromSun: List[int, planets]
 colr: List[int, planets]

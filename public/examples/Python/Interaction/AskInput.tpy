@@ -1,5 +1,5 @@
 write('What is your name?  ')
-s: str = readline()
+s = readline()
 writeline('')
 write('Hello, ' + s + ', ...  ')
 pause(500)
