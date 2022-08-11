@@ -1,10 +1,10 @@
 // type imports
-import type { CommentLexeme } from '../../lexer/lexeme.ts'
+import type { CommentLexeme } from '../../lexer/lexeme'
 
 // module imports
-import state from '../../state/index.ts'
-import { fill, tr, td } from '../../tools/elements.ts'
-import { on } from '../../tools/hub.ts'
+import state from '../../state/index'
+import { fill, tr, td } from '../../tools/elements'
+import { on } from '../../tools/hub'
 
 // get relevant elements
 const commentsTableBody = document.querySelector('[data-component="commentsTableBody"]') as HTMLElement

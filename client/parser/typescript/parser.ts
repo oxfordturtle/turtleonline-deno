@@ -1,11 +1,11 @@
-import constant from './constant.ts'
-import variable from './variable.ts'
-import subroutine from './subroutine.ts'
-import { eosCheck, statement } from './statement.ts'
-import Lexemes from '../definitions/lexemes.ts'
-import Program from '../definitions/program.ts'
-import { Subroutine } from '../definitions/subroutine.ts'
-import { Lexeme } from '../../lexer/lexeme.ts'
+import constant from './constant'
+import variable from './variable'
+import subroutine from './subroutine'
+import { eosCheck, statement } from './statement'
+import Lexemes from '../definitions/lexemes'
+import Program from '../definitions/program'
+import { Subroutine } from '../definitions/subroutine'
+import { Lexeme } from '../../lexer/lexeme'
 
 /** parses lexemes as a TypeScript program */
 export default function typescript (lexemes: Lexemes): Program {

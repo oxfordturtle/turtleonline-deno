@@ -1,18 +1,18 @@
-import { array, variable, variables } from './variable.ts'
-import type Lexemes from '../definitions/lexemes.ts'
-import constant from './constant.ts'
-import Program from '../definitions/program.ts'
-import type { Subroutine } from '../definitions/subroutine.ts'
-import type Variable from '../definitions/variable.ts'
-import { Statement, IfStatement, ForStatement, RepeatStatement, ReturnStatement, WhileStatement, VariableAssignment, ProcedureCall, PassStatement } from '../definitions/statement.ts'
-import { IntegerValue, VariableValue, CompoundExpression, Expression } from '../definitions/expression.ts'
-import { typeCheck, expression } from '../expression.ts'
-import evaluate from '../evaluate.ts'
-import { procedureCall } from '../call.ts'
-import * as find from '../find.ts'
-import { Type, Lexeme, IdentifierLexeme, OperatorLexeme, KeywordLexeme, IntegerLexeme } from '../../lexer/lexeme.ts'
-import { CompilerError } from '../../tools/error.ts'
-import { Token } from '../../lexer/token.ts'
+import { array, variable, variables } from './variable'
+import type Lexemes from '../definitions/lexemes'
+import constant from './constant'
+import Program from '../definitions/program'
+import type { Subroutine } from '../definitions/subroutine'
+import type Variable from '../definitions/variable'
+import { Statement, IfStatement, ForStatement, RepeatStatement, ReturnStatement, WhileStatement, VariableAssignment, ProcedureCall, PassStatement } from '../definitions/statement'
+import { IntegerValue, VariableValue, CompoundExpression, Expression } from '../definitions/expression'
+import { typeCheck, expression } from '../expression'
+import evaluate from '../evaluate'
+import { procedureCall } from '../call'
+import * as find from '../find'
+import { Type, Lexeme, IdentifierLexeme, OperatorLexeme, KeywordLexeme, IntegerLexeme } from '../../lexer/lexeme'
+import { CompilerError } from '../../tools/error'
+import { Token } from '../../lexer/token'
 
 /** checks for new lines and moves past them */
 export function newLine (lexemes: Lexemes): void {
@@ -392,8 +392,7 @@ function forStatement (lexeme: KeywordLexeme, lexemes: Lexemes, routine: Program
     if (!lexemes.get()) {
       throw new CompilerError('"STEP" instruction must be followed by an integer value.', lexemes.get(-1))
     }
-    let stepValue = expression(lexemes, routine)
-    typeCheck(stepValue, 'integer')
+    const stepValue = typeCheck(expression(lexemes, routine), 'integer')
     const evaluatedStepValue = evaluate(stepValue, 'BASIC', 'step') as number
     if (evaluatedStepValue === 0) {
       throw new CompilerError('Step value cannot be zero.', stepValue.lexeme)

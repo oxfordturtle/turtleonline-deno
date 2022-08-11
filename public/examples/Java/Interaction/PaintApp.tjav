@@ -65,11 +65,11 @@ class PaintApp {
     // print text instructions in grid
     colour(black);
     setXY(10, 858);
-    print('Left-click to draw, right-click to fill', 0, 20);
+    display('Left-click to draw, right-click to fill', 0, 20);
     setXY(450 + 10, 858);
-    print('Brush width:', 0, 20);
+    display('Brush width:', 0, 20);
     setXY(850 + 10, 858);
-    print('Colour:', 0, 20);
+    display('Colour:', 0, 20);
     // draw 40 different colour selection boxes
     setXY(0, 900);
     for (int count = 1; count <= 20; count = count + 1) {

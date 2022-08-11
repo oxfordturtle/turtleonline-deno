@@ -1,10 +1,10 @@
-import subroutine from './subroutine.ts'
-import { statement } from './statement.ts'
-import Lexemes from '../definitions/lexemes.ts'
-import Program from '../definitions/program.ts'
-import { Subroutine } from '../definitions/subroutine.ts'
-import { Lexeme } from '../../lexer/lexeme.ts'
-import { CompilerError } from '../../tools/error.ts'
+import subroutine from './subroutine'
+import { statement } from './statement'
+import Lexemes from '../definitions/lexemes'
+import Program from '../definitions/program'
+import { Subroutine } from '../definitions/subroutine'
+import { Lexeme } from '../../lexer/lexeme'
+import { CompilerError } from '../../tools/error'
 
 /** parses lexemes as a Python program */
 export default function python (lexemes: Lexemes): Program {
@@ -64,7 +64,6 @@ function parseBody (lexemes: Lexemes, routine: Program|Subroutine): void {
 function checkForUncertainTypes (routine: Program|Subroutine): void {
   const untypedVariable = routine.variables.find(x => !x.typeIsCertain)
   if (untypedVariable) {
-    console.log(routine)
     throw new CompilerError(`Could not infer the type of variable ${untypedVariable.name}.`)
   }
 

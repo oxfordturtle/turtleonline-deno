@@ -9,17 +9,17 @@ BEGIN
   {show instructions}
   blank(cream);
   setxy(15, 200);
-  print('In this typing test, you will be shown the', 4, 36);
+  display('In this typing test, you will be shown the', 4, 36);
   setxy(20, 270);
-  print('letters of the alphabet in a random order,', 4, 36);
+  display('letters of the alphabet in a random order,', 4, 36);
   setxy(20, 340);
-  print('and in a mixture of upper- and lower-case.', 4, 36);
+  display('and in a mixture of upper- and lower-case.', 4, 36);
   setxy(20, 410);
-  print('Type them as fast as you can, and see how', 4, 36);
+  display('Type them as fast as you can, and see how', 4, 36);
   setxy(20, 480);
-  print('quickly you can finish the entire alphabet.', 4, 36);
+  display('quickly you can finish the entire alphabet.', 4, 36);
   setxy(100, 620);
-  print('Now press the "Esc" key to start ...', 4, 36);
+  display('Now press the "Esc" key to start ...', 4, 36);
   {disable key echo in console}
   keyecho(false);
   {wait for escape key to be pressed}
@@ -57,9 +57,9 @@ BEGIN
       colour(yellow);
       {print in either lowercase or uppercase}
       if lowerCase then
-        print(chr(c + 32), 3, 450)
+        display(chr(c + 32), 3, 450)
       else
-        print(chr(c), 3, 450);
+        display(chr(c), 3, 450);
       {wait for user to type that letter, with shift down for uppercase}
       repeat
         shiftOk := ((abs(?kshift) and 8) > 0) xor lowerCase
@@ -71,5 +71,5 @@ BEGIN
   blank(lightblue);
   setxy(60, 460);
   colour(lightred);
-  print('Your time was ' + qstr(time, 1000, 2) + ' seconds', 4, 50)
+  display('Your time was ' + qstr(time, 1000, 2) + ' seconds', 4, 50)
 END.

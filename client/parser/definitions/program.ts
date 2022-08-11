@@ -1,6 +1,6 @@
-import Routine from './routine.ts'
-import Variable from './variable.ts'
-import type { Language } from '../../constants/languages.ts'
+import Routine from './routine'
+import Variable from './variable'
+import type { Language } from '../../constants/languages'
 
 /** program */
 export default class Program extends Routine {

@@ -1,9 +1,9 @@
 // type imports
-import type { Token } from './token.ts'
-import type { Language } from '../constants/languages.ts'
+import type { Token } from './token'
+import type { Language } from '../constants/languages'
 
 // module imports
-import tokenize from './tokenize.ts'
+import tokenize from './tokenize'
 import {
   Lexeme,
   NewlineLexeme,
@@ -18,11 +18,11 @@ import {
   IntegerLexeme,
   CharacterLexeme,
   StringLexeme,
-  KeycodeLexeme,
-  QueryLexeme,
+  InputcodeLexeme,
+  QuerycodeLexeme,
   IdentifierLexeme
-} from './lexeme.ts'
-import { CompilerError } from '../tools/error.ts'
+} from './lexeme'
+import { CompilerError } from '../tools/error'
 
 /** generates an array of lexemes from code string or tokens */
 export default function lexify (code: string|Token[], language: Language): Lexeme[] {
@@ -100,7 +100,7 @@ export default function lexify (code: string|Token[], language: Language): Lexem
         lexemes.push(new DelimiterLexeme(tokens[index]))
         break
 
-      case 'string':
+      case 'string': {
         const stringLexeme = new StringLexeme(tokens[index], language)
         const isCharacter = stringLexeme.value.length === 1
         if (isCharacter && (language === 'C' || language === 'Java' || language === 'Pascal')) {
@@ -109,6 +109,7 @@ export default function lexify (code: string|Token[], language: Language): Lexem
           lexemes.push(stringLexeme)
         }
         break
+      }
 
       case 'boolean':
         lexemes.push(new BooleanLexeme(tokens[index], language))
@@ -130,12 +131,12 @@ export default function lexify (code: string|Token[], language: Language): Lexem
         lexemes.push(new IntegerLexeme(tokens[index], 10))
         break
 
-      case 'keycode':
-        lexemes.push(new KeycodeLexeme(tokens[index], language))
+      case 'inputcode':
+        lexemes.push(new InputcodeLexeme(tokens[index], language))
         break
 
-      case 'query':
-        lexemes.push(new QueryLexeme(tokens[index], language))
+      case 'querycode':
+        lexemes.push(new QuerycodeLexeme(tokens[index], language))
         break
 
       case 'command':
@@ -159,10 +160,10 @@ export default function lexify (code: string|Token[], language: Language): Lexem
       case 'real':
         throw new CompilerError('The Turtle System does not support real numbers.', tokens[index])
 
-      case 'bad-keycode':
-        throw new CompilerError('Unrecognised input keycode.', tokens[index])
+      case 'bad-inputcode':
+        throw new CompilerError('Unrecognised input code.', tokens[index])
 
-      case 'bad-query':
+      case 'bad-querycode':
         throw new CompilerError('Unrecognised input query.', tokens[index])
 
       case 'illegal':

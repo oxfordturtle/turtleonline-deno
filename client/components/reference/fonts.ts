@@ -1,10 +1,10 @@
 /**
  * Fonts reference table.
  */
-import type { Font } from '../../constants/fonts.ts'
-import { fonts } from '../../constants/fonts.ts'
-import { fill, tr, td } from '../../tools/elements.ts'
-import { on } from '../../tools/hub.ts'
+import type { Font } from '../../constants/fonts'
+import { fonts } from '../../constants/fonts'
+import { fill, tr, td } from '../../tools/elements'
+import { on } from '../../tools/hub'
 
 // get relevant elements
 const fontsTableBody = document.querySelector('[data-component="fontsTableBody"]') as HTMLElement

@@ -41,12 +41,12 @@ function handleClick (): void {
     // select this turtle
     newTurtle(turtles[thisTurtle]);
     // start logging the change in the console
-    write('Turtle ' + toString(thisTurtle + 1) + ' changing direction,');
-    write('  from ' + toString(turtles[thisTurtle][d]) + '/' + toString(turtles[thisTurtle][a]));
+    log('Turtle ' + toString(thisTurtle + 1) + ' changing direction,');
+    log('  from ' + toString(turtles[thisTurtle][d]) + '/' + toString(turtles[thisTurtle][a]));
     // change angles, which will set direction to the closest possible angle
     angles(randInt(46) + 45);
     // finish logging the change
-    writeLine('  to ' + toString(turtles[thisTurtle][d]) + '/' + toString(turtles[thisTurtle][a]));
+    log('  to ' + toString(turtles[thisTurtle][d]) + '/' + toString(turtles[thisTurtle][a]));
     pause(200);
   }
 }
@@ -54,11 +54,11 @@ function handleClick (): void {
 canvas(0, 0, 100000, 100000);
 // print instructions
 setXY(2500, 80000);
-print('Click on a circle to alter the ANGLES setting', 0, 36);
+display('Click on a circle to alter the ANGLES setting', 0, 36);
 setXY(2500, 86000);
-print('of the corresponding turtle. Its direction will', 0, 36);
+display('of the corresponding turtle. Its direction will', 0, 36);
 setXY(2500, 92000);
-print('then change to the closest possible angle.', 0, 36);
+display('then change to the closest possible angle.', 0, 36);
 // draw initial paths for each turtle
 for (var i: number = 1; i <= numTurtles; i = i + 1) {
   setXY(10000, 70000);

@@ -1,30 +1,30 @@
 // type imports
-import type { Language } from '../constants/languages.ts'
-import type { Mode } from '../constants/modes.ts'
-import type { Property } from '../constants/properties.ts'
-import type { Options as CompilerOptions } from '../encoder/options.ts'
-import type { Options as MachineOptions } from '../machine/options.ts'
-import type { Token } from '../lexer/token.ts'
-import type { CommentLexeme, Lexeme } from '../lexer/lexeme.ts'
-import type { UsageCategory } from '../analyser/usage.ts'
+import type { Language } from '../constants/languages'
+import type { Mode } from '../constants/modes'
+import type { Property } from '../constants/properties'
+import type { Options as CompilerOptions } from '../encoder/options'
+import type { Options as MachineOptions } from '../machine/options'
+import type { Token } from '../lexer/token'
+import type { CommentLexeme, Lexeme } from '../lexer/lexeme'
+import type { UsageCategory } from '../analyser/usage'
 
 // module imports
-import { File, skeletons } from './file.ts'
-import { load, save } from './storage.ts'
-import { groups, examples } from '../constants/examples.ts'
-import { languages, extensions } from '../constants/languages.ts'
-import { defaults } from '../constants/properties.ts'
-import { input } from '../tools/elements.ts'
-import { SystemError } from '../tools/error.ts'
-import { send } from '../tools/hub.ts'
-import * as machine from '../machine/index.ts'
-import * as memory from '../machine/memory.ts'
-import tokenize from '../lexer/tokenize.ts'
-import lexify from '../lexer/lexify.ts'
-import parser from '../parser/parser.ts'
-import Program from '../parser/definitions/program.ts'
-import analyse from '../analyser/analyse.ts'
-import encoder from '../encoder/program.ts'
+import { File, skeletons } from './file'
+import { load, save } from './storage'
+import { groups, examples } from '../constants/examples'
+import { languages, extensions } from '../constants/languages'
+import { defaults } from '../constants/properties'
+import { input } from '../tools/elements'
+import { SystemError } from '../tools/error'
+import { send } from '../tools/hub'
+import * as machine from '../machine/index'
+import * as memory from '../machine/memory'
+import tokenize from '../lexer/tokenize'
+import lexify from '../lexer/lexify'
+import parser from '../parser/parser'
+import Program from '../parser/definitions/program'
+import analyse from '../analyser/analyse'
+import encoder from '../encoder/program'
 
 /** system state */
 class State {
@@ -985,6 +985,22 @@ class State {
     } catch (error) {
       send('error', error)
     }
+  }
+
+  async outputAllExamples (): Promise<void> {
+    let allExamplesText = ''
+    for (const example of examples) {
+      const filename = `${example.id}.${extensions[this.language]}`
+      const response = await window.fetch(`/examples/${this.language}/${example.groupId}/${filename}`)
+      const content = await response.text()
+      allExamplesText += `Example ${example.id}:\n----------\n`
+      allExamplesText += `${content}\n\n\n`
+    }
+    const a = document.createElement('a')
+    const blob = new window.Blob([allExamplesText], { type: 'text/plain;charset=utf-8' })
+    a.setAttribute('href', URL.createObjectURL(blob))
+    a.setAttribute('download', `${this.language}_examples.txt`)
+    a.click()
   }
 
   backupCode (): void {

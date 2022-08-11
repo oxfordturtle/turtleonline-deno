@@ -1,6 +1,6 @@
 // type imports
-import type { Token } from '../lexer/token.ts'
-import type { Lexeme } from '../lexer/lexeme.ts'
+import type { Token } from '../lexer/token'
+import type { Lexeme } from '../lexer/lexeme'
 
 /** system error */
 export class SystemError extends Error {

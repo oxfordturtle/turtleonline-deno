@@ -1,10 +1,10 @@
 /**
  * Cursors reference table.
  */
-import type { Cursor } from '../../constants/cursors.ts'
-import { cursors } from '../../constants/cursors.ts'
-import { fill, tr } from '../../tools/elements.ts'
-import { on } from '../../tools/hub.ts'
+import type { Cursor } from '../../constants/cursors'
+import { cursors } from '../../constants/cursors'
+import { fill, tr } from '../../tools/elements'
+import { on } from '../../tools/hub'
 
 // get relevant elements
 const cursorsTableBody = document.querySelector('[data-component="cursorsTableBody"]') as HTMLElement

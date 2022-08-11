@@ -1,8 +1,8 @@
-import type { Constant } from './constant.ts'
-import type Variable from './variable.ts'
-import type { Subroutine } from './subroutine.ts'
-import type { Statement } from './statement.ts'
-import type { Language } from '../../constants/languages.ts'
+import type { Constant } from './constant'
+import type Variable from './variable'
+import type { Subroutine } from './subroutine'
+import type { Statement } from './statement'
+import type { Language } from '../../constants/languages'
 
 /** routine (extended by program and subroutine) */
 export default class Routine {

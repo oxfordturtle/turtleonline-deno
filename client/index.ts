@@ -1,40 +1,40 @@
 // type imports
-import type { Language } from './constants/languages.ts'
+import type { Language } from './constants/languages'
 
 // module imports
-import state from './state/index.ts'
-import { languages } from './constants/languages.ts'
-import { on } from './tools/hub.ts'
+import state from './state/index'
+import { languages } from './constants/languages'
+import { on } from './tools/hub'
 
 // load general site components
-import './components/actions.ts'
-import './components/bindings.ts'
-import './components/download.ts'
-import './components/languages.ts'
-import './components/modes.ts'
-import './components/preview.ts'
+import './components/actions'
+import './components/bindings'
+import './components/download'
+import './components/languages'
+import './components/modes'
+import './components/preview'
 
 // load help page components
-import './components/reference/colours.ts'
-import './components/reference/commands.ts'
-import './components/reference/cursors.ts'
-import './components/reference/fonts.ts'
-import './components/reference/keycodes.ts'
+import './components/reference/colours'
+import './components/reference/commands'
+import './components/reference/cursors'
+import './components/reference/fonts'
+import './components/reference/keycodes'
 
 // load system components
-import './components/system/canvas.ts'
-import './components/system/comments.ts'
-import './components/system/console.ts'
-import './components/system/controls.ts'
-import './components/system/editor.ts'
-import './components/system/examples.ts'
-import './components/system/memory.ts'
-import './components/system/output.ts'
-import './components/system/pcode.ts'
-import './components/system/syntax.ts'
-import './components/system/turtle.ts'
-import './components/system/usage.ts'
-import './components/system/variables.ts'
+import './components/system/canvas'
+import './components/system/comments'
+import './components/system/console'
+import './components/system/controls'
+import './components/system/editor'
+import './components/system/examples'
+import './components/system/memory'
+import './components/system/output'
+import './components/system/pcode'
+import './components/system/syntax'
+import './components/system/turtle'
+import './components/system/usage'
+import './components/system/variables'
 
 // register service worker
 if ('serviceWorker' in navigator) {

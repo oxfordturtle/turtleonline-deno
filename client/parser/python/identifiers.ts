@@ -1,8 +1,8 @@
-import identifier from './identifier.ts'
-import Lexemes from '../definitions/lexemes.ts'
-import Program from '../definitions/program.ts'
-import { Subroutine } from '../definitions/subroutine.ts'
-import { CompilerError } from '../../tools/error.ts'
+import identifier from './identifier'
+import Lexemes from '../definitions/lexemes'
+import Program from '../definitions/program'
+import { Subroutine } from '../definitions/subroutine'
+import { CompilerError } from '../../tools/error'
 
 /** parses lexemes as a comma-separated list of identifiers, and returns the names */
 export default function identifiers (lexemes: Lexemes, routine: Program|Subroutine, context: 'global'|'nonlocal'): string[] {

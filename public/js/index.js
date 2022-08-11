@@ -2333,7 +2333,6 @@
             n1 = stack[stack.length - 2];
             if (n1 !== void 0 && n2 !== void 0) {
               if (n1 < 0 || n1 > main[n2]) {
-                console.log(`n1: ${n1}, n2: ${n2}, memory[n2]: ${main[n2]}`);
                 throw new MachineError(`Array index out of range (${line}, ${code2}).`);
               }
             }
@@ -3161,7 +3160,7 @@
       new Parameter("mult", "integer", false, 1)
     ], "integer", 5, 1, "Returns <code>&radic;(a<sup>2</sup>+b<sup>2</sup>)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
     new Command({ BASIC: "RND", C: null, Java: null, Pascal: null, Python: null, TypeScript: null }, [7 /* rand */, 4 /* incr */], [new Parameter("n", "integer", false, 1)], "integer", 5, 1, "Returns a random integer between 1 and <code>n</code>."),
-    new Command({ BASIC: null, C: "rand", Java: "randInt", Pascal: "random", Python: null, TypeScript: "randInt" }, [7 /* rand */], [new Parameter("n", "integer", false, 1)], "integer", 5, 1, "Returns a random non-negative integer less than <code>n</code>."),
+    new Command({ BASIC: null, C: "rand", Java: "randInt", Pascal: "random", Python: "randrange", TypeScript: "randInt" }, [7 /* rand */], [new Parameter("n", "integer", false, 1)], "integer", 5, 1, "Returns a random non-negative integer less than <code>n</code>."),
     new Command({ BASIC: null, C: null, Java: null, Pascal: null, Python: "randint", TypeScript: null }, [2 /* swap */, 1 /* dupl */, 3 /* rota */, 4 /* incr */, 2 /* swap */, 27 /* subt */, 7 /* rand */, 26 /* plus */], [
       new Parameter("a", "integer", false, 1),
       new Parameter("b", "integer", false, 1)
@@ -3244,9 +3243,9 @@
       new Parameter("b", "integer", false, 1),
       new Parameter("mult", "integer", false, 1)
     ], "integer", 6, 2, "Returns <code>arctan(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
-    new Command({ BASIC: "WRITE", C: "write", Java: "write", Pascal: "write", Python: "write", TypeScript: "write" }, [169 /* writ */], [new Parameter("string", "string", false, 1)], null, 7, 0, "Writes the input <code>string</code> to the console and textual output area of the System."),
-    new Command({ BASIC: "WRITELN", C: "writeline", Java: "writeLine", Pascal: "writeln", Python: "writeline", TypeScript: "writeLine" }, [169 /* writ */, 170 /* newl */], [new Parameter("string", "string", false, 1)], null, 7, 0, "Writes the input <code>string</code> to the console and textual output area of the System, followed by a line break."),
-    new Command({ BASIC: "PRINT", C: "print", Java: "print", Pascal: "print", Python: "print", TypeScript: "print" }, [168 /* prnt */], [
+    new Command({ BASIC: "WRITE", C: "write", Java: "write", Pascal: "write", Python: null, TypeScript: null }, [169 /* writ */], [new Parameter("string", "string", false, 1)], null, 7, 0, "Writes the input <code>string</code> to the console and textual output area of the System."),
+    new Command({ BASIC: "WRITELN", C: "writeline", Java: "writeLine", Pascal: "writeln", Python: "print", TypeScript: "log" }, [169 /* writ */, 170 /* newl */], [new Parameter("string", "string", false, 1)], null, 7, 0, "Writes the input <code>string</code> to the console and textual output area of the System, followed by a line break."),
+    new Command({ BASIC: "DISPLAY", C: "display", Java: "display", Pascal: "display", Python: "display", TypeScript: "display" }, [168 /* prnt */], [
       new Parameter("string", "string", false, 1),
       new Parameter("font", "integer", false, 1),
       new Parameter("size", "integer", false, 1)
@@ -4948,7 +4947,7 @@
   function functionCall(lexeme, lexemes, routine, command2) {
     if (command2 instanceof Subroutine && !command2.typeIsCertain) {
       command2.typeIsCertain = true;
-      command2.variables.unshift(new Variable("!result", routine));
+      command2.variables.unshift(new Variable("!result", command2));
     }
     if (command2.type === "procedure") {
       throw new CompilerError("{lex} is a procedure, not a function.", lexemes.get(-1));
@@ -8265,45 +8264,44 @@
     if (!lexemes.get()) {
       throw new CompilerError('Missing first argument to the "range" function.', lexemes.get(-1));
     }
-    let initialValue = expression(lexemes, routine);
-    initialValue = typeCheck(initialValue, "integer");
+    const providedValues = [typeCheck(expression(lexemes, routine), "integer")];
+    if (!lexemes.get()) {
+      throw new CompilerError("Argument must be followed by a comma.", lexemes.get(-1));
+    }
+    if (lexemes.get()?.content !== ")" && lexemes.get()?.content !== ",") {
+      throw new CompilerError("Argument must be followed by a comma or a closing bracket.", lexemes.get());
+    }
+    if (lexemes.get()?.content === ",") {
+      lexemes.next();
+      if (!lexemes.get()) {
+        throw new CompilerError('Too few arguments for "range" function.', lexemes.get(-1));
+      }
+      providedValues.push(typeCheck(expression(lexemes, routine), "integer"));
+    }
+    if (!lexemes.get()) {
+      throw new CompilerError("Argument must be followed by a comma.", lexemes.get(-1));
+    }
+    if (lexemes.get()?.content !== ")" && lexemes.get()?.content !== ",") {
+      throw new CompilerError("Argument must be followed by a comma or a closing bracket.", lexemes.get());
+    }
+    if (lexemes.get()?.content === ",") {
+      lexemes.next();
+      if (!lexemes.get()) {
+        throw new CompilerError('Too few arguments for "range" function.', lexemes.get(-1));
+      }
+      providedValues.push(typeCheck(expression(lexemes, routine), "integer"));
+    }
+    let initialisation;
+    let condition;
+    let change;
+    const zeroToken = new Token("decimal", "0", forLexeme.line, -1);
+    const zeroLexeme = new IntegerLexeme(zeroToken, 10);
+    const zero2 = new IntegerValue(zeroLexeme);
+    const oneToken = new Token("decimal", "1", forLexeme.line, -1);
+    const oneLexeme = new IntegerLexeme(oneToken, 10);
+    const one = new IntegerValue(oneLexeme);
     const assignmentToken = new Token("operator", "=", forLexeme.line, -1);
     const assignmentLexeme = new OperatorLexeme(assignmentToken, "Python");
-    const initialisation = new VariableAssignment(assignmentLexeme, variable7, [], initialValue);
-    if (!lexemes.get()) {
-      throw new CompilerError("Argument must be followed by a comma.", lexemes.get(-1));
-    }
-    if (lexemes.get()?.content === ")") {
-      throw new CompilerError('Too few arguments for "range" function.', lexemes.get());
-    }
-    if (lexemes.get()?.content !== ",") {
-      throw new CompilerError("Argument must be followed by a comma.", lexemes.get());
-    }
-    lexemes.next();
-    if (!lexemes.get()) {
-      throw new CompilerError('Too few arguments for "range" function.', lexemes.get(-1));
-    }
-    let finalValue = expression(lexemes, routine);
-    finalValue = typeCheck(finalValue, "integer");
-    if (!lexemes.get()) {
-      throw new CompilerError("Argument must be followed by a comma.", lexemes.get(-1));
-    }
-    if (lexemes.get()?.content === ")") {
-      throw new CompilerError('Too few arguments for "range" function.', lexemes.get());
-    }
-    if (lexemes.get()?.content !== ",") {
-      throw new CompilerError("Argument must be followed by a comma.", lexemes.get());
-    }
-    lexemes.next();
-    if (!lexemes.get()) {
-      throw new CompilerError('Too few arguments for "range" function.', lexemes.get(-1));
-    }
-    const stepValue = expression(lexemes, routine);
-    typeCheck(stepValue, "integer");
-    const evaluatedStepValue = evaluate(stepValue, "Python", "step");
-    if (evaluatedStepValue === 0) {
-      throw new CompilerError("Step value cannot be zero.", stepValue.lexeme);
-    }
     const left = new VariableValue(variableLexeme, variable7);
     const plusToken = new Token("operator", "+", forLexeme.line, -1);
     const lessToken = new Token("operator", "<", forLexeme.line, -1);
@@ -8311,8 +8309,25 @@
     const plusLexeme = new OperatorLexeme(plusToken, "Python");
     const lessLexeme = new OperatorLexeme(lessToken, "Python");
     const moreLexeme = new OperatorLexeme(moreToken, "Python");
-    const change = new VariableAssignment(assignmentLexeme, variable7, [], new CompoundExpression(plusLexeme, left, stepValue, "plus"));
-    const condition = evaluatedStepValue < 0 ? new CompoundExpression(moreLexeme, left, finalValue, "more") : new CompoundExpression(lessLexeme, left, finalValue, "less");
+    switch (providedValues.length) {
+      case 1:
+        initialisation = new VariableAssignment(assignmentLexeme, variable7, [], zero2);
+        change = new VariableAssignment(assignmentLexeme, variable7, [], new CompoundExpression(plusLexeme, left, one, "plus"));
+        condition = new CompoundExpression(lessLexeme, left, providedValues[0], "less");
+        break;
+      case 2:
+        initialisation = new VariableAssignment(assignmentLexeme, variable7, [], providedValues[0]);
+        change = new VariableAssignment(assignmentLexeme, variable7, [], new CompoundExpression(plusLexeme, left, one, "plus"));
+        condition = new CompoundExpression(lessLexeme, left, providedValues[1], "less");
+        break;
+      case 3: {
+        initialisation = new VariableAssignment(assignmentLexeme, variable7, [], providedValues[0]);
+        const stepValue = evaluate(providedValues[2], "Python", "step");
+        change = new VariableAssignment(assignmentLexeme, variable7, [], new CompoundExpression(plusLexeme, left, providedValues[2], "plus"));
+        condition = stepValue < 0 ? new CompoundExpression(moreLexeme, left, providedValues[1], "more") : new CompoundExpression(lessLexeme, left, providedValues[1], "less");
+        break;
+      }
+    }
     if (!lexemes.get()) {
       throw new CompilerError('Closing bracket needed after "range" function arguments.', lexemes.get(-1));
     }
@@ -8435,7 +8450,6 @@
   function checkForUncertainTypes(routine) {
     const untypedVariable = routine.variables.find((x) => !x.typeIsCertain);
     if (untypedVariable) {
-      console.log(routine);
       throw new CompilerError(`Could not infer the type of variable ${untypedVariable.name}.`);
     }
     routine.subroutines.forEach(checkForUncertainTypes);

@@ -19,7 +19,7 @@ FOR n% = 4 TO 45
   NEXT
   SETXY(0, HEIGHT% - 15)
   BOX(25 + LEN(STR$(rule%)) * 7, 14, CREAM, FALSE)
-  PRINT("Rule " + STR$(rule%), 4, 8)
+  DISPLAY("Rule " + STR$(rule%), 4, 8)
   UPDATE
   PAUSE(500)
 NEXT

@@ -54,9 +54,9 @@ VAR amplitudes, phases, onoff, decaymult: array[1..maxwaves] of integer;
   setxy(x + 5, y);
   colour(textcolour);
   if texttype = boldtext then
-   print(text, 16, 18)
+   display(text, 16, 18)
   else
-   print(text, 0, 18)
+   display(text, 0, 18)
  End;
 
  Procedure outvalue(x, y, numwidth, value, textcolour: integer);
@@ -87,7 +87,7 @@ VAR amplitudes, phases, onoff, decaymult: array[1..maxwaves] of integer;
    setxy(x + 5 + charwidth * (numwidth - getnumdigits(value)), y - 2);
   colour(textcolour);
   valuestr := str(value);
-  print(valuestr, 0, 18)
+  display(valuestr, 0, 18)
  End;
 
  Procedure spinbutton(x, y: integer;symbol: char;buttoncolour: integer);
@@ -106,7 +106,7 @@ VAR amplitudes, phases, onoff, decaymult: array[1..maxwaves] of integer;
   recolour(x + 1, y + 1, buttoncolour);
   setxy(x + 6, y - 14);
   colour(black);
-  print(symbol, 4, 24)
+  display(symbol, 4, 24)
  End;
 
  Procedure button(x, y, numchars: integer;btext: string;buttoncolour, textcolour: integer);
@@ -126,7 +126,7 @@ VAR amplitudes, phases, onoff, decaymult: array[1..maxwaves] of integer;
   recolour(x + 1, y + 1, buttoncolour);
   setxy(x + 8, y - 2);
   colour(textcolour);
-  print(btext, 0, 22)
+  display(btext, 0, 22)
  End;
 
  Procedure smallbutton(x, y, numchars: integer;btext: string;buttoncolour, textcolour: integer);
@@ -145,7 +145,7 @@ VAR amplitudes, phases, onoff, decaymult: array[1..maxwaves] of integer;
   recolour(x + 1, y + 1, buttoncolour);
   setxy(x + 4, y - 1);
   colour(textcolour);
-  print(btext, 0, 18)
+  display(btext, 0, 18)
  End;
 
  Procedure border(x, y, width, height, highcolour, lowcolour, backcolour, backflag: integer);

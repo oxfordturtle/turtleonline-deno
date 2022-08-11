@@ -1,5 +1,5 @@
 // module imports
-import { defaults } from '../constants/properties.ts'
+import { defaults } from '../constants/properties'
 
 export type Options = {
   showCanvasOnRun: boolean

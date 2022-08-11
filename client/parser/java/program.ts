@@ -1,6 +1,6 @@
-import Lexemes from '../definitions/lexemes.ts'
-import Program from '../definitions/program.ts'
-import { CompilerError } from '../../tools/error.ts'
+import Lexemes from '../definitions/lexemes'
+import Program from '../definitions/program'
+import { CompilerError } from '../../tools/error'
 
 /** parses outermost structure "class ProgramName { ... }" */
 export default function program (lexemes: Lexemes): Program {

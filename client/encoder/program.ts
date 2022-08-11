@@ -1,16 +1,15 @@
 // type imports
-import type Program from '../parser/definitions/program.ts'
-import type { Options } from './options.ts'
+import type Program from '../parser/definitions/program'
+import type { Options } from './options'
 
 // submodule imports
-import { defaultOptions } from './options.ts'
-import statement from './statement.ts'
+import { defaultOptions } from './options'
+import statement from './statement'
 
 // other module imports
-import Variable from '../parser/definitions/variable.ts'
-import { Subroutine } from '../parser/definitions/subroutine.ts'
-import { PCode, pcodeArgs } from '../constants/pcodes.ts'
-import { merge } from './expression.ts'
+import Variable from '../parser/definitions/variable'
+import { Subroutine } from '../parser/definitions/subroutine'
+import { PCode, pcodeArgs } from '../constants/pcodes'
 
 /** generates the pcode for a turtle program */
 export default function program (program: Program, options: Options = defaultOptions): number[][] {

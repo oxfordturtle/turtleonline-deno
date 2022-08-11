@@ -25,31 +25,31 @@ CONST xOrigin = 500;
     setxy(xOrigin - halfWidth, yOrigin + yScale);
     drawxy(halfWidth * 2, 0);
     setxy(xOrigin + halfWidth + 10, yOrigin - yScale - 18);
-    print('+1', 0, 20);
+    display('+1', 0, 20);
     setxy(xOrigin + halfWidth + 10, yOrigin + yScale - 18);
-    print('-1', 0, 20);
+    display('-1', 0, 20);
     {print x axis labels}
     if radians then
       begin
         setxy(xOrigin - halfWidth - 44, yOrigin - 4);
-        print('-p', 29, 28);
+        display('-p', 29, 28);
         setxy(xOrigin - halfWidth div 2 - 2, yOrigin - 4);
-        print('-p/2', 29, 28);
+        display('-p/2', 29, 28);
         setxy(xOrigin + halfWidth div 2 - 50, yOrigin - 4);
-        print('p/2', 29, 28);
+        display('p/2', 29, 28);
         setxy(xOrigin + halfWidth, yOrigin - 4);
-        print('p', 29, 28)
+        display('p', 29, 28)
       end
     else
       begin
         setxy(xOrigin - halfWidth - 64, yOrigin + 2);
-        print('-180', 0, 24);
+        display('-180', 0, 24);
         setxy(xOrigin - halfWidth div 2 - 2, yOrigin + 2);
-        print('-90', 0, 24);
+        display('-90', 0, 24);
         setxy(xOrigin + halfWidth div 2 - 36, yOrigin + 2);
-        print('90', 0, 24);
+        display('90', 0, 24);
         setxy(xOrigin + halfWidth, yOrigin + 2);
-        print('180', 0, 24)
+        display('180', 0, 24)
       end
   End;
 
@@ -106,16 +106,16 @@ BEGIN
   {plot sine curve in green}
   colour(green);
   setxy(250, 700);
-  print('sine', 16, 40);
+  display('sine', 16, 40);
   plotSineCurve;
   {plot cosine curve in red}
   colour(red);
   setxy(30, 700);
-  print('cosine', 16, 40);
+  display('cosine', 16, 40);
   plotCosineCurve;
   {plot tan curve in blue}
   colour(blue);
   setxy(140, 920);
-  print('tangent', 16, 40);
+  display('tangent', 16, 40);
   plotTanCurve
 END.

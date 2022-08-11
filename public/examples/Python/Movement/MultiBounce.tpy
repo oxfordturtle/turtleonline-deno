@@ -9,7 +9,7 @@ size: List[int, balls]
 colr: List[int, balls]
 
 # set initial properties for each ball
-for n in range(0, balls, 1):
+for n in range(balls):
   size[n] = randint(minSize, maxSize)
   colr[n] = rgb(n + 1)
   x[n] = randint(0, 1000 - 2 * size[n]) + size[n]
@@ -21,7 +21,7 @@ while True:
   # rub out previous balls
   blank(white)
   # draw each ball in its next position
-  for n in range(0, balls, 1):
+  for n in range(balls):
     # move to next position
     x[n] = x[n] + xVelocity[n]
     y[n] = y[n] + yVelocity[n]

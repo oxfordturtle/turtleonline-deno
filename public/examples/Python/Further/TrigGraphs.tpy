@@ -23,32 +23,32 @@ def drawAxes():
   setxy(xOrigin - halfWidth, yOrigin + yScale)
   drawxy(halfWidth * 2, 0)
   setxy(xOrigin + halfWidth + 10, yOrigin - yScale - 18)
-  print('+1', 0, 20)
+  display('+1', 0, 20)
   setxy(xOrigin + halfWidth + 10, yOrigin + yScale - 18)
-  print('-1', 0, 20)
+  display('-1', 0, 20)
   # print x axis labels
   if radians:
     setxy(xOrigin - halfWidth - 44, yOrigin - 4)
-    print('-p', 29, 28)
+    display('-p', 29, 28)
     setxy(xOrigin - halfWidth // 2 - 2, yOrigin - 4)
-    print('-p/2', 29, 28)
+    display('-p/2', 29, 28)
     setxy(xOrigin + halfWidth // 2 - 50, yOrigin - 4)
-    print('p/2', 29, 28)
+    display('p/2', 29, 28)
     setxy(xOrigin + halfWidth, yOrigin - 4)
-    print('p', 29, 28)
+    display('p', 29, 28)
   else:
     setxy(xOrigin - halfWidth - 60, yOrigin)
-    print('-180', 0, 20)
+    display('-180', 0, 20)
     setxy(xOrigin - halfWidth // 2, yOrigin)
-    print('-90', 0, 20)
+    display('-90', 0, 20)
     setxy(xOrigin + halfWidth // 2 - 30, yOrigin)
-    print('90', 0, 20)
+    display('90', 0, 20)
     setxy(xOrigin + halfWidth, yOrigin)
-    print('180', 0, 20)
+    display('180', 0, 20)
 
 # plots a sine curve
 def plotSineCurve():
-  for degrees in range(-180, 181, 1):
+  for degrees in range(-180, 181):
     x = xOrigin + divmult(degrees, 180, halfWidth)
     y = yOrigin - sin(degrees, 1, yScale)
     setxy(x, y)
@@ -56,7 +56,7 @@ def plotSineCurve():
 
 # plots a cosine curve
 def plotCosineCurve():
-  for degrees in range(-180, 181, 1):
+  for degrees in range(-180, 181):
     x = xOrigin + divmult(degrees, 180, halfWidth)
     y = yOrigin - cos(degrees, 1, yScale)
     setxy(x, y)
@@ -64,7 +64,7 @@ def plotCosineCurve():
 
 # plots a tan curve
 def plotTanCurve():
-  for degrees in range(-180, 181, 1):
+  for degrees in range(-180, 181):
     if degrees == -90:
       polyline(90)
     else:
@@ -83,15 +83,15 @@ thickness(4)
 # plot sine curve in green
 colour(green)
 setxy(250, 700)
-print('sine', 16, 40)
+display('sine', 16, 40)
 plotSineCurve()
 # plot cosine curve in red
 colour(red)
 setxy(30, 700)
-print('cosine', 16, 40)
+display('cosine', 16, 40)
 plotCosineCurve()
 # plot tan curve in blue
 colour(blue)
 setxy(140, 920)
-print('tangent', 16, 40)
+display('tangent', 16, 40)
 plotTanCurve()

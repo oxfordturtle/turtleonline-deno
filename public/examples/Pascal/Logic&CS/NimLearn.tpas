@@ -21,27 +21,27 @@ VAR prob: array[1..maxcoins, 1..maxtake] of integer;
   blank(white);
   setxy(margin, 50);
   colour(brown);
-  print('   NIM LEARNING PROGRAM', menutype or 16, 42);
+  display('   NIM LEARNING PROGRAM', menutype or 16, 42);
   colour(darkred);
   setxy(margin, 150);
-  print('This program learns to play NIM, and can be', menutype, 32);
+  display('This program learns to play NIM, and can be', menutype, 32);
   setxy(margin, 200);
-  print('configured to play either against you (human', menutype, 32);
+  display('configured to play either against you (human', menutype, 32);
   setxy(margin, 250);
-  print('opponent), or against a simulated computer', menutype, 32);
+  display('opponent), or against a simulated computer', menutype, 32);
   setxy(margin, 300);
-  print('opponent, which either plays randomly or', menutype, 32);
+  display('opponent, which either plays randomly or', menutype, 32);
   setxy(margin, 350);
-  print('itself learns from experience.', menutype, 32);
+  display('itself learns from experience.', menutype, 32);
   colour(black);
   setxy(margin, 525);
-  print('Choose from the following:', menutype or 16, menusize);
+  display('Choose from the following:', menutype or 16, menusize);
   setxy(margin, 650);
-  print('  1.  Human opponent', menutype, menusize);
+  display('  1.  Human opponent', menutype, menusize);
   setxy(margin, 750);
-  print('  2.  Random opponent', menutype, menusize);
+  display('  2.  Random opponent', menutype, menusize);
   setxy(margin, 850);
-  print('  3.  Opponent that also learns', menutype, menusize);
+  display('  3.  Opponent that also learns', menutype, menusize);
   repeat
    choice := abs(?key) - 48
   until (choice > 0) and (choice < 4);
@@ -98,7 +98,7 @@ VAR prob: array[1..maxcoins, 1..maxtake] of integer;
        box(h / 2, v, cyan, true)
       else
        box(h / 2, v, cream, true);
-      print(' ' + str(prob[i + 1, j]), 4, font)
+      display(' ' + str(prob[i + 1, j]), 4, font)
      end;
     if i mod columns = 0 then
      begin
@@ -107,7 +107,7 @@ VAR prob: array[1..maxcoins, 1..maxtake] of integer;
       for j := 1 to maxtake do
        begin
         movexy(0, v);
-        print(str(j), 4, font)
+        display(str(j), 4, font)
        end
      end
    end;
@@ -130,22 +130,22 @@ VAR prob: array[1..maxcoins, 1..maxtake] of integer;
   box(1000, 500, white, false);
   if numcoins = 1 then
    begin
-    print('Since there is only one coin left, you must take it', 4, font);
+    display('Since there is only one coin left, you must take it', 4, font);
     pause(2000);
     result := 1
    end
   else
    begin
-    print('There are ' + coins(numcoins) + ', of which you may take up to ' + str(max) + '.', 4, font);
+    display('There are ' + coins(numcoins) + ', of which you may take up to ' + str(max) + '.', 4, font);
     movexy(0, v);
-    print('How many would you like to take? ', 4, font);
+    display('How many would you like to take? ', 4, font);
     reset(\keybuffer);
     repeat
      n := val(read(1))
     until (n > 0) and (n <= max);
     reset(\keybuffer);
     movexy(0, v * 2);
-    print('OK - you are taking ' + coins(n) + ' ...', 4, font);
+    display('OK - you are taking ' + coins(n) + ' ...', 4, font);
     movexy(0, v);
     result := n
    end
@@ -179,11 +179,11 @@ VAR prob: array[1..maxcoins, 1..maxtake] of integer;
     colour(black);
     setxy(200, v + (((maxcoins - 1) div columns) + 1) * v * (maxtake + 3));
     if youwin > 0 then
-     print('YOU WIN!!', 4, font * 3)
+     display('YOU WIN!!', 4, font * 3)
     else
-     print(' I WIN!!', 4, font * 3);
+     display(' I WIN!!', 4, font * 3);
     movexy(0, 4 * v);
-    print('Press <RETURN> or <ENTER> to continue ...', 4, font);
+    display('Press <RETURN> or <ENTER> to continue ...', 4, font);
     s := readln
    end
   else
@@ -258,17 +258,17 @@ BEGIN
        pause(2000);
        display;
        setxy(h, v + (((maxcoins - 1) div columns) + 1) * v * (maxtake + 3));
-       print('The computer will choose on these probabilities:', 4, font);
+       display('The computer will choose on these probabilities:', 4, font);
        movexy(0, v / 2);
        total := prob[numcoins, 1] + prob[numcoins, 2] + prob[numcoins, 3];
        for count := 1 to 3 do
         begin
          movexy(0, v);
-         print('     ' + coins(count) + ': ' + str(prob[numcoins, count]) + '/' + str(total), 4, font)
+         display('     ' + coins(count) + ': ' + str(prob[numcoins, count]) + '/' + str(total), 4, font)
         end;
        pause(2000);
        movexy(0, 3 * v / 2);
-       print('OK, in response, the computer takes ' + coins(move) + ' ...', 4, font);
+       display('OK, in response, the computer takes ' + coins(move) + ' ...', 4, font);
        pause(2000)
       end;
      taken[numcoins] := -move;

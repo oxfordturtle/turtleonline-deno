@@ -64,11 +64,11 @@ void setup () {
   // print text instructions in grid
   colour(black);
   setxy(10, 858);
-  print('Left-click to draw, right-click to fill', 0, 20);
+  display('Left-click to draw, right-click to fill', 0, 20);
   setxy(450 + 10, 858);
-  print('Brush width:', 0, 20);
+  display('Brush width:', 0, 20);
   setxy(850 + 10, 858);
-  print('Colour:', 0, 20);
+  display('Colour:', 0, 20);
   // draw 40 different colour selection boxes
   setxy(0, 900);
   for (int count = 1; count <= 20; count = count + 1) {

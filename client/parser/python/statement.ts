@@ -1,13 +1,14 @@
-import identifiers from './identifiers.ts'
-import { procedureCall } from '../call.ts'
-import { expression, typeCheck } from '../expression.ts'
-import evaluate from '../evaluate.ts'
-import * as find from '../find.ts'
-import Lexemes from '../definitions/lexemes.ts'
-import { CompoundExpression, VariableValue, Expression } from '../definitions/expression.ts'
-import Program from '../definitions/program.ts'
-import { Subroutine } from '../definitions/subroutine.ts'
-import Variable from '../definitions/variable.ts'
+import identifiers from './identifiers'
+import { procedureCall } from '../call'
+import { expression, typeCheck } from '../expression'
+import evaluate from '../evaluate'
+import * as find from '../find'
+import { IntegerLexeme } from '../../lexer/lexeme'
+import Lexemes from '../definitions/lexemes'
+import { CompoundExpression, VariableValue, Expression, IntegerValue } from '../definitions/expression'
+import Program from '../definitions/program'
+import { Subroutine } from '../definitions/subroutine'
+import Variable from '../definitions/variable'
 import {
   Statement,
   IfStatement,
@@ -16,12 +17,12 @@ import {
   PassStatement,
   VariableAssignment,
   ReturnStatement
-} from '../definitions/statement.ts'
-import { IdentifierLexeme, KeywordLexeme, Lexeme, OperatorLexeme, Type } from '../../lexer/lexeme.ts'
-import { CompilerError } from '../../tools/error.ts'
-import variable from './variable.ts'
-import { Constant } from '../definitions/constant.ts'
-import { Token } from '../../lexer/token.ts'
+} from '../definitions/statement'
+import { IdentifierLexeme, KeywordLexeme, Lexeme, OperatorLexeme } from '../../lexer/lexeme'
+import { CompilerError } from '../../tools/error'
+import variable from './variable'
+import { Constant } from '../definitions/constant'
+import { Token } from '../../lexer/token'
 
 /** checks for semi colon or new line at the end of a statement */
 export function eosCheck (lexemes: Lexemes): void {
@@ -449,57 +450,60 @@ function forStatement (forLexeme: KeywordLexeme, lexemes: Lexemes, routine: Prog
   }
   lexemes.next()
 
-  // expecting an integer expression (for the initial value)
+  // expecting an integer expression
   if (!lexemes.get()) {
     throw new CompilerError('Missing first argument to the "range" function.', lexemes.get(-1))
   }
-  let initialValue = expression(lexemes, routine)
-  initialValue = typeCheck(initialValue, 'integer')
+  const providedValues: [Expression, Expression?, Expression?] = [typeCheck(expression(lexemes, routine), 'integer')]
+
+  // expecting a comma or closing bracket
+  if (!lexemes.get()) {
+    throw new CompilerError('Argument must be followed by a comma.', lexemes.get(-1))
+  }
+  if (lexemes.get()?.content !== ')' && lexemes.get()?.content !== ',') {
+    throw new CompilerError('Argument must be followed by a comma or a closing bracket.', lexemes.get())
+  }
+
+  // second argument allowed here
+  if (lexemes.get()?.content === ',') {
+    lexemes.next()
+    if (!lexemes.get()) {
+      throw new CompilerError('Too few arguments for "range" function.', lexemes.get(-1))
+    }
+    providedValues.push(typeCheck(expression(lexemes, routine), 'integer'))
+  }
+
+  // expecting a comma or closing bracket
+  if (!lexemes.get()) {
+    throw new CompilerError('Argument must be followed by a comma.', lexemes.get(-1))
+  }
+  if (lexemes.get()?.content !== ')' && lexemes.get()?.content !== ',') {
+    throw new CompilerError('Argument must be followed by a comma or a closing bracket.', lexemes.get())
+  }
+
+  // third argument allowed here
+  if (lexemes.get()?.content === ',') {
+    lexemes.next()
+    if (!lexemes.get()) {
+      throw new CompilerError('Too few arguments for "range" function.', lexemes.get(-1))
+    }
+    providedValues.push(typeCheck(expression(lexemes, routine), 'integer'))
+  }
+
+  // the things we want to know
+  let initialisation: VariableAssignment
+  let condition: Expression
+  let change: VariableAssignment
+
+  // some dummy things we need to create the things we want to know
+  const zeroToken = new Token('decimal', '0', forLexeme.line, -1)
+  const zeroLexeme = new IntegerLexeme(zeroToken, 10)
+  const zero = new IntegerValue(zeroLexeme)
+  const oneToken = new Token('decimal', '1', forLexeme.line, -1)
+  const oneLexeme = new IntegerLexeme(oneToken, 10)
+  const one = new IntegerValue(oneLexeme)
   const assignmentToken = new Token('operator', '=', forLexeme.line, -1)
   const assignmentLexeme = new OperatorLexeme(assignmentToken, 'Python')
-  const initialisation = new VariableAssignment(assignmentLexeme, variable, [], initialValue)
-
-  // expecting a comma
-  if (!lexemes.get()) {
-    throw new CompilerError('Argument must be followed by a comma.', lexemes.get(-1))
-  }
-  if (lexemes.get()?.content === ')') {
-    throw new CompilerError('Too few arguments for "range" function.', lexemes.get())
-  }
-  if (lexemes.get()?.content !== ',') {
-    throw new CompilerError('Argument must be followed by a comma.', lexemes.get())
-  }
-  lexemes.next()
-
-  // expecting an integer expression (for the final value)
-  if (!lexemes.get()) {
-    throw new CompilerError('Too few arguments for "range" function.', lexemes.get(-1))
-  }
-  let finalValue = expression(lexemes, routine)
-  finalValue = typeCheck(finalValue, 'integer')
-
-  // now expecting another comma
-  if (!lexemes.get()) {
-    throw new CompilerError('Argument must be followed by a comma.', lexemes.get(-1))
-  }
-  if (lexemes.get()?.content === ')') {
-    throw new CompilerError('Too few arguments for "range" function.', lexemes.get())
-  }
-  if (lexemes.get()?.content !== ',') {
-    throw new CompilerError('Argument must be followed by a comma.', lexemes.get())
-  }
-  lexemes.next()
-
-  // expecting an integer expression (for the step value)
-  if (!lexemes.get()) {
-    throw new CompilerError('Too few arguments for "range" function.', lexemes.get(-1))
-  }
-  const stepValue = expression(lexemes, routine)
-  typeCheck(stepValue, 'integer')
-  const evaluatedStepValue = evaluate(stepValue, 'Python', 'step') as number
-  if (evaluatedStepValue === 0) {
-    throw new CompilerError('Step value cannot be zero.', stepValue.lexeme)
-  }
   const left = new VariableValue(variableLexeme, variable)
   const plusToken = new Token('operator', '+', forLexeme.line, -1)
   const lessToken = new Token('operator', '<', forLexeme.line, -1)
@@ -507,12 +511,40 @@ function forStatement (forLexeme: KeywordLexeme, lexemes: Lexemes, routine: Prog
   const plusLexeme = new OperatorLexeme(plusToken, 'Python')
   const lessLexeme = new OperatorLexeme(lessToken, 'Python')
   const moreLexeme = new OperatorLexeme(moreToken, 'Python')
-  const change = new VariableAssignment(assignmentLexeme, variable, [], new CompoundExpression(plusLexeme, left, stepValue, 'plus'))
-  const condition = (evaluatedStepValue < 0)
-    ? new CompoundExpression(moreLexeme, left, finalValue, 'more')
-    : new CompoundExpression(lessLexeme, left, finalValue, 'less')
 
-  // expecting a right bracket
+  // the values of the things we need to know depend on how many arguments were provided
+  switch (providedValues.length) {
+    case 1:
+      // initial value is zero
+      initialisation = new VariableAssignment(assignmentLexeme, variable, [], zero)
+      // change is +1
+      change = new VariableAssignment(assignmentLexeme, variable, [], new CompoundExpression(plusLexeme, left, one, 'plus'))
+      // termination condition is < providedValues[0]
+      condition = new CompoundExpression(lessLexeme, left, providedValues[0], 'less')
+      break
+    case 2:
+      // initial value is providedValues[0]
+      initialisation = new VariableAssignment(assignmentLexeme, variable, [], providedValues[0])
+      // change is +1
+      change = new VariableAssignment(assignmentLexeme, variable, [], new CompoundExpression(plusLexeme, left, one, 'plus'))
+      // termination condition is < providedValues[1]
+      condition = new CompoundExpression(lessLexeme, left, providedValues[1]!, 'less')
+      break
+    case 3: {
+      // initial value is providedValues[0]
+      initialisation = new VariableAssignment(assignmentLexeme, variable, [], providedValues[0])
+      // change is +/- providedValues[1]
+      const stepValue = evaluate(providedValues[2]!, 'Python', 'step') as number
+      change = new VariableAssignment(assignmentLexeme, variable, [], new CompoundExpression(plusLexeme, left, providedValues[2]!, 'plus'))
+      // termination condition is >/< providedValues[2]
+      condition = (stepValue < 0)
+        ? new CompoundExpression(moreLexeme, left, providedValues[1]!, 'more')
+        : new CompoundExpression(lessLexeme, left, providedValues[1]!, 'less')
+      break
+    }
+  }
+
+  // expecting a closing bracket
   if (!lexemes.get()) {
     throw new CompilerError('Closing bracket needed after "range" function arguments.', lexemes.get(-1))
   }

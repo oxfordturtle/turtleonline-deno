@@ -114,9 +114,9 @@ BEGIN
     setxy(350, 850);
     colour(black);
     if (board[9] = 0) then
-      print('  Draw!  ', 4, 60)
+      display('  Draw!  ', 4, 60)
     else
-      print('  I win!  ', 4, 60);
+      display('  I win!  ', 4, 60);
     pause(2500)
   until (1 <> 1)
 END.

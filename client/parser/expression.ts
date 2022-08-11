@@ -1,15 +1,15 @@
-import type Program from './definitions/program.ts'
-import { Subroutine } from './definitions/subroutine.ts'
-import type Lexemes from './definitions/lexemes.ts'
-import Variable from './definitions/variable.ts'
-import type { Parameter } from '../constants/commands.ts'
-import type { Lexeme, Type, Operator, OperatorLexeme, TypeLexeme } from '../lexer/lexeme.ts'
+import type Program from './definitions/program'
+import { Subroutine } from './definitions/subroutine'
+import type Lexemes from './definitions/lexemes'
+import Variable from './definitions/variable'
+import type { Parameter } from '../constants/commands'
+import type { Lexeme, Type, Operator, OperatorLexeme, TypeLexeme } from '../lexer/lexeme'
 
-import { functionCall } from './call.ts'
-import * as find from './find.ts'
-import { Expression, CompoundExpression, IntegerValue, StringValue, InputValue, ColourValue, ConstantValue, FunctionCall, VariableAddress, VariableValue, CastExpression } from './definitions/expression.ts'
-import { operator, stringOperator } from './definitions/operators.ts'
-import { CompilerError } from '../tools/error.ts'
+import { functionCall } from './call'
+import * as find from './find'
+import { Expression, CompoundExpression, IntegerValue, StringValue, InputValue, ColourValue, ConstantValue, FunctionCall, VariableAddress, VariableValue, CastExpression } from './definitions/expression'
+import { operator, stringOperator } from './definitions/operators'
+import { CompilerError } from '../tools/error'
 
 /** checks types match (throws an error if not) */
 export function typeCheck (found: Expression, expected: Type | Variable | Parameter): Expression {

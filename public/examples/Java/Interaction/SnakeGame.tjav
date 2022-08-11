@@ -81,6 +81,6 @@ class SnakeGame {
     resolution(1000, 1000);
     blank(lilac);
     setXY(boardSize / 4, 2 * boardSize / 5);
-    print('Score ' + toString(snakeLength - 2), 20, 100);
+    display('Score ' + toString(snakeLength - 2), 20, 100);
   }
 }

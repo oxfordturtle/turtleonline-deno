@@ -1,10 +1,10 @@
 /**
  * Language features.
  */
-import type { Language } from '../constants/languages.ts'
-import state from '../state/index.ts'
-import highlight from '../lexer/highlight.ts'
-import { on } from '../tools/hub.ts'
+import type { Language } from '../constants/languages'
+import state from '../state/index'
+import highlight from '../lexer/highlight'
+import { on } from '../tools/hub'
 
 // get relevant elements
 const codeElements = document.querySelectorAll('code[data-language]') as NodeListOf<HTMLElement>

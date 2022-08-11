@@ -1,8 +1,8 @@
 /**
  * System mode toggling.
  */
-import state from '../state/index.ts'
-import { on, send } from '../tools/hub.ts'
+import state from '../state/index'
+import { on, send } from '../tools/hub'
 
 // register to keep in sync with system state
 on('modeChanged', mode)

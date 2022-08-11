@@ -63,7 +63,7 @@ while True:
   colour(yellow)
   blot(sunRadius)
   # draw each planet
-  for i in range(0, planets, 1):
+  for i in range(planets):
     home()
     # draw a white circle for the orbit
     colour(white)

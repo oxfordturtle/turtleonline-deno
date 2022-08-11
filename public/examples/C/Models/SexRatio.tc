@@ -10,12 +10,12 @@ int generation;
 void axes () {
   for (int i = 1; i <= 9; i = i + 1) {
     setxy(leftmargin + i * 100 - 25, topmargin + 800);
-    print(itoa(i * 100), 4, 20);
+    display(itoa(i * 100), 4, 20);
   }
   for (i = 2; i <= 10; i = i + 1) {
     setxy(0, 1000 - i * 100);
     colour(black);
-    print(itoa(i * 10) + '%', 4, 20);
+    display(itoa(i * 10) + '%', 4, 20);
     movexy(leftmargin, topmargin);
     colour(lightgrey);
     drawxy(1000 - leftmargin, 0);
@@ -26,9 +26,9 @@ void axes () {
   drawxy(1000 - leftmargin, 0);
   colour(red);
   setxy(50, 880);
-  print('Proportion of Females in Population, over 900 Generations', 4, 25);
+  display('Proportion of Females in Population, over 900 Generations', 4, 25);
   setxy(50, 930);
-  print('with Female Offspring Probability genes initially set 90%+', 4, 25);
+  display('with Female Offspring Probability genes initially set 90%+', 4, 25);
 }
 
 void graph () {

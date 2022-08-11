@@ -53,7 +53,7 @@ def setscale ():
   xr = xright / scaledown
   yt = ytop / scaledown
   yb = ybottom / scaledown
-  for i in range(0, mappings, 1):
+  for i in range(mappings):
     mapxc[i] = mapxc[i] / scaledown
     mapyc[i] = mapyc[i] / scaledown
   gt = gridthick / scaledown
@@ -61,10 +61,10 @@ def setscale ():
 def background ():
   thickness(gt)
   colour(darkgrey)
-  for x in range(1, gridlines, 1):
+  for x in range(1, gridlines):
     setxy(xl + divmult(xr - xl, gridlines, x), yt)
     drawxy(0, yb - yt)
-    for y in range(1, gridlines, 1):
+    for y in range(1, gridlines):
       setxy(xl + gt / 2, yt + divmult(yb - yt, gridlines, y))
       drawxy(xr - xl - gt, 0)
   colour(black)
@@ -73,8 +73,8 @@ def background ():
   drawxy(0, yb - yt)
   drawxy(xl - xr, 0)
   drawxy(0, yt - yb)
-  for x in range(0, gridlines, 1):
-    for y in range(0, gridlines, 1):
+  for x in range(gridlines):
+    for y in range(gridlines):
       cx = xl + divmult(xr - xl, gridlines, x) + gt
       cy = yt + divmult(yb - yt, gridlines, y) + gt
       r = divmult(255, gridlines - 1, x)
@@ -90,8 +90,8 @@ def domap (mapnum):
   newx
   newy
   noupdate()
-  for y in range(yt, yb + 1, 1):
-    for x in range(xl, xr + 1, 1):
+  for y in range(yt, yb + 1):
+    for x in range(xl, xr + 1):
       map(mapnum, x, y, address(newx), address(newy))
       pixset(newx, newy, pixcol(x, y))
   update()
@@ -101,6 +101,6 @@ setscale()
 canvas(xl, yt, xr - xl + 1, yb - yt + 1)
 resolution(xr - xl + 1, yb - yt + 1)
 background()
-writeline(label + ' mappings in colour')
-for count in range(0, mappings, 1):
+print(label + ' mappings in colour')
+for count in range(mappings):
   domap(count + 1)

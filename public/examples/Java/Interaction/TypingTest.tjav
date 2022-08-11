@@ -3,17 +3,17 @@ class TypingTest {
     // show instructions
     blank(cream);
     setXY(15, 200);
-    print('In this typing test,  you will be shown the', 4, 36);
+    display('In this typing test,  you will be shown the', 4, 36);
     setXY(20, 270);
-    print('letters of the alphabet in a random order,', 4, 36);
+    display('letters of the alphabet in a random order,', 4, 36);
     setXY(20, 340);
-    print('and in a mixture of upper- and lower-case.', 4, 36);
+    display('and in a mixture of upper- and lower-case.', 4, 36);
     setXY(20, 410);
-    print('Type them as fast as you can, and see how', 4, 36);
+    display('Type them as fast as you can, and see how', 4, 36);
     setXY(20, 480);
-    print('quickly you can finish the entire alphabet.', 4, 36);
+    display('quickly you can finish the entire alphabet.', 4, 36);
     setXY(100, 620);
-    print('Now press the "Esc" key to start ...', 4, 36);
+    display('Now press the "Esc" key to start ...', 4, 36);
     // disable key echo in console
     keyEcho(false);
     // wait for escape key to be pressed
@@ -47,7 +47,7 @@ class TypingTest {
       // print letter at random coordinates
       setXY(100 + randInt(300), randInt(250));
       colour(yellow);
-      print(letters[count], 3, 450);
+      display(letters[count], 3, 450);
       // wait for user to type that letter
       do {} while (read(1) != letters[count]);
     }
@@ -55,6 +55,6 @@ class TypingTest {
     blank(lightblue);
     setXY(60, 460);
     colour(lightred);
-    print('Your time was ' + toStringQ(time(), 1000, 2) + ' seconds', 4, 50);
+    display('Your time was ' + toStringQ(time(), 1000, 2) + ' seconds', 4, 50);
   }
 }

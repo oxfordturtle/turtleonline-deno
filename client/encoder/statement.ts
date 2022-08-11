@@ -1,6 +1,6 @@
 // type imports
-import type { Options } from './options.ts'
-import type Program from '../parser/definitions/program.ts'
+import type { Options } from './options'
+import type Program from '../parser/definitions/program'
 import type {
   Statement,
   ProcedureCall,
@@ -9,16 +9,16 @@ import type {
   RepeatStatement,
   WhileStatement,
   ReturnStatement
-} from '../parser/definitions/statement.ts'
+} from '../parser/definitions/statement'
 
 // submodule imports
-import { merge, expression } from './expression.ts'
+import { merge, expression } from './expression'
 
 // other module imports
-import { PCode } from '../constants/pcodes.ts'
-import { Subroutine } from '../parser/definitions/subroutine.ts'
-import { VariableValue } from '../parser/definitions/expression.ts'
-import { VariableAssignment } from '../parser/definitions/statement.ts'
+import { PCode } from '../constants/pcodes'
+import { Subroutine } from '../parser/definitions/subroutine'
+import { VariableValue } from '../parser/definitions/expression'
+import { VariableAssignment } from '../parser/definitions/statement'
 
 /** generates the pcode for a statement of any kind */
 export default function statement (stmt: Statement, program: Program, startLine: number, options: Options): number[][] {

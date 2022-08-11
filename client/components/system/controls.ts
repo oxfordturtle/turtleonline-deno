@@ -1,5 +1,5 @@
 // module imorts
-import { on } from '../../tools/hub.ts'
+import { on } from '../../tools/hub'
 
 // get relevant elements
 const playButton = document.querySelector('[data-component="runButton"]') as HTMLButtonElement

@@ -1,8 +1,8 @@
 // tpe imports
-import type { Property } from '../constants/properties.ts'
+import type { Property } from '../constants/properties'
 
 // module imports
-import { defaults } from '../constants/properties.ts'
+import { defaults } from '../constants/properties'
 
 /** loads a property from local/session storage */
 export function load (property: Property): any {

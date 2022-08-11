@@ -24,28 +24,28 @@ class TrigGraphs {
     setXY(xOrigin - halfWidth, yOrigin + yScale);
     drawXY(halfWidth * 2, 0);
     setXY(xOrigin + halfWidth + 10, yOrigin - yScale - 18);
-    print('+1', 0, 20);
+    display('+1', 0, 20);
     setXY(xOrigin + halfWidth + 10, yOrigin + yScale - 18);
-    print('-1', 0, 20);
+    display('-1', 0, 20);
     // print x axis labels
     if (radians) {
       setXY(xOrigin - halfWidth - 44, yOrigin - 4);
-      print('-p', 29, 28);
+      display('-p', 29, 28);
       setXY(xOrigin - halfWidth / 2 - 2, yOrigin - 4);
-      print('-p/2', 29, 28);
+      display('-p/2', 29, 28);
       setXY(xOrigin + halfWidth / 2 - 50, yOrigin - 4);
-      print('p/2', 29, 28);
+      display('p/2', 29, 28);
       setXY(xOrigin + halfWidth, yOrigin - 4);
-      print('p', 29, 28);
+      display('p', 29, 28);
     } else {
       setXY(xOrigin - halfWidth - 64, yOrigin + 2);
-      print('-180', 0, 24);
+      display('-180', 0, 24);
       setXY(xOrigin - halfWidth / 2 - 2, yOrigin + 2);
-      print('-90', 0, 24);
+      display('-90', 0, 24);
       setXY(xOrigin + halfWidth / 2 - 36, yOrigin + 2);
-      print('90', 0, 24);
+      display('90', 0, 24);
       setXY(xOrigin + halfWidth, yOrigin + 2);
-      print('180', 0, 24);
+      display('180', 0, 24);
     }
   }
 
@@ -95,17 +95,17 @@ class TrigGraphs {
     // plot sine curve in green
     colour(green);
     setXY(250, 700);
-    print('sine', 16, 40);
+    display('sine', 16, 40);
     plotSineCurve();
     // plot cosine curve in red
     colour(red);
     setXY(30, 700);
-    print('cosine', 16, 40);
+    display('cosine', 16, 40);
     plotCosineCurve();
     // plot tan curve in blue
     colour(blue);
     setXY(140, 920);
-    print('tangent', 16, 40);
+    display('tangent', 16, 40);
     plotTanCurve();
   }
 }

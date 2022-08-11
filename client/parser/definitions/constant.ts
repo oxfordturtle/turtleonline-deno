@@ -1,5 +1,5 @@
-import type { Language } from '../../constants/languages.ts'
-import type { Type } from '../../lexer/lexeme.ts'
+import type { Language } from '../../constants/languages'
+import type { Type } from '../../lexer/lexeme'
 
 /** constant */
 export class Constant {

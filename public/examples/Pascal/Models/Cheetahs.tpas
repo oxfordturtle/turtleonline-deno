@@ -69,12 +69,12 @@ VAR gen, cnum, gnum: integer;
     for n := 0 to 10 do
       begin
         setxy(20, graphbase - n * graphheight / 10 - 19);
-        print(str(n * ymax / 10), 0, 20)
+        display(str(n * ymax / 10), 0, 20)
       end;
     for n := 1 to 10 do
       begin
         setxy(graphleft + n * graphwidth / 10 - 20, graphbase);
-        print(str(n * maxspeed / 10), 0, 20)
+        display(str(n * maxspeed / 10), 0, 20)
       end
   End;
 
@@ -87,9 +87,9 @@ VAR gen, cnum, gnum: integer;
     axes(950);
     setxy(200, 20);
     colour(red);
-    print('Speed Distribution of Cheetahs', 4, 25);
+    display('Speed Distribution of Cheetahs', 4, 25);
     setxy(750, 20);
-    print(str(cnum), 4, 25);
+    display(str(cnum), 4, 25);
     ctotal := 0;
     for n := 1 to maxspeed do
       begin
@@ -99,9 +99,9 @@ VAR gen, cnum, gnum: integer;
       end;
     setxy(200, 520);
     colour(green);
-    print('Speed Distribution of Gazelles', 4, 25);
+    display('Speed Distribution of Gazelles', 4, 25);
     setxy(750, 520);
-    print(str(gnum), 4, 25);
+    display(str(gnum), 4, 25);
     gtotal := 0;
     for n := 1 to maxspeed do
       begin
@@ -114,12 +114,12 @@ VAR gen, cnum, gnum: integer;
       begin
         setxy(150, 200);
         colour(magenta);
-        print('All Cheetahs Have Died', 4, 50);
+        display('All Cheetahs Have Died', 4, 50);
         halt
       end;
-    print(qstr(ctotal, cnum, 2), 4, 25);
+    display(qstr(ctotal, cnum, 2), 4, 25);
     setxy(850, 520);
-    print(qstr(gtotal, gnum, 2), 4, 25);
+    display(qstr(gtotal, gnum, 2), 4, 25);
     update;
     write(str(gen));
     write(' - c=');

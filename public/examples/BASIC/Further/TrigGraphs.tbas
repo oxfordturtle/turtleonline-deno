@@ -10,17 +10,17 @@ THICKNESS(4)
 REM plot sine curve in green
 COLOUR(GREEN)
 SETXY(250, 700)
-PRINT("sine", 16, 40)
+DISPLAY("sine", 16, 40)
 PROCplotSineCurve
 REM plot cosine curve in red
 COLOUR(RED)
 SETXY(30, 700)
-PRINT("cosine", 16, 40)
+DISPLAY("cosine", 16, 40)
 PROCplotCosineCurve
 REM plot tan curve in blue
 COLOUR(BLUE)
 SETXY(140, 920)
-PRINT("tangent", 16, 40)
+DISPLAY("tangent", 16, 40)
 PROCplotTanCurve
 END
 
@@ -43,28 +43,28 @@ DEF PROCdrawAxes
   SETXY(XORIGIN% - HALFWIDTH%, YORIGIN% + YSCALE%)
   DRAWXY(HALFWIDTH% * 2, 0)
   SETXY(XORIGIN% + HALFWIDTH% + 10, YORIGIN% - YSCALE% - 18)
-  PRINT("+1", 0, 20)
+  DISPLAY("+1", 0, 20)
   SETXY(XORIGIN% + HALFWIDTH% + 10, YORIGIN% + YSCALE% - 18)
-  PRINT("-1", 0, 20)
+  DISPLAY("-1", 0, 20)
   REM print x axis labels
   IF RADIANS% THEN
     SETXY(XORIGIN% - HALFWIDTH% - 44, YORIGIN% - 4)
-    PRINT("-p", 29, 28)
+    DISPLAY("-p", 29, 28)
     SETXY(XORIGIN% - HALFWIDTH% DIV 2 - 2, YORIGIN% - 4)
-    PRINT("-p/2", 29, 28)
+    DISPLAY("-p/2", 29, 28)
     SETXY(XORIGIN% + HALFWIDTH% DIV 2 - 50, YORIGIN% - 4)
-    PRINT("p/2", 29, 28)
+    DISPLAY("p/2", 29, 28)
     SETXY(XORIGIN% + HALFWIDTH%, YORIGIN% - 4)
-    PRINT("p", 29, 28)
+    DISPLAY("p", 29, 28)
   ELSE
     SETXY(XORIGIN% - HALFWIDTH% - 60, YORIGIN%)
-    PRINT("-180", 0, 20)
+    DISPLAY("-180", 0, 20)
     SETXY(XORIGIN% - HALFWIDTH% / 2, YORIGIN%)
-    PRINT("-90", 0, 20)
+    DISPLAY("-90", 0, 20)
     SETXY(XORIGIN% + HALFWIDTH% / 2 - 30, YORIGIN%)
-    PRINT("90", 0, 20)
+    DISPLAY("90", 0, 20)
     SETXY(XORIGIN% + HALFWIDTH%, YORIGIN%)
-    PRINT("180", 0, 20)
+    DISPLAY("180", 0, 20)
   ENDIF
 ENDPROC
 

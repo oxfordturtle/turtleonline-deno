@@ -11,7 +11,7 @@ VAR hours: integer;
     box(400, 100, white, false);
     {print specified time}
     timeString := pad(str(hours), '0', 2) + ':' + pad(str(minutes), '0', 2);
-    print(timeString, 21, 100)
+    display(timeString, 21, 100)
   End;
 
 BEGIN

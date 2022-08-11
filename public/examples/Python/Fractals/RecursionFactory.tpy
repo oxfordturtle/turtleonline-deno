@@ -19,7 +19,7 @@ def recurse(flag, size, depth, col):
     else:
       update()
     if flag == 1:
-      for flag in range(2, 4, 1):
+      for flag in range(2, 4):
         storex = turtx
         storey = turty
         for sides in range (0, numsides, 1):

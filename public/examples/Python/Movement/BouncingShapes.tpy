@@ -19,7 +19,7 @@ def drawShape (sides, size, colr):
   xEdge = False
   yEdge = False
   colour(colr)
-  for count in range(0, sides, 1):
+  for count in range(sides):
     forward(size)
     if abs(turtx - 500) > 495:
       xEdge = True
@@ -31,7 +31,7 @@ def drawShape (sides, size, colr):
   polygon(sides)
 
 # set initial properties for each shape
-for n in range(0, shapes, 1):
+for n in range(shapes):
   sides[n] = n + 2
   size[n] = randint(minSize, maxSize)
   colr[n] = rgb(n + 1)
@@ -46,7 +46,7 @@ while 0 < 1:
   # rub out previous shapes
   blank(white)
   # draw each shape in its next position
-  for n in range(1, shapes, 1):
+  for n in range(1, shapes):
     # move to next position
     x[n] = x[n] + xVelocity[n]
     y[n] = y[n] + yVelocity[n]

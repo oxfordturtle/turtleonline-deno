@@ -1,16 +1,16 @@
 // type imports
-import type { Options } from './options.ts'
-import type { Turtle } from './turtle.ts'
+import type { Options } from './options'
+import type { Turtle } from './turtle'
 
 // module imports
-import * as memory from './memory.ts'
-import { defaultOptions } from './options.ts'
-import { keycodeFromKey, mixBytes } from './misc.ts'
-import { colours } from '../constants/colours.ts'
-import { PCode } from '../constants/pcodes.ts'
-import { MachineError } from '../tools/error.ts'
-import { send } from '../tools/hub.ts'
-import hex from '../tools/hex.ts'
+import * as memory from './memory'
+import { defaultOptions } from './options'
+import { mixBytes } from './misc'
+import { colours } from '../constants/colours'
+import { PCode } from '../constants/pcodes'
+import { MachineError } from '../tools/error'
+import { send } from '../tools/hub'
+import hex from '../tools/hex'
 
 // machine variables
 let canvas: HTMLCanvasElement = document.createElement('canvas')
@@ -31,7 +31,7 @@ let width: number = 1000
 let height: number = 1000
 let doubled: boolean = false
 
-let detectKeycode: number = 0
+let detectInputcode: number = 0
 let detectTimeoutID: number = 0
 let readlineTimeoutID: number = 0
 
@@ -121,6 +121,7 @@ export function halt (): void {
     window.removeEventListener('keyup', releaseKey)
     window.removeEventListener('keypress', putInBuffer)
     window.removeEventListener('keyup', detect)
+    window.removeEventListener('mouseup', detect)
     window.removeEventListener('keyup',readline)
     canvas.removeEventListener('contextmenu', preventDefault)
     canvas.removeEventListener('mousemove', storeMouseXY)
@@ -179,6 +180,7 @@ function execute (): void {
   // in case of detect or readline, remove the event listeners the first time we carry on with the
   // program execution after they have been called
   window.removeEventListener('keyup', detect)
+  window.removeEventListener('mouseup', detect)
   window.removeEventListener('keyup', readline)
 
   // execute any delayed heap clear calls
@@ -1674,7 +1676,6 @@ function execute (): void {
           n1 = memory.stack[memory.stack.length - 2]
           if (n1 !== undefined && n2 !== undefined) {
             if ((n1 < 0) || (n1 > memory.main[n2])) {
-              console.log(`n1: ${n1}, n2: ${n2}, memory[n2]: ${memory.main[n2]}`)
               // TODO: make range check a runtime option
               throw new MachineError(`Array index out of range (${line}, ${code}).`)
             }
@@ -1928,13 +1929,18 @@ function execute (): void {
           break
 
         // 0xA0s - text output, timing
-        case PCode.inpt:
+        case PCode.stat:
           n1 = memory.stack.pop()
           if (n1 !== undefined) {
-            if (n1 < 0) {
+            if (-11 <= n1 && n1 < 0) {
+              // lookup query value
               memory.stack.push(memory.query[-n1])
-            } else {
+            } else if (0 < n1 && n1 < 256) {
+              // lookup key value
               memory.stack.push(memory.keys[n1])
+            } else {
+              // return 0 for anything outside the range
+              memory.stack.push(0)
             }
           } else {
             throw new MachineError('Stack operation called on empty stack.')
@@ -1944,16 +1950,22 @@ function execute (): void {
         case PCode.iclr:
           n1 = memory.stack.pop()
           if (n1 !== undefined) {
-            if (n1 < 0) {
+            if (-11 <= n1 && n1 < 0) {
               // reset query value
               memory.query[-n1] = -1
             } else if (n1 === 0) {
               // reset keybuffer
               memory.main[memory.main[1] + 1] = memory.main[1] + 3
               memory.main[memory.main[1] + 2] = memory.main[1] + 3
-            } else {
+            } else if (0 < n1 && n1 < 256) {
               // reset key value
               memory.keys[n1] = -1
+            } else if (n1 === 256) {
+              // reset everything
+              memory.keys.fill(-1)
+              memory.query.fill(-1)
+            } else {
+              // for any value outside the range (-11, 256) we don't do anything
             }
           } else {
             throw new MachineError('Stack operation called on empty stack.')
@@ -2132,15 +2144,19 @@ function execute (): void {
           n2 = memory.stack.pop()
           n1 = memory.stack.pop()
           if (n1 !== undefined && n2 !== undefined) {
-            memory.stack.push(0)
-            code += 1
-            if (code === pcode[line].length) {
-              line += 1
-              code = 0
+            if (-11 <= n1 && n1 < 256) {
+              memory.stack.push(0)
+              code += 1
+              if (code === pcode[line].length) {
+                line += 1
+                code = 0
+              }
+              detectInputcode = n1
+              n3 = n2 === 0 ? Math.pow(2, 31) - 1 : n2 // 0 means "as long as possible"
+              detectTimeoutID = window.setTimeout(execute, n3)
+              window.addEventListener('keyup', detect)
+              window.addEventListener('mouseup', detect)
             }
-            detectKeycode = n2
-            detectTimeoutID = window.setTimeout(execute, n1)
-            window.addEventListener('keyup', detect)
           } else {
             throw new MachineError('Stack operation called on empty stack.')
           }
@@ -2221,9 +2237,10 @@ function storeKey (event: KeyboardEvent): void {
     event.preventDefault() // don't scroll the page
   }
   // normal case
-  const keycode = event.keyCode // keycodeFromKey(event.key)
+  const keycode = event.keyCode // inputcodeFromKey(event.key)
   memory.query[9] = keycode
   memory.query[10] = 128
+  memory.query[11] = keycode
   if (event.shiftKey) {
     memory.query[10] += 8
   }
@@ -2238,7 +2255,7 @@ function storeKey (event: KeyboardEvent): void {
 
 /** stores that a key has been released */
 function releaseKey (event: KeyboardEvent): void {
-  const keycode = event.keyCode // keycodeFromKey(event.key)
+  const keycode = event.keyCode // inputcodeFromKey(event.key)
   // keyup should set positive value to negative; use Math.abs to ensure the result is negative,
   // in case two keydown events fire close together, before the first keyup event fires
   memory.query[9] = -Math.abs(memory.query[9])
@@ -2248,7 +2265,7 @@ function releaseKey (event: KeyboardEvent): void {
 
 /** puts a key in the keybuffer */
 function putInBuffer (event: KeyboardEvent): void {
-  const keycode = event.keyCode // keycodeFromKey(event.key)
+  const keycode = event.keyCode // inputcodeFromKey(event.key)
   const buffer = memory.main[1]
   if (buffer > 0) { // there is a keybuffer
     let next = 0
@@ -2317,6 +2334,7 @@ function storeClickXY (event: MouseEvent|TouchEvent): void {
           memory.query[1] = memory.query[4]
           memory.query[2] = -1
           memory.query[3] = -1
+          memory.query[11] = 1 // 1 for lmouse
           break
 
         case 1:
@@ -2324,6 +2342,7 @@ function storeClickXY (event: MouseEvent|TouchEvent): void {
           memory.query[1] = -1
           memory.query[2] = -1
           memory.query[3] = memory.query[4]
+          memory.query[11] = 3 // 3 for rmouse
           break
 
         case 2:
@@ -2331,6 +2350,7 @@ function storeClickXY (event: MouseEvent|TouchEvent): void {
           memory.query[1] = -1
           memory.query[2] = memory.query[4]
           memory.query[3] = -1
+          memory.query[11] = 2 // 2 for rmouse
           break
       }
       break
@@ -2358,7 +2378,7 @@ function releaseClickXY (event: MouseEvent|TouchEvent): void {
           break
 
         case 1:
-          memory.query[2] = -memory.query[3]
+          memory.query[3] = -memory.query[3]
           break
 
         case 2:
@@ -2378,11 +2398,30 @@ function preventDefault (event: Event): void {
   event.preventDefault()
 }
 
-/** breaks out of DETECT loop and resumes program execution if the right key is pressed */
-function detect (event: KeyboardEvent): void {
-  if (event.keyCode === detectKeycode) { // keycodeFromKey(event.key) === detectKeycode) {
+/** breaks out of DETECT loop and resumes program execution if the right key/button is pressed */
+function detect (event: KeyboardEvent|MouseEvent): void {
+  let rightThingPressed = false
+  // -11 is \mousekey - returns whatever was clicked/pressed
+  if (detectInputcode === -11) rightThingPressed = true
+  // -10 and -9 return for any key (not for mouse)
+  if ((detectInputcode === -9 || detectInputcode === -10) && (event as KeyboardEvent).keyCode !== undefined) rightThingPressed = true
+  // -8 to -4 - returns for any mouse click
+  if ((-8 <= detectInputcode && detectInputcode <= -4) && (event as KeyboardEvent).keyCode === undefined) rightThingPressed = true
+  // specific mouse button cases
+  if (detectInputcode === -3 && (event as MouseEvent).button == 1) rightThingPressed = true
+  if (detectInputcode === -2 && (event as MouseEvent).button == 2) rightThingPressed = true
+  if (detectInputcode === -1 && (event as MouseEvent).button == 0) rightThingPressed = true
+  // keybuffer
+  if (detectInputcode === 0 && (event as KeyboardEvent).keyCode !== undefined) rightThingPressed = true
+  // otherwise return if the key pressed matches the detectInputcode
+  if ((event as KeyboardEvent).keyCode === detectInputcode) rightThingPressed = true
+  if (rightThingPressed) {
+    const returnValue = (detectInputcode < 0) ? memory.query[-detectInputcode] : memory.keys[detectInputcode]
     memory.stack.pop()
-    memory.stack.push(-1) // -1 for true
+    // the event listener that negates the input (onkeyup or onmouseup) is called first, so by the
+    // time this listener is called it will be negative - but for consistency with the downloadable
+    // system we want it to be positive
+    memory.stack.push(Math.abs(returnValue))
     window.clearTimeout(detectTimeoutID)
     execute()
   }
@@ -2453,12 +2492,12 @@ function vcoords (coords: [number, number]): [number, number] {
 function virtx (x: number): number {
   const { left, width } = canvas.getBoundingClientRect()
   const exact = (((x - left) * sizex) / width) + startx
-  return Math.round(exact)
+  return Math.floor(exact)
 }
 
 /** converts y to virtual canvas coordinate */
 function virty (y: number): number {
   const { height, top } = canvas.getBoundingClientRect()
   const exact = (((y - top) * sizey) / height) + starty
-  return Math.round(exact)
+  return Math.floor(exact)
 }

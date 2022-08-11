@@ -1,8 +1,8 @@
-import { statement } from './statement.ts'
-import Program from '../definitions/program.ts'
-import type { Subroutine } from '../definitions/subroutine.ts'
-import type { Lexeme } from '../../lexer/lexeme.ts'
-import type Lexemes from '../definitions/lexemes.ts'
+import { statement } from './statement'
+import Program from '../definitions/program'
+import type { Subroutine } from '../definitions/subroutine'
+import type { Lexeme } from '../../lexer/lexeme'
+import type Lexemes from '../definitions/lexemes'
 
 /** parses the body of a routine */
 export default function body (lexemes: Lexemes, routine: Program|Subroutine): void {

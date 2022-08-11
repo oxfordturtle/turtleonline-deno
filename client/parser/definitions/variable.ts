@@ -1,7 +1,7 @@
-import Routine from './routine.ts'
-import Program from './program.ts'
-import type { Subroutine } from './subroutine.ts'
-import type { Type } from '../../lexer/lexeme.ts'
+import Routine from './routine'
+import Program from './program'
+import type { Subroutine } from './subroutine'
+import type { Type } from '../../lexer/lexeme'
 
 /** variable */
 export default class Variable {

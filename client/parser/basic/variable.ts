@@ -1,12 +1,12 @@
-import type Program from '../definitions/program.ts'
-import { variableName } from './identifier.ts'
-import type { Subroutine } from '../definitions/subroutine.ts'
-import Variable from '../definitions/variable.ts'
-import type Lexemes from '../definitions/lexemes.ts'
-import * as find from '../find.ts'
-import { typeCheck, expression } from '../expression.ts'
-import evaluate from '../evaluate.ts'
-import { CompilerError } from '../../tools/error.ts'
+import type Program from '../definitions/program'
+import { variableName } from './identifier'
+import type { Subroutine } from '../definitions/subroutine'
+import Variable from '../definitions/variable'
+import type Lexemes from '../definitions/lexemes'
+import * as find from '../find'
+import { typeCheck, expression } from '../expression'
+import evaluate from '../evaluate'
+import { CompilerError } from '../../tools/error'
 
 /** parses lexemes as a variable name */
 export function variable (lexemes: Lexemes, routine: Program|Subroutine): Variable {

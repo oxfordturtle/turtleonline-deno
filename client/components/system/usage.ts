@@ -1,11 +1,11 @@
 /*
  * The program usage component.
  */
-import highlight from '../../lexer/highlight.ts'
-import state from '../../state/index.ts'
-import { fill, fragment, tr, th, td, code } from '../../tools/elements.ts'
-import { on } from '../../tools/hub.ts'
-import type { UsageCategory, UsageExpression } from '../../analyser/usage.ts'
+import highlight from '../../lexer/highlight'
+import state from '../../state/index'
+import { fill, fragment, tr, th, td, code } from '../../tools/elements'
+import { on } from '../../tools/hub'
+import type { UsageCategory, UsageExpression } from '../../analyser/usage'
 
 // the usage table body
 const usageTableBody = document.querySelector('[data-component="usageTableBody"]') as HTMLElement

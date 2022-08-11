@@ -1,8 +1,8 @@
 /*
  * The machine memory component.
  */
-import { fill, td, th, tr } from '../../tools/elements.ts'
-import { on } from '../../tools/hub.ts'
+import { fill, td, th, tr } from '../../tools/elements'
+import { on } from '../../tools/hub'
 
 // the memory table bodies
 const stackTableBody = document.querySelector('[data-component="memoryStackTableBody"]') as HTMLElement

@@ -6,7 +6,7 @@ while (True):
   blank(white)
   setxy(50, 20)
   colour(blue)
-  print('Type in a starting integer (>1):', 4, 36)
+  display('Type in a starting integer (>1):', 4, 36)
   setxy(800, 20)
   colour(black)
   # while waiting for input of integer greater than 1...
@@ -17,7 +17,7 @@ while (True):
     # print contents of keybuffer on canvas
     while (abs(?key) != \return):
       box(200, 60, white, False)
-      print(read(0), 4, 36)
+      display(read(0), 4, 36)
       pause(100)
     # read value of keybuffer into String
     s = readline()
@@ -35,7 +35,7 @@ while (True):
   while (latest != 1):
     # print the latest number
     setxy((count % 10) * 100 + 20, (count // 10) * 45 + 300)
-    print(str(latest), 4, 24)
+    display(str(latest), 4, 24)
     # move to the next number in the sequence
     if (latest % 2 == 0):
       latest = latest / 2
@@ -48,14 +48,14 @@ while (True):
   # print const number (1) in red
   setxy((count % 10) * 100 + 20, (count // 10) * 45 + 300)
   colour(red)
-  print(str(latest), 4, 24)
+  display(str(latest), 4, 24)
   # print length of sequence
   setxy(100, 100)
-  print('That took ' + str(count) + ' iterations to reach 1', 4, 36)
+  display('That took ' + str(count) + ' iterations to reach 1', 4, 36)
   colour(black)
   setxy(250, 200)
   # wait for key press to start again
-  print('[Press a key to continue]', 4, 30)
+  display('[Press a key to continue]', 4, 30)
   while (?key <= 0):
     pass
   # reset key input value

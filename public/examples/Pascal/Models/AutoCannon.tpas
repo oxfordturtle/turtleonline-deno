@@ -17,26 +17,26 @@ VAR n: integer;
       if n mod 5 = 0 then
         begin
           setxy(650 + n * 100, 4600);
-          print(str(n), 2, 16)
+          display(str(n), 2, 16)
         end;
     for n := 0 to 9 do
       begin
         setxy(100, 4350 - n * 400);
-        print(str(n * 1000), 2, 16)
+        display(str(n * 1000), 2, 16)
       end;
     for n := 0 to 9 do
       begin
         setxy(9900, 4380 - n * 400);
-        print(str(n * 20), 2, 16)
+        display(str(n * 20), 2, 16)
       end;
     setxy(4000, 4900);
-    print('Angle of elevation', 2, 24);
+    display('Angle of elevation', 2, 24);
     colour(distancecol);
     setxy(0, 100);
-    print('Distance', 2, 24);
+    display('Distance', 2, 24);
     colour(timecol);
     setxy(9600, 100);
-    print('Time', 2, 24)
+    display('Time', 2, 24)
   End;
 
   Procedure plot(x, y, col: integer);

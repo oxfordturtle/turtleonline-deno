@@ -33,7 +33,7 @@ REPEAT
       BLANK(WHITE)
       SETXY(330, 850)
       COLOUR(BLUE)
-      PRINT("You Win!", 4, 60)
+      DISPLAY("You Win!", 4, 60)
       PAUSE(5000)
     ELSE
       PROCdrawpiles
@@ -44,14 +44,14 @@ REPEAT
       IF (xorscore% = 0) AND NOT(showmaths%) THEN
         COLOUR(PINK)
         SETXY(400, 900)
-        PRINT("I'm going to win!", 4, 30)
+        DISPLAY("I'm going to win!", 4, 30)
       ENDIF
       PAUSE(2500)
       IF totalcoins% = 0 THEN
         BLANK(WHITE)
         SETXY(330, 850)
         COLOUR(RED)
-        PRINT("I Win!", 4, 60)
+        DISPLAY("I Win!", 4, 60)
         PAUSE(5000)
       ENDIF
     ENDIF
@@ -109,31 +109,31 @@ DEF PROCdrawpiles
       IF showmaths% THEN
         MOVEXY(radius% + MARGIN%, -radius% + 15)
         COLOUR(BLACK)
-        PRINT(STR$(xorscore% EOR pile%(p%) EOR (c% - 1)), 4, 20)
+        DISPLAY(STR$(xorscore% EOR pile%(p%) EOR (c% - 1)), 4, 20)
       ENDIF
       c% = c% - 1
     ENDWHILE
   NEXT
   COLOUR(BLACK)
   SETXY(MARGIN%, 900)
-  PRINT("Total Coins:  " + STR$(totalcoins%), 4, 30)
+  DISPLAY("Total Coins:  " + STR$(totalcoins%), 4, 30)
   IF showmaths% THEN
     COLOUR(BLACK)
     SETXY(450, 900)
-    PRINT("XOR score:  " + STR$(xorscore%), 4, 30)
+    DISPLAY("XOR score:  " + STR$(xorscore%), 4, 30)
     SETXY(850, 890)
     COLOUR(MAROON)
     BOX(140, 100, RED, TRUE)
-    PRINT(" HIDE", 4, 25)
+    DISPLAY(" HIDE", 4, 25)
     SETXY(850, 940)
-    PRINT(" MATHS", 4, 25)
+    DISPLAY(" MATHS", 4, 25)
   ELSE
     COLOUR(MAROON)
     SETXY(850, 890)
     BOX(140, 100, RED, TRUE)
-    PRINT(" SHOW", 4, 25)
+    DISPLAY(" SHOW", 4, 25)
     SETXY(850, 940)
-    PRINT(" MATHS", 4, 25)
+    DISPLAY(" MATHS", 4, 25)
   ENDIF
 ENDPROC
 

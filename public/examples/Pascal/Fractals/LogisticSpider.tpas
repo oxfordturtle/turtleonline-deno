@@ -17,21 +17,21 @@ VAR gen, pop: integer;
     for i := 0 to 10 do
       begin
         setxy(i * 100 - 25, 1000);
-        print(qstr(i, 10, 1), 4, 20)
+        display(qstr(i, 10, 1), 4, 20)
       end;
     for i := 1 to 10 do
       begin
         setxy(-lmargin + 5, 1000 - i * 100 - 20);
-        print(qstr(i, 10, 1), 4, 20)
+        display(qstr(i, 10, 1), 4, 20)
       end;
     setxy(0, 0);
     drawxy(0, 1000);
     drawxy(1000, 0);
     colour(red);
     setxy(0, 1060);
-    print('Population over ' + str(maxgen) + ' generations, where P (population/' + str(maxpop) + ')', 4, 25);
+    display('Population over ' + str(maxgen) + ' generations, where P (population/' + str(maxpop) + ')', 4, 25);
     setxy(0, 1110);
-    print('is determined by the logistic equation P'' = rP(1 - P), with r = ' + qstr(r, 10, 1), 4, 25)
+    display('is determined by the logistic equation P'' = rP(1 - P), with r = ' + qstr(r, 10, 1), 4, 25)
   End;
 
   Procedure menu;
@@ -39,7 +39,7 @@ VAR gen, pop: integer;
   Begin
     colour(black);
     setxy(10, -tmargin + 20);
-    print('Set k:', 4, 25);
+    display('Set k:', 4, 25);
     for i := 21 to 40 do
       begin
         setxy(((i - 1) mod 10) * 90 + 130, ((i - 1) div 10) * 50 - 100 - tmargin);
@@ -47,7 +47,7 @@ VAR gen, pop: integer;
           box(90, 50, red, true)
         else
           box(90, 50, cream, true);
-        print('  ' + qstr(i, 10, 1), 4, 25)
+        display('  ' + qstr(i, 10, 1), 4, 25)
       end
   End;
 

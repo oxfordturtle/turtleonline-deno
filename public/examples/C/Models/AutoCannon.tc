@@ -12,25 +12,25 @@ void graphaxes () {
   for (int n = 0; n <= 90; n = n + 1) {
     if (n % 5 == 0) {
       setxy(650 + n * 100, 4600);
-      print(itoa(n), 2, 16);
+      display(itoa(n), 2, 16);
     }
   }
   for (n = 0; n <= 9; n = n + 1) {
     setxy(100, 4350 - n * 400);
-    print(itoa(n * 1000), 2, 16);
+    display(itoa(n * 1000), 2, 16);
   }
   for (n = 0; n < 10; n = n + 1) {
     setxy(9900, 4380 - n * 400);
-    print(itoa(n * 20), 2, 16);
+    display(itoa(n * 20), 2, 16);
   }
   setxy(4000, 4900);
-  print('Angle of elevation', 2, 24);
+  display('Angle of elevation', 2, 24);
   colour(distancecol);
   setxy(0, 100);
-  print('Distance', 2, 24);
+  display('Distance', 2, 24);
   colour(timecol);
   setxy(9600, 100);
-  print('Time', 2, 24);
+  display('Time', 2, 24);
 }
 
 void plot (int x, int y, int col) {

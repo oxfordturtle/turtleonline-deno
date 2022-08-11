@@ -78,7 +78,7 @@ DEF PROCsetup
   NEXT
   COLOUR(BLACK)
   SETXY(0, 0)
-  PRINT("Diffusion in a Tapering Tube", 2, WIDTH% / 10)
+  DISPLAY("Diffusion in a Tapering Tube", 2, WIDTH% / 10)
 ENDPROC
 
 DEF PROCdrawaxes
@@ -98,23 +98,23 @@ LOCAL n%
   DRAWXY(0, -CONCWIDTH%)
   COLOUR(CONCCOL%)
   SETXY(0, CONCBOTTOM% - CONCWIDTH% - WIDTH% / 15)
-  PRINT("100%", 2, WIDTH% / 15)
+  DISPLAY("100%", 2, WIDTH% / 15)
   SETXY(0, CONCBOTTOM% - WIDTH% / 15)
-  PRINT("  0%", 2, WIDTH% / 15)
+  DISPLAY("  0%", 2, WIDTH% / 15)
   SETXY(0, TOPMARGIN% + WIDTH% * 11 / 10)
-  PRINT("Red concentration", 2, WIDTH% / 12)
+  DISPLAY("Red concentration", 2, WIDTH% / 12)
   COLOUR(MOLCOL%)
   SETXY(WIDTH% + LEFTAXIS% + 2, TOPMARGIN% + WIDTH% - boundary% + 1 - WIDTH% / 15)
-  PRINT(STR$(boundary% - 1), 2, WIDTH% / 15)
+  DISPLAY(STR$(boundary% - 1), 2, WIDTH% / 15)
   SETXY(WIDTH% + LEFTAXIS% + 2, TOPMARGIN% + WIDTH% - WIDTH% / 15)
-  PRINT("  0", 2, WIDTH% / 15)
+  DISPLAY("  0", 2, WIDTH% / 15)
   SETXY(0, TOPMARGIN% + WIDTH% * 12 / 10)
-  PRINT("Red molecule count", 2, WIDTH% / 12)
+  DISPLAY("Red molecule count", 2, WIDTH% / 12)
   COLOUR(BLACK)
   SETXY(0, TOPMARGIN% + WIDTH% * 13 / 10 + 5)
-  PRINT("(at horizontal position", 2, WIDTH% / 15)
+  DISPLAY("(at horizontal position", 2, WIDTH% / 15)
   SETXY(0, TOPMARGIN% + WIDTH% * 14 / 10 + 5)
-  PRINT("in tapering tube)", 2, WIDTH% / 15)
+  DISPLAY("in tapering tube)", 2, WIDTH% / 15)
 ENDPROC
 
 DEF PROCgraphit(x%, show%)

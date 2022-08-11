@@ -5,7 +5,7 @@ def showtime(hours, minutes):
   box(400, 100, white, False)
   # print specified time
   timeString = pad(str(hours), '0', 2) + ':' + pad(str(minutes), '0', 2)
-  print(timeString, 21, 100)
+  display(timeString, 21, 100)
 
 # set up canvas with box for displaying time
 blank(lightgreen)

@@ -222,25 +222,25 @@ VAR tape: array[leftend..rightend] of char;
   blank(white);
   colour(brown);
   setxy(margin, 50);
-  print('TURING MACHINE SIMULATOR', menutype or 16, 42);
+  display('TURING MACHINE SIMULATOR', menutype or 16, 42);
   colour(darkred);
   setxy(margin + 30, 175);
-  print('(Examples are taken from Charles Petzold''s', menutype, 30);
+  display('(Examples are taken from Charles Petzold''s', menutype, 30);
   setxy(margin + 30, 225);
-  print('excellent book, "The Annotated Turing")', menutype, 30);
+  display('excellent book, "The Annotated Turing")', menutype, 30);
   colour(black);
   setxy(margin, 350);
-  print('Choose from the following:', menutype or 16, menusize);
+  display('Choose from the following:', menutype or 16, menusize);
   setxy(margin, 450);
-  print('  1.  Petzold p.81 (0 1 0 1 ...  4 states)', menutype, menusize);
+  display('  1.  Petzold p.81 (0 1 0 1 ...  4 states)', menutype, menusize);
   setxy(margin, 550);
-  print('  2.  Petzold p.84 (0 1 0 1 ...  1 state)', menutype, menusize);
+  display('  2.  Petzold p.84 (0 1 0 1 ...  1 state)', menutype, menusize);
   setxy(margin, 650);
-  print('  3.  Petzold p.87 (transcendental)', menutype, menusize);
+  display('  3.  Petzold p.87 (transcendental)', menutype, menusize);
   setxy(margin, 750);
-  print('  4.  Petzold p.99 (binary counting)', menutype, menusize);
+  display('  4.  Petzold p.99 (binary counting)', menutype, menusize);
   setxy(margin, 850);
-  print('  5.  Petzold pp. 102-8, root of 2', menutype, menusize);
+  display('  5.  Petzold pp. 102-8, root of 2', menutype, menusize);
   repeat
    choice := abs(?key) - 48
   until (choice > 0) and (choice < 6);
@@ -252,14 +252,14 @@ VAR tape: array[leftend..rightend] of char;
  Begin
   colour(red);
   setxy(margin, tapelabel);
-  print('TAPE:', fonttype, fontsize);
+  display('TAPE:', fonttype, fontsize);
   setxy(margin, cyclelabel);
-  print('CYCLES:', fonttype, fontsize);
+  display('CYCLES:', fonttype, fontsize);
   setxy(margin, tablelabel);
-  print('MACHINE TABLE (' + machinetitle + '):', fonttype, fontsize);
+  display('MACHINE TABLE (' + machinetitle + '):', fonttype, fontsize);
   colour(lightgrey);
   setxy(400, cyclelabel);
-  print('(press ESCAPE to return to menu)', fonttype, fontsize)
+  display('(press ESCAPE to return to menu)', fonttype, fontsize)
  End;
 
  Procedure drawtable;
@@ -271,7 +271,7 @@ VAR tape: array[leftend..rightend] of char;
    box(width, rowheight + headspace * 2, brown, true);
    colour(white);
    movexy(0, headspace + 4);
-   print(s, fonttype or 32, fontsize);
+   display(s, fonttype or 32, fontsize);
    movexy(width, -headspace - 4)
   end;
 
@@ -279,7 +279,7 @@ VAR tape: array[leftend..rightend] of char;
   begin
    box(width, rowheight, white, true);
    movexy(0, 4);
-   print(s, fonttype, fontsize);
+   display(s, fonttype, fontsize);
    movexy(width, -4)
   end;
 
@@ -331,11 +331,11 @@ VAR tape: array[leftend..rightend] of char;
    begin
     box(cellwidth, cellwidth, cream, true);
     movexy(cmargin, 0);
-    print(tape[i], 1, cellwidth / 2);
+    display(tape[i], 1, cellwidth / 2);
     if i mod 5 = 0 then
      begin
       movexy(-cmargin + 2, -12);
-      print('.', 1, 12);
+      display('.', 1, 12);
       movexy(cmargin - 2, 12)
      end;
     movexy(cellwidth - cmargin, 0)
@@ -345,13 +345,13 @@ VAR tape: array[leftend..rightend] of char;
   box(cellwidth, cellwidth, cyan, true);
   thickness(2);
   movexy(cmargin, 0);
-  print(tape[headpos], 1, cellwidth / 2);
+  display(tape[headpos], 1, cellwidth / 2);
   movexy(0, cellwidth + 8);
   colour(brown);
-  print(str(state), fonttype, cellwidth / 2);
+  display(str(state), fonttype, cellwidth / 2);
   setxy(cycleindent, cyclelabel);
   box(200, 100, white, false);
-  print(str(cycles), fonttype, cellwidth / 2);
+  display(str(cycles), fonttype, cellwidth / 2);
   colour(black);
   update
  End;
@@ -433,9 +433,9 @@ VAR tape: array[leftend..rightend] of char;
   colour(brown);
   box(95, 32, cream, true);
   if pausetime = 200 then
-   print('SLOW', fonttype, fontsize)
+   display('SLOW', fonttype, fontsize)
   else
-   print(' FAST', fonttype, fontsize)
+   display(' FAST', fonttype, fontsize)
  End;
 
 BEGIN

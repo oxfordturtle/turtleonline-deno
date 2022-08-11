@@ -1,7 +1,7 @@
-import state from '../state/index.ts'
-import * as machine from '../machine/index.ts'
-import { fill, i } from '../tools/elements.ts'
-import { on, send } from '../tools/hub.ts'
+import state from '../state/index'
+import * as machine from '../machine/index'
+import { fill, i } from '../tools/elements'
+import { on, send } from '../tools/hub'
 import {
   toggleMenu,
   openMenu,
@@ -10,8 +10,8 @@ import {
   openSystemMenu,
   closeSystemMenu,
   selectTab
-} from './view.ts'
-import { SystemError } from '../tools/error.ts'
+} from './view'
+import { SystemError } from '../tools/error'
 
 const notImplemented = new SystemError('This feature has not yet been implemented in the online system.')
 

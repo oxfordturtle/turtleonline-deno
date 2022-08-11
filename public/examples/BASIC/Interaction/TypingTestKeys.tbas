@@ -2,17 +2,17 @@ DIM letters%(26)
 REM show instructions
 BLANK(CREAM)
 SETXY(15, 200)
-PRINT("In this typing test, you will be shown the", 4, 36)
+DISPLAY("In this typing test, you will be shown the", 4, 36)
 SETXY(20, 270)
-PRINT("letters of the alphabet in a random order,", 4, 36)
+DISPLAY("letters of the alphabet in a random order,", 4, 36)
 SETXY(20, 340)
-PRINT("and in a mixture of upper- and lower-case.", 4, 36)
+DISPLAY("and in a mixture of upper- and lower-case.", 4, 36)
 SETXY(20, 410)
-PRINT("Type them as fast as you can, and see how", 4, 36)
+DISPLAY("Type them as fast as you can, and see how", 4, 36)
 SETXY(20, 480)
-PRINT("quickly you can finish the entire alphabet.", 4, 36)
+DISPLAY("quickly you can finish the entire alphabet.", 4, 36)
 SETXY(100, 620)
-PRINT("Now press the ""Esc"" key to start ...", 4, 36)
+DISPLAY("Now press the ""Esc"" key to start ...", 4, 36)
 REM disable key echo in console
 KEYECHO(FALSE)
 REM wait for escape key to be pressed
@@ -47,9 +47,9 @@ FOR count% = 1 TO 26
   COLOUR(YELLOW)
   REM print in either lowercase or uppercase
   IF lowerCase% THEN
-    PRINT(CHR$(c% + 32), 3, 450)
+    DISPLAY(CHR$(c% + 32), 3, 450)
   ELSE
-    PRINT(CHR$(c%), 3, 450)
+    DISPLAY(CHR$(c%), 3, 450)
   ENDIF
   REM wait for user to type that letter, with shift down for uppercase
   REPEAT
@@ -62,5 +62,5 @@ REM show time taken
 BLANK(LIGHTBLUE)
 SETXY(60, 460)
 COLOUR(LIGHTRED)
-PRINT("Your time was " + QSTR$(TIME, 1000, 2) + " seconds", 4, 50)
+DISPLAY("Your time was " + QSTR$(TIME, 1000, 2) + " seconds", 4, 50)
 END

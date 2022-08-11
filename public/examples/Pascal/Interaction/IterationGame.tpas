@@ -10,7 +10,7 @@ BEGIN
     blank(white);
     setxy(50, 20);
     colour(blue);
-    print('Type in a starting integer (>1):', 4, 36);
+    display('Type in a starting integer (>1):', 4, 36);
     setxy(800, 20);
     colour(black);
     {while waiting for input of integer greater than 1...}
@@ -20,7 +20,7 @@ BEGIN
       {print contents of keybuffer on canvas}
       repeat
         box(200, 60, white, false);
-        print(read(0), 4, 36);
+        display(read(0), 4, 36);
         pause(100)
       until abs(?key) = \return;
       {read value of keybuffer into string}
@@ -40,7 +40,7 @@ BEGIN
     repeat
       {print the latest number}
       setxy((count mod 10) * 100 + 20, (count div 10) * 45 + 300);
-      print(str(latest), 4, 24);
+      display(str(latest), 4, 24);
       {move to the next number in the sequence}
       if latest mod 2 = 0 then
         latest := latest / 2
@@ -54,14 +54,14 @@ BEGIN
     {print final number (1) in red}
     setxy((count mod 10) * 100 + 20, (count div 10) * 45 + 300);
     colour(red);
-    print(str(latest), 4, 24);
+    display(str(latest), 4, 24);
     {print length of sequence}
     setxy(100, 100);
-    print('That took ' + str(count) + ' iterations to reach 1', 4, 36);
+    display('That took ' + str(count) + ' iterations to reach 1', 4, 36);
     colour(black);
     setxy(250, 200);
     {wait for key press to start again}
-    print('[Press a key to continue]', 4, 30);
+    display('[Press a key to continue]', 4, 30);
     repeat
     until ?key > 0;
     {reset key input value}

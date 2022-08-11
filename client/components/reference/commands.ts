@@ -1,13 +1,13 @@
 /**
  * Native commands reference table.
  */
-import type { Command } from '../../constants/commands.ts'
-import type { Expression } from '../../constants/categories.ts'
-import { commandCategories } from '../../constants/categories.ts'
-import { fill, tr, td, code } from '../../tools/elements.ts'
-import highlight from '../../lexer/highlight.ts'
-import state from '../../state/index.ts'
-import { on } from '../../tools/hub.ts'
+import type { Command } from '../../constants/commands'
+import type { Expression } from '../../constants/categories'
+import { commandCategories } from '../../constants/categories'
+import { fill, tr, td, code } from '../../tools/elements'
+import highlight from '../../lexer/highlight'
+import state from '../../state/index'
+import { on } from '../../tools/hub'
 
 // get relevant elements
 const commandsTableBody = document.querySelector('[data-component="commandsTableBody"]') as HTMLElement

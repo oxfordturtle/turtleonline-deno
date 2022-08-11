@@ -55,11 +55,11 @@ void main () {
   canvas(0, 0, 100000, 100000);
   // print instructions
   setxy(2500, 80000);
-  print('Click on a circle to alter the ANGLES setting', 0, 36);
+  display('Click on a circle to alter the ANGLES setting', 0, 36);
   setxy(2500, 86000);
-  print('of the corresponding turtle. Its direction will', 0, 36);
+  display('of the corresponding turtle. Its direction will', 0, 36);
   setxy(2500, 92000);
-  print('then change to the closest possible angle.', 0, 36);
+  display('then change to the closest possible angle.', 0, 36);
   // draw initial paths for each turtle
   for (int i = 1; i <= numTurtles; i = i + 1) {
     setxy(10000, 70000);

@@ -1,6 +1,6 @@
-import type { Language } from '../constants/languages.ts'
-import { CompilerError } from '../tools/error.ts'
-import { Expression } from './definitions/expression.ts'
+import type { Language } from '../constants/languages'
+import { CompilerError } from '../tools/error'
+import { Expression } from './definitions/expression'
 
 /** evaluates an expression */
 export default function evaluate (expression: Expression, language: Language, context: 'constant'|'string'|'array'|'step'): number|string {

@@ -1,9 +1,9 @@
-import type { Expression } from './expression.ts'
-import type { Subroutine } from './subroutine.ts'
-import type { Constant } from './constant.ts'
-import type Variable from './variable.ts'
-import type { Command } from '../../constants/commands.ts'
-import type { IdentifierLexeme, KeywordLexeme, OperatorLexeme } from '../../lexer/lexeme.ts'
+import type { Expression } from './expression'
+import type { Subroutine } from './subroutine'
+import type { Constant } from './constant'
+import type Variable from './variable'
+import type { Command } from '../../constants/commands'
+import type { IdentifierLexeme, KeywordLexeme, OperatorLexeme } from '../../lexer/lexeme'
 
 /** statement */
 export type Statement =

@@ -1,6 +1,6 @@
 // type imports
-import type { Language } from '../constants/languages.ts'
-import { Token } from './token.ts'
+import type { Language } from '../constants/languages'
+import { Token } from './token'
 
 /** lexeme */
 export type Lexeme =
@@ -16,8 +16,8 @@ export type Lexeme =
   | IntegerLexeme
   | CharacterLexeme
   | StringLexeme
-  | KeycodeLexeme
-  | QueryLexeme
+  | InputcodeLexeme
+  | QuerycodeLexeme
   | IdentifierLexeme
 
 /** base lexeme class (extended by particular lexeme classes) */
@@ -300,27 +300,27 @@ export class StringLexeme extends LexemeClass {
   }
 }
 
-/** keycode lexeme */
-export class KeycodeLexeme extends LexemeClass {
+/** inputcode lexeme */
+export class InputcodeLexeme extends LexemeClass {
   readonly type = 'input'
-  readonly subtype = 'keycode'
+  readonly subtype = 'inputcode'
   readonly value: string
 
   constructor (token: Token, language: Language) {
     super(token.line, token.character, token.content)
-    this.value = (language === 'Pascal') ? token.content.toLowerCase() : token.content
+    this.value = (language === 'Pascal') ? token.content.slice(1).toLowerCase() : token.content.slice(1)
   }
 }
 
 /** query lexeme */
-export class QueryLexeme extends LexemeClass {
+export class QuerycodeLexeme extends LexemeClass {
   readonly type = 'input'
-  readonly subtype = 'query'
+  readonly subtype = 'querycode'
   readonly value: string
 
   constructor (token: Token, language: Language) {
     super(token.line, token.character, token.content)
-    this.value = (language === 'Pascal') ? token.content.toLowerCase() : token.content
+    this.value = (language === 'Pascal') ? token.content.slice(1).toLowerCase() : token.content.slice(1)
   }
 }
 

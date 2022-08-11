@@ -1,11 +1,11 @@
 /*
  * The program lexemes component.
  */
-import highlight from '../../lexer/highlight.ts'
-import type { Lexeme } from '../../lexer/lexeme.ts'
-import state from '../../state/index.ts'
-import { fill, tr, td, code } from '../../tools/elements.ts'
-import { on } from '../../tools/hub.ts'
+import highlight from '../../lexer/highlight'
+import type { Lexeme } from '../../lexer/lexeme'
+import state from '../../state/index'
+import { fill, tr, td, code } from '../../tools/elements'
+import { on } from '../../tools/hub'
 
 // the lexemes table body
 const syntaxTableBody = document.querySelector('[data-component="syntaxTableBody"]') as HTMLElement

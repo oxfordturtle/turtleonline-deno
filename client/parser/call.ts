@@ -1,14 +1,14 @@
-import { expression, typeCheck } from './expression.ts'
-import basicBody from './basic/body.ts'
-import type Program from './definitions/program.ts'
-import { Subroutine } from './definitions/subroutine.ts'
-import { ProcedureCall } from './definitions/statement.ts'
-import { FunctionCall, VariableValue } from './definitions/expression.ts'
-import Variable from './definitions/variable.ts'
-import { Command } from '../constants/commands.ts'
-import { CompilerError } from '../tools/error.ts'
-import type Lexemes from './definitions/lexemes.ts'
-import type { IdentifierLexeme } from '../lexer/lexeme.ts'
+import { expression, typeCheck } from './expression'
+import basicBody from './basic/body'
+import type Program from './definitions/program'
+import { Subroutine } from './definitions/subroutine'
+import { ProcedureCall } from './definitions/statement'
+import { FunctionCall, VariableValue } from './definitions/expression'
+import Variable from './definitions/variable'
+import { Command } from '../constants/commands'
+import { CompilerError } from '../tools/error'
+import type Lexemes from './definitions/lexemes'
+import type { IdentifierLexeme } from '../lexer/lexeme'
 
 /** parses lexemes as a procedure call */
 export function procedureCall (lexeme: IdentifierLexeme, lexemes: Lexemes, routine: Program|Subroutine, command: Command|Subroutine): ProcedureCall {
@@ -41,7 +41,7 @@ export function functionCall (lexeme: IdentifierLexeme, lexemes: Lexemes, routin
   // infer type
   if (command instanceof Subroutine && !command.typeIsCertain) {
     command.typeIsCertain = true
-    command.variables.unshift(new Variable('!result', routine))
+    command.variables.unshift(new Variable('!result', command))
   }
 
   if (command.type === 'procedure') {

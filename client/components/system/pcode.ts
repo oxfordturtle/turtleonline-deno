@@ -1,10 +1,10 @@
 /*
  * The program pcode component.
  */
-import { PCode, pcodeArgs } from '../../constants/pcodes.ts'
-import state from '../../state/index.ts'
-import { fill, div, li } from '../../tools/elements.ts'
-import { on } from '../../tools/hub.ts'
+import { PCode, pcodeArgs } from '../../constants/pcodes'
+import state from '../../state/index'
+import { fill, div, li } from '../../tools/elements'
+import { on } from '../../tools/hub'
 
 // the pcode display
 const list = document.querySelector('[data-component="pcodeList"]') as HTMLElement

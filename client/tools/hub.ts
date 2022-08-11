@@ -1,5 +1,5 @@
 // type imports
-import type { Message } from '../constants/messages.ts'
+import type { Message } from '../constants/messages'
 
 /** record of functions to call when a message is sent */
 const replies: Partial<Record<Message, Reply[]>> = {}

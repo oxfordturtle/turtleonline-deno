@@ -1,12 +1,12 @@
-import identifier from './identifier.ts'
-import type from './type.ts'
-import Lexemes from '../definitions/lexemes.ts'
-import { Constant } from '../definitions/constant.ts'
-import Program from '../definitions/program.ts'
-import { Subroutine } from '../definitions/subroutine.ts'
-import { expression, typeCheck } from '../expression.ts'
-import evaluate from '../evaluate.ts'
-import { CompilerError } from '../../tools/error.ts'
+import identifier from './identifier'
+import type from './type'
+import Lexemes from '../definitions/lexemes'
+import { Constant } from '../definitions/constant'
+import Program from '../definitions/program'
+import { Subroutine } from '../definitions/subroutine'
+import { expression, typeCheck } from '../expression'
+import evaluate from '../evaluate'
+import { CompilerError } from '../../tools/error'
 
 /** parses lexemes at a constant definition */
 export default function constant (lexemes: Lexemes, routine: Program|Subroutine, duplicateCheck: boolean): Constant {

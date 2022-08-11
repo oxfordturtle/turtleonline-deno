@@ -44,27 +44,27 @@ DEF PROCaxes
   COLOUR(BLACK)
   FOR i% = 0 TO 10
     SETXY(i% * 100 - 25, 1000)
-    PRINT(QSTR$(i%, 10, 1), 4, 20)
+    DISPLAY(QSTR$(i%, 10, 1), 4, 20)
   NEXT
   FOR i% = 1 TO 10
     SETXY(-LMARGIN% + 5, 1000 - i% * 100 - 20)
-    PRINT(QSTR$(i%, 10, 1), 4, 20)
+    DISPLAY(QSTR$(i%, 10, 1), 4, 20)
   NEXT
   SETXY(0, 0)
   DRAWXY(0, 1000)
   DRAWXY(1000, 0)
   COLOUR(RED)
   SETXY(0, 1060)
-  PRINT("Population over " + STR$(MAXGEN%) + " generations, where P (population/" + STR$(MAXPOP%) + ")", 4, 25)
+  DISPLAY("Population over " + STR$(MAXGEN%) + " generations, where P (population/" + STR$(MAXPOP%) + ")", 4, 25)
   SETXY(0, 1110)
-  PRINT("is determined by the logistic equation P' = rP(1 - P), with r = " + QSTR$(r%, 10, 1), 4, 25)
+  DISPLAY("is determined by the logistic equation P' = rP(1 - P), with r = " + QSTR$(r%, 10, 1), 4, 25)
 ENDPROC
 
 DEF PROCmenu
   LOCAL i%
   COLOUR(BLACK)
   SETXY(10, -TMARGIN% + 20)
-  PRINT("Set k:", 4, 25)
+  DISPLAY("Set k:", 4, 25)
   FOR i% = 21 TO 40
     SETXY(((i% - 1) MOD 10) * 90 + 130, ((i% - 1) DIV 10) * 50 - 100 - TMARGIN%)
     IF i% = r% THEN
@@ -72,7 +72,7 @@ DEF PROCmenu
     ELSE
       BOX(90, 50, CREAM, TRUE)
     ENDIF
-    PRINT("  " + QSTR$(i%, 10, 1), 4, 25)
+    DISPLAY("  " + QSTR$(i%, 10, 1), 4, 25)
   NEXT
 ENDPROC
 

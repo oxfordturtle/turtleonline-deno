@@ -1,14 +1,14 @@
 // type imports
-import type { Language } from '../constants/languages.ts'
+import type { Language } from '../constants/languages'
 
 // submodule imports
-import { Token } from './token.ts'
+import { Token } from './token'
 
 // other modules
-import { colours } from '../constants/colours.ts'
-import { commands } from '../constants/commands.ts'
-import { inputs } from '../constants/inputs.ts'
-import { keywords } from '../constants/keywords.ts'
+import { colours } from '../constants/colours'
+import { commands } from '../constants/commands'
+import { inputs } from '../constants/inputs'
+import { keywords } from '../constants/keywords'
 
 /** generates an array of tokens from a string of code */
 export default function tokenize (code: string, language: Language): Token[] {
@@ -29,8 +29,8 @@ export default function tokenize (code: string, language: Language): Token[] {
       decimal(code, language, line, character) ||
       keyword(code, language, line, character) ||
       type(code, language, line, character) ||
-      keycode(code, language, line, character) ||
-      query(code, language, line, character) ||
+      inputcode(code, language, line, character) ||
+      querycode(code, language, line, character) ||
       turtle(code, language, line, character) ||
       identifier(code, language, line, character) ||
       illegal(code, language, line, character)
@@ -61,17 +61,19 @@ function newline (code: string, language: Language, line: number, character: num
 /** tests for a comment and returns the token if matched */
 function comment (code: string, language: Language, line: number, character: number): Token|false {
   switch (language) {
-    case 'BASIC':
+    case 'BASIC': {
       const startBASIC = code.match(/^REM/)
       return startBASIC ? new Token('comment', code.split('\n')[0], line, character) : false
+    }
 
     case 'C': // fallthrough
     case 'Java': // fallthrough
-    case 'TypeScript':
+    case 'TypeScript': {
       const startCorTS = code.match(/^\/\//)
       return startCorTS ? new Token('comment', code.split('\n')[0], line, character) : false
+    }
 
-    case 'Pascal':
+    case 'Pascal': {
       const start = code[0] === '{'
       const end = code.match(/}/)
       if (start && end) {
@@ -81,10 +83,12 @@ function comment (code: string, language: Language, line: number, character: num
         return new Token('unterminated-comment', code.split('\n')[0], line, character)
       }
       return false
+    }
     
-    case 'Python':
+    case 'Python': {
       const startPython = code.match(/^#/)
       return startPython ? new Token('comment', code.split('\n')[0], line, character) : false
+    }
   }
 }
 
@@ -172,7 +176,7 @@ function string (code: string, language: Language, line: number, character: numb
     case 'C': // fallthrough
     case 'Java': // fallthrough
     case 'Python': // fallthrough
-    case 'TypeScript':
+    case 'TypeScript': {
       const start1 = code[0] === '\''
       const start2 = code[0] === '"'
       const end1 = code.match(/[^\\](')/)
@@ -191,6 +195,7 @@ function string (code: string, language: Language, line: number, character: numb
       }
       return false
     }
+  }
 }
 
 /** tests for a boolean literal and returns the token if matched */
@@ -212,7 +217,7 @@ function binary (code: string, language: Language, line: number, character: numb
   // TODO: errors for binary numbers with digits > 1
   switch (language) {
     case 'BASIC': // fallthrough
-    case 'Pascal':
+    case 'Pascal': {
       const good = code.match(/^(%[01]+)\b/)
       const bad = code.match(/^(0b[01]+)\b/)
       if (good) {
@@ -222,17 +227,19 @@ function binary (code: string, language: Language, line: number, character: numb
         return new Token('bad-binary', bad[0], line, character)
       }
       return false
+    }
 
     case 'C': // fallthrough
     case 'Java': // fallthrough
     case 'Python': // fallthrough
-    case 'TypeScript':
+    case 'TypeScript': {
       // N.B. there's no bad binary in these languages, since '%' will match the MOD operator
       const test = code.match(/^(0b[01]+)\b/)
       if (test) {
         return new Token('binary', test[0], line, character)
       }
       return false
+    }
   }
 }
 
@@ -244,7 +251,7 @@ function octal (code: string, language: Language, line: number, character: numbe
       // BASIC doesn't support octal numbers
       return false
 
-    case 'Pascal':
+    case 'Pascal': {
       const goodPascal = code.match(/^(&[0-7]+)\b/)
       const badPascal = code.match(/^(0o[0-7]+)\b/)
       if (goodPascal) {
@@ -254,17 +261,19 @@ function octal (code: string, language: Language, line: number, character: numbe
         return new Token('bad-octal', badPascal[0], line, character)
       }
       return false
+    }
 
     case 'C': // fallthrough
     case 'Java': // fallthrough
     case 'Python': // fallthrough
-    case 'TypeScript':
+    case 'TypeScript': {
       // N.B. there's no bad octal in these languages, since '&' will match the boolean AND operator
       const testPython = code.match(/^(0o[0-7]+)\b/)
       if (testPython) {
         return new Token('octal', testPython[0], line, character)
       }
       return false
+    }
   }
 }
 
@@ -338,38 +347,36 @@ function type (code: string, language: Language, line: number, character: number
   return test ? new Token('type', test[0], line, character) : false
 }
 
-/** tests for a native keycode constant and returns the token if matched */
-function keycode (code: string, language: Language, line: number, character: number): Token|false {
+/** tests for a native inputcode constant and returns the token if matched */
+function inputcode (code: string, language: Language, line: number, character: number): Token|false {
   const names = inputs
-    .filter(x => x.value >= 0)
-    .map(x => x.names[language].replace(/\\/, '\\\\'))
+    .map(x => `\\\\${x.name}`)
     .join('|')
   const regex = (language === 'Pascal') ? new RegExp(`^(${names})\\b`, 'i') : new RegExp(`^(${names})\\b`)
   const good = code.match(regex)
   const bad = code.match(/^(\\[#a-zA-Z0-9]*)\b/)
   if (good) {
-    return new Token('keycode', good[0], line, character)
+    return new Token('inputcode', good[0], line, character)
   }
   if (bad) {
-    return new Token('bad-keycode', bad[0], line, character)
+    return new Token('bad-inputcode', bad[0], line, character)
   }
   return false
 }
 
-/** tests for a native query code and returns the token if matched */
-function query (code: string, language: Language, line: number, character: number): Token|false {
+/** tests for a native querycode and returns the token if matched */
+function querycode (code: string, language: Language, line: number, character: number): Token|false {
   const names = inputs
-    .filter(x => x.value < 0)
-    .map(x => x.names[language].replace(/\?/, '\\?'))
+    .map(x => `\\?${x.name}`)
     .join('|')
   const regex = (language === 'Pascal') ? new RegExp(`^(${names})\\b`, 'i') : new RegExp(`^(${names})\\b`)
   const good = code.match(regex)
   const bad = code.match(/^(\?[#a-zA-Z0-9]*)\b/)
   if (good) {
-    return new Token('query', good[0], line, character)
+    return new Token('querycode', good[0], line, character)
   }
   if (bad) {
-    return new Token('bad-query', bad[0], line, character)
+    return new Token('bad-querycode', bad[0], line, character)
   }
   return false
 }

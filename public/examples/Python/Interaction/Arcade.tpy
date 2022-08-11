@@ -109,7 +109,7 @@ while (hits < targets):
   background()
   setxy(facex,facey)
   face()
-  for i in range(0, hits, 1):
+  for i in range(hits):
     bottle(50 * i + 15, 740)
   colour(brown)
   thickness(272)
@@ -135,4 +135,4 @@ while (hits < targets):
 blank(black)
 setxy(200, 450)
 colour(green)
-print('  Well done!  ', 4, 75)
+display('  Well done!  ', 4, 75)

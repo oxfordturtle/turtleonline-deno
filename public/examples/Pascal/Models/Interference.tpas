@@ -187,12 +187,12 @@ BEGIN
     noupdate;
     setxy(leftx, 25);
     colour(black);
-    print('Component waves (wavelengths ' + str(wavelength1) + ', ' + str(wavelength2) + ')', 4, 30);
+    display('Component waves (wavelengths ' + str(wavelength1) + ', ' + str(wavelength2) + ')', 4, 30);
     drawwave('Wave 1', 100, wavelength1, wavecol1);
     drawwave('Wave 2', 300, wavelength2, wavecol2);
     setxy(leftx, 505);
     colour(black);
-    print('Resultant wave', 4, 30);
+    display('Resultant wave', 4, 30);
     drawresult(580);
     changeprompt
   until 0 = 1

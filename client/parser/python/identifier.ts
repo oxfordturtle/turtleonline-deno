@@ -1,8 +1,8 @@
-import * as find from '../find.ts'
-import Lexemes from '../definitions/lexemes.ts'
-import Program from '../definitions/program.ts'
-import { Subroutine } from '../definitions/subroutine.ts'
-import { CompilerError } from '../../tools/error.ts'
+import * as find from '../find'
+import Lexemes from '../definitions/lexemes'
+import Program from '../definitions/program'
+import { Subroutine } from '../definitions/subroutine'
+import { CompilerError } from '../../tools/error'
 
 /** parses lexeme as an identifier, and returns the name */
 export default function identifier (lexemes: Lexemes, routine: Program|Subroutine, duplicateCheck: boolean): string {

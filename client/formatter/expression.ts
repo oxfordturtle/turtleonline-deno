@@ -1,7 +1,7 @@
-import type { Expression } from '../parser/definitions/expression.ts'
-import type { Language } from '../constants/languages.ts'
-import type from './type.ts'
-import { Command } from '../constants/commands.ts'
+import type { Expression } from '../parser/definitions/expression'
+import type { Language } from '../constants/languages'
+import type from './type'
+import { Command } from '../constants/commands'
 
 /** formats an expression as a code string */
 export default function expression (exp: Expression, language: Language): string {
@@ -31,7 +31,7 @@ export default function expression (exp: Expression, language: Language): string
       }
       return `${exp.lexeme.content}${expression(exp.right, language)}`
 
-    case 'function':
+    case 'function': {
       const name = (exp.command instanceof Command)
         ? exp.command.names[language] as string
         : exp.command.name
@@ -39,6 +39,7 @@ export default function expression (exp: Expression, language: Language): string
         return name
       }
       return `${name}(${exp.arguments.map(x => expression(x, language)).join(', ')})`
+    }
   
     case 'variable':
       if (exp.indexes.length > 0) {

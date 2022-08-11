@@ -3,7 +3,7 @@ COLOUR(RED)
 BLOT(20)
 REM print violet text, font style 4, size 36
 COLOUR(VIOLET)
-PRINT("You are here", 4, 36)
+DISPLAY("You are here", 4, 36)
 REM draw blue multi-part "curve"
 COLOUR(BLUE)
 SETXY(790, 530)

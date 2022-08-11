@@ -2,17 +2,17 @@ REM show instructions
 DIM letters%(26)
 BLANK(CREAM)
 SETXY(15, 200)
-PRINT("In this typing test, you will be shown the", 4, 36)
+DISPLAY("In this typing test, you will be shown the", 4, 36)
 SETXY(20, 270)
-PRINT("letters of the alphabet in a random order,", 4, 36)
+DISPLAY("letters of the alphabet in a random order,", 4, 36)
 SETXY(20, 340)
-PRINT("and in a mixture of upper- and lower-case.", 4, 36)
+DISPLAY("and in a mixture of upper- and lower-case.", 4, 36)
 SETXY(20, 410)
-PRINT("Type them as fast as you can, and see how", 4, 36)
+DISPLAY("Type them as fast as you can, and see how", 4, 36)
 SETXY(20, 480)
-PRINT("quickly you can finish the entire alphabet.", 4, 36)
+DISPLAY("quickly you can finish the entire alphabet.", 4, 36)
 SETXY(100, 620)
-PRINT("Now press the ""Esc"" key to start ...", 4, 36)
+DISPLAY("Now press the ""Esc"" key to start ...", 4, 36)
 REM disable key echo in console
 KEYECHO(FALSE)
 REM wait for escape key to be pressed
@@ -46,7 +46,7 @@ FOR count% = 1 TO 26
   REM print letter at random coordinates
   SETXY(100 + RND(300), RND(250))
   COLOUR(YELLOW)
-  PRINT(CHR$(letters%(count%)), 3, 450)
+  DISPLAY(CHR$(letters%(count%)), 3, 450)
   REM wait for user to type that letter
   REPEAT
   UNTIL GET$(1) = CHR$(letters%(count%))
@@ -55,5 +55,5 @@ REM show time taken
 BLANK(LIGHTBLUE)
 SETXY(60, 460)
 COLOUR(LIGHTRED)
-PRINT("Your time was " + QSTR$(TIME, 1000, 2) + " seconds", 4, 50)
+DISPLAY("Your time was " + QSTR$(TIME, 1000, 2) + " seconds", 4, 50)
 END

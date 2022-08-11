@@ -80,5 +80,5 @@ BEGIN
   resolution(1000, 1000);
   blank(lilac);
   setxy(boardSize / 4, 2 * boardSize / 5);
-  print('Score ' + str(snakeLength - 2), 20, 100)
+  display('Score ' + str(snakeLength - 2), 20, 100)
 END.

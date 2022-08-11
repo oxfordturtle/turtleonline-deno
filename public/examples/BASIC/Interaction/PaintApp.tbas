@@ -96,11 +96,11 @@ DEF PROCsetup
   REM print text instructions in grid
   COLOUR(BLACK)
   SETXY(10, 858)
-  PRINT("Left-click to draw, right-click to fill", 0, 20)
+  DISPLAY("Left-click to draw, right-click to fill", 0, 20)
   SETXY(450 + 10, 858)
-  PRINT("Brush width:", 0, 20)
+  DISPLAY("Brush width:", 0, 20)
   SETXY(850 + 10, 858)
-  PRINT("Colour:", 0, 20)
+  DISPLAY("Colour:", 0, 20)
   REM draw 40 different colour selection boxes
   SETXY(0, 900)
   FOR count% = 1 TO 20

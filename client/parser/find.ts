@@ -1,13 +1,13 @@
-import Program from './definitions/program.ts'
-import { Subroutine } from './definitions/subroutine.ts'
-import type { Constant } from './definitions/constant.ts'
-import type Variable from './definitions/variable.ts'
-import type { Colour } from '../constants/colours.ts'
-import type { Command } from '../constants/commands.ts'
-import type { Input } from '../constants/inputs.ts'
-import { colours } from '../constants/colours.ts'
-import { commands } from '../constants/commands.ts'
-import { inputs } from '../constants/inputs.ts'
+import Program from './definitions/program'
+import { Subroutine } from './definitions/subroutine'
+import type { Constant } from './definitions/constant'
+import type Variable from './definitions/variable'
+import type { Colour } from '../constants/colours'
+import type { Command } from '../constants/commands'
+import type { Input } from '../constants/inputs'
+import { colours } from '../constants/colours'
+import { commands } from '../constants/commands'
+import { inputs } from '../constants/inputs'
 
 /** looks for a constant visible to the given routine */
 export function constant (routine: Program|Subroutine, name: string): Constant|undefined {
@@ -31,7 +31,7 @@ export function colour (routine: Program|Subroutine, name: string): Colour|undef
 /** looks for an input query code */
 export function input (routine: Program|Subroutine, name: string): Input|undefined {
   const searchName = (routine.language === 'Pascal') ? name.toLowerCase() : name
-  return inputs.find(x => x.names[routine.language] === searchName)
+  return inputs.find(x => x.name === searchName)
 }
 
 /** looks for a variable visible to this routine */

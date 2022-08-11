@@ -1,7 +1,7 @@
 /*
  * An array of colours.
  */
-import type { Language } from './languages.ts'
+import type { Language } from './languages'
 
 /** colour class definition */
 export class Colour {

@@ -1,13 +1,12 @@
 // type imports
-import type { Language } from '../constants/languages.ts'
-import type { Token } from './token.ts'
-import type { Colour } from '../constants/colours.ts'
+import type { Language } from '../constants/languages'
+import type { Token } from './token'
 
 // submodule imports
-import tokenize from './tokenize.ts'
+import tokenize from './tokenize'
 
 // other module imports
-import { colours } from '../constants/colours.ts'
+import { colours } from '../constants/colours'
 
 /** returns highlighted code */
 export default function highlight (code: string|Token[], language: Language): string {
@@ -24,8 +23,8 @@ export default function highlight (code: string|Token[], language: Language): st
       case 'bad-octal':
       case 'bad-hexadecimal':
       case 'real':
-      case 'bad-keycode':
-      case 'bad-query':
+      case 'bad-inputcode':
+      case 'bad-querycode':
       case 'illegal':
         return `<span class="error">${token.content}</span>`
 
@@ -35,11 +34,12 @@ export default function highlight (code: string|Token[], language: Language): st
       case 'decimal':
         return `<span class="integer">${token.content}</span>`
 
-      case 'colour':
+      case 'colour': {
         const colour = colours.find(x => x.names[language] === token.content)
         return colour
           ? `<span class="colour" style="border-color:#${colour.hex};">${token.content}</span>`
           : `<span class="colour">${token.content}</span>`
+      }
 
       default:
         return `<span class="${token.type}">${token.content}</span>`

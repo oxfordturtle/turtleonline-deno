@@ -1,10 +1,10 @@
-import { expression, typeCheck } from '../expression.ts'
-import evaluate from '../evaluate.ts'
-import type Lexemes from '../definitions/lexemes.ts'
-import type Program from '../definitions/program.ts'
-import type { Subroutine } from '../definitions/subroutine.ts'
-import type { Type } from '../../lexer/lexeme.ts'
-import { CompilerError } from '../../tools/error.ts'
+import { expression, typeCheck } from '../expression'
+import evaluate from '../evaluate'
+import type Lexemes from '../definitions/lexemes'
+import type Program from '../definitions/program'
+import type { Subroutine } from '../definitions/subroutine'
+import type { Type } from '../../lexer/lexeme'
+import { CompilerError } from '../../tools/error'
 
 /** parses lexemes at a type specification */
 export default function type (lexemes: Lexemes, routine: Program|Subroutine, isParameter: boolean): [Type, number, [number, number][]] {

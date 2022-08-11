@@ -1,4 +1,4 @@
-import type { Lexeme } from '../../lexer/lexeme.ts'
+import type { Lexeme } from '../../lexer/lexeme'
 
 /** collection of lexemes for iterating over */
 export default class Lexemes {

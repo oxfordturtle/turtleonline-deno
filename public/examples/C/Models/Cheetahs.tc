@@ -70,11 +70,11 @@ void axes (int graphbase) {
   drawxy(graphwidth, 0);
   for (int n = 0; n <= 10; n = n + 1) {
     setxy(20, graphbase - n * graphheight / 10 - 19);
-    print(itoa(n * ymax / 10), 0, 20);
+    display(itoa(n * ymax / 10), 0, 20);
   }
   for (n = 1; n <= 10; n = n + 1) {
     setxy(graphleft + n * graphwidth / 10 - 20, graphbase);
-    print(itoa(n * maxspeed / 10), 0, 20);
+    display(itoa(n * maxspeed / 10), 0, 20);
   }
 }
 
@@ -85,9 +85,9 @@ void graph () {
   axes(950);
   setxy(200, 20);
   colour(red);
-  print('Speed Distribution of Cheetahs', 4, 25);
+  display('Speed Distribution of Cheetahs', 4, 25);
   setxy(750, 20);
-  print(itoa(cnum), 4, 25);
+  display(itoa(cnum), 4, 25);
   int ctotal = 0;
   for (int n = 0; n < maxspeed; n = n + 1) {
     setxy(graphleft + n * graphwidth / maxspeed, 450);
@@ -96,9 +96,9 @@ void graph () {
   }
   setxy(200, 520);
   colour(green);
-  print('Speed Distribution of Gazelles', 4, 25);
+  display('Speed Distribution of Gazelles', 4, 25);
   setxy(750, 520);
-  print(itoa(gnum), 4, 25);
+  display(itoa(gnum), 4, 25);
   int gtotal = 0;
   for (n = 0; n < maxspeed; n = n + 1) {
     setxy(graphleft + n * graphwidth / maxspeed, 950);
@@ -109,12 +109,12 @@ void graph () {
   if (cnum < 1) {
     setxy(150, 200);
     colour(magenta);
-    print('All Cheetahs Have Died', 4, 50);
+    display('All Cheetahs Have Died', 4, 50);
     exit();
   }
-  print(qitoa(ctotal, cnum, 2), 4, 25);
+  display(qitoa(ctotal, cnum, 2), 4, 25);
   setxy(850, 520);
-  print(qitoa(gtotal, gnum, 2), 4, 25);
+  display(qitoa(gtotal, gnum, 2), 4, 25);
   update();
   write(itoa(gen));
   write(' - c=');

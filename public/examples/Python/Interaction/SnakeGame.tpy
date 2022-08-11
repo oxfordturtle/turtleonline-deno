@@ -50,4 +50,4 @@ while not crash:
 resolution(1000, 1000)
 blank(lilac)
 setxy(boardsize // 4, 2 * boardsize // 5)
-print('Score ' + str(snakelength - 2), 20, 100)
+display('Score ' + str(snakelength - 2), 20, 100)

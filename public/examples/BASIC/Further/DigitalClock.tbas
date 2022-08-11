@@ -36,5 +36,5 @@ DEF PROCshowTime(hours%, minutes%)
   BOX(400, 100, WHITE, FALSE)
   REM print specified time
   timeString$ = PAD$(STR$(hours%), "0", 2) + ":" + PAD$(STR$(minutes%), "0", 2)
-  PRINT(timeString$, 21, 100)
+  DISPLAY(timeString$, 21, 100)
 ENDPROC

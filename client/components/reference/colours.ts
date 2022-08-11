@@ -1,11 +1,11 @@
 /**
  * Colour constants reference table.
  */
-import type { Colour } from '../../constants/colours.ts'
-import { colours } from '../../constants/colours.ts'
-import type { Language } from '../../constants/languages.ts'
-import state from '../../state/index.ts'
-import { on } from '../../tools/hub.ts'
+import type { Colour } from '../../constants/colours'
+import { colours } from '../../constants/colours'
+import type { Language } from '../../constants/languages'
+import state from '../../state/index'
+import { on } from '../../tools/hub'
 
 // get relevant elements
 const coloursTableBody = document.querySelector('[data-component="coloursTableBody"]') as HTMLElement

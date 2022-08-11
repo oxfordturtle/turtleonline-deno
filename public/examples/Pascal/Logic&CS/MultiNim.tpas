@@ -70,34 +70,34 @@ VAR pile: array[1..piles] of integer;
        begin
         movexy(radius + margin, -radius + 15);
         colour(black);
-        print(str(xorscore xor pile[p] xor (c - 1)), 4, 20)
+        display(str(xorscore xor pile[p] xor (c - 1)), 4, 20)
        end;
       dec(c)
      end
    end;
   colour(black);
   setxy(margin, 900);
-  print('Total Coins:  ' + str(totalcoins), 4, 30);
+  display('Total Coins:  ' + str(totalcoins), 4, 30);
   if showmaths then
    begin
     colour(black);
     setxy(450, 900);
-    print('XOR score:  ' + str(xorscore), 4, 30);
+    display('XOR score:  ' + str(xorscore), 4, 30);
     setxy(850, 890);
     colour(maroon);
     box(140, 100, red, true);
-    print(' HIDE', 4, 25);
+    display(' HIDE', 4, 25);
     setxy(850, 940);
-    print(' MATHS', 4, 25)
+    display(' MATHS', 4, 25)
    end
   else
    begin
     colour(maroon);
     setxy(850, 890);
     box(140, 100, red, true);
-    print(' SHOW', 4, 25);
+    display(' SHOW', 4, 25);
     setxy(850, 940);
-    print(' MATHS', 4, 25)
+    display(' MATHS', 4, 25)
    end
  End;
 
@@ -144,7 +144,7 @@ BEGIN
      blank(white);
      setxy(330, 850);
      colour(blue);
-     print('You Win!', 4, 60);
+     display('You Win!', 4, 60);
      pause(5000)
     end
    else
@@ -158,7 +158,7 @@ BEGIN
       begin
        colour(pink);
        setxy(400, 900);
-       print('I''m going to win!', 4, 30)
+       display('I''m going to win!', 4, 30)
       end;
      pause(2500);
      if totalcoins = 0 then
@@ -166,7 +166,7 @@ BEGIN
        blank(white);
        setxy(330, 850);
        colour(red);
-       print('I Win!', 4, 60);
+       display('I Win!', 4, 60);
        pause(5000)
       end
     end

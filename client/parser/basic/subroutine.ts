@@ -1,12 +1,12 @@
-import { subroutineName } from './identifier.ts'
-import { newLine } from './statement.ts'
-import { variable } from './variable.ts'
-import type Program from '../definitions/program.ts'
-import { Subroutine } from '../definitions/subroutine.ts'
-import Variable from '../definitions/variable.ts'
-import type Lexemes from '../definitions/lexemes.ts'
-import { CompilerError } from '../../tools/error.ts'
-import type { KeywordLexeme } from '../../lexer/lexeme.ts'
+import { subroutineName } from './identifier'
+import { newLine } from './statement'
+import { variable } from './variable'
+import type Program from '../definitions/program'
+import { Subroutine } from '../definitions/subroutine'
+import Variable from '../definitions/variable'
+import type Lexemes from '../definitions/lexemes'
+import { CompilerError } from '../../tools/error'
+import type { KeywordLexeme } from '../../lexer/lexeme'
 
 /** parses lexemes as a subroutine definition */
 export default function subroutine (lexeme: KeywordLexeme, lexemes: Lexemes, program: Program): Subroutine {
@@ -23,7 +23,7 @@ export default function subroutine (lexeme: KeywordLexeme, lexemes: Lexemes, pro
     subroutine.variables.push(returnVariable)
   }
 
-  // parameters are permissable here
+  // parameters are permissible here
   if (lexemes.get()?.content === '(') {
     lexemes.next()
     subroutine.variables.push(...parameters(lexemes, subroutine))

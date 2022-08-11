@@ -50,7 +50,7 @@ void setup () {
   }
   colour(black);
   setxy(0, 0);
-  print('Diffusion in a Tapering Tube', 2, width / 10);
+  display('Diffusion in a Tapering Tube', 2, width / 10);
 }
 
 void drawaxes () {
@@ -69,23 +69,23 @@ void drawaxes () {
   drawxy(0, -concwidth);
   colour(conccol);
   setxy(0, concbottom - concwidth - width / 15);
-  print('100%', 2, width / 15);
+  display('100%', 2, width / 15);
   setxy(0, concbottom - width / 15);
-  print('  0%', 2, width / 15);
+  display('  0%', 2, width / 15);
   setxy(0, topmargin + width * 11 / 10);
-  print('Red concentration', 2, width / 12);
+  display('Red concentration', 2, width / 12);
   colour(molcol);
   setxy(width + leftaxis + 2, topmargin + width - boundary + 1 - width / 15);
-  print(itoa(boundary - 1), 2, width / 15);
+  display(itoa(boundary - 1), 2, width / 15);
   setxy(width + leftaxis + 2, topmargin + width - width / 15);
-  print('  0', 2, width / 15);
+  display('  0', 2, width / 15);
   setxy(0, topmargin + width * 12 / 10);
-  print('Red molecule count', 2, width / 12);
+  display('Red molecule count', 2, width / 12);
   colour(black);
   setxy(0, topmargin + width * 13 / 10 + 5);
-  print('(at horizontal position', 2, width / 15);
+  display('(at horizontal position', 2, width / 15);
   setxy(0, topmargin + width * 14 / 10 + 5);
-  print('in tapering tube)', 2, width / 15);
+  display('in tapering tube)', 2, width / 15);
 }
 
 void graphit (int x, bool show) {

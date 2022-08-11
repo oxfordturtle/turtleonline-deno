@@ -6,7 +6,7 @@ REPEAT
   BLANK(WHITE)
   SETXY(50, 20)
   COLOUR(BLUE)
-  PRINT("Type in a starting integer (>1):", 4, 36)
+  DISPLAY("Type in a starting integer (>1):", 4, 36)
   SETXY(800, 20)
   COLOUR(BLACK)
   REM while waiting for input of integer greater than 1...
@@ -16,7 +16,7 @@ REPEAT
     REM print contents of keybuffer on canvas
     REPEAT
       BOX(200, 60, WHITE, FALSE)
-      PRINT(GET$(0), 4, 36)
+      DISPLAY(GET$(0), 4, 36)
       PAUSE(100)
     UNTIL ABS(?KEY) = \RETURN
     REM read value of keybuffer into string
@@ -36,7 +36,7 @@ REPEAT
   REPEAT
     REM print the latest number
     SETXY((count% MOD 10) * 100 + 20, (count% DIV 10) * 45 + 300)
-    PRINT(STR$(latest%), 4, 24)
+    DISPLAY(STR$(latest%), 4, 24)
     REM move to the next number in the sequence
     IF latest% MOD 2 = 0 THEN
       latest% = latest% / 2
@@ -51,14 +51,14 @@ REPEAT
   REM print final number (1) in red
   SETXY((count% MOD 10) * 100 + 20, (count% DIV 10) * 45 + 300)
   COLOUR(RED)
-  PRINT(STR$(latest%), 4, 24)
+  DISPLAY(STR$(latest%), 4, 24)
   REM print length of sequence
   SETXY(100, 100)
-  PRINT("That took " + STR$(count%) + " iterations to reach 1", 4, 36)
+  DISPLAY("That took " + STR$(count%) + " iterations to reach 1", 4, 36)
   COLOUR(BLACK)
   SETXY(250, 200)
   REM wait for key press to start again
-  PRINT("[Press a key to continue]", 4, 30)
+  DISPLAY("[Press a key to continue]", 4, 30)
   REPEAT
   UNTIL ?KEY > 0
   RESET(?KEY)

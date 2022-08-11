@@ -43,7 +43,7 @@ void main () {
     }
     setxy(0, height - 15);
     box(25 + strlen(itoa(rule)) * 7, 14, cream, false);
-    print('Rule ' + itoa(rule), 4, 8);
+    display('Rule ' + itoa(rule), 4, 8);
     update();
     pause(500);
   }

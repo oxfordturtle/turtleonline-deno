@@ -5,7 +5,7 @@ void showTime (int hours, int minutes) {
   box(400, 100, white, false);
   // print specified time
   string timeString = strpad(itoa(hours), '0', 2) + ':' + strpad(itoa(minutes), '0', 2);
-  print(timeString, 21, 100);
+  display(timeString, 21, 100);
 }
 
 void main () {

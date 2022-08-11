@@ -1,13 +1,13 @@
-import program from './program.ts'
-import constant from './constant.ts'
-import { statement, simpleStatement, eosCheck } from './statement.ts'
-import type from './type.ts'
-import identifier from './identifier.ts'
-import subroutine from './subroutine.ts'
-import Lexemes from '../definitions/lexemes.ts'
-import Program from '../definitions/program.ts'
-import { CompilerError } from '../../tools/error.ts'
-import { Lexeme } from '../../lexer/lexeme.ts'
+import program from './program'
+import constant from './constant'
+import { statement, simpleStatement, eosCheck } from './statement'
+import type from './type'
+import identifier from './identifier'
+import subroutine from './subroutine'
+import Lexemes from '../definitions/lexemes'
+import Program from '../definitions/program'
+import { CompilerError } from '../../tools/error'
+import { Lexeme } from '../../lexer/lexeme'
 
 /** parses lexemes as a Java program */
 export default function java (lexemes: Lexemes): Program {

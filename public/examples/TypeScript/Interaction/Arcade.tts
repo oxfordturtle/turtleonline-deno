@@ -173,4 +173,4 @@ while (hits < targets) {
 blank(black);
 setXY(200, 450);
 colour(green);
-print('  Well done!  ', 4, 75);
+display('  Well done!  ', 4, 75);

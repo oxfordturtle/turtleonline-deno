@@ -1,11 +1,11 @@
-import identifier from './identifier.ts'
-import { semicolon } from './statement.ts'
-import type from './type.ts'
-import type Lexemes from '../definitions/lexemes.ts'
-import type Program from '../definitions/program.ts'
-import type { Subroutine } from '../definitions/subroutine.ts'
-import Variable from '../definitions/variable.ts'
-import { CompilerError } from '../../tools/error.ts'
+import identifier from './identifier'
+import { semicolon } from './statement'
+import type from './type'
+import type Lexemes from '../definitions/lexemes'
+import type Program from '../definitions/program'
+import type { Subroutine } from '../definitions/subroutine'
+import Variable from '../definitions/variable'
+import { CompilerError } from '../../tools/error'
 
 /** parses lexemes as a declaration of variables (after "var") */
 export function variables (lexemes: Lexemes, routine: Program|Subroutine): Variable[] {

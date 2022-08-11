@@ -49,7 +49,7 @@ BEGIN
         nextgen(generation);
       setxy(0, height - 15);
       box(25 + length(str(rule)) * 7, 14, cream, false);
-      print('Rule ' + str(rule), 4, 8);
+      display('Rule ' + str(rule), 4, 8);
       update;
       pause(500)
     end

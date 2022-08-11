@@ -1,7 +1,7 @@
-import type Variable from './variable.ts'
-import type { KeywordLexeme, Type, TypeLexeme } from '../../lexer/lexeme.ts'
-import Routine from './routine.ts'
-import Program from './program.ts'
+import type Variable from './variable'
+import type { KeywordLexeme, Type, TypeLexeme } from '../../lexer/lexeme'
+import Routine from './routine'
+import Program from './program'
 
 /** subroutine */
 export class Subroutine extends Routine {

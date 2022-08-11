@@ -1,4 +1,4 @@
-import { defaults } from '../constants/properties.ts'
+import { defaults } from '../constants/properties'
 
 /** compiler options */
 export type Options = {

@@ -55,7 +55,7 @@ REM print final score
 RESOLUTION(1000, 1000)
 BLANK(LILAC)
 SETXY(BOARDSIZE% / 4, 2 * BOARDSIZE% / 5)
-PRINT("Score " + STR$(snakeLength% - 2), 20, 100)
+DISPLAY("Score " + STR$(snakeLength% - 2), 20, 100)
 END
 
 REM draws a new apple

@@ -17,12 +17,12 @@ REPEAT
   NOUPDATE
   SETXY(leftx%, 25)
   COLOUR(BLACK)
-  PRINT("Component waves (wavelengths " + STR$(wavelength1%) + ", " + STR$(wavelength2%) + ")", 4, 30)
+  DISPLAY("Component waves (wavelengths " + STR$(wavelength1%) + ", " + STR$(wavelength2%) + ")", 4, 30)
   PROCdrawwave("Wave 1", 100, wavelength1%, wavecol1%)
   PROCdrawwave("Wave 2", 300, wavelength2%, wavecol2%)
   SETXY(leftx%, 505)
   COLOUR(BLACK)
-  PRINT("Resultant wave", 4, 30)
+  DISPLAY("Resultant wave", 4, 30)
   PROCdrawresult(580)
   PROCchangeprompt
 UNTIL 0 = 1

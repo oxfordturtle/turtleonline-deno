@@ -1,7 +1,7 @@
-import { Example, Group, groups } from '../../constants/examples.ts'
-import { fill, a, span, i, div } from '../../tools/elements.ts'
-import state from '../../state/index.ts'
-import { closeMenu, toggleMenu } from '../view.ts'
+import { Example, Group, groups } from '../../constants/examples'
+import { fill, a, span, i, div } from '../../tools/elements'
+import state from '../../state/index'
+import { closeMenu, toggleMenu } from '../view'
 
 const examplesMenu = document.querySelector('[data-component="examplesMenu"]')
 

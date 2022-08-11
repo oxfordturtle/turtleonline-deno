@@ -9,11 +9,11 @@ DIM turtles%(NUMTURTLES%, C%)
 CANVAS(0, 0, 100000, 100000)
 REM print instructions
 SETXY(2500, 80000)
-PRINT("Click on a circle to alter the ANGLES setting", 0, 36)
+DISPLAY("Click on a circle to alter the ANGLES setting", 0, 36)
 SETXY(2500, 86000)
-PRINT("of the corresponding turtle. Its direction will", 0, 36)
+DISPLAY("of the corresponding turtle. Its direction will", 0, 36)
 SETXY(2500, 92000)
-PRINT("then change to the closest possible angle.", 0, 36)
+DISPLAY("then change to the closest possible angle.", 0, 36)
 REM draw initial paths for each turtle
 FOR i% = 1 TO NUMTURTLES%
   SETXY(10000, 70000)

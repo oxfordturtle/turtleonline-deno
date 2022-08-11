@@ -1,22 +1,22 @@
-import type { Subroutine } from './subroutine.ts'
-import type Variable from './variable.ts'
-import type { Constant } from './constant.ts'
-import type { Type, Operator } from '../../lexer/lexeme.ts'
-import type { Command } from '../../constants/commands.ts'
-import type { Input } from '../../constants/inputs.ts'
-import type { Colour } from '../../constants/colours.ts'
+import type { Subroutine } from './subroutine'
+import type Variable from './variable'
+import type { Constant } from './constant'
+import type { Type, Operator } from '../../lexer/lexeme'
+import type { Command } from '../../constants/commands'
+import type { Input } from '../../constants/inputs'
+import type { Colour } from '../../constants/colours'
 import type {
   Lexeme,
   BooleanLexeme,
   CharacterLexeme,
   IdentifierLexeme,
   IntegerLexeme,
-  KeycodeLexeme,
+  InputcodeLexeme,
   OperatorLexeme,
-  QueryLexeme,
+  QuerycodeLexeme,
   StringLexeme
-} from '../../lexer/lexeme.ts'
-import { type } from './operators.ts'
+} from '../../lexer/lexeme'
+import { type } from './operators'
 
 /** expression */
 export type Expression =
@@ -63,11 +63,11 @@ export class StringValue {
 /** input value */
 export class InputValue {
   readonly expressionType = 'input'
-  readonly lexeme: KeycodeLexeme|QueryLexeme
+  readonly lexeme: InputcodeLexeme|QuerycodeLexeme
   readonly input: Input
   readonly type: Type = 'integer'
 
-  constructor (lexeme: KeycodeLexeme|QueryLexeme, input: Input) {
+  constructor (lexeme: InputcodeLexeme|QuerycodeLexeme, input: Input) {
     this.lexeme = lexeme
     this.input = input
   }

@@ -26,25 +26,25 @@ DEF PROCgraphaxes
   FOR n% = 0 TO 90
     IF n% MOD 5 = 0 THEN
       SETXY(650 + n% * 100, 4600)
-      PRINT(STR$(n%), 2, 16)
+      DISPLAY(STR$(n%), 2, 16)
     ENDIF
   NEXT
   FOR n% = 0 TO 9
     SETXY(100, 4350 - n% * 400)
-    PRINT(STR$(n% * 1000), 2, 16)
+    DISPLAY(STR$(n% * 1000), 2, 16)
   NEXT
   FOR n% = 0 TO 9
     SETXY(9900, 4380 - n% * 400)
-    PRINT(STR$(n% * 20), 2, 16)
+    DISPLAY(STR$(n% * 20), 2, 16)
   NEXT
   SETXY(4000, 4900)
-  PRINT("Angle of elevation", 2, 24)
+  DISPLAY("Angle of elevation", 2, 24)
   COLOUR(DISTANCECOL%)
   SETXY(0, 100)
-  PRINT("Distance", 2, 24)
+  DISPLAY("Distance", 2, 24)
   COLOUR(TIMECOL%)
   SETXY(9600, 100)
-  PRINT("Time", 2, 24)
+  DISPLAY("Time", 2, 24)
 ENDPROC
 
 DEF PROCplot(x%, y%, col%)

@@ -1,14 +1,14 @@
 /*
  * usage data generator - arrays of lexemes and subroutines go in, usage data comes out
  */
-import type { UsageCategory, UsageExpression } from './usage.ts'
-import { Command } from '../constants/commands.ts'
-import type { Keyword } from '../constants/keywords.ts'
-import { Category, Expression, commandCategories, keywordCategories } from '../constants/categories.ts'
-import type { Language } from '../constants/languages.ts'
-import type { Lexeme } from '../lexer/lexeme.ts'
-import type Program from '../parser/definitions/program.ts'
-import type { Subroutine } from '../parser/definitions/subroutine.ts'
+import type { UsageCategory, UsageExpression } from './usage'
+import { Command } from '../constants/commands'
+import type { Keyword } from '../constants/keywords'
+import { Category, Expression, commandCategories, keywordCategories } from '../constants/categories'
+import type { Language } from '../constants/languages'
+import type { Lexeme } from '../lexer/lexeme'
+import type Program from '../parser/definitions/program'
+import type { Subroutine } from '../parser/definitions/subroutine'
 
 /** analyses program lexemes to produce usage data */
 export default function (lexemes: Lexeme[], program: Program): UsageCategory[] {

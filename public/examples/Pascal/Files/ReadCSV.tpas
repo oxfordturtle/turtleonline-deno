@@ -43,20 +43,20 @@ VAR value: array[1..cols, 1..rows] of integer;
   Var i, j: integer;
   Begin
     setxy(colwidth - 25, 5);
-    print('x', 0, 30);
+    display('x', 0, 30);
     setxy(20, rowheight - 45);
-    print('y', 0, 30);
+    display('y', 0, 30);
     setxy(300, 925);
-    print('Table read from file', 0, 40);
+    display('Table read from file', 0, 40);
     for i := 1 to cols do
       begin
         setxy(i * colwidth + xmargin, ymargin);
-        print(str(i), 0, fontsize)
+        display(str(i), 0, fontsize)
       end;
     for j := 1 to rows do
       begin
         setxy(xmargin, j * rowheight + ymargin);
-        print(str(j), 0, fontsize)
+        display(str(j), 0, fontsize)
       end
   End;
 
@@ -67,7 +67,7 @@ VAR value: array[1..cols, 1..rows] of integer;
       for j := 1 to rows do
         begin
           setxy(i * colwidth + xmargin, j * rowheight + ymargin);
-          print(str(value[i, j]), 0, fontsize)
+          display(str(value[i, j]), 0, fontsize)
         end
   End;
 

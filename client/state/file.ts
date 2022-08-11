@@ -1,8 +1,8 @@
 // type imports
-import type { Language } from '../constants/languages.ts'
+import type { Language } from '../constants/languages'
 
 // module imports
-import { extensions } from '../constants/languages.ts'
+import { extensions } from '../constants/languages'
 
 /** turtle system file */
 export class File {

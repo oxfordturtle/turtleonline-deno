@@ -1,11 +1,11 @@
-import identifier from './identifier.ts'
-import { semicolon } from './statement.ts'
-import type Lexemes from '../definitions/lexemes.ts'
-import { Constant } from '../definitions/constant.ts'
-import type Program from '../definitions/program.ts'
-import { expression } from '../expression.ts'
-import evaluate from '../evaluate.ts'
-import { CompilerError } from '../../tools/error.ts'
+import identifier from './identifier'
+import { semicolon } from './statement'
+import type Lexemes from '../definitions/lexemes'
+import { Constant } from '../definitions/constant'
+import type Program from '../definitions/program'
+import { expression } from '../expression'
+import evaluate from '../evaluate'
+import { CompilerError } from '../../tools/error'
 
 /** parses lexemes as constant definitions (after "const") */
 export default function constant (lexemes: Lexemes, routine: Program): Constant {

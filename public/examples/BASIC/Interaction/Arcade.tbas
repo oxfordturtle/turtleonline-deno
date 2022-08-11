@@ -36,7 +36,7 @@ ENDWHILE
 BLANK(BLACK)
 SETXY(200, 450)
 COLOUR(GREEN)
-PRINT("  Well done!  ", 4, 75)
+DISPLAY("  Well done!  ", 4, 75)
 END
 
 DEF PROCbottle(x%, y%)

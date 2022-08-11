@@ -1,13 +1,13 @@
-import constant from './constant.ts'
-import variable from './variable.ts'
-import { procedureCall } from '../call.ts'
-import { expression, typeCheck } from '../expression.ts'
-import * as find from '../find.ts'
-import Lexemes from '../definitions/lexemes.ts'
-import { CompoundExpression, Expression, VariableValue } from '../definitions/expression.ts'
-import Program from '../definitions/program.ts'
-import { Subroutine } from '../definitions/subroutine.ts'
-import Variable from '../definitions/variable.ts'
+import constant from './constant'
+import variable from './variable'
+import { procedureCall } from '../call'
+import { expression, typeCheck } from '../expression'
+import * as find from '../find'
+import Lexemes from '../definitions/lexemes'
+import { CompoundExpression, Expression, VariableValue } from '../definitions/expression'
+import Program from '../definitions/program'
+import { Subroutine } from '../definitions/subroutine'
+import Variable from '../definitions/variable'
 import {
   Statement,
   IfStatement,
@@ -18,10 +18,10 @@ import {
   PassStatement,
   VariableAssignment,
   ProcedureCall
-} from '../definitions/statement.ts'
-import { Lexeme, IdentifierLexeme, KeywordLexeme, TypeLexeme, Type, OperatorLexeme } from '../../lexer/lexeme.ts'
-import { CompilerError } from '../../tools/error.ts'
-import { Token } from '../../lexer/token.ts'
+} from '../definitions/statement'
+import { Lexeme, IdentifierLexeme, KeywordLexeme, TypeLexeme, Type, OperatorLexeme } from '../../lexer/lexeme'
+import { CompilerError } from '../../tools/error'
+import { Token } from '../../lexer/token'
 
 /** checks for semicolon at the end of a statement */
 export function eosCheck (lexemes: Lexemes): void {

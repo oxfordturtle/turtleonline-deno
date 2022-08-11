@@ -1,6 +1,6 @@
 // type imports
-import type { Options } from './options.ts'
-import type { Operator } from '../lexer/lexeme.ts'
+import type { Options } from './options'
+import type { Operator } from '../lexer/lexeme'
 import type {
   Expression,
   InputValue,
@@ -10,13 +10,13 @@ import type {
   CompoundExpression,
   CastExpression,
   FunctionCall
-} from '../parser/definitions/expression.ts'
+} from '../parser/definitions/expression'
 
 // other module imports
-import { PCode } from '../constants/pcodes.ts'
-import Program from '../parser/definitions/program.ts'
-import { Subroutine } from '../parser/definitions/subroutine.ts'
-import { IntegerValue, StringValue, VariableValue } from '../parser/definitions/expression.ts'
+import { PCode } from '../constants/pcodes'
+import Program from '../parser/definitions/program'
+import { Subroutine } from '../parser/definitions/subroutine'
+import { IntegerValue, StringValue, VariableValue } from '../parser/definitions/expression'
 
 /** merges pcode2 into pcode1 */
 export function merge (pcode1: number[][], pcode2: number[][]): void {
@@ -92,7 +92,7 @@ function literalStringValue (exp: StringValue, options: Options): number[] {
 /** generates the pcode for loading an input value onto the stack */
 function inputValue (exp: InputValue, options: Options): number[] {
   return (exp.input.value < 0)
-    ? [PCode.ldin, exp.input.value, PCode.inpt]
+    ? [PCode.ldin, exp.input.value, PCode.stat]
     : [PCode.ldin, exp.input.value]
 }
 
@@ -107,7 +107,8 @@ function constantValue (exp: ConstantValue, program: Program, options: Options):
 
   // string constant
   if (exp.constant.type === 'string') {
-    pcode.push([PCode.lstr, exp.constant.value.length].concat(Array.from(exp.constant.value).map(x => x.charCodeAt(0))))
+    const value = exp.constant.value as string
+    pcode.push([PCode.lstr, value.length].concat(Array.from(value).map(x => x.charCodeAt(0))))
     if (exp.indexes.length > 0) {
       const indexExp = expression(exp.indexes[0], program, options)
       merge(pcode, indexExp)
@@ -119,7 +120,7 @@ function constantValue (exp: ConstantValue, program: Program, options: Options):
 
   // integer or boolean constant
   } else {
-    pcode.push([PCode.ldin, exp.constant.value])
+    pcode.push([PCode.ldin, exp.constant.value as number])
   }
 
   // return the pcode

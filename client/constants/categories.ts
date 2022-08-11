@@ -1,12 +1,12 @@
 /**
  * Command and keywords categories (for help tables and usage analysis).
  */
-import type { Command } from './commands.ts'
-import { commands } from './commands.ts'
-import type { Keyword } from './keywords.ts'
-import { keywords } from './keywords.ts'
-import type { Language } from './languages.ts'
-import { Subroutine } from '../parser/definitions/subroutine.ts'
+import type { Command } from './commands'
+import { commands } from './commands'
+import type { Keyword } from './keywords'
+import { keywords } from './keywords'
+import type { Language } from './languages'
+import { Subroutine } from '../parser/definitions/subroutine'
 
 /** expression type definition */
 export type Expression = Command|Keyword|Subroutine

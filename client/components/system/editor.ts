@@ -1,8 +1,8 @@
 // module imports
-import highlight from '../../lexer/highlight.ts'
-import state from '../../state/index.ts'
-import { fill, li } from '../../tools/elements.ts'
-import { on } from '../../tools/hub.ts'
+import highlight from '../../lexer/highlight'
+import state from '../../state/index'
+import { fill, li } from '../../tools/elements'
+import { on } from '../../tools/hub'
 
 // get the editor element
 const editor = document.querySelector('[data-component="editor"]') as HTMLElement

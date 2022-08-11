@@ -78,7 +78,7 @@ VAR vectorx, vectory: array[0..8] of integer;
       else
        movexy(-22, -20);
       colour(black);
-      print(str(squarestatus[s]), 4, 20)
+      display(str(squarestatus[s]), 4, 20)
      end
     else
      begin
@@ -90,7 +90,7 @@ VAR vectorx, vectory: array[0..8] of integer;
       else
        movexy(-30, -24);
       colour(black);
-      print(str(squarestatus[s]), 4, 25)
+      display(str(squarestatus[s]), 4, 25)
      end
    end
  End;

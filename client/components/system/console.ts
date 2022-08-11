@@ -1,5 +1,5 @@
 // module imports
-import { on } from '../../tools/hub.ts'
+import { on } from '../../tools/hub'
 
 // get relevant elements
 const console = document.querySelector('[data-component="console"]') as HTMLPreElement

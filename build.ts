@@ -6,3 +6,5 @@ await build({
   bundle: true,
   minify: false,
 })
+
+Deno.exit()

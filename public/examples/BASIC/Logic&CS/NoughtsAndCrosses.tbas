@@ -49,9 +49,9 @@ REPEAT
   SETXY(350, 850)
   COLOUR(BLACK)
   IF (board%(9) = 0) THEN
-    PRINT("  Draw!  ", 4, 60)
+    DISPLAY("  Draw!  ", 4, 60)
   ELSE
-    PRINT("  I win!  ", 4, 60)
+    DISPLAY("  I win!  ", 4, 60)
   ENDIF
   PAUSE(2500)
 UNTIL (1 <> 1)

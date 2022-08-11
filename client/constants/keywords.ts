@@ -1,7 +1,7 @@
 /**
  * Keywords for the Turtle languages.
  */
-import type { Language } from './languages.ts'
+import type { Language } from './languages'
 
 /** keyword class definition */
 export class Keyword {

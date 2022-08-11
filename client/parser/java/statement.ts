@@ -1,14 +1,14 @@
-import constant from './constant.ts'
-import variable from './variable.ts'
-import { procedureCall } from '../call.ts'
-import { expression, typeCheck } from '../expression.ts'
-import * as find from '../find.ts'
-import Lexemes from '../definitions/lexemes.ts'
-import { CompoundExpression, Expression, VariableValue } from '../definitions/expression.ts'
-import Program from '../definitions/program.ts'
-import { Subroutine } from '../definitions/subroutine.ts'
-import Variable from '../definitions/variable.ts'
-import { Lexeme, KeywordLexeme, TypeLexeme, IdentifierLexeme, Type, OperatorLexeme } from '../../lexer/lexeme.ts'
+import constant from './constant'
+import variable from './variable'
+import { procedureCall } from '../call'
+import { expression, typeCheck } from '../expression'
+import * as find from '../find'
+import Lexemes from '../definitions/lexemes'
+import { CompoundExpression, Expression, VariableValue } from '../definitions/expression'
+import Program from '../definitions/program'
+import { Subroutine } from '../definitions/subroutine'
+import Variable from '../definitions/variable'
+import { Lexeme, KeywordLexeme, TypeLexeme, IdentifierLexeme, Type, OperatorLexeme } from '../../lexer/lexeme'
 import {
   Statement,
   IfStatement,
@@ -19,9 +19,9 @@ import {
   VariableAssignment,
   ProcedureCall,
   PassStatement
-} from '../definitions/statement.ts'
-import { CompilerError } from '../../tools/error.ts'
-import { Token } from '../../lexer/token.ts'
+} from '../definitions/statement'
+import { CompilerError } from '../../tools/error'
+import { Token } from '../../lexer/token'
 
 /** checks for semicolon at the end of a statement */
 export function eosCheck (lexemes: Lexemes): void {
@@ -111,7 +111,7 @@ export function simpleStatement (lexeme: KeywordLexeme|TypeLexeme|IdentifierLexe
       return new PassStatement()
   
     // type specification means a variable declaration
-    case 'type':
+    case 'type': {
       const variableLexeme = lexemes.get(1) as IdentifierLexeme // it will be if the next line doesn't throw an error
       const foo = variable(lexemes, routine)
       routine.variables.push(foo)
@@ -120,9 +120,10 @@ export function simpleStatement (lexeme: KeywordLexeme|TypeLexeme|IdentifierLexe
       } else {
         return new PassStatement()
       }
+    }
   
     // identifier means variable assignment or procedure call
-    case 'identifier':
+    case 'identifier': {
       const bar = find.variable(routine, lexeme.value)
       const baz = find.command(routine, lexeme.value)
       if (bar) {
@@ -135,6 +136,7 @@ export function simpleStatement (lexeme: KeywordLexeme|TypeLexeme|IdentifierLexe
       } else {
         throw new CompilerError('{lex} is not defined.', lexemes.get())
       }
+    }
   }
 }
 
