@@ -1,7 +1,7 @@
 import { Status, extname } from "../deps.ts"
 import { type ParsedRequest, parseRequest } from "./request.ts"
 import { fileResponse } from "./utils/response.ts"
-import { error, index, data, run, documentation, contact, about, register, login, forgot } from "./site/site.ts"
+import { error, index, status, data, run, documentation, contact, about, register, login, forgot } from "./site/site.ts"
 import { type Either, safely } from "./utils/tools.ts"
 
 export default async (request: Request): Promise<Response> => response(await parseRequest(request))
@@ -26,6 +26,7 @@ const page = (request: ParsedRequest): Response =>
 
 const handler: Record<string, (request: ParsedRequest) => Response> = {
   index,
+  status,
   data,
   run,
   documentation,
