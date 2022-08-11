@@ -1,5 +1,7 @@
+/// <reference lib="dom" />
+
 // module imorts
-import { on } from '../../tools/hub'
+import { on } from "../../tools/hub.ts"
 
 // get relevant elements
 const playButton = document.querySelector('[data-component="runButton"]') as HTMLButtonElement
@@ -7,21 +9,21 @@ const haltButton = document.querySelector('[data-component="haltButton"]') as HT
 
 if (playButton && haltButton) {
   // register to keep in sync with system state
-  on('played', () => {
+  on("played", () => {
     playButton.innerHTML = '<i class="fa fa-pause"></i>'
-    haltButton.removeAttribute('disabled')
+    haltButton.removeAttribute("disabled")
   })
 
-  on('paused', () => {
+  on("paused", () => {
     playButton.innerHTML = '<i class="fa fa-play"></i>'
   })
 
-  on('unpaused', () => {
+  on("unpaused", () => {
     playButton.innerHTML = '<i class="fa fa-pause"></i>'
   })
 
-  on('halted', () => {
+  on("halted", () => {
     playButton.innerHTML = '<i class="fa fa-play"></i>'
-    haltButton.setAttribute('disabled', 'disabled')
+    haltButton.setAttribute("disabled", "disabled")
   })
 }

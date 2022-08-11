@@ -1,17 +1,17 @@
-import type Lexemes from '../definitions/lexemes'
-import type { KeywordLexeme } from '../../lexer/lexeme'
-import subroutine from './subroutine'
-import body from './body'
-import Program from '../definitions/program'
-import { CompilerError } from '../../tools/error'
+import type Lexemes from "../definitions/lexemes.ts"
+import type { KeywordLexeme } from "../../lexer/lexeme.ts"
+import subroutine from "./subroutine.ts"
+import body from "./body.ts"
+import Program from "../definitions/program.ts"
+import { CompilerError } from "../../tools/error.ts"
 
 /** parses lexemes as a BASIC program */
-export default function basic (lexemes: Lexemes): Program {
+export default function basic(lexemes: Lexemes): Program {
   // create the program
-  const program = new Program('BASIC')
+  const program = new Program("BASIC")
 
   // find the (first) "END" lexeme
-  const endLexemeIndex = lexemes.lexemes.findIndex(x => x.content === 'END')
+  const endLexemeIndex = lexemes.lexemes.findIndex((x) => x.content === "END")
   if (endLexemeIndex < 0) {
     throw new CompilerError('Program must end with keyword "END".')
   }
@@ -20,9 +20,9 @@ export default function basic (lexemes: Lexemes): Program {
   // first (semi) pass: loop through any lexemes after "END" and hoist subroutine definitions
   lexemes.index = endLexemeIndex + 1
   while (lexemes.get()) {
-    if (lexemes.get()?.type === 'newline') {
+    if (lexemes.get()?.type === "newline") {
       lexemes.next()
-    } else if (lexemes.get()?.content === 'DEF') {
+    } else if (lexemes.get()?.content === "DEF") {
       lexemes.next()
       program.subroutines.push(subroutine(lexemes.get(-1) as KeywordLexeme, lexemes, program))
     } else {

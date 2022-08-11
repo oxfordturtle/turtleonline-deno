@@ -1,7 +1,7 @@
-import { Example, Group, groups } from '../../constants/examples'
-import { fill, a, span, i, div } from '../../tools/elements'
-import state from '../../state/index'
-import { closeMenu, toggleMenu } from '../view'
+import { Example, Group, groups } from "../../constants/examples.ts"
+import { fill, a, span, i, div } from "../../tools/elements.ts"
+import { state } from "../../state/index.ts"
+import { closeMenu, toggleMenu } from "../view.ts"
 
 const examplesMenu = document.querySelector('[data-component="examplesMenu"]')
 
@@ -11,45 +11,51 @@ if (examplesMenu) {
   fill(examplesMenu as HTMLElement, groupLinks.concat(groupMenus))
 }
 
-function exampleGroupLink (group: Group): HTMLElement {
+function exampleGroupLink(group: Group): HTMLElement {
   return a({
-    on: ['click', function () {
-      toggleMenu(group.id)
-    } ],
-    'data-action': 'toggleMenu',
-    'data-arg': group.id,
+    on: [
+      "click",
+      function () {
+        toggleMenu(group.id)
+      },
+    ],
+    "data-action": "toggleMenu",
+    "data-arg": group.id,
     content: [
       span({ content: `Examples ${group.index.toString(10)} - ${group.title}` }),
-      i({ className: 'fa fa-caret-right', 'aria-hidden': 'true' })
-    ]
+      i({ className: "fa fa-caret-right", "aria-hidden": "true" }),
+    ],
   })
 }
 
-function exampleGroupMenu (group: Group): HTMLElement {
+function exampleGroupMenu(group: Group): HTMLElement {
   return div({
-    className: 'system-sub-menu',
-    'data-menu': group.id,
+    className: "system-sub-menu",
+    "data-menu": group.id,
     content: [
       a({
-        on: ['click', function () {
-          closeMenu(group.id)
-        } ],
-        'data-action': 'closeMenu',
-        'data-arg': group.id,
-        content: [
-          i({ className: 'fa fa-caret-left', 'aria-hidden': 'true' }),
-          span({ content: 'back' })
-        ]
-      }) as HTMLElement
-    ].concat(group.examples.map(exampleLink))
+        on: [
+          "click",
+          function () {
+            closeMenu(group.id)
+          },
+        ],
+        "data-action": "closeMenu",
+        "data-arg": group.id,
+        content: [i({ className: "fa fa-caret-left", "aria-hidden": "true" }), span({ content: "back" })],
+      }) as HTMLElement,
+    ].concat(group.examples.map(exampleLink)),
   })
 }
 
-function exampleLink (example: Example): HTMLElement {
+function exampleLink(example: Example): HTMLElement {
   return a({
-    on: ['click', function () {
-      state.openExampleFile(example.id)
-    }],
-    content: [span({ content: example.names[state.language] })]
+    on: [
+      "click",
+      function () {
+        state.openExampleFile(example.id)
+      },
+    ],
+    content: [span({ content: example.names[state.language] })],
   })
 }

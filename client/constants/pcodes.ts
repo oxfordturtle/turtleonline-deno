@@ -15,12 +15,12 @@ export enum PCode {
   rand = 0x07,
   hstr = 0x08,
   ctos = 0x09,
-  sasc = 0x0A,
-  itos = 0x0B,
-  hexs = 0x0C,
-  sval = 0x0D,
-  qtos = 0x0E,
-  qval = 0x0F,
+  sasc = 0x0a,
+  itos = 0x0b,
+  hexs = 0x0c,
+  sval = 0x0d,
+  qtos = 0x0e,
+  qval = 0x0f,
   // 0x10s - Boolean operators, integer operators
   not = 0x10,
   and = 0x11,
@@ -32,12 +32,12 @@ export enum PCode {
   neg = 0x17,
   abs = 0x18,
   sign = 0x19,
-  plus = 0x1A,
-  subt = 0x1B,
-  mult = 0x1C,
-  divr = 0x1D,
-  div = 0x1E,
-  mod = 0x1F,
+  plus = 0x1a,
+  subt = 0x1b,
+  mult = 0x1c,
+  divr = 0x1d,
+  div = 0x1e,
+  mod = 0x1f,
   // 0x20s - comparison operators
   eqal = 0x20,
   noeq = 0x21,
@@ -205,11 +205,11 @@ export enum PCode {
   rgts = 0xe6,
   rndc = 0xe7,
   svd0 = 0xe8,
-  wrln = 0xe9
+  wrln = 0xe9,
 }
 
 /** returns the number of code arguments of the given PCode (used by the assembler) */
-export function pcodeArgs (pcode: PCode): number {
+export function pcodeArgs(pcode: PCode): number {
   switch (pcode) {
     case PCode.lstr:
       return -1 // varies; the next code specifies how many

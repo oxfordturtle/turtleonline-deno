@@ -1,37 +1,37 @@
-import { subroutineName } from './identifier'
-import { newLine } from './statement'
-import { variable } from './variable'
-import type Program from '../definitions/program'
-import { Subroutine } from '../definitions/subroutine'
-import Variable from '../definitions/variable'
-import type Lexemes from '../definitions/lexemes'
-import { CompilerError } from '../../tools/error'
-import type { KeywordLexeme } from '../../lexer/lexeme'
+import { subroutineName } from "./identifier.ts"
+import { newLine } from "./statement.ts"
+import { variable } from "./variable.ts"
+import type Program from "../definitions/program.ts"
+import { Subroutine } from "../definitions/subroutine.ts"
+import Variable from "../definitions/variable.ts"
+import type Lexemes from "../definitions/lexemes.ts"
+import { CompilerError } from "../../tools/error.ts"
+import type { KeywordLexeme } from "../../lexer/lexeme.ts"
 
 /** parses lexemes as a subroutine definition */
-export default function subroutine (lexeme: KeywordLexeme, lexemes: Lexemes, program: Program): Subroutine {
+export default function subroutine(lexeme: KeywordLexeme, lexemes: Lexemes, program: Program): Subroutine {
   // expecting subroutine name
   const [name, subroutineType, type, stringLength] = subroutineName(lexemes)
 
   // create the subroutine and add it to the program's subroutines
   const subroutine = new Subroutine(lexeme, program, name)
   subroutine.index = program.subroutines.length + 1
-  if (subroutineType === 'function') {
-    const returnVariable = new Variable('!result', subroutine)
+  if (subroutineType === "function") {
+    const returnVariable = new Variable("!result", subroutine)
     returnVariable.type = type
     returnVariable.stringLength = stringLength
     subroutine.variables.push(returnVariable)
   }
 
   // parameters are permissible here
-  if (lexemes.get()?.content === '(') {
+  if (lexemes.get()?.content === "(") {
     lexemes.next()
     subroutine.variables.push(...parameters(lexemes, subroutine))
   }
 
   // expecting subroutine statements on a new line
   if (!lexemes.get()) {
-    throw new CompilerError('No statements found after subroutine declaration.', lexemes.get(-1))
+    throw new CompilerError("No statements found after subroutine declaration.", lexemes.get(-1))
   }
   newLine(lexemes)
 
@@ -40,16 +40,18 @@ export default function subroutine (lexeme: KeywordLexeme, lexemes: Lexemes, pro
 
   // move past all inner lexemes
   let finished = false
-  if (subroutine.type === 'procedure') { // procedure
+  if (subroutine.type === "procedure") {
+    // procedure
     while (lexemes.get() && !finished) {
-      finished = (lexemes.get()?.content === 'ENDPROC')
+      finished = lexemes.get()?.content === "ENDPROC"
       lexemes.next()
     }
-  } else { // function
+  } else {
+    // function
     while (lexemes.get() && !finished) {
-      if (lexemes.get()?.content === '=' && lexemes.get(-1)?.type === 'newline') {
+      if (lexemes.get()?.content === "=" && lexemes.get(-1)?.type === "newline") {
         finished = true
-        while (lexemes.get() && lexemes.get()?.type !== 'newline') {
+        while (lexemes.get() && lexemes.get()?.type !== "newline") {
           lexemes.next() // move past everything up to the next line break
         }
       } else {
@@ -59,14 +61,20 @@ export default function subroutine (lexeme: KeywordLexeme, lexemes: Lexemes, pro
   }
 
   // save last inner lexeme index (for the second pass)
-  subroutine.end = (subroutine.type === 'procedure') ? lexemes.index - 2 : lexemes.index
+  subroutine.end = subroutine.type === "procedure" ? lexemes.index - 2 : lexemes.index
 
   // check for subroutine end
   if (!finished) {
-    if (subroutine.type === 'procedure') {
-      throw new CompilerError(`Procedure "${subroutine.name}" does not have an end (expected "ENDPROC").`, lexemes.lexemes[subroutine.start])
+    if (subroutine.type === "procedure") {
+      throw new CompilerError(
+        `Procedure "${subroutine.name}" does not have an end (expected "ENDPROC").`,
+        lexemes.lexemes[subroutine.start]
+      )
     }
-    throw new CompilerError(`Function "${subroutine.name}" does not have an end (expected "=<expression>").`, lexemes.lexemes[subroutine.end])
+    throw new CompilerError(
+      `Function "${subroutine.name}" does not have an end (expected "=<expression>").`,
+      lexemes.lexemes[subroutine.end]
+    )
   }
 
   // new line check
@@ -77,12 +85,12 @@ export default function subroutine (lexeme: KeywordLexeme, lexemes: Lexemes, pro
 }
 
 /** parses lexemes as parameter declarations */
-function parameters (lexemes: Lexemes, subroutine: Subroutine): Variable[] {
+function parameters(lexemes: Lexemes, subroutine: Subroutine): Variable[] {
   // expecting 0 or more parameters
   const parameters: Variable[] = []
-  while (lexemes.get()?.content !== ')') {
+  while (lexemes.get()?.content !== ")") {
     let isReferenceParameter = false
-    if (lexemes.get()?.content === 'RETURN') {
+    if (lexemes.get()?.content === "RETURN") {
       isReferenceParameter = true
       lexemes.next()
     }
@@ -90,23 +98,23 @@ function parameters (lexemes: Lexemes, subroutine: Subroutine): Variable[] {
     parameter.isParameter = true
     parameter.isReferenceParameter = isReferenceParameter
     // brackets here "()" means array parameter
-    if (lexemes.get()?.content === '(') {
-      parameter.arrayDimensions.push([0,0]) // give dummy array dimensions
+    if (lexemes.get()?.content === "(") {
+      parameter.arrayDimensions.push([0, 0]) // give dummy array dimensions
       lexemes.next()
-      if (!lexemes.get() || lexemes.get()?.content !== ')') {
-        throw new CompilerError('Closing bracket missing after array parameter specification.', lexemes.get(-1))
+      if (!lexemes.get() || lexemes.get()?.content !== ")") {
+        throw new CompilerError("Closing bracket missing after array parameter specification.", lexemes.get(-1))
       }
       lexemes.next()
     }
     parameters.push(parameter)
-    if (lexemes.get()?.content === ',') {
+    if (lexemes.get()?.content === ",") {
       lexemes.next()
     }
   }
 
   // check for closing bracket
-  if (lexemes.get()?.content !== ')') {
-    throw new CompilerError('Closing bracket missing after method parameters.', lexemes.get(-1))
+  if (lexemes.get()?.content !== ")") {
+    throw new CompilerError("Closing bracket missing after method parameters.", lexemes.get(-1))
   }
   lexemes.next()
 

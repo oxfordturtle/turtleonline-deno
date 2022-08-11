@@ -1,6 +1,6 @@
 // type imports
-import type { Options } from './options'
-import type Program from '../parser/definitions/program'
+import type { Options } from "./options.ts"
+import type Program from "../parser/definitions/program.ts"
 import type {
   Statement,
   ProcedureCall,
@@ -8,42 +8,42 @@ import type {
   ForStatement,
   RepeatStatement,
   WhileStatement,
-  ReturnStatement
-} from '../parser/definitions/statement'
+  ReturnStatement,
+} from "../parser/definitions/statement.ts"
 
 // submodule imports
-import { merge, expression } from './expression'
+import { merge, expression } from "./expression.ts"
 
 // other module imports
-import { PCode } from '../constants/pcodes'
-import { Subroutine } from '../parser/definitions/subroutine'
-import { VariableValue } from '../parser/definitions/expression'
-import { VariableAssignment } from '../parser/definitions/statement'
+import { PCode } from "../constants/pcodes.ts"
+import { Subroutine } from "../parser/definitions/subroutine.ts"
+import { VariableValue } from "../parser/definitions/expression.ts"
+import { VariableAssignment } from "../parser/definitions/statement.ts"
 
 /** generates the pcode for a statement of any kind */
-export default function statement (stmt: Statement, program: Program, startLine: number, options: Options): number[][] {
+export default function statement(stmt: Statement, program: Program, startLine: number, options: Options): number[][] {
   switch (stmt.statementType) {
-    case 'variableAssignment':
+    case "variableAssignment":
       return variableAssignment(stmt, program, options)
-    case 'procedureCall':
+    case "procedureCall":
       return procedureCall(stmt, program, options)
-    case 'ifStatement':
+    case "ifStatement":
       return ifStatement(stmt, program, startLine, options)
-    case 'forStatement':
+    case "forStatement":
       return forStatement(stmt, program, startLine, options)
-    case 'repeatStatement':
+    case "repeatStatement":
       return repeatStatement(stmt, program, startLine, options)
-    case 'whileStatement':
+    case "whileStatement":
       return whileStatement(stmt, program, startLine, options)
-    case 'returnStatement':
+    case "returnStatement":
       return returnStatement(stmt, program, options)
-    case 'passStatement':
+    case "passStatement":
       return []
   }
 }
 
 /** generates the pcode for a variable assignment */
-function variableAssignment (stmt: VariableAssignment, program: Program, options: Options): number[][] {
+function variableAssignment(stmt: VariableAssignment, program: Program, options: Options): number[][] {
   if (stmt.variable.turtle) {
     return turtleVariableAssignment(stmt, program, options)
   }
@@ -56,7 +56,7 @@ function variableAssignment (stmt: VariableAssignment, program: Program, options
     return pointerVariableAssignment(stmt, program, options)
   }
 
-  if (stmt.variable.isReferenceParameter && !stmt.variable.isArray && stmt.variable.type !== 'string') {
+  if (stmt.variable.isReferenceParameter && !stmt.variable.isArray && stmt.variable.type !== "string") {
     return referenceVariableAssignment(stmt, program, options)
   }
 
@@ -64,7 +64,7 @@ function variableAssignment (stmt: VariableAssignment, program: Program, options
 }
 
 /** generates the pcode for a turtle variable assignment */
-function turtleVariableAssignment (stmt: VariableAssignment, program: Program, options: Options): number[][] {
+function turtleVariableAssignment(stmt: VariableAssignment, program: Program, options: Options): number[][] {
   const pcode = expression(stmt.value, program, options)
 
   // TODO: after NEWTURTLE??
@@ -74,16 +74,16 @@ function turtleVariableAssignment (stmt: VariableAssignment, program: Program, o
 }
 
 /** generates the pcode for a global variable assignment */
-function globalVariableAssignment (stmt: VariableAssignment, program: Program, options: Options): number[][] {
+function globalVariableAssignment(stmt: VariableAssignment, program: Program, options: Options): number[][] {
   const pcode = expression(stmt.value, program, options)
 
   // global array
-  if (stmt.variable.isArray || (stmt.variable.type === 'string' && stmt.indexes.length > 0)) {
+  if (stmt.variable.isArray || (stmt.variable.type === "string" && stmt.indexes.length > 0)) {
     const exp = new VariableValue(stmt.lexeme as any, stmt.variable)
     exp.indexes.push(...stmt.indexes)
     const element = expression(exp, program, options)
     const lastLine = element[element.length - 1]
-    if (stmt.variable.isArray && stmt.variable.type === 'string') {
+    if (stmt.variable.isArray && stmt.variable.type === "string") {
       lastLine.push(PCode.cstr)
     } else {
       lastLine[lastLine.length - 1] = PCode.sptr // change LPTR to SPTR
@@ -92,7 +92,7 @@ function globalVariableAssignment (stmt: VariableAssignment, program: Program, o
   }
 
   // global string
-  else if (stmt.variable.type === 'string') {
+  else if (stmt.variable.type === "string") {
     merge(pcode, [[PCode.ldvg, stmt.variable.address, PCode.cstr]])
   }
 
@@ -105,14 +105,14 @@ function globalVariableAssignment (stmt: VariableAssignment, program: Program, o
 }
 
 /** generates the pcode for a pointer variable assignment */
-function pointerVariableAssignment (stmt: VariableAssignment, program: Program, options: Options): number[][] {
+function pointerVariableAssignment(stmt: VariableAssignment, program: Program, options: Options): number[][] {
   const variableValue = new VariableValue(stmt.lexeme as any, stmt.variable)
   const pcode = expression(variableValue, program, options)
   pcode[pcode.length - 1].pop() // pop off PCode.peek
 
   merge(pcode, expression(stmt.value, program, options))
 
-  if (stmt.variable.type === 'string') {
+  if (stmt.variable.type === "string") {
     merge(pcode, [[PCode.cstr]])
   } else {
     merge(pcode, [[PCode.poke]])
@@ -122,7 +122,7 @@ function pointerVariableAssignment (stmt: VariableAssignment, program: Program, 
 }
 
 /** generates the pcode for a reference variable assignment */
-function referenceVariableAssignment (stmt: VariableAssignment, program: Program, options: Options): number[][] {
+function referenceVariableAssignment(stmt: VariableAssignment, program: Program, options: Options): number[][] {
   const pcode = expression(stmt.value, program, options)
 
   merge(pcode, [[PCode.stvr, (stmt.variable.routine as Subroutine).address, stmt.variable.address]])
@@ -131,16 +131,16 @@ function referenceVariableAssignment (stmt: VariableAssignment, program: Program
 }
 
 /** generates the pcode for a local variable assignment */
-function localVariableAssignment (stmt: VariableAssignment, program: Program, options: Options): number[][] {
+function localVariableAssignment(stmt: VariableAssignment, program: Program, options: Options): number[][] {
   const pcode = expression(stmt.value, program, options)
 
   // local array
-  if (stmt.variable.isArray || (stmt.variable.type === 'string' && stmt.indexes.length > 0)) {
+  if (stmt.variable.isArray || (stmt.variable.type === "string" && stmt.indexes.length > 0)) {
     const exp = new VariableValue(stmt.lexeme as any, stmt.variable)
     exp.indexes.push(...stmt.indexes)
     const element = expression(exp, program, options)
     const lastLine = element[element.length - 1]
-    if (stmt.variable.isArray && stmt.variable.type === 'string') {
+    if (stmt.variable.isArray && stmt.variable.type === "string") {
       lastLine.push(PCode.cstr)
     } else {
       lastLine[lastLine.length - 1] = PCode.sptr // change LPTR to SPTR
@@ -149,7 +149,7 @@ function localVariableAssignment (stmt: VariableAssignment, program: Program, op
   }
 
   // local string
-  else if (stmt.variable.type === 'string') {
+  else if (stmt.variable.type === "string") {
     merge(pcode, [[PCode.ldvv, (stmt.variable.routine as Subroutine).address, stmt.variable.address, PCode.cstr]])
   }
 
@@ -162,7 +162,7 @@ function localVariableAssignment (stmt: VariableAssignment, program: Program, op
 }
 
 /** generates the pcode for a procedure call */
-function procedureCall (stmt: ProcedureCall, program: Program, options: Options): number[][] {
+function procedureCall(stmt: ProcedureCall, program: Program, options: Options): number[][] {
   const pcode: number[][] = []
 
   // first: load arguments onto the stack
@@ -193,7 +193,7 @@ function procedureCall (stmt: ProcedureCall, program: Program, options: Options)
 }
 
 /** generates the pcode for an IF statement */
-function ifStatement (stmt: IfStatement, program: Program, startLine: number, options: Options): number[][] {
+function ifStatement(stmt: IfStatement, program: Program, startLine: number, options: Options): number[][] {
   const firstLines = expression(stmt.condition, program, options)
 
   // inner lines: pcode for all IF substatements
@@ -217,7 +217,7 @@ function ifStatement (stmt: IfStatement, program: Program, startLine: number, op
     ifPcode.unshift(...firstLines)
     return ifPcode
   }
-  
+
   // IF-ELSE statement
   // first lines: evaluate condition; if false, jump past all IF statements and ELSE jump
   merge(firstLines, [[PCode.ifno, startLine + ifPcode.length + firstLines.length + 1]])
@@ -231,7 +231,7 @@ function ifStatement (stmt: IfStatement, program: Program, startLine: number, op
 }
 
 /** generates the pcode for a FOR statement */
-function forStatement (stmt: ForStatement, program: Program, startLine: number, options: Options): number[][] {
+function forStatement(stmt: ForStatement, program: Program, startLine: number, options: Options): number[][] {
   const pcode: number[][] = []
 
   // middle lines: pcode for all substatements
@@ -256,7 +256,7 @@ function forStatement (stmt: ForStatement, program: Program, startLine: number, 
 }
 
 /** generates the pcode for a REPEAT statement */
-function repeatStatement (stmt: RepeatStatement, program: Program, startLine: number, options: Options): number[][] {
+function repeatStatement(stmt: RepeatStatement, program: Program, startLine: number, options: Options): number[][] {
   const pcode: number[][] = []
 
   // first lines: pcode for all substatements
@@ -275,7 +275,7 @@ function repeatStatement (stmt: RepeatStatement, program: Program, startLine: nu
 }
 
 /** generates the pcode for a WHILE statement */
-function whileStatement (stmt: WhileStatement, program: Program, startLine: number, options: Options): number[][] {
+function whileStatement(stmt: WhileStatement, program: Program, startLine: number, options: Options): number[][] {
   const pcode: number[][] = []
 
   // middle lines: pcode for all substatements
@@ -297,7 +297,7 @@ function whileStatement (stmt: WhileStatement, program: Program, startLine: numb
 }
 
 /** generates the pcode for a RETURN statement */
-function returnStatement (stmt: ReturnStatement, program: Program, options: Options): number[][] {
+function returnStatement(stmt: ReturnStatement, program: Program, options: Options): number[][] {
   // N.B. stmt.lexeme is a KeywordLexeme, but VariableAssignment constructor
   // requires an IdentifierLexeme; it makes no difference here
   const variableAssignment = new VariableAssignment(stmt.lexeme as any, stmt.routine.variables[0], [], stmt.value)
@@ -311,7 +311,7 @@ function returnStatement (stmt: ReturnStatement, program: Program, options: Opti
     PCode.memr,
     stmt.routine.address,
     PCode.plsr,
-    PCode.retn
+    PCode.retn,
   ])
 
   return pcode

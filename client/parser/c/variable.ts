@@ -1,15 +1,15 @@
-import identifier from './identifier'
-import type from './type'
-import { expression, typeCheck } from '../expression'
-import evaluate from '../evaluate'
-import Lexemes from '../definitions/lexemes'
-import Program from '../definitions/program'
-import { Subroutine } from '../definitions/subroutine'
-import Variable from '../definitions/variable'
-import { CompilerError } from '../../tools/error'
+import identifier from "./identifier.ts"
+import type from "./type.ts"
+import { expression, typeCheck } from "../expression.ts"
+import evaluate from "../evaluate.ts"
+import Lexemes from "../definitions/lexemes.ts"
+import Program from "../definitions/program.ts"
+import { Subroutine } from "../definitions/subroutine.ts"
+import Variable from "../definitions/variable.ts"
+import { CompilerError } from "../../tools/error.ts"
 
 /** parses lexemes as a variable declaration */
-export default function variable (lexemes: Lexemes, routine: Program|Subroutine): Variable {
+export default function variable(lexemes: Lexemes, routine: Program | Subroutine): Variable {
   const typeLexeme = lexemes.get()
 
   // expecting type specification
@@ -22,7 +22,7 @@ export default function variable (lexemes: Lexemes, routine: Program|Subroutine)
 
   // "*" possible here (to indicate pointer variable)
   let isPointer = false
-  if (lexemes.get()?.content === '*') {
+  if (lexemes.get()?.content === "*") {
     lexemes.next()
     isPointer = true
   }
@@ -37,7 +37,7 @@ export default function variable (lexemes: Lexemes, routine: Program|Subroutine)
   variable.isPointer = isPointer
 
   // possibly expecting brackets (for arrays)
-  while (lexemes.get()?.content === '[') {
+  while (lexemes.get()?.content === "[") {
     lexemes.next()
 
     // expecting array dimension size
@@ -45,13 +45,13 @@ export default function variable (lexemes: Lexemes, routine: Program|Subroutine)
       throw new CompilerError('Opening bracket "[" must be followed by an array size.', lexemes.get(-1))
     }
     const exp = expression(lexemes, routine)
-    typeCheck(exp, 'integer')
-    const value = evaluate(exp, 'C', 'array')
-    if (typeof value === 'string') {
-      throw new CompilerError('Array size must be an integer.', lexemes.get())
+    typeCheck(exp, "integer")
+    const value = evaluate(exp, "C", "array")
+    if (typeof value === "string") {
+      throw new CompilerError("Array size must be an integer.", lexemes.get())
     }
     if (value <= 0) {
-      throw new CompilerError('Array size must be positive.', lexemes.get())
+      throw new CompilerError("Array size must be positive.", lexemes.get())
     }
     variable.arrayDimensions.push([0, value - 1]) // -1 because arrays are indexed from zero
 
@@ -59,7 +59,7 @@ export default function variable (lexemes: Lexemes, routine: Program|Subroutine)
     if (!lexemes.get()) {
       throw new CompilerError('Array size specification must be followed by closing bracket "]".', lexemes.get(-1))
     }
-    if (lexemes.get()?.content !== ']') {
+    if (lexemes.get()?.content !== "]") {
       throw new CompilerError('Array size specification must be followed by closing bracket "]".', lexemes.get())
     }
     lexemes.next()
@@ -67,7 +67,7 @@ export default function variable (lexemes: Lexemes, routine: Program|Subroutine)
 
   // sanity check
   if (type === null && variable.arrayDimensions.length > 0) {
-    throw new CompilerError('Array of void is not allowed.', typeLexeme)
+    throw new CompilerError("Array of void is not allowed.", typeLexeme)
   }
 
   // return the variable

@@ -1,8 +1,8 @@
 /*
  * The machine memory component.
  */
-import { fill, td, th, tr } from '../../tools/elements'
-import { on } from '../../tools/hub'
+import { fill, td, th, tr } from "../../tools/elements.ts"
+import { on } from "../../tools/hub.ts"
 
 // the memory table bodies
 const stackTableBody = document.querySelector('[data-component="memoryStackTableBody"]') as HTMLElement
@@ -12,7 +12,7 @@ const wrap = 10
 
 if (stackTableBody && heapTableBody) {
   // register to keep in sync with system state
-  on('memoryDumped', function (memory: { stack: number[], heap: number[], heapBase: number }): void {
+  on("memoryDumped", function (memory: { stack: number[]; heap: number[]; heapBase: number }): void {
     const stackSplit: number[][] = []
     const heapSplit: number[][] = []
     while (memory.stack.length > 0) {
@@ -27,8 +27,8 @@ if (stackTableBody && heapTableBody) {
 }
 
 // function to create a tr row of bytes
-function tableRow (offset: number, bytes: number[], index: number) {
-  const content = bytes.map(byte => td({ content: byte.toString(10) }))
+function tableRow(offset: number, bytes: number[], index: number) {
+  const content = bytes.map((byte) => td({ content: byte.toString(10) }))
   content.unshift(th({ content: (offset + index * wrap).toString(10) }))
   return tr({ content })
 }

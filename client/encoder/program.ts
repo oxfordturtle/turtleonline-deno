@@ -1,25 +1,26 @@
 // type imports
-import type Program from '../parser/definitions/program'
-import type { Options } from './options'
+import type Program from "../parser/definitions/program.ts"
+import type { Options } from "./options.ts"
 
 // submodule imports
-import { defaultOptions } from './options'
-import statement from './statement'
+import { defaultOptions } from "./options.ts"
+import statement from "./statement.ts"
 
 // other module imports
-import Variable from '../parser/definitions/variable'
-import { Subroutine } from '../parser/definitions/subroutine'
-import { PCode, pcodeArgs } from '../constants/pcodes'
+import Variable from "../parser/definitions/variable.ts"
+import { Subroutine } from "../parser/definitions/subroutine.ts"
+import { PCode, pcodeArgs } from "../constants/pcodes.ts"
 
 /** generates the pcode for a turtle program */
-export default function program (program: Program, options: Options = defaultOptions): number[][] {
+export default function program(program: Program, options: Options = defaultOptions): number[][] {
   // get start code and end code
   const startCode = programStart(program, options)
 
   // calculate the start line of the first subroutine
-  const subroutinesStartLine = (program.allSubroutines.length > 0)
-    ? startCode.length + 2 // + 1 for jump line past subroutines
-    : startCode.length + 1
+  const subroutinesStartLine =
+    program.allSubroutines.length > 0
+      ? startCode.length + 2 // + 1 for jump line past subroutines
+      : startCode.length + 1
 
   // get the pcode for all (any) subroutines
   // N.B. this also saves the start line of each subroutine, required for
@@ -34,18 +35,19 @@ export default function program (program: Program, options: Options = defaultOpt
 
   // stitch the program and subroutines pcode together
   const jumpLine = [[PCode.jump, startCode.length + subroutinesCode.length + 2]]
-  const pcode = (subroutinesCode.length > 1)
-    ? startCode.concat(jumpLine).concat(subroutinesCode).concat(innerCode)
-    : startCode.concat(innerCode)
+  const pcode =
+    subroutinesCode.length > 1
+      ? startCode.concat(jumpLine).concat(subroutinesCode).concat(innerCode)
+      : startCode.concat(innerCode)
 
   // backpatch subroutine jump codes
   backpatchSubroutineCalls(program, pcode)
 
   // add call to the "main" subroutine for C and Java
-  if (program.language === 'C' || program.language === 'Java') {
+  if (program.language === "C" || program.language === "Java") {
     // we know the main routine exists at this stage; parser1 for C will have
     // thrown an error if it doesn't
-    const main = program.subroutines.find(x => x.name === 'main') as Subroutine
+    const main = program.subroutines.find((x) => x.name === "main") as Subroutine
     pcode.push([PCode.subr, main.startLine])
   }
 
@@ -60,7 +62,7 @@ export default function program (program: Program, options: Options = defaultOpt
 }
 
 /** creates the pcode for the start of a program */
-function programStart (program: Program, options: Options): number[][] {
+function programStart(program: Program, _options: Options): number[][] {
   // initialise start code
   const pcode = [
     // line 1: global memory
@@ -82,7 +84,7 @@ function programStart (program: Program, options: Options): number[][] {
       PCode.zptr,
       PCode.ldin,
       program.turtleAddress + program.memoryNeeded + program.turtleVariables.length,
-      PCode.stmt
+      PCode.stmt,
     ],
     // line 2: turtle and keybuffer setup
     [
@@ -109,8 +111,8 @@ function programStart (program: Program, options: Options): number[][] {
       PCode.dupl,
       PCode.dupl,
       PCode.reso,
-      PCode.canv
-    ]
+      PCode.canv,
+    ],
   ]
 
   // next: setup variables
@@ -125,7 +127,7 @@ function programStart (program: Program, options: Options): number[][] {
 }
 
 /** generates pcode for setting up a global variable */
-function setupGlobalVariable (variable: Variable): number[][] {
+function setupGlobalVariable(variable: Variable): number[][] {
   const pcode: number[][] = []
 
   if (variable.isArray) {
@@ -137,7 +139,7 @@ function setupGlobalVariable (variable: Variable): number[][] {
       PCode.ldin,
       variable.elementCount,
       PCode.stvg,
-      variable.lengthByteAddress
+      variable.lengthByteAddress,
     ])
     for (const subVariable of variable.subVariables) {
       const subPcode = setupGlobalVariable(subVariable)
@@ -145,9 +147,7 @@ function setupGlobalVariable (variable: Variable): number[][] {
         pcode.push(...subPcode)
       }
     }
-  }
-
-  else if (variable.type === 'string') {
+  } else if (variable.type === "string") {
     pcode.push([
       PCode.ldag,
       variable.lengthByteAddress + 1,
@@ -156,7 +156,7 @@ function setupGlobalVariable (variable: Variable): number[][] {
       PCode.ldin,
       variable.stringLength + 1, // +1 for the actual length byte (??)
       PCode.stvg,
-      variable.lengthByteAddress
+      variable.lengthByteAddress,
     ])
   }
 
@@ -164,7 +164,7 @@ function setupGlobalVariable (variable: Variable): number[][] {
 }
 
 /** generates pcode for all subroutines */
-function compileSubroutines (subroutines: Subroutine[], startLine: number, options: Options): number[][] {
+function compileSubroutines(subroutines: Subroutine[], startLine: number, options: Options): number[][] {
   const pcode: number[][] = []
 
   // generate the pcode for each subroutine in turn, concatenating the results
@@ -178,7 +178,7 @@ function compileSubroutines (subroutines: Subroutine[], startLine: number, optio
     const innerCode = compileInnerCode(subroutine, startLine + startCode.length, options)
     const subroutineCode = startCode.concat(innerCode)
 
-    if ((subroutine.type === 'procedure') || (subroutine.program.language === 'Pascal')) {
+    if (subroutine.type === "procedure" || subroutine.program.language === "Pascal") {
       // all procedures need end code, as do functions in Pascal
       // (functions in other languages include at least one RETURN statement)
       const endCode = subroutineEndCode(subroutine, options)
@@ -197,8 +197,8 @@ function compileSubroutines (subroutines: Subroutine[], startLine: number, optio
 }
 
 /** creates pcode for the body of a routine */
-function compileInnerCode (routine: Program|Subroutine, startLine: number, options: Options): number[][] {
-  const program = (routine instanceof Subroutine) ? routine.program : routine
+function compileInnerCode(routine: Program | Subroutine, startLine: number, options: Options): number[][] {
+  const program = routine instanceof Subroutine ? routine.program : routine
   const pcode: number[][] = []
   for (const stmt of routine.statements) {
     pcode.push(...statement(stmt, program, startLine + pcode.length, options))
@@ -207,7 +207,7 @@ function compileInnerCode (routine: Program|Subroutine, startLine: number, optio
 }
 
 /** creates pcode for the start of a subroutine */
-function subroutineStartCode (subroutine: Subroutine, options: Options): number[][] {
+function subroutineStartCode(subroutine: Subroutine, options: Options): number[][] {
   const pcode: number[][] = []
 
   pcode.push([PCode.pssr, subroutine.index])
@@ -241,7 +241,7 @@ function subroutineStartCode (subroutine: Subroutine, options: Options): number[
         const lastStartLine = pcode[pcode.length - 1]
         if (parameter.isArray && !parameter.isReferenceParameter) {
           // TODO: copy the array
-        } else if (parameter.type === 'string' && !parameter.isReferenceParameter) {
+        } else if (parameter.type === "string" && !parameter.isReferenceParameter) {
           // copy the string
           lastStartLine.push(PCode.ldvv, subroutine.address, parameter.address, PCode.cstr)
         } else {
@@ -272,7 +272,7 @@ function setupLocalVariable(variable: Variable): number[][] {
       variable.elementCount,
       PCode.stvv,
       subroutine.address,
-      variable.lengthByteAddress
+      variable.lengthByteAddress,
     ])
     for (const subVariable of variable.subVariables) {
       const subPcode = setupLocalVariable(subVariable)
@@ -283,7 +283,7 @@ function setupLocalVariable(variable: Variable): number[][] {
     return pcode
   }
 
-  if (variable.type === 'string') {
+  if (variable.type === "string") {
     pcode.push([
       PCode.ldav,
       subroutine.address,
@@ -295,7 +295,7 @@ function setupLocalVariable(variable: Variable): number[][] {
       variable.stringLength + 1, // +1 for the actual length byte (??)
       PCode.stvv,
       subroutine.address,
-      variable.lengthByteAddress
+      variable.lengthByteAddress,
     ])
   }
 
@@ -303,9 +303,9 @@ function setupLocalVariable(variable: Variable): number[][] {
 }
 
 /** creates pcode for the end of a subroutine */
-function subroutineEndCode (subroutine: Subroutine, options: Options): number[][] {
+function subroutineEndCode(subroutine: Subroutine, options: Options): number[][] {
   const pcode: number[] = []
-  if (subroutine.type === 'function') {
+  if (subroutine.type === "function") {
     // store function result
     pcode.push(PCode.ldvg, subroutine.address, PCode.stvg, subroutine.program.resultAddress)
   }
@@ -319,11 +319,11 @@ function subroutineEndCode (subroutine: Subroutine, options: Options): number[][
 }
 
 /** backpatches pcode for subroutine calls */
-function backpatchSubroutineCalls (program: Program, pcode: number[][]): void {
+function backpatchSubroutineCalls(program: Program, pcode: number[][]): void {
   for (let i = 0; i < pcode.length; i += 1) {
     for (let j = 0; j < pcode[i].length; j += 1) {
       if (pcode[i][j - 1] && pcode[i][j - 1] === PCode.subr) {
-        const subroutine = program.allSubroutines.find(x => x.index === pcode[i][j])
+        const subroutine = program.allSubroutines.find((x) => x.index === pcode[i][j])
         if (subroutine) {
           pcode[i][j] = subroutine.startLine
         }
@@ -333,7 +333,7 @@ function backpatchSubroutineCalls (program: Program, pcode: number[][]): void {
 }
 
 /** adds PCode.hclr codes where necessary */
-function addHCLR (pcode: number[][]): void {
+function addHCLR(pcode: number[][]): void {
   const heapStringCodes = [
     PCode.hstr,
     PCode.ctos,
@@ -356,25 +356,26 @@ function addHCLR (pcode: number[][]): void {
     PCode.frln,
     PCode.ffnd,
     PCode.fdir,
-    PCode.fnxt
+    PCode.fnxt,
   ]
   for (const line of pcode) {
-    let heapStringMade: boolean = false
-    let heapStringNeeded: boolean = false
-    let lastJumpIndex: number|null = null
-    let i: number = 0
+    let heapStringMade = false
+    let heapStringNeeded = false
+    let lastJumpIndex: number | null = null
+    let i = 0
     while (i < line.length) {
       if (heapStringCodes.indexOf(line[i]) >= 0) {
         heapStringMade = true
       }
-      if (line[i] === PCode.subr) { // maybe more cases will be needed
+      if (line[i] === PCode.subr) {
+        // maybe more cases will be needed
         heapStringNeeded = true
       }
       if (line[i] === PCode.jump || line[i] === PCode.ifno) {
         lastJumpIndex = i
       }
       const args = pcodeArgs(line[i])
-      i += (args === -1) ? line[i + 1] + 2 : args + 1
+      i += args === -1 ? line[i + 1] + 2 : args + 1
     }
     if (heapStringMade && !heapStringNeeded) {
       if (lastJumpIndex !== null) {

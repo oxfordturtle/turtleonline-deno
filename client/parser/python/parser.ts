@@ -1,15 +1,15 @@
-import subroutine from './subroutine'
-import { statement } from './statement'
-import Lexemes from '../definitions/lexemes'
-import Program from '../definitions/program'
-import { Subroutine } from '../definitions/subroutine'
-import { Lexeme } from '../../lexer/lexeme'
-import { CompilerError } from '../../tools/error'
+import subroutine from "./subroutine.ts"
+import { statement } from "./statement.ts"
+import Lexemes from "../definitions/lexemes.ts"
+import Program from "../definitions/program.ts"
+import { Subroutine } from "../definitions/subroutine.ts"
+import { Lexeme } from "../../lexer/lexeme.ts"
+import { CompilerError } from "../../tools/error.ts"
 
 /** parses lexemes as a Python program */
-export default function python (lexemes: Lexemes): Program {
+export default function python(lexemes: Lexemes): Program {
   // create the program
-  const program = new Program('Python')
+  const program = new Program("Python")
   program.end = lexemes.lexemes.length
 
   // parse the program (which will parse its subroutines in turn)
@@ -23,7 +23,7 @@ export default function python (lexemes: Lexemes): Program {
 }
 
 /** parses the body of a routine, generating statements from its lexemes */
-function parseBody (lexemes: Lexemes, routine: Program|Subroutine): void {
+function parseBody(lexemes: Lexemes, routine: Program | Subroutine): void {
   // first pass: hoist global and nonlocal declarations and subroutine definitions
   let indents = 0
   lexemes.index = routine.start
@@ -32,18 +32,18 @@ function parseBody (lexemes: Lexemes, routine: Program|Subroutine): void {
     lexemes.next()
     switch (lexeme.type) {
       // indents
-      case 'indent':
+      case "indent":
         indents += 1
         break
 
       // dedents
-      case 'dedent':
+      case "dedent":
         indents -= 1
         break
 
       // keywords
-      case 'keyword':
-        if (lexeme.subtype === 'def') {
+      case "keyword":
+        if (lexeme.subtype === "def") {
           routine.subroutines.push(subroutine(lexeme, lexemes, routine, indents))
         }
         break
@@ -61,8 +61,8 @@ function parseBody (lexemes: Lexemes, routine: Program|Subroutine): void {
 }
 
 /** checks for any variables in a routine with uncertain types */
-function checkForUncertainTypes (routine: Program|Subroutine): void {
-  const untypedVariable = routine.variables.find(x => !x.typeIsCertain)
+function checkForUncertainTypes(routine: Program | Subroutine): void {
+  const untypedVariable = routine.variables.find((x) => !x.typeIsCertain)
   if (untypedVariable) {
     throw new CompilerError(`Could not infer the type of variable ${untypedVariable.name}.`)
   }

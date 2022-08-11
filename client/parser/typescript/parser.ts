@@ -1,16 +1,16 @@
-import constant from './constant'
-import variable from './variable'
-import subroutine from './subroutine'
-import { eosCheck, statement } from './statement'
-import Lexemes from '../definitions/lexemes'
-import Program from '../definitions/program'
-import { Subroutine } from '../definitions/subroutine'
-import { Lexeme } from '../../lexer/lexeme'
+import constant from "./constant.ts"
+import variable from "./variable.ts"
+import subroutine from "./subroutine.ts"
+import { eosCheck, statement } from "./statement.ts"
+import Lexemes from "../definitions/lexemes.ts"
+import Program from "../definitions/program.ts"
+import { Subroutine } from "../definitions/subroutine.ts"
+import { Lexeme } from "../../lexer/lexeme.ts"
 
 /** parses lexemes as a TypeScript program */
-export default function typescript (lexemes: Lexemes): Program {
+export default function typescript(lexemes: Lexemes): Program {
   // create the program
-  const program = new Program('TypeScript')
+  const program = new Program("TypeScript")
   program.end = lexemes.lexemes.length
 
   // parse the program (which will parse its subroutines in turn)
@@ -21,7 +21,7 @@ export default function typescript (lexemes: Lexemes): Program {
 }
 
 /** parses the body of a routine, generating statements from its lexemes */
-function parseBody (lexemes: Lexemes, routine: Program|Subroutine): void {
+function parseBody(lexemes: Lexemes, routine: Program | Subroutine): void {
   // first pass: hoist all constants, variables, and functions
   lexemes.index = routine.start
   // TODO: allow block-scoped variables with 'let' and make constants block-scoped as well
@@ -29,21 +29,21 @@ function parseBody (lexemes: Lexemes, routine: Program|Subroutine): void {
     const lexeme = lexemes.get() as Lexeme
     lexemes.next()
     switch (lexeme.type) {
-      case 'keyword':
+      case "keyword":
         switch (lexeme.subtype) {
           // constant definitions (temporary: don't do this when block-scoping is possible)
-          case 'const':
+          case "const":
             routine.constants.push(constant(lexemes, routine, true)) // TODO: set second parameter to FALSE when constants aren't hoisted on first pass
             eosCheck(lexemes)
             break
 
           // variable declarations
-          case 'var':
+          case "var":
             routine.variables.push(variable(lexemes, routine, true))
             break
 
           // subroutine definitions
-          case 'function':
+          case "function":
             routine.subroutines.push(subroutine(lexeme, lexemes, routine))
             break
         }

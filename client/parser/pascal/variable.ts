@@ -1,24 +1,24 @@
-import identifier from './identifier'
-import { semicolon } from './statement'
-import type from './type'
-import type Lexemes from '../definitions/lexemes'
-import type Program from '../definitions/program'
-import type { Subroutine } from '../definitions/subroutine'
-import Variable from '../definitions/variable'
-import { CompilerError } from '../../tools/error'
+import identifier from "./identifier.ts"
+import { semicolon } from "./statement.ts"
+import type from "./type.ts"
+import type Lexemes from "../definitions/lexemes.ts"
+import type Program from "../definitions/program.ts"
+import type { Subroutine } from "../definitions/subroutine.ts"
+import Variable from "../definitions/variable.ts"
+import { CompilerError } from "../../tools/error.ts"
 
 /** parses lexemes as a declaration of variables (after "var") */
-export function variables (lexemes: Lexemes, routine: Program|Subroutine): Variable[] {
+export function variables(lexemes: Lexemes, routine: Program | Subroutine): Variable[] {
   const vars: Variable[] = []
 
   // expecting comma separated list of variables
-  while (lexemes.get() && lexemes.get()?.content !== ':') {
+  while (lexemes.get() && lexemes.get()?.content !== ":") {
     const name = identifier(lexemes, routine)
     vars.push(new Variable(name, routine))
-    if (lexemes.get()?.content === ',') {
+    if (lexemes.get()?.content === ",") {
       lexemes.next()
-    } else if (lexemes.get()?.type === 'identifier') {
-      throw new CompilerError('Comma missing between variable names.', lexemes.get())
+    } else if (lexemes.get()?.type === "identifier") {
+      throw new CompilerError("Comma missing between variable names.", lexemes.get())
     }
   }
 
@@ -31,10 +31,10 @@ export function variables (lexemes: Lexemes, routine: Program|Subroutine): Varia
   }
 
   // expecting a semicolon
-  semicolon(lexemes, true, 'variable declaration')
+  semicolon(lexemes, true, "variable declaration")
 
   // an identifier next means more variable declarations
-  if (lexemes.get() && lexemes.get()?.type === 'identifier') {
+  if (lexemes.get() && lexemes.get()?.type === "identifier") {
     vars.push(...variables(lexemes, routine))
   }
 

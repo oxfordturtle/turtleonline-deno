@@ -1,22 +1,25 @@
-import type from './type'
-import identifier from './identifier'
-import Lexemes from '../definitions/lexemes'
-import { Constant } from '../definitions/constant'
-import Program from '../definitions/program'
-import { Subroutine } from '../definitions/subroutine'
-import { expression, typeCheck } from '../expression'
-import evaluate from '../evaluate'
-import { CompilerError } from '../../tools/error'
+import type from "./type.ts"
+import identifier from "./identifier.ts"
+import Lexemes from "../definitions/lexemes.ts"
+import { Constant } from "../definitions/constant.ts"
+import Program from "../definitions/program.ts"
+import { Subroutine } from "../definitions/subroutine.ts"
+import { expression, typeCheck } from "../expression.ts"
+import evaluate from "../evaluate.ts"
+import { CompilerError } from "../../tools/error.ts"
 
 /** parses lexemes as a constant definition, and returns the constant */
-export default function constant (lexemes: Lexemes, routine: Program|Subroutine): Constant {
+export default function constant(lexemes: Lexemes, routine: Program | Subroutine): Constant {
   // expecting type specification
   const [constantType, , arrayDimensions] = type(lexemes, routine)
   if (constantType === null) {
-    throw new CompilerError('Constant type cannot be void (expected "boolean", "char", "int", or "String").', lexemes.get())
+    throw new CompilerError(
+      'Constant type cannot be void (expected "boolean", "char", "int", or "String").',
+      lexemes.get()
+    )
   }
   if (arrayDimensions.length > 0) {
-    throw new CompilerError('Constant cannot be an array.', lexemes.get())
+    throw new CompilerError("Constant cannot be an array.", lexemes.get())
   }
 
   // expecting identifier
@@ -26,7 +29,7 @@ export default function constant (lexemes: Lexemes, routine: Program|Subroutine)
   if (!lexemes.get()) {
     throw new CompilerError(`Constant ${name} must be assigned a value.`, lexemes.get(-1))
   }
-  if (lexemes.get()?.content !== '=') {
+  if (lexemes.get()?.content !== "=") {
     throw new CompilerError(`Constant ${name} must be assigned a value.`, lexemes.get())
   }
   lexemes.next()
@@ -34,8 +37,8 @@ export default function constant (lexemes: Lexemes, routine: Program|Subroutine)
   // expecting value expression
   const exp = expression(lexemes, routine)
   typeCheck(exp, constantType)
-  const value = evaluate(exp, 'Java', 'constant')
+  const value = evaluate(exp, "Java", "constant")
 
   // create and return the constant
-  return new Constant('Java', name, value)
+  return new Constant("Java", name, value)
 }

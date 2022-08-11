@@ -1,9 +1,9 @@
-import type { Expression } from './expression'
-import type { Subroutine } from './subroutine'
-import type { Constant } from './constant'
-import type Variable from './variable'
-import type { Command } from '../../constants/commands'
-import type { IdentifierLexeme, KeywordLexeme, OperatorLexeme } from '../../lexer/lexeme'
+import type { Expression } from "./expression.ts"
+import type { Subroutine } from "./subroutine.ts"
+import type { Constant } from "./constant.ts"
+import type Variable from "./variable.ts"
+import type { Command } from "../../constants/commands.ts"
+import type { IdentifierLexeme, KeywordLexeme, OperatorLexeme } from "../../lexer/lexeme.ts"
 
 /** statement */
 export type Statement =
@@ -18,14 +18,14 @@ export type Statement =
 
 /** variable assignment */
 export class VariableAssignment {
-  readonly statementType = 'variableAssignment'
+  readonly statementType = "variableAssignment"
   readonly lexeme: OperatorLexeme
   readonly variable: Variable
   readonly indexes: Expression[]
   readonly value: Expression
 
   /** constructor */
-  constructor (lexeme: OperatorLexeme, variable: Variable, indexes: Expression[], value: Expression) {
+  constructor(lexeme: OperatorLexeme, variable: Variable, indexes: Expression[], value: Expression) {
     this.lexeme = lexeme
     this.variable = variable
     this.indexes = indexes
@@ -35,12 +35,12 @@ export class VariableAssignment {
 
 /** procedure call */
 export class ProcedureCall {
-  readonly statementType = 'procedureCall'
+  readonly statementType = "procedureCall"
   readonly lexeme: IdentifierLexeme
-  readonly command: Subroutine|Command
+  readonly command: Subroutine | Command
   readonly arguments: Expression[] = []
 
-  constructor (lexeme: IdentifierLexeme, command: Subroutine|Command) {
+  constructor(lexeme: IdentifierLexeme, command: Subroutine | Command) {
     this.lexeme = lexeme
     this.command = command
   }
@@ -48,7 +48,7 @@ export class ProcedureCall {
 
 /** if statement */
 export class IfStatement {
-  readonly statementType = 'ifStatement'
+  readonly statementType = "ifStatement"
   readonly lexeme: KeywordLexeme
   readonly condition: Expression
   readonly ifStatements: Statement[] = []
@@ -56,7 +56,7 @@ export class IfStatement {
   readonly variables: Variable[] = []
   readonly constants: Constant[] = []
 
-  constructor (lexeme: KeywordLexeme, condition: Expression) {
+  constructor(lexeme: KeywordLexeme, condition: Expression) {
     this.lexeme = lexeme
     this.condition = condition
   }
@@ -64,7 +64,7 @@ export class IfStatement {
 
 /** for statement */
 export class ForStatement {
-  readonly statementType = 'forStatement'
+  readonly statementType = "forStatement"
   readonly lexeme: KeywordLexeme
   readonly initialisation: VariableAssignment
   readonly condition: Expression
@@ -73,7 +73,12 @@ export class ForStatement {
   readonly variables: Variable[] = []
   readonly constants: Constant[] = []
 
-  constructor (lexeme: KeywordLexeme, initialisation: VariableAssignment, condition: Expression, change: VariableAssignment) {
+  constructor(
+    lexeme: KeywordLexeme,
+    initialisation: VariableAssignment,
+    condition: Expression,
+    change: VariableAssignment
+  ) {
     this.lexeme = lexeme
     this.initialisation = initialisation
     this.condition = condition
@@ -83,14 +88,14 @@ export class ForStatement {
 
 /** repeat statement */
 export class RepeatStatement {
-  readonly statementType = 'repeatStatement'
+  readonly statementType = "repeatStatement"
   readonly lexeme: KeywordLexeme
   readonly condition: Expression
   readonly statements: Statement[] = []
   readonly variables: Variable[] = []
   readonly constants: Constant[] = []
 
-  constructor (lexeme: KeywordLexeme, condition: Expression) {
+  constructor(lexeme: KeywordLexeme, condition: Expression) {
     this.lexeme = lexeme
     this.condition = condition
   }
@@ -98,14 +103,14 @@ export class RepeatStatement {
 
 /** while statement */
 export class WhileStatement {
-  readonly statementType = 'whileStatement'
+  readonly statementType = "whileStatement"
   readonly lexeme: KeywordLexeme
   readonly condition: Expression
   readonly statements: Statement[] = []
   readonly variables: Variable[] = []
   readonly constants: Constant[] = []
 
-  constructor (lexeme: KeywordLexeme, condition: Expression) {
+  constructor(lexeme: KeywordLexeme, condition: Expression) {
     this.lexeme = lexeme
     this.condition = condition
   }
@@ -113,12 +118,12 @@ export class WhileStatement {
 
 /** return statement */
 export class ReturnStatement {
-  readonly statementType = 'returnStatement'
-  readonly lexeme: KeywordLexeme|OperatorLexeme // "=" operator in BASIC, "return" keyword in other languages
+  readonly statementType = "returnStatement"
+  readonly lexeme: KeywordLexeme | OperatorLexeme // "=" operator in BASIC, "return" keyword in other languages
   readonly routine: Subroutine
   readonly value: Expression
 
-  constructor (lexeme: KeywordLexeme|OperatorLexeme, routine: Subroutine, value: Expression) {
+  constructor(lexeme: KeywordLexeme | OperatorLexeme, routine: Subroutine, value: Expression) {
     this.lexeme = lexeme
     this.routine = routine
     this.value = value
@@ -127,5 +132,5 @@ export class ReturnStatement {
 
 /** pass statement */
 export class PassStatement {
-  readonly statementType = 'passStatement'
+  readonly statementType = "passStatement"
 }

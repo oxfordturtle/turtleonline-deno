@@ -1,5 +1,5 @@
 // module imports
-import { defaults } from '../constants/properties'
+import { defaults } from "../constants/properties.ts"
 
 export type Options = {
   showCanvasOnRun: boolean
@@ -26,5 +26,5 @@ export const defaultOptions: Options = {
   traceOnRun: defaults.traceOnRun,
   activateHCLR: defaults.activateHCLR,
   preventStackCollision: defaults.preventStackCollision,
-  rangeCheckArrays: defaults.rangeCheckArrays
+  rangeCheckArrays: defaults.rangeCheckArrays,
 }

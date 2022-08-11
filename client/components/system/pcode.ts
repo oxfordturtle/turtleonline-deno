@@ -1,24 +1,23 @@
 /*
  * The program pcode component.
  */
-import { PCode, pcodeArgs } from '../../constants/pcodes'
-import state from '../../state/index'
-import { fill, div, li } from '../../tools/elements'
-import { on } from '../../tools/hub'
+import { PCode, pcodeArgs } from "../../constants/pcodes.ts"
+import { state } from "../../state/index.ts"
+import { fill, div, li } from "../../tools/elements.ts"
+import { on } from "../../tools/hub.ts"
 
 // the pcode display
 const list = document.querySelector('[data-component="pcodeList"]') as HTMLElement
 
 if (list) {
-// register to keep in sync with the application state
-on('pcodeChanged', function () {
-  fill(list, state.pcode.map(pcodeListItem))
-})
-
+  // register to keep in sync with the application state
+  on("pcodeChanged", function () {
+    fill(list, state.pcode.map(pcodeListItem))
+  })
 }
 
 // function to create a list item from a line of PCode
-function pcodeListItem (line: number[]): HTMLLIElement {
+function pcodeListItem(line: number[]): HTMLLIElement {
   const content = state.assembler
     ? assemble(line, 0)
     : line.reduce((sofar, current) => sofar.concat(cell(current)), [] as HTMLDivElement[])
@@ -29,7 +28,7 @@ function pcodeListItem (line: number[]): HTMLLIElement {
 }
 
 // function to create an array of divs for assembler code from a line of PCode
-function assemble (line: number[], index: number): HTMLDivElement[] {
+function assemble(line: number[], index: number): HTMLDivElement[] {
   const hit = PCode[line[index]]
   const pcode = hit ? [cell(hit.toUpperCase())] : [cell(line[index])]
   let args = 0
@@ -56,10 +55,10 @@ function assemble (line: number[], index: number): HTMLDivElement[] {
 }
 
 // function to create a div element from a PCode
-function cell (content: number|string): HTMLDivElement {
+function cell(content: number | string): HTMLDivElement {
   if (content === null || content === undefined) {
-    return div({ content: ':(' })
-  } else if (typeof content === 'string') {
+    return div({ content: ":(" })
+  } else if (typeof content === "string") {
     return div({ content })
   } else if (state.decimal) {
     return div({ content: content.toString(10) })

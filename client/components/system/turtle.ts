@@ -1,7 +1,9 @@
+/// <reference lib="dom" />
+
 /*
  * The turtle properties display (shown above the canvas).
  */
-import { on } from '../../tools/hub'
+import { on } from "../../tools/hub.ts"
 
 // get relevant elements
 const turtX = document.querySelector('[data-component="turtxDisplay"]') as HTMLSpanElement
@@ -13,29 +15,29 @@ const turtC = document.querySelector('[data-component="turtcDisplay"]') as HTMLS
 
 if (turtX && turtY && turtD && turtA && turtT && turtC) {
   // register to keep in sync with the machine state
-  on('turtxChanged', function (x: number) {
+  on("turtxChanged", function (x: number) {
     turtX.innerHTML = x.toString(10)
   })
 
-  on('turtyChanged', function (y: number) {
+  on("turtyChanged", function (y: number) {
     turtY.innerHTML = y.toString(10)
   })
 
-  on('turtdChanged', function (d: number) {
+  on("turtdChanged", function (d: number) {
     turtD.innerHTML = d.toString(10)
   })
 
-  on('turtaChanged', function (a: number) {
+  on("turtaChanged", function (a: number) {
     turtA.innerHTML = a.toString(10)
   })
 
-  on('turttChanged', function (t: number) {
-    const penup = (t < 0)
+  on("turttChanged", function (t: number) {
+    const penup = t < 0
     const thickness = Math.abs(t)
     turtT.innerHTML = penup ? `(${thickness.toString(10)})` : thickness.toString(10)
   })
 
-  on('turtcChanged', function (c: string) {
+  on("turtcChanged", function (c: string) {
     turtC.style.background = c
   })
 }

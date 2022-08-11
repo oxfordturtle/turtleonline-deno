@@ -1,29 +1,32 @@
 /**
  * Colour constants reference table.
  */
-import type { Colour } from '../../constants/colours'
-import { colours } from '../../constants/colours'
-import type { Language } from '../../constants/languages'
-import state from '../../state/index'
-import { on } from '../../tools/hub'
+import type { Colour } from "../../constants/colours.ts"
+import { colours } from "../../constants/colours.ts"
+import type { Language } from "../../constants/languages.ts"
+import { state } from "../../state/index.ts"
+import { on } from "../../tools/hub.ts"
 
 // get relevant elements
 const coloursTableBody = document.querySelector('[data-component="coloursTableBody"]') as HTMLElement
 
 if (coloursTableBody) {
-  on('languageChanged', updateTable)
+  on("languageChanged", updateTable)
 }
 
-function updateTable (): void {
+function updateTable(): void {
   if (coloursTableBody) {
-    coloursTableBody.innerHTML = ''
+    coloursTableBody.innerHTML = ""
     for (let i = 0; i < 10; i += 1) {
-      coloursTableBody.innerHTML += `<tr>${colours.slice(i * 5, i * 5 + 5).map(colourTableCells).join('')}</tr>`
+      coloursTableBody.innerHTML += `<tr>${colours
+        .slice(i * 5, i * 5 + 5)
+        .map(colourTableCells)
+        .join("")}</tr>`
     }
   }
 }
 
-function colourTableCells (colour: Colour): string {
+function colourTableCells(colour: Colour): string {
   return `
     <th>${colour.index}</th>
     <td style="background:#${colour.hex};color:${colour.text}">
@@ -31,13 +34,13 @@ function colourTableCells (colour: Colour): string {
     </td>`
 }
 
-function hex (language: Language, hex: string) {
+function hex(language: Language, hex: string) {
   switch (language) {
-    case 'BASIC':
+    case "BASIC":
       return `&${hex}`
-    case 'Pascal':
+    case "Pascal":
       return `$${hex}`
-    case 'Python':
+    case "Python":
       return `0x${hex}`
   }
 }

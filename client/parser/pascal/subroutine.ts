@@ -1,18 +1,18 @@
-import identifier from './identifier'
-import type from './type'
-import { semicolon, statement } from './statement'
-import { variables } from './variable'
-import type Lexemes from '../definitions/lexemes'
-import Program from '../definitions/program'
-import { Subroutine } from '../definitions/subroutine'
-import Variable from '../definitions/variable'
-import { CompilerError } from '../../tools/error'
-import type { KeywordLexeme, Lexeme } from '../../lexer/lexeme'
+import identifier from "./identifier.ts"
+import type from "./type.ts"
+import { semicolon, statement } from "./statement.ts"
+import { variables } from "./variable.ts"
+import type Lexemes from "../definitions/lexemes.ts"
+import Program from "../definitions/program.ts"
+import { Subroutine } from "../definitions/subroutine.ts"
+import Variable from "../definitions/variable.ts"
+import { CompilerError } from "../../tools/error.ts"
+import type { KeywordLexeme, Lexeme } from "../../lexer/lexeme.ts"
 
 /** parses lexemes as a subroutine definition */
-export default function subroutine (lexeme: KeywordLexeme, lexemes: Lexemes, parent: Program|Subroutine): Subroutine {
+export default function subroutine(lexeme: KeywordLexeme, lexemes: Lexemes, parent: Program | Subroutine): Subroutine {
   // save whether it should be a function or a procedure
-  const isFunction = lexeme.subtype === 'function'
+  const isFunction = lexeme.subtype === "function"
 
   // expecting identifier
   const name = identifier(lexemes, parent)
@@ -22,7 +22,7 @@ export default function subroutine (lexeme: KeywordLexeme, lexemes: Lexemes, par
   sub.index = subroutineIndex(sub)
 
   // optionally expecting parameters
-  if (lexemes.get()?.content === '(') {
+  if (lexemes.get()?.content === "(") {
     lexemes.next()
     sub.variables.push(...parameters(lexemes, sub))
   }
@@ -31,9 +31,9 @@ export default function subroutine (lexeme: KeywordLexeme, lexemes: Lexemes, par
   if (isFunction) {
     const [returnType, stringLength, arrayDimensions] = type(lexemes, sub, false)
     if (arrayDimensions.length > 0) {
-      throw new CompilerError('Functions cannot return arrays.', lexemes.get(-1))
+      throw new CompilerError("Functions cannot return arrays.", lexemes.get(-1))
     }
-    const foo = new Variable('result', sub)
+    const foo = new Variable("result", sub)
     foo.type = returnType
     foo.stringLength = stringLength
     sub.variables.unshift(foo)
@@ -44,29 +44,29 @@ export default function subroutine (lexeme: KeywordLexeme, lexemes: Lexemes, par
 
   // expecting variable declarations, subroutine definitions, or subroutine body
   let begun = false
-  while (lexemes.get() && lexemes.get()?.content?.toLowerCase() !== 'end') {
+  while (lexemes.get() && lexemes.get()?.content?.toLowerCase() !== "end") {
     const lexeme = lexemes.get() as Lexeme
     switch (lexeme.type) {
-      case 'keyword':
+      case "keyword":
         switch (lexeme.subtype) {
           // variable declarations
-          case 'var':
+          case "var":
             lexemes.next()
             sub.variables.push(...variables(lexemes, sub))
             break
 
           // procedure/function definition
-          case 'procedure': // fallthrough
-          case 'function':
+          case "procedure": // fallthrough
+          case "function":
             lexemes.next()
             sub.subroutines.push(subroutine(lexeme, lexemes, sub))
             break
 
           // start of subroutine statements
-          case 'begin':
+          case "begin":
             begun = true
             lexemes.next()
-            while (lexemes.get() && lexemes.get()?.content?.toLowerCase() !== 'end') {
+            while (lexemes.get() && lexemes.get()?.content?.toLowerCase() !== "end") {
               const lexeme = lexemes.get() as Lexeme
               sub.statements.push(statement(lexeme, lexemes, sub))
             }
@@ -77,16 +77,16 @@ export default function subroutine (lexeme: KeywordLexeme, lexemes: Lexemes, par
             if (!begun) {
               throw new CompilerError(`Keyword "begin" missing for ${sub.type} ${sub.name}.`, lexemes.get())
             }
-            throw new CompilerError('{lex} makes no sense here.', lexemes.get())
+            throw new CompilerError("{lex} makes no sense here.", lexemes.get())
         }
         break
 
-        // anything else is an error
-        default:
-          if (!begun) {
-            throw new CompilerError(`Keyword "begin" missing for ${sub.type} ${sub.name}.`, lexemes.get())
-          }
-          throw new CompilerError('{lex} makes no sense here.', lexemes.get())
+      // anything else is an error
+      default:
+        if (!begun) {
+          throw new CompilerError(`Keyword "begin" missing for ${sub.type} ${sub.name}.`, lexemes.get())
+        }
+        throw new CompilerError("{lex} makes no sense here.", lexemes.get())
     }
   }
 
@@ -105,33 +105,33 @@ export default function subroutine (lexeme: KeywordLexeme, lexemes: Lexemes, par
 }
 
 /** calculates the index of a subroutine (before it and its parents have been added to the program) */
-function subroutineIndex (subroutine: Subroutine): number {
-  return (subroutine.parent instanceof Program)
+function subroutineIndex(subroutine: Subroutine): number {
+  return subroutine.parent instanceof Program
     ? subroutine.parent.allSubroutines.length + 1
     : subroutineIndex(subroutine.parent) + subroutine.allSubroutines.length + 1
 }
 
 /** parses lexemes as subroutine parameters */
-function parameters (lexemes: Lexemes, subroutine: Subroutine): Variable[] {
+function parameters(lexemes: Lexemes, subroutine: Subroutine): Variable[] {
   const parameters: Variable[] = []
 
   // scoop up parameters
-  while (lexemes.get() && lexemes.get()?.content !== ')') {
+  while (lexemes.get() && lexemes.get()?.content !== ")") {
     subroutine.variables.push(...parameterSet(lexemes, subroutine))
     // move past semicolon
-    if (lexemes.get() && lexemes.get()?.content === ';')  {
+    if (lexemes.get() && lexemes.get()?.content === ";") {
       lexemes.next()
       // throw error for trailing semicolons
-      if (lexemes.get()?.content === ')') {
-        throw new CompilerError('Trailing semicolon at end of parameter list.', lexemes.get())
+      if (lexemes.get()?.content === ")") {
+        throw new CompilerError("Trailing semicolon at end of parameter list.", lexemes.get())
       }
-    } else if (lexemes.get()?.type === 'identifier') {
-      throw new CompilerError('Semicolon missing between parameters.', lexemes.get())
+    } else if (lexemes.get()?.type === "identifier") {
+      throw new CompilerError("Semicolon missing between parameters.", lexemes.get())
     }
   }
 
   // check for closing bracket
-  if (lexemes.get()?.content !== ')') {
+  if (lexemes.get()?.content !== ")") {
     throw new CompilerError(`Closing bracket missing after ${subroutine.type} parameters.`, lexemes.get(-1))
   }
   lexemes.next()
@@ -141,24 +141,24 @@ function parameters (lexemes: Lexemes, subroutine: Subroutine): Variable[] {
 }
 
 /** parses lexemes as a set of parameter declarations */
-function parameterSet (lexemes: Lexemes, subroutine: Subroutine): Variable[] {
+function parameterSet(lexemes: Lexemes, subroutine: Subroutine): Variable[] {
   const parameters: Variable[] = []
 
   // "var" is permissable here (for reference parameters)
   let isReferenceParameter = false
-  if (lexemes.get()?.content === 'var') {
+  if (lexemes.get()?.content === "var") {
     isReferenceParameter = true
     lexemes.next()
   }
 
   // expecting comma separated list of identifiers
-  while (lexemes.get() && lexemes.get()?.content !== ':') {
+  while (lexemes.get() && lexemes.get()?.content !== ":") {
     const name = identifier(lexemes, subroutine)
     parameters.push(new Variable(name, subroutine))
-    if (lexemes.get()?.content === ',') {
+    if (lexemes.get()?.content === ",") {
       lexemes.next()
-    } else if (lexemes.get()?.type === 'identifier') {
-      throw new CompilerError('Comma missing between parameter names.', lexemes.get())
+    } else if (lexemes.get()?.type === "identifier") {
+      throw new CompilerError("Comma missing between parameter names.", lexemes.get())
     }
   }
 

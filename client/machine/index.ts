@@ -1,54 +1,56 @@
+/// <reference lib="dom" />
+
 // type imports
-import type { Options } from './options'
-import type { Turtle } from './turtle'
+import type { Options } from "./options.ts"
+import type { Turtle } from "./turtle.ts"
 
 // module imports
-import * as memory from './memory'
-import { defaultOptions } from './options'
-import { mixBytes } from './misc'
-import { colours } from '../constants/colours'
-import { PCode } from '../constants/pcodes'
-import { MachineError } from '../tools/error'
-import { send } from '../tools/hub'
-import hex from '../tools/hex'
+import * as memory from "./memory.ts"
+import { defaultOptions } from "./options.ts"
+import { mixBytes } from "./misc.ts"
+import { colours } from "../constants/colours.ts"
+import { PCode } from "../constants/pcodes.ts"
+import { MachineError } from "../tools/error.ts"
+import { send } from "../tools/hub.ts"
+import hex from "../tools/hex.ts"
 
 // machine variables
-let canvas: HTMLCanvasElement = document.createElement('canvas')
-let context: CanvasRenderingContext2D = document.createElement('canvas').getContext('2d') as CanvasRenderingContext2D
-let running: boolean = false
-let paused: boolean = false
+let canvas: HTMLCanvasElement = document.createElement("canvas")
+let context: CanvasRenderingContext2D = document.createElement("canvas").getContext("2d") as CanvasRenderingContext2D
+let running = false
+let paused = false
 let pcode: number[][] = []
-let line: number = 0
-let code: number = 0
+let line = 0
+let code = 0
 let options: Options = defaultOptions
 
 // the virtual canvas
-let startx: number = 0
-let starty: number = 0
-let sizex: number = 1000
-let sizey: number = 1000
-let width: number = 1000
-let height: number = 1000
-let doubled: boolean = false
+let startx = 0
+let starty = 0
+let sizex = 1000
+let sizey = 1000
+let width = 1000
+let height = 1000
+let doubled = false
 
-let detectInputcode: number = 0
-let detectTimeoutID: number = 0
-let readlineTimeoutID: number = 0
+let detectInputcode = 0
+let detectTimeoutID = 0
+let readlineTimeoutID = 0
 
 // runtime variables
-let startTime: number = 0
-let update: boolean = false
-let keyecho: boolean = false
-let seed: number = 0
+let startTime = 0
+let update = false
+let keyecho = false
+let seed = 0
 
 /** sets the canvas and context */
-export function setCanvasAndContext (can: HTMLCanvasElement, con: CanvasRenderingContext2D): void {
+export function setCanvasAndContext(can: HTMLCanvasElement, con: CanvasRenderingContext2D): void {
   canvas = can
   context = con
 }
 
 /** resets the machine */
-export function reset (): void {
+export function reset(): void {
   // reset the virtual canvas
   startx = 0
   starty = 0
@@ -58,20 +60,20 @@ export function reset (): void {
   height = 1000
   doubled = false
   // send reset machine components signals
-  send('resolution', { width: 1000, height: 1000 })
-  send('console', { clear: true, colour: '#FFFFFF' })
-  send('output', { clear: true, colour: '#FFFFFF' })
-  send('turtxChanged', 500)
-  send('turtyChanged', 500)
-  send('turtdChanged', 0)
-  send('turtaChanged', 360)
-  send('turttChanged', 2)
-  send('turtcChanged', '#000')
-  send('canvas', { startx: 0, starty: 0, sizex: 1000, sizey: 1000 })
+  send("resolution", { width: 1000, height: 1000 })
+  send("console", { clear: true, colour: "#FFFFFF" })
+  send("output", { clear: true, colour: "#FFFFFF" })
+  send("turtxChanged", 500)
+  send("turtyChanged", 500)
+  send("turtdChanged", 0)
+  send("turtaChanged", 360)
+  send("turttChanged", 2)
+  send("turtcChanged", "#000")
+  send("canvas", { startx: 0, starty: 0, sizex: 1000, sizey: 1000 })
 }
 
 /** runs a program with the given pcode and options */
-export function run (p: number[][], o: Options): void {
+export function run(p: number[][], o: Options): void {
   // reset the machine
   reset()
   // save pcode and options for program execution
@@ -82,7 +84,7 @@ export function run (p: number[][], o: Options): void {
   code = 0
   // optionally show the canvas
   if (options.showCanvasOnRun) {
-    send('selectTab', 'canvas')
+    send("selectTab", "canvas")
   }
   // setup machine memory
   memory.init(options)
@@ -95,77 +97,77 @@ export function run (p: number[][], o: Options): void {
   running = true
   paused = false
   // add event listeners
-  window.addEventListener('keydown', storeKey)
-  window.addEventListener('keyup', releaseKey)
-  window.addEventListener('keypress', putInBuffer)
-  canvas.addEventListener('contextmenu', preventDefault)
-  canvas.addEventListener('mousemove', storeMouseXY)
-  canvas.addEventListener('touchmove', preventDefault)
-  canvas.addEventListener('touchmove', storeMouseXY)
-  canvas.addEventListener('mousedown', preventDefault)
-  canvas.addEventListener('mousedown', storeClickXY)
-  canvas.addEventListener('touchstart', storeClickXY)
-  canvas.addEventListener('mouseup', releaseClickXY)
-  canvas.addEventListener('touchend', releaseClickXY)
+  addEventListener("keydown", storeKey)
+  addEventListener("keyup", releaseKey)
+  addEventListener("keypress", putInBuffer)
+  canvas.addEventListener("contextmenu", preventDefault)
+  canvas.addEventListener("mousemove", storeMouseXY)
+  canvas.addEventListener("touchmove", preventDefault)
+  canvas.addEventListener("touchmove", storeMouseXY)
+  canvas.addEventListener("mousedown", preventDefault)
+  canvas.addEventListener("mousedown", storeClickXY)
+  canvas.addEventListener("touchstart", storeClickXY)
+  canvas.addEventListener("mouseup", releaseClickXY)
+  canvas.addEventListener("touchend", releaseClickXY)
   // send the started signal (via the main state module)
-  send('played')
+  send("played")
   // execute the first block of code (which will in turn trigger execution of the next block)
   execute()
 }
 
 /** halts execution of the current program */
-export function halt (): void {
+export function halt(): void {
   if (running) {
     // remove event listeners
-    window.removeEventListener('keydown', storeKey)
-    window.removeEventListener('keyup', releaseKey)
-    window.removeEventListener('keypress', putInBuffer)
-    window.removeEventListener('keyup', detect)
-    window.removeEventListener('mouseup', detect)
-    window.removeEventListener('keyup',readline)
-    canvas.removeEventListener('contextmenu', preventDefault)
-    canvas.removeEventListener('mousemove', storeMouseXY)
-    canvas.removeEventListener('touchmove', preventDefault)
-    canvas.removeEventListener('touchmove', storeMouseXY)
-    canvas.removeEventListener('mousedown', preventDefault)
-    canvas.removeEventListener('mousedown', storeClickXY)
-    canvas.removeEventListener('touchstart', storeClickXY)
-    canvas.removeEventListener('mouseup', releaseClickXY)
-    canvas.removeEventListener('touchend', releaseClickXY)
+    removeEventListener("keydown", storeKey)
+    removeEventListener("keyup", releaseKey)
+    removeEventListener("keypress", putInBuffer)
+    removeEventListener("keyup", detect)
+    removeEventListener("mouseup", detect)
+    removeEventListener("keyup", readline)
+    canvas.removeEventListener("contextmenu", preventDefault)
+    canvas.removeEventListener("mousemove", storeMouseXY)
+    canvas.removeEventListener("touchmove", preventDefault)
+    canvas.removeEventListener("touchmove", storeMouseXY)
+    canvas.removeEventListener("mousedown", preventDefault)
+    canvas.removeEventListener("mousedown", storeClickXY)
+    canvas.removeEventListener("touchstart", storeClickXY)
+    canvas.removeEventListener("mouseup", releaseClickXY)
+    canvas.removeEventListener("touchend", releaseClickXY)
     // reset the canvas cursor
-    send('cursor', 1)
+    send("cursor", 1)
     // reset the machine status
     running = false
     paused = false
     // send the stopped signal (via the main state module)
-    send('halted')
+    send("halted")
   }
 }
 
 /** gets whether the machine is running */
-export function isRunning (): boolean {
+export function isRunning(): boolean {
   return running
 }
 
 /** gets whether the machine is paused */
-export function isPaused (): boolean {
+export function isPaused(): boolean {
   return paused
 }
 
 /** pauses execution of the current program */
-export function pause (): void {
+export function pause(): void {
   paused = true
-  send('paused')
+  send("paused")
 }
 
 /** plays (unpauses) execution of the current program */
-export function play (): void {
+export function play(): void {
   paused = false
-  send('unpaused')
+  send("unpaused")
 }
 
 /** executes a block of pcode */
-function execute (): void {
+function execute(): void {
   // don't do anything if we're not running
   if (!running) {
     return
@@ -179,22 +181,22 @@ function execute (): void {
 
   // in case of detect or readline, remove the event listeners the first time we carry on with the
   // program execution after they have been called
-  window.removeEventListener('keyup', detect)
-  window.removeEventListener('mouseup', detect)
-  window.removeEventListener('keyup', readline)
+  removeEventListener("keyup", detect)
+  removeEventListener("mouseup", detect)
+  removeEventListener("keyup", readline)
 
   // execute any delayed heap clear calls
   memory.delayedHeapClear()
 
   // execute as much code as possible
-  let drawCount: number = 0
-  let codeCount: number = 0
-  let n1: number|undefined
-  let n2: number|undefined
-  let n3: number|undefined
-  let n4: number|undefined
+  let drawCount = 0
+  let codeCount = 0
+  let n1: number | undefined
+  let n2: number | undefined
+  let n3: number | undefined
+  let n4: number | undefined
   let bool1: boolean
-  let bool2 : boolean
+  let bool2: boolean
   let s1: string
   let s2: string
   let s3: string
@@ -203,7 +205,7 @@ function execute (): void {
   let g: number
   let b: number
   try {
-    while (drawCount < options.drawCountMax && (codeCount <= options.codeCountMax)) {
+    while (drawCount < options.drawCountMax && codeCount <= options.codeCountMax) {
       switch (pcode[line][code]) {
         // 0x0 - basic stack operations, conversion operators
         case PCode.null:
@@ -214,8 +216,8 @@ function execute (): void {
           if (n1 !== undefined) {
             memory.stack.push(n1, n1)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
-          } 
+            throw new MachineError("Stack operation called on empty stack.")
+          }
           break
 
         case PCode.swap:
@@ -224,7 +226,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             memory.stack.push(n2, n1)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -235,7 +237,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
             memory.stack.push(n2, n3, n1)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -244,7 +246,7 @@ function execute (): void {
           if (n1 !== undefined) {
             memory.stack.push(n1 + 1)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -253,7 +255,7 @@ function execute (): void {
           if (n1 !== undefined) {
             memory.stack.push(n1 - 1)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -268,7 +270,7 @@ function execute (): void {
             n2 = n2 - Math.floor(n2)
             memory.stack.push(Math.floor(n2 * Math.abs(n1)))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -278,7 +280,7 @@ function execute (): void {
             s1 = memory.getHeapString(n1)
             memory.makeHeapString(s1)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -287,7 +289,7 @@ function execute (): void {
           if (n1 !== undefined) {
             memory.makeHeapString(String.fromCharCode(n1))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -301,7 +303,7 @@ function execute (): void {
               memory.stack.push(s1.charCodeAt(0))
             }
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -309,8 +311,8 @@ function execute (): void {
           n1 = memory.stack.pop()
           if (n1 !== undefined) {
             memory.makeHeapString(n1.toString(10))
-          }  else {
-            throw new MachineError('Stack operation called on empty stack.')
+          } else {
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -320,11 +322,11 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             s1 = n1.toString(16).toUpperCase()
             while (s1.length < n2) {
-              s1 = '0' + s1
+              s1 = "0" + s1
             }
             memory.makeHeapString(s1)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -333,14 +335,14 @@ function execute (): void {
           n1 = memory.stack.pop()
           if (n1 !== undefined && n2 !== undefined) {
             s1 = memory.getHeapString(n1)
-            if (s1[0] === '#') {
+            if (s1[0] === "#") {
               n3 = isNaN(parseInt(s1.slice(1), 16)) ? n2 : parseInt(s1.slice(1), 16)
             } else {
               n3 = isNaN(parseInt(s1, 10)) ? n2 : parseInt(s1, 10)
             }
             memory.stack.push(n3)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -349,10 +351,10 @@ function execute (): void {
           n3 = memory.stack.pop()
           n2 = memory.stack.pop()
           if (n2 !== undefined && n3 !== undefined && n4 !== undefined) {
-            n1 = (n2 / n3)
+            n1 = n2 / n3
             memory.makeHeapString(n1.toFixed(n4))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -365,7 +367,7 @@ function execute (): void {
             n4 = isNaN(parseFloat(s1)) ? n3 : parseFloat(s1)
             memory.stack.push(Math.round(n4 * n2))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -375,7 +377,7 @@ function execute (): void {
           if (n1 !== undefined) {
             memory.stack.push(~n1)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -385,7 +387,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             memory.stack.push(n1 & n2)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -395,7 +397,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             memory.stack.push(n1 | n2)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -405,7 +407,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             memory.stack.push(n1 ^ n2)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -415,7 +417,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             memory.stack.push(n1 && n2)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -425,7 +427,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             memory.stack.push(n1 || n2)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -439,7 +441,7 @@ function execute (): void {
               memory.stack.push(n1 >> n2)
             }
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -448,7 +450,7 @@ function execute (): void {
           if (n1 !== undefined) {
             memory.stack.push(-n1)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -457,7 +459,7 @@ function execute (): void {
           if (n1 !== undefined) {
             memory.stack.push(Math.abs(n1))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -466,7 +468,7 @@ function execute (): void {
           if (n1 !== undefined) {
             memory.stack.push(Math.sign(n1))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -476,7 +478,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             memory.stack.push(n1 + n2)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -486,7 +488,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             memory.stack.push(n1 - n2)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -496,7 +498,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             memory.stack.push(n1 * n2)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -505,12 +507,12 @@ function execute (): void {
           n1 = memory.stack.pop()
           if (n1 !== undefined && n2 !== undefined) {
             if (n2 === 0) {
-              throw new MachineError('Cannot divide by zero.')
+              throw new MachineError("Cannot divide by zero.")
             }
             n3 = n1 / n2
             memory.stack.push(Math.round(n3))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -519,12 +521,12 @@ function execute (): void {
           n1 = memory.stack.pop()
           if (n1 !== undefined && n2 !== undefined) {
             if (n2 === 0) {
-              throw new MachineError('Cannot divide by zero.')
+              throw new MachineError("Cannot divide by zero.")
             }
             n3 = n1 / n2
-            memory.stack.push((n3 > 0) ? Math.floor(n3) : Math.ceil(n3))
+            memory.stack.push(n3 > 0 ? Math.floor(n3) : Math.ceil(n3))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -534,7 +536,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             memory.stack.push(n1 % n2)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -545,7 +547,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             memory.stack.push(n1 === n2 ? -1 : 0)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -555,7 +557,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             memory.stack.push(n1 !== n2 ? -1 : 0)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -565,7 +567,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             memory.stack.push(n1 < n2 ? -1 : 0)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -575,7 +577,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             memory.stack.push(n1 > n2 ? -1 : 0)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -585,7 +587,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             memory.stack.push(n1 <= n2 ? -1 : 0)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -595,7 +597,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             memory.stack.push(n1 >= n2 ? -1 : 0)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -605,7 +607,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             memory.stack.push(Math.max(n1, n2))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -615,7 +617,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             memory.stack.push(Math.min(n1, n2))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -627,7 +629,7 @@ function execute (): void {
             s1 = memory.getHeapString(n1)
             memory.stack.push(s1 === s2 ? -1 : 0)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -639,7 +641,7 @@ function execute (): void {
             s1 = memory.getHeapString(n1)
             memory.stack.push(s1 !== s2 ? -1 : 0)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -651,7 +653,7 @@ function execute (): void {
             s1 = memory.getHeapString(n2)
             memory.stack.push(n1 < n2 ? -1 : 0)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -663,7 +665,7 @@ function execute (): void {
             s1 = memory.getHeapString(n1)
             memory.stack.push(n1 > n2 ? -1 : 0)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -675,7 +677,7 @@ function execute (): void {
             s1 = memory.getHeapString(n1)
             memory.stack.push(s1 <= s2 ? -1 : 0)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -687,7 +689,7 @@ function execute (): void {
             s1 = memory.getHeapString(n1)
             memory.stack.push(s1 >= s2 ? -1 : 0)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -699,7 +701,7 @@ function execute (): void {
             s1 = memory.getHeapString(n1)
             memory.makeHeapString(s2 > s1 ? s2 : s1)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -711,7 +713,7 @@ function execute (): void {
             s1 = memory.getHeapString(n1)
             memory.makeHeapString(s2 < s1 ? s2 : s1)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -723,7 +725,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
             memory.stack.push(Math.round((n1 / n2) * n3))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -733,7 +735,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             memory.stack.push(Math.round(Math.sqrt(n1) * n2))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -742,9 +744,9 @@ function execute (): void {
           n2 = memory.stack.pop()
           n1 = memory.stack.pop()
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
-            memory.stack.push(Math.round(Math.sqrt((n1 * n1) + (n2 * n2)) * n3))
+            memory.stack.push(Math.round(Math.sqrt(n1 * n1 + n2 * n2) * n3))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -756,7 +758,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
             memory.stack.push(Math.round(Math.pow(n1 / n2, 1 / n3) * n4))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -768,7 +770,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
             memory.stack.push(Math.round(Math.pow(n1 / n2, n3) * n4))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -779,7 +781,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
             memory.stack.push(Math.round((Math.log(n1 / n2) / Math.LN10) * n3))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -790,7 +792,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
             memory.stack.push(Math.round(Math.pow(10, n1 / n2) * n3))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -801,7 +803,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
             memory.stack.push(Math.round(Math.log(n1 / n2) * n3))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -812,7 +814,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
             memory.stack.push(Math.round(Math.exp(n1 / n2) * n3))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -821,10 +823,10 @@ function execute (): void {
           n3 = memory.stack.pop()
           n2 = memory.stack.pop()
           if (n2 !== undefined && n3 !== undefined && n4 !== undefined) {
-            n1 = (n2 / n3) * (2 * Math.PI) / memory.getTurtA()
+            n1 = ((n2 / n3) * (2 * Math.PI)) / memory.getTurtA()
             memory.stack.push(Math.round(Math.sin(n1) * n4))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -833,10 +835,10 @@ function execute (): void {
           n3 = memory.stack.pop()
           n2 = memory.stack.pop()
           if (n2 !== undefined && n3 !== undefined && n4 !== undefined) {
-            n1 = (n2 / n3) * (2 * Math.PI) / memory.getTurtA()
+            n1 = ((n2 / n3) * (2 * Math.PI)) / memory.getTurtA()
             memory.stack.push(Math.round(Math.cos(n1) * n4))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -845,10 +847,10 @@ function execute (): void {
           n3 = memory.stack.pop()
           n2 = memory.stack.pop()
           if (n2 !== undefined && n3 !== undefined && n4 !== undefined) {
-            n1 = (n2 / n3) * (2 * Math.PI) / memory.getTurtA()
+            n1 = ((n2 / n3) * (2 * Math.PI)) / memory.getTurtA()
             memory.stack.push(Math.round(Math.tan(n1) * n4))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -860,7 +862,7 @@ function execute (): void {
             n1 = memory.getTurtA() / (2 * Math.PI)
             memory.stack.push(Math.round(Math.asin(n2 / n3) * n4 * n1))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -872,7 +874,7 @@ function execute (): void {
             n1 = memory.getTurtA() / (2 * Math.PI)
             memory.stack.push(Math.round(Math.acos(n2 / n3) * n4 * n1))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -884,7 +886,7 @@ function execute (): void {
             n1 = memory.getTurtA() / (2 * Math.PI)
             memory.stack.push(Math.round(Math.atan2(n2, n3) * n4 * n1))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -893,7 +895,7 @@ function execute (): void {
           if (n1 !== undefined) {
             memory.stack.push(Math.round(Math.PI * n1))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -906,7 +908,7 @@ function execute (): void {
             s1 = memory.getHeapString(n1)
             memory.makeHeapString(s1 + s2)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -915,7 +917,7 @@ function execute (): void {
           if (n1 !== undefined) {
             memory.stack.push(memory.main[n1])
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -943,12 +945,18 @@ function execute (): void {
                 break
               case 4:
                 // capitalise first letter of each word (and make the rest lowercase)
-                s1 = s1.split(' ').map(x => x[0].toUpperCase() + x.slice(1).toLowerCase()).join(' ')
+                s1 = s1
+                  .split(" ")
+                  .map((x) => x[0].toUpperCase() + x.slice(1).toLowerCase())
+                  .join(" ")
                 memory.makeHeapString(s1)
                 break
               case 5:
                 // swap case
-                s1 = s1.split('').map(x => (x === x.toLowerCase()) ? x.toUpperCase() : x.toLowerCase()).join('')
+                s1 = s1
+                  .split("")
+                  .map((x) => (x === x.toLowerCase() ? x.toUpperCase() : x.toLowerCase()))
+                  .join("")
                 memory.makeHeapString(s1)
                 break
               default:
@@ -957,7 +965,7 @@ function execute (): void {
                 break
             }
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -969,7 +977,7 @@ function execute (): void {
             s1 = memory.getHeapString(n1)
             memory.makeHeapString(s1.substr(n2 - 1, n3))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -977,12 +985,12 @@ function execute (): void {
           n4 = memory.stack.pop()
           n3 = memory.stack.pop()
           n2 = memory.stack.pop()
-          if (n2 !== undefined && n3 !== undefined && n4 !==undefined) {
+          if (n2 !== undefined && n3 !== undefined && n4 !== undefined) {
             s2 = memory.getHeapString(n2)
-            s1 = s2.substr(0, n3 - 1) + s2.substr((n3 - 1) + n4)
+            s1 = s2.substr(0, n3 - 1) + s2.substr(n3 - 1 + n4)
             memory.makeHeapString(s1)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -996,7 +1004,7 @@ function execute (): void {
             s1 = s3.substr(0, n4 - 1) + s2 + s3.substr(n4 - 1)
             memory.makeHeapString(s1)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1008,7 +1016,7 @@ function execute (): void {
             s1 = memory.getHeapString(n1)
             memory.stack.push(s2.indexOf(s1) + 1)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1028,10 +1036,10 @@ function execute (): void {
               }
               memory.makeHeapString(s1)
             } else {
-              memory.makeHeapString(s1.replace(new RegExp(s2, 'g'), s3))
+              memory.makeHeapString(s1.replace(new RegExp(s2, "g"), s3))
             }
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1042,7 +1050,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
             s2 = memory.getHeapString(n2)
             s1 = memory.getHeapString(n1)
-            while ((s1.length + s2.length) <= Math.abs(n3)) {
+            while (s1.length + s2.length <= Math.abs(n3)) {
               if (n3 < 0) {
                 s1 = s1 + s2
               } else {
@@ -1051,7 +1059,7 @@ function execute (): void {
             }
             memory.makeHeapString(s1)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1061,20 +1069,20 @@ function execute (): void {
             s1 = memory.getHeapString(n1)
             memory.makeHeapString(s1.trim())
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
         // 0x50s - turtle settings and movement
         case PCode.home:
-          n1 = startx + (sizex / 2)
-          n2 = starty + (sizey / 2)
+          n1 = startx + sizex / 2
+          n2 = starty + sizey / 2
           memory.setTurtX(Math.round(n1))
           memory.setTurtY(Math.round(n2))
           memory.setTurtD(0)
-          send('turtxChanged', memory.getTurtX())
-          send('turtyChanged', memory.getTurtY())
-          send('turtdChanged', memory.getTurtD())
+          send("turtxChanged", memory.getTurtX())
+          send("turtyChanged", memory.getTurtY())
+          send("turtdChanged", memory.getTurtD())
           memory.coords.push([memory.getTurtX(), memory.getTurtY()])
           break
 
@@ -1082,10 +1090,10 @@ function execute (): void {
           n1 = memory.stack.pop()
           if (n1 !== undefined) {
             memory.setTurtX(n1)
-            send('turtxChanged', n1)
+            send("turtxChanged", n1)
             memory.coords.push([memory.getTurtX(), memory.getTurtY()])
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1093,10 +1101,10 @@ function execute (): void {
           n1 = memory.stack.pop()
           if (n1 !== undefined) {
             memory.setTurtY(n1)
-            send('turtyChanged', n1)
+            send("turtyChanged", n1)
             memory.coords.push([memory.getTurtX(), memory.getTurtY()])
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1105,7 +1113,7 @@ function execute (): void {
           if (n2 !== undefined) {
             n1 = n2 % memory.getTurtA()
             memory.setTurtD(n1)
-            send('turtdChanged', n1)
+            send("turtdChanged", n1)
           }
           break
 
@@ -1118,15 +1126,15 @@ function execute (): void {
             }
             if (n1 === 0) {
               // never let angles be set to zero
-              throw new MachineError('Angles cannot be set to zero.')
+              throw new MachineError("Angles cannot be set to zero.")
             }
-            n2 = Math.round(n1 + memory.getTurtD() * n1 / memory.getTurtA())
+            n2 = Math.round(n1 + (memory.getTurtD() * n1) / memory.getTurtA())
             memory.setTurtD(n2 % n1)
             memory.setTurtA(n1)
-            send('turtdChanged', n2 % n1)
-            send('turtaChanged', n1)
+            send("turtdChanged", n2 % n1)
+            send("turtaChanged", n1)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1136,14 +1144,16 @@ function execute (): void {
             n2 = Math.abs(n1)
             bool1 = n1 < 0
             bool2 = memory.getTurtT() < 0
-            if (bool1) { // reverse pen status
+            if (bool1) {
+              // reverse pen status
               memory.setTurtT(bool2 ? n2 : -n2)
-            } else { // leave pen status as it is
+            } else {
+              // leave pen status as it is
               memory.setTurtT(bool2 ? -n2 : n2)
             }
-            send('turttChanged', memory.getTurtT())
+            send("turttChanged", memory.getTurtT())
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1151,22 +1161,22 @@ function execute (): void {
           n1 = memory.stack.pop()
           if (n1 !== undefined) {
             memory.setTurtC(n1)
-            send('turtcChanged', hex(n1))
+            send("turtcChanged", hex(n1))
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
         case PCode.pen:
           n1 = memory.stack.pop()
           if (n1 !== undefined) {
-            bool1 = (n1 !== 0) // pen up or down
+            bool1 = n1 !== 0 // pen up or down
             n2 = Math.abs(memory.getTurtT()) // current thickness
             n3 = bool1 ? n2 : -n2 // positive or negative depending on whether pen is down or up
             memory.setTurtT(n3)
-            send('turttChanged', n3)
+            send("turttChanged", n3)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1176,11 +1186,11 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             memory.setTurtX(n1)
             memory.setTurtY(n2)
-            send('turtxChanged', n1)
-            send('turtyChanged', n2)
+            send("turtxChanged", n1)
+            send("turtyChanged", n2)
             memory.coords.push([n1, n2])
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1192,11 +1202,11 @@ function execute (): void {
             n1 += memory.getTurtX()
             memory.setTurtX(n1)
             memory.setTurtY(n2)
-            send('turtxChanged', n1)
-            send('turtyChanged', n2)
+            send("turtxChanged", n1)
+            send("turtyChanged", n2)
             memory.coords.push([n1, n2])
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1207,18 +1217,18 @@ function execute (): void {
             n2 += memory.getTurtY()
             n1 += memory.getTurtX()
             if (memory.getTurtT() > 0) {
-              send('line', { turtle: turtle(), x: turtx(n1), y: turty(n2) })
+              send("line", { turtle: turtle(), x: turtx(n1), y: turty(n2) })
               if (update) {
                 drawCount += 1
               }
             }
             memory.setTurtX(n1)
             memory.setTurtY(n2)
-            send('turtxChanged', n1)
-            send('turtyChanged', n2)
+            send("turtxChanged", n1)
+            send("turtyChanged", n2)
             memory.coords.push([n1, n2])
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1227,26 +1237,26 @@ function execute (): void {
           if (n3 !== undefined) {
             n4 = memory.getTurtD() // turtle direction
             // work out final y coordinate
-            n2 = Math.cos(n4 * Math.PI / (memory.getTurtA() / 2))
+            n2 = Math.cos((n4 * Math.PI) / (memory.getTurtA() / 2))
             n2 = -Math.round(n2 * n3)
             n2 += memory.getTurtY()
             // work out final x coordinate
-            n1 = Math.sin(n4 * Math.PI / (memory.getTurtA() / 2))
+            n1 = Math.sin((n4 * Math.PI) / (memory.getTurtA() / 2))
             n1 = Math.round(n1 * n3)
             n1 += memory.getTurtX()
             if (memory.getTurtT() > 0) {
-              send('line', { turtle: turtle(), x: turtx(n1), y: turty(n2) })
+              send("line", { turtle: turtle(), x: turtx(n1), y: turty(n2) })
               if (update) {
                 drawCount += 1
               }
             }
             memory.setTurtX(n1)
             memory.setTurtY(n2)
-            send('turtxChanged', n1)
-            send('turtyChanged', n2)
+            send("turtxChanged", n1)
+            send("turtyChanged", n2)
             memory.coords.push([n1, n2])
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1255,26 +1265,26 @@ function execute (): void {
           if (n3 !== undefined) {
             n4 = memory.getTurtD() // turtle direction
             // work out final y coordinate
-            n2 = Math.cos(n4 * Math.PI / (memory.getTurtA() / 2))
+            n2 = Math.cos((n4 * Math.PI) / (memory.getTurtA() / 2))
             n2 = Math.round(n2 * n3)
             n2 += memory.getTurtY()
             // work out final x coordinate
-            n1 = Math.sin(n4 * Math.PI / (memory.getTurtA() / 2))
+            n1 = Math.sin((n4 * Math.PI) / (memory.getTurtA() / 2))
             n1 = -Math.round(n1 * n3)
             n1 += memory.getTurtX()
             if (memory.getTurtT() > 0) {
-              send('line', { turtle: turtle(), x: turtx(n1), y: turty(n2) })
+              send("line", { turtle: turtle(), x: turtx(n1), y: turty(n2) })
               if (update) {
                 drawCount += 1
               }
             }
             memory.setTurtX(n1)
             memory.setTurtY(n2)
-            send('turtxChanged', n1)
-            send('turtyChanged', n2)
+            send("turtxChanged", n1)
+            send("turtyChanged", n2)
             memory.coords.push([n1, n2])
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1283,9 +1293,9 @@ function execute (): void {
           if (n1 !== undefined) {
             n2 = (memory.getTurtD() - n1) % memory.getTurtA()
             memory.setTurtD(n2)
-            send('turtdChanged', n2)
+            send("turtdChanged", n2)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1294,9 +1304,9 @@ function execute (): void {
           if (n1 !== undefined) {
             n2 = (memory.getTurtD() + n1) % memory.getTurtA()
             memory.setTurtD(n2)
-            send('turtdChanged', n2)
+            send("turtdChanged", n2)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1322,11 +1332,11 @@ function execute (): void {
               }
               n3 /= 2
             }
-            n3 = Math.round(n3 * memory.getTurtA() / Math.PI / 2) % memory.getTurtA()
+            n3 = Math.round((n3 * memory.getTurtA()) / Math.PI / 2) % memory.getTurtA()
             memory.setTurtD(n3)
-            send('turtdChanged', n1)
+            send("turtdChanged", n1)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1334,12 +1344,12 @@ function execute (): void {
         case PCode.blnk:
           n1 = memory.stack.pop()
           if (n1 !== undefined) {
-            send('blank', hex(n1))
+            send("blank", hex(n1))
             if (update) {
               drawCount += 1
             }
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1348,12 +1358,12 @@ function execute (): void {
           n2 = memory.stack.pop()
           n1 = memory.stack.pop()
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
-            send('flood', { x: turtx(n1), y: turty(n2), c1: n3, c2: 0, boundary: false })
+            send("flood", { x: turtx(n1), y: turty(n2), c1: n3, c2: 0, boundary: false })
             if (update) {
               drawCount += 1
             }
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1363,12 +1373,12 @@ function execute (): void {
           n2 = memory.stack.pop()
           n1 = memory.stack.pop()
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
-            send('flood', { x: turtx(n1), y: turty(n2), c1: n3, c2: n4, boundary: true })
+            send("flood", { x: turtx(n1), y: turty(n2), c1: n3, c2: n4, boundary: true })
             if (update) {
               drawCount += 1
             }
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1377,9 +1387,9 @@ function execute (): void {
           n2 = memory.stack.pop()
           if (n2 !== undefined && n3 !== undefined) {
             image = context.getImageData(turtx(n2), turty(n3), 1, 1)
-            memory.stack.push((image.data[0] * 65536) + (image.data[1] * 256) + image.data[2])
+            memory.stack.push(image.data[0] * 65536 + image.data[1] * 256 + image.data[2])
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1388,12 +1398,12 @@ function execute (): void {
           n2 = memory.stack.pop()
           n1 = memory.stack.pop()
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
-            send('pixset', { x: turtx(n1), y: turty(n2), c: n3, doubled: doubled })
+            send("pixset", { x: turtx(n1), y: turty(n2), c: n3, doubled: doubled })
             if (update) {
               drawCount += 1
             }
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1407,7 +1417,7 @@ function execute (): void {
             n1 = colours[n1 - 1].value
             memory.stack.push(n1)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1418,9 +1428,9 @@ function execute (): void {
           n1 = memory.stack.pop() // first colour
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
             r = mixBytes(Math.floor(n1 / 0x10000), Math.floor(n2 / 0x10000), n3, n4) // red byte
-            g = mixBytes(Math.floor((n1 & 0xFF00) / 0x100), Math.floor((n2 & 0xFF00) / 0x100), n3, n4) // green byte
-            b = mixBytes(n1 & 0xFF, n2 & 0xFF, n3, n4) // blue byte
-            memory.stack.push((r * 0x10000) + (g * 0x100) + b)
+            g = mixBytes(Math.floor((n1 & 0xff00) / 0x100), Math.floor((n2 & 0xff00) / 0x100), n3, n4) // green byte
+            b = mixBytes(n1 & 0xff, n2 & 0xff, n3, n4) // blue byte
+            memory.stack.push(r * 0x10000 + g * 0x100 + b)
           }
           break
 
@@ -1433,7 +1443,7 @@ function execute (): void {
           if (n1 !== undefined) {
             memory.coords.length -= n1
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1441,13 +1451,13 @@ function execute (): void {
           n3 = memory.stack.pop()
           if (n3 !== undefined) {
             n2 = memory.coords.length
-            n1 = (n3 > n2) ? 0 : n2 - n3
-            send('poly', { turtle: turtle(), coords: memory.coords.slice(n1, n2).map(vcoords), fill: false })
+            n1 = n3 > n2 ? 0 : n2 - n3
+            send("poly", { turtle: turtle(), coords: memory.coords.slice(n1, n2).map(vcoords), fill: false })
             if (update) {
               drawCount += 1
             }
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1455,37 +1465,37 @@ function execute (): void {
           n3 = memory.stack.pop()
           if (n3 !== undefined) {
             n2 = memory.coords.length
-            n1 = (n3 > n2) ? 0 : n2 - n3
-            send('poly', { turtle: turtle(), coords: memory.coords.slice(n1, n2).map(vcoords), fill: true })
+            n1 = n3 > n2 ? 0 : n2 - n3
+            send("poly", { turtle: turtle(), coords: memory.coords.slice(n1, n2).map(vcoords), fill: true })
             if (update) {
               drawCount += 1
             }
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
         case PCode.circ:
           n1 = memory.stack.pop()
           if (n1 !== undefined) {
-            send('arc', { turtle: turtle(), x: turtx(n1 + startx), y: turty(n1 + starty), fill: false })
+            send("arc", { turtle: turtle(), x: turtx(n1 + startx), y: turty(n1 + starty), fill: false })
             if (update) {
               drawCount += 1
             }
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
         case PCode.blot:
           n1 = memory.stack.pop()
           if (n1 !== undefined) {
-            send('arc', { turtle: turtle(), x: turtx(n1 + startx), y: turty(n1 + starty), fill: true })
+            send("arc", { turtle: turtle(), x: turtx(n1 + startx), y: turty(n1 + starty), fill: true })
             if (update) {
               drawCount += 1
             }
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1493,12 +1503,12 @@ function execute (): void {
           n2 = memory.stack.pop()
           n1 = memory.stack.pop()
           if (n1 !== undefined && n2 !== undefined) {
-            send('arc', { turtle: turtle(), x: turtx(n1 + startx), y: turty(n2 + starty), fill: false })
+            send("arc", { turtle: turtle(), x: turtx(n1 + startx), y: turty(n2 + starty), fill: false })
             if (update) {
               drawCount += 1
             }
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1506,12 +1516,12 @@ function execute (): void {
           n2 = memory.stack.pop()
           n1 = memory.stack.pop()
           if (n1 !== undefined && n2 !== undefined) {
-            send('arc', { turtle: turtle(), x: turtx(n1 + startx), y: turty(n2 + starty), fill: true })
+            send("arc", { turtle: turtle(), x: turtx(n1 + startx), y: turty(n2 + starty), fill: true })
             if (update) {
               drawCount += 1
             }
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1521,15 +1531,15 @@ function execute (): void {
           n2 = memory.stack.pop()
           n1 = memory.stack.pop()
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
-            bool1 = (n4 !== 0)
+            bool1 = n4 !== 0
             n2 += memory.getTurtY()
             n1 += memory.getTurtX()
-            send('box', { turtle: turtle(), x: turtx(n1), y: turty(n2), fill: hex(n3), border: bool1 })
+            send("box", { turtle: turtle(), x: turtx(n1), y: turty(n2), fill: hex(n3), border: bool1 })
             if (update) {
               drawCount += 1
             }
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1577,7 +1587,7 @@ function execute (): void {
           code += 1
           n1 = pcode[line][code] // length of the string
           n2 = code + n1 // end of the string
-          s1 = ''
+          s1 = ""
           while (code < n2) {
             code += 1
             s1 += String.fromCharCode(pcode[line][code])
@@ -1591,7 +1601,7 @@ function execute (): void {
             memory.main[pcode[line][code + 1]] = n1
             code += 1
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1603,7 +1613,7 @@ function execute (): void {
             memory.main[memory.main[n1] + n2] = n3
             code += 2
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1615,7 +1625,7 @@ function execute (): void {
             memory.main[memory.main[memory.main[n1] + n2]] = n3
             code += 2
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1624,7 +1634,7 @@ function execute (): void {
           if (n1 !== undefined) {
             memory.stack.push(memory.main[n1])
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1634,7 +1644,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             memory.main[n2] = n1
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1644,7 +1654,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             memory.zero(n1, n2)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1655,7 +1665,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
             memory.copy(n1, n2, n3)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1667,7 +1677,7 @@ function execute (): void {
             n3 = memory.main[n1] // length of source
             memory.copy(n1, n2, Math.min(n3, n4) + 1)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1675,7 +1685,7 @@ function execute (): void {
           n2 = memory.stack[memory.stack.length - 1] // leave the stack unchanged
           n1 = memory.stack[memory.stack.length - 2]
           if (n1 !== undefined && n2 !== undefined) {
-            if ((n1 < 0) || (n1 > memory.main[n2])) {
+            if (n1 < 0 || n1 > memory.main[n2]) {
               // TODO: make range check a runtime option
               throw new MachineError(`Array index out of range (${line}, ${code}).`)
             }
@@ -1698,7 +1708,7 @@ function execute (): void {
               code += 1
             }
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1721,7 +1731,7 @@ function execute (): void {
             line = n1
             code = -1
           } else {
-            throw new MachineError('RETN called on empty return stack.')
+            throw new MachineError("RETN called on empty return stack.")
           }
           break
 
@@ -1745,7 +1755,7 @@ function execute (): void {
             line = n1 - 1
             code = -1
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1759,7 +1769,7 @@ function execute (): void {
             memory.memoryStack.push(n1)
             memory.setStackTop(n1)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1770,7 +1780,9 @@ function execute (): void {
           if (n3 !== undefined) {
             // heap overflow check
             if (n3 + n2 > options.stackSize) {
-              throw new MachineError('Memory stack has overflowed into memory heap. Probable cause is unterminated recursion.')
+              throw new MachineError(
+                "Memory stack has overflowed into memory heap. Probable cause is unterminated recursion."
+              )
             }
             memory.memoryStack.push(memory.main[n1])
             memory.setStackTop(memory.main[n1])
@@ -1779,7 +1791,7 @@ function execute (): void {
             memory.setStackTop(n3 + n2)
             code += 2
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1793,7 +1805,7 @@ function execute (): void {
             memory.main[n1] = n2
             code += 2
           } else {
-            throw new MachineError('MEMR called on empty memory stack.')
+            throw new MachineError("MEMR called on empty memory stack.")
           }
           break
 
@@ -1820,25 +1832,25 @@ function execute (): void {
             sizex = n3
             starty = n2
             startx = n1
-            send('canvas', {
+            send("canvas", {
               startx: startx,
               starty: starty,
               sizex: sizex,
               sizey: sizey,
               width: width,
               height: height,
-              doubled: doubled
+              doubled: doubled,
             })
-            memory.setTurtX(Math.round(startx + (sizex / 2)))
-            memory.setTurtY(Math.round(starty + (sizey / 2)))
+            memory.setTurtX(Math.round(startx + sizex / 2))
+            memory.setTurtY(Math.round(starty + sizey / 2))
             memory.setTurtD(0)
-            send('turtxChanged', memory.getTurtX())
-            send('turtyChanged', memory.getTurtY())
-            send('turtdChanged', memory.getTurtD())
+            send("turtxChanged", memory.getTurtX())
+            send("turtyChanged", memory.getTurtY())
+            send("turtdChanged", memory.getTurtD())
             memory.coords.push([memory.getTurtX(), memory.getTurtY()])
             drawCount = options.drawCountMax // force update
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1855,24 +1867,24 @@ function execute (): void {
             }
             width = n1
             height = n2
-            send('resolution', { width: n1, height: n2 })
-            send('blank', '#FFFFFF')
+            send("resolution", { width: n1, height: n2 })
+            send("blank", "#FFFFFF")
             drawCount = options.drawCountMax // force update
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
         case PCode.udat:
           n1 = memory.stack.pop()
           if (n1 !== undefined) {
-            bool1 = (n1 !== 0)
+            bool1 = n1 !== 0
             update = bool1
             if (bool1) {
               drawCount = options.drawCountMax // force update
             }
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1886,7 +1898,7 @@ function execute (): void {
               memory.stack.push(n1)
             }
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1903,9 +1915,9 @@ function execute (): void {
           break
 
         case PCode.dump:
-          send('memoryDumped', memory.dump())
+          send("memoryDumped", memory.dump())
           if (options.showMemoryOnDump) {
-            send('selectTab', 'memory')
+            send("selectTab", "memory")
           }
           break
 
@@ -1914,7 +1926,7 @@ function execute (): void {
           if (n1 !== undefined) {
             memory.stack.push(memory.main[n1])
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1924,7 +1936,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             memory.main[n1] = n2
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1943,7 +1955,7 @@ function execute (): void {
               memory.stack.push(0)
             }
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1968,7 +1980,7 @@ function execute (): void {
               // for any value outside the range (-11, 256) we don't do anything
             }
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1986,7 +1998,7 @@ function execute (): void {
               memory.setHeapMax(memory.getHeapTemp())
             }
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -1994,16 +2006,14 @@ function execute (): void {
           n1 = memory.stack.pop() // maximum number of characters to read
           n2 = memory.main[1] // the address of the buffer
           n3 = memory.main[memory.main[1]] // the address of the end of the buffer
-          s1 = '' // the string read from the buffer
+          s1 = "" // the string read from the buffer
           r = memory.main[n2 + 1]
           g = memory.main[n2 + 2]
           if (n1 !== undefined) {
             if (n1 === 0) {
               while (r !== g) {
                 s1 += String.fromCharCode(memory.main[r])
-                r = (r < n3)
-                  ? r + 1
-                  : n3 + 3 // loop back to the start
+                r = r < n3 ? r + 1 : n3 + 3 // loop back to the start
               }
             } else {
               while (r !== g && s1.length <= n1) {
@@ -2018,7 +2028,7 @@ function execute (): void {
             }
             memory.makeHeapString(s1)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -2029,17 +2039,17 @@ function execute (): void {
             line += 1
             code = 0
           }
-          readlineTimeoutID = window.setTimeout(execute, n1)
-          window.addEventListener('keyup', readline)
+          readlineTimeoutID = setTimeout(execute, n1)
+          addEventListener("keyup", readline)
           return
 
         case PCode.kech:
           n1 = memory.stack.pop()
           if (n1 !== undefined) {
-            bool1 = (n1 !== 0)
+            bool1 = n1 !== 0
             keyecho = bool1
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -2048,16 +2058,16 @@ function execute (): void {
           n2 = memory.stack.pop()
           n1 = memory.stack.pop()
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
-            bool2 = (n3 !== 0)
-            bool1 = (n1 !== 0)
-            send('output', { clear: bool1, colour: hex(n2) })
+            bool2 = n3 !== 0
+            bool1 = n1 !== 0
+            send("output", { clear: bool1, colour: hex(n2) })
             if (bool2) {
-              send('selectTab', 'output')
+              send("selectTab", "output")
             } else {
-              send('selectTab', 'canvas')
+              send("selectTab", "canvas")
             }
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -2065,8 +2075,8 @@ function execute (): void {
           n3 = memory.stack.pop()
           n2 = memory.stack.pop()
           if (n2 !== undefined && n3 !== undefined) {
-            bool1 = (n2 !== 0)
-            send('console', { clear: bool1, colour: hex(n3) })
+            bool1 = n2 !== 0
+            send("console", { clear: bool1, colour: hex(n3) })
           }
           break
 
@@ -2076,9 +2086,9 @@ function execute (): void {
           n1 = memory.stack.pop()
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
             s1 = memory.getHeapString(n1)
-            send('print', { turtle: turtle(), string: s1, font: n2, size: n3 })
+            send("print", { turtle: turtle(), string: s1, font: n2, size: n3 })
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -2086,27 +2096,27 @@ function execute (): void {
           n1 = memory.stack.pop()
           if (n1 !== undefined) {
             s1 = memory.getHeapString(n1)
-            send('write', s1)
-            send('log', s1)
+            send("write", s1)
+            send("log", s1)
             if (options.showOutputOnWrite) {
-              send('selectTab', 'output')
+              send("selectTab", "output")
             }
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
         case PCode.newl:
-          send('write', '\n')
-          send('log', '\n')
+          send("write", "\n")
+          send("log", "\n")
           break
 
         case PCode.curs:
           n1 = memory.stack.pop()
           if (n1 !== undefined) {
-            send('cursor', n1)
+            send("cursor", n1)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -2122,7 +2132,7 @@ function execute (): void {
           if (n1 !== undefined && n2 !== undefined) {
             startTime = n1 - n2
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           break
 
@@ -2134,9 +2144,9 @@ function execute (): void {
               line += 1
               code = 0
             }
-            window.setTimeout(execute, n1)
+            setTimeout(execute, n1)
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           return
 
@@ -2153,12 +2163,12 @@ function execute (): void {
               }
               detectInputcode = n1
               n3 = n2 === 0 ? Math.pow(2, 31) - 1 : n2 // 0 means "as long as possible"
-              detectTimeoutID = window.setTimeout(execute, n3)
-              window.addEventListener('keyup', detect)
-              window.addEventListener('mouseup', detect)
+              detectTimeoutID = setTimeout(execute, n3)
+              addEventListener("keyup", detect)
+              addEventListener("mouseup", detect)
             }
           } else {
-            throw new MachineError('Stack operation called on empty stack.')
+            throw new MachineError("Stack operation called on empty stack.")
           }
           return
 
@@ -2180,7 +2190,9 @@ function execute (): void {
         case PCode.fnxt: // fallthrough
         case PCode.fmov:
           // not yet implemented
-          throw new MachineError('File processing has not yet been implemented in the online Turtle System. We are working on introducing this very soon. In the meantime, please run this program using the downloable system.')
+          throw new MachineError(
+            "File processing has not yet been implemented in the online Turtle System. We are working on introducing this very soon. In the meantime, please run this program using the downloable system."
+          )
 
         // anything else is an error
         default:
@@ -2191,16 +2203,19 @@ function execute (): void {
       codeCount += 1
       code += 1
       if (!pcode[line]) {
-        throw new MachineError('The program has tried to jump to a line that does not exist. This is either a bug in our compiler, or in your assembled code.')
+        throw new MachineError(
+          "The program has tried to jump to a line that does not exist. This is either a bug in our compiler, or in your assembled code."
+        )
       }
-      if (code === pcode[line].length) { // line wrap
+      if (code === pcode[line].length) {
+        // line wrap
         line += 1
         code = 0
       }
     }
   } catch (error) {
     halt()
-    send('error', error)
+    send("error", error)
   }
   // setTimeout (with no delay) instead of direct recursion means the function will return and the
   // canvas will be updated
@@ -2208,20 +2223,22 @@ function execute (): void {
 }
 
 /** stores a key press */
-function storeKey (event: KeyboardEvent): void {
+function storeKey(event: KeyboardEvent): void {
   // backspace
-  if (event.key === 'Backspace') {
+  if (event.key === "Backspace") {
     event.preventDefault() // don't go back a page in the browser!
     const buffer = memory.main[1]
-    if (buffer > 0) { // there is a keybuffer
-      if (memory.main[buffer + 1] !== memory.main[buffer + 2]) { // the keybuffer has something in it
+    if (buffer > 0) {
+      // there is a keybuffer
+      if (memory.main[buffer + 1] !== memory.main[buffer + 2]) {
+        // the keybuffer has something in it
         if (memory.main[buffer + 2] === buffer + 3) {
           memory.main[buffer + 2] = memory.main[buffer] // go "back" to the end
         } else {
           memory.main[buffer + 2] -= 1 // go back one
         }
         if (keyecho) {
-          send('backspace')
+          send("backspace")
         }
       }
       // put buffer length in keys array
@@ -2233,7 +2250,7 @@ function storeKey (event: KeyboardEvent): void {
     }
   }
   // arrow keys
-  if (event.key === 'ArrowUp' || event.key === 'ArrowDown' || event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+  if (event.key === "ArrowUp" || event.key === "ArrowDown" || event.key === "ArrowLeft" || event.key === "ArrowRight") {
     event.preventDefault() // don't scroll the page
   }
   // normal case
@@ -2254,7 +2271,7 @@ function storeKey (event: KeyboardEvent): void {
 }
 
 /** stores that a key has been released */
-function releaseKey (event: KeyboardEvent): void {
+function releaseKey(event: KeyboardEvent): void {
   const keycode = event.keyCode // inputcodeFromKey(event.key)
   // keyup should set positive value to negative; use Math.abs to ensure the result is negative,
   // in case two keydown events fire close together, before the first keyup event fires
@@ -2264,10 +2281,11 @@ function releaseKey (event: KeyboardEvent): void {
 }
 
 /** puts a key in the keybuffer */
-function putInBuffer (event: KeyboardEvent): void {
+function putInBuffer(event: KeyboardEvent): void {
   const keycode = event.keyCode // inputcodeFromKey(event.key)
   const buffer = memory.main[1]
-  if (buffer > 0) { // there is a keybuffer
+  if (buffer > 0) {
+    // there is a keybuffer
     let next = 0
     if (memory.main[buffer + 2] === memory.main[buffer]) {
       next = buffer + 3 // loop back round to the start
@@ -2285,22 +2303,22 @@ function putInBuffer (event: KeyboardEvent): void {
       }
       // maybe show in the console
       if (keyecho) {
-        send('log', String.fromCharCode(keycode))
+        send("log", String.fromCharCode(keycode))
       }
     }
   }
 }
 
 /** stores mouse coordinates in virtual memory */
-function storeMouseXY (event: MouseEvent|TouchEvent): void {
+function storeMouseXY(event: MouseEvent | TouchEvent): void {
   switch (event.type) {
-    case 'mousemove':
+    case "mousemove":
       memory.query[7] = virtx((event as MouseEvent).clientX)
       memory.query[8] = virty((event as MouseEvent).clientY)
       break
 
-    case 'touchmove': // fallthrough
-    case 'touchstart':
+    case "touchmove": // fallthrough
+    case "touchstart":
       memory.query[7] = virtx((event as TouchEvent).touches[0].clientX)
       memory.query[8] = virty((event as TouchEvent).touches[0].clientY)
       break
@@ -2308,7 +2326,7 @@ function storeMouseXY (event: MouseEvent|TouchEvent): void {
 }
 
 /** stores mouse click coordinates in virtual memory */
-function storeClickXY (event: MouseEvent|TouchEvent): void {
+function storeClickXY(event: MouseEvent | TouchEvent): void {
   const now = Date.now()
   memory.query[4] = 128
   if (event.shiftKey) {
@@ -2325,7 +2343,7 @@ function storeClickXY (event: MouseEvent|TouchEvent): void {
   }
   memory.query[11] = now // save to check for next double-click
   switch (event.type) {
-    case 'mousedown':
+    case "mousedown":
       memory.query[5] = virtx((event as MouseEvent).clientX)
       memory.query[6] = virty((event as MouseEvent).clientY)
       switch ((event as MouseEvent).button) {
@@ -2355,7 +2373,7 @@ function storeClickXY (event: MouseEvent|TouchEvent): void {
       }
       break
 
-    case 'touchstart':
+    case "touchstart":
       memory.query[5] = virtx((event as TouchEvent).touches[0].clientX)
       memory.query[6] = virty((event as TouchEvent).touches[0].clientY)
       memory.query[4] += 1
@@ -2368,10 +2386,10 @@ function storeClickXY (event: MouseEvent|TouchEvent): void {
 }
 
 /** stores mouse release coordinates in virtual memory */
-function releaseClickXY (event: MouseEvent|TouchEvent): void {
+function releaseClickXY(event: MouseEvent | TouchEvent): void {
   memory.query[4] = -memory.query[4]
   switch (event.type) {
-    case 'mouseup':
+    case "mouseup":
       switch ((event as MouseEvent).button) {
         case 0:
           memory.query[1] = -memory.query[1]
@@ -2387,26 +2405,28 @@ function releaseClickXY (event: MouseEvent|TouchEvent): void {
       }
       break
 
-    case 'touchend':
+    case "touchend":
       memory.query[1] = -memory.query[1]
       break
   }
 }
 
 /** prevents event default (for blocking context menus on right click) */
-function preventDefault (event: Event): void {
+function preventDefault(event: Event): void {
   event.preventDefault()
 }
 
 /** breaks out of DETECT loop and resumes program execution if the right key/button is pressed */
-function detect (event: KeyboardEvent|MouseEvent): void {
+function detect(event: KeyboardEvent | MouseEvent): void {
   let rightThingPressed = false
   // -11 is \mousekey - returns whatever was clicked/pressed
   if (detectInputcode === -11) rightThingPressed = true
   // -10 and -9 return for any key (not for mouse)
-  if ((detectInputcode === -9 || detectInputcode === -10) && (event as KeyboardEvent).keyCode !== undefined) rightThingPressed = true
+  if ((detectInputcode === -9 || detectInputcode === -10) && (event as KeyboardEvent).keyCode !== undefined)
+    rightThingPressed = true
   // -8 to -4 - returns for any mouse click
-  if ((-8 <= detectInputcode && detectInputcode <= -4) && (event as KeyboardEvent).keyCode === undefined) rightThingPressed = true
+  if (-8 <= detectInputcode && detectInputcode <= -4 && (event as KeyboardEvent).keyCode === undefined)
+    rightThingPressed = true
   // specific mouse button cases
   if (detectInputcode === -3 && (event as MouseEvent).button == 1) rightThingPressed = true
   if (detectInputcode === -2 && (event as MouseEvent).button == 2) rightThingPressed = true
@@ -2416,88 +2436,84 @@ function detect (event: KeyboardEvent|MouseEvent): void {
   // otherwise return if the key pressed matches the detectInputcode
   if ((event as KeyboardEvent).keyCode === detectInputcode) rightThingPressed = true
   if (rightThingPressed) {
-    const returnValue = (detectInputcode < 0) ? memory.query[-detectInputcode] : memory.keys[detectInputcode]
+    const returnValue = detectInputcode < 0 ? memory.query[-detectInputcode] : memory.keys[detectInputcode]
     memory.stack.pop()
     // the event listener that negates the input (onkeyup or onmouseup) is called first, so by the
     // time this listener is called it will be negative - but for consistency with the downloadable
     // system we want it to be positive
     memory.stack.push(Math.abs(returnValue))
-    window.clearTimeout(detectTimeoutID)
+    clearTimeout(detectTimeoutID)
     execute()
   }
 }
 
 /** breaks out of READLINE loop and resumes program execution if ENTER is pressed */
-function readline (event: KeyboardEvent): void {
-  if (event.key === 'Enter') {
+function readline(event: KeyboardEvent): void {
+  if (event.key === "Enter") {
     // get heap string from the buffer, up to the first ENTER
     const bufferAddress = memory.main[1]
     const bufferEndAddress = memory.main[memory.main[1]]
-    let string = ''
+    let string = ""
     let readNextAddress = memory.main[bufferAddress + 1]
     const readLastAddress = memory.main[bufferAddress + 2]
     while (readNextAddress !== readLastAddress && memory.main[readNextAddress] !== 13) {
       string += String.fromCharCode(memory.main[readNextAddress])
-      readNextAddress = (readNextAddress < bufferEndAddress)
-        ? readNextAddress + 1
-        : bufferEndAddress + 3 // loop back to the start
+      readNextAddress = readNextAddress < bufferEndAddress ? readNextAddress + 1 : bufferEndAddress + 3 // loop back to the start
     }
     // move past the ENTER
-    memory.main[bufferAddress + 1] = (readNextAddress < bufferEndAddress)
-      ? readNextAddress + 1
-      : bufferEndAddress + 3 // loop back to the start
+    memory.main[bufferAddress + 1] = readNextAddress < bufferEndAddress ? readNextAddress + 1 : bufferEndAddress + 3 // loop back to the start
     // put the string on the heap
     memory.makeHeapString(string)
     // clear the timeout and resume ordinary pcode execution
-    window.clearTimeout(readlineTimeoutID)
+    clearTimeout(readlineTimeoutID)
     execute()
   }
 }
 
 /** gets current turtle properties */
-function turtle (): Turtle {
+function turtle(): Turtle {
   return {
     x: turtx(memory.getTurtX()),
     y: turty(memory.getTurtY()),
     d: memory.getTurtD(),
     a: memory.getTurtA(),
     p: turtt(memory.getTurtT()),
-    c: hex(memory.getTurtC())
+    c: hex(memory.getTurtC()),
   }
 }
 
 /** converts turtx to virtual canvas coordinate */
-function turtx (x: number): number {
+function turtx(x: number): number {
   const exact = ((x - startx) * width) / sizex
   return doubled ? Math.round(exact) + 1 : Math.round(exact)
 }
 
 /** converts turty to virtual canvas coordinate */
-function turty (y: number): number {
+function turty(y: number): number {
   const exact = ((y - starty) * height) / sizey
   return doubled ? Math.round(exact) + 1 : Math.round(exact)
 }
 
 /** converts turtt to virtual canvas thickness */
-function turtt (t: number): number {
+function turtt(t: number): number {
   return doubled ? t * 2 : t
 }
 
 /** maps turtle coordinates to virtual turtle coordinates */
-function vcoords (coords: [number, number]): [number, number] {
+function vcoords(coords: [number, number]): [number, number] {
   return [turtx(coords[0]), turty(coords[1])]
 }
 
 /** converts x to virtual canvas coordinate */
-function virtx (x: number): number {
+function virtx(x: number): number {
   const { left, width } = canvas.getBoundingClientRect()
-  const exact = (((x - left) * sizex) / width) + startx
+  const exact = ((x - left) * sizex) / width + startx
   return Math.floor(exact)
 }
 
 /** converts y to virtual canvas coordinate */
-function virty (y: number): number {
+function virty(y: number): number {
   const { height, top } = canvas.getBoundingClientRect()
-  const exact = (((y - top) * sizey) / height) + starty
+  const exact = ((y - top) * sizey) / height + starty
   return Math.floor(exact)
 }
