@@ -1,5 +1,0 @@
-export default `
-<div class="system-tab-pane" data-tab="output">
-  <pre class="output" data-component="output"></pre>
-</div>
-`

@@ -1,5 +1,0 @@
-export { default as colours } from "./tables/colours.ts"
-export { default as commands } from "./tables/commands.ts"
-export { default as cursors } from "./tables/cursors.ts"
-export { default as fonts } from "./tables/fonts.ts"
-export { default as keycodes } from "./tables/keycodes.ts"

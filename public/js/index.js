@@ -1,20 +1,13 @@
 (() => {
   // client/constants/languages.ts
-  var languages = [
-    "BASIC",
-    "C",
-    "Java",
-    "Pascal",
-    "Python",
-    "TypeScript"
-  ];
+  var languages = ["BASIC", "C", "Java", "Pascal", "Python", "TypeScript"];
   var extensions = {
-    "BASIC": "tbas",
-    "C": "tc",
-    "Java": "tjav",
-    "Pascal": "tpas",
-    "Python": "tpy",
-    "TypeScript": "tts"
+    BASIC: "tbas",
+    C: "tc",
+    Java: "tjav",
+    Pascal: "tpas",
+    Python: "tpy",
+    TypeScript: "tts"
   };
 
   // client/state/file.ts
@@ -46,51 +39,51 @@
 
   // client/constants/properties.ts
   var defaults = {
-    "savedSettingsHaveBeenLoaded": false,
-    "language": "Pascal",
-    "mode": "normal",
-    "editorFontFamily": "Courier",
-    "editorFontSize": 13,
-    "outputFontFamily": "Courier",
-    "outputFontSize": 13,
-    "includeCommentsInExamples": true,
-    "loadCorrespondingExample": true,
-    "assembler": true,
-    "decimal": true,
-    "autoCompileOnLoad": false,
-    "autoRunOnLoad": false,
-    "autoFormatOnLoad": false,
-    "alwaysSaveSettings": false,
-    "commandsCategoryIndex": 0,
-    "showSimpleCommands": true,
-    "showIntermediateCommands": false,
-    "showAdvancedCommands": false,
-    "files": [],
-    "currentFileIndex": 0,
-    "filename": "",
-    "lexemes": [],
-    "usage": [],
-    "routines": [],
-    "pcode": [],
-    "showCanvasOnRun": true,
-    "showOutputOnWrite": false,
-    "showMemoryOnDump": true,
-    "drawCountMax": 4,
-    "codeCountMax": 1e5,
-    "smallSize": 60,
-    "stackSize": 5e4,
-    "traceOnRun": false,
-    "activateHCLR": true,
-    "preventStackCollision": true,
-    "rangeCheckArrays": true,
-    "canvasStartSize": 1e3,
-    "setupDefaultKeyBuffer": true,
-    "turtleAttributesAsGlobals": true,
-    "initialiseLocals": true,
-    "allowCSTR": true,
-    "separateReturnStack": true,
-    "separateMemoryControlStack": true,
-    "separateSubroutineRegisterStack": true
+    savedSettingsHaveBeenLoaded: false,
+    language: "Python",
+    mode: "normal",
+    editorFontFamily: "Courier",
+    editorFontSize: 13,
+    outputFontFamily: "Courier",
+    outputFontSize: 13,
+    includeCommentsInExamples: true,
+    loadCorrespondingExample: true,
+    assembler: true,
+    decimal: true,
+    autoCompileOnLoad: false,
+    autoRunOnLoad: false,
+    autoFormatOnLoad: false,
+    alwaysSaveSettings: false,
+    commandsCategoryIndex: 0,
+    showSimpleCommands: true,
+    showIntermediateCommands: false,
+    showAdvancedCommands: false,
+    files: [],
+    currentFileIndex: 0,
+    filename: "",
+    lexemes: [],
+    usage: [],
+    routines: [],
+    pcode: [],
+    showCanvasOnRun: true,
+    showOutputOnWrite: false,
+    showMemoryOnDump: true,
+    drawCountMax: 4,
+    codeCountMax: 1e5,
+    smallSize: 60,
+    stackSize: 5e4,
+    traceOnRun: false,
+    activateHCLR: true,
+    preventStackCollision: true,
+    rangeCheckArrays: true,
+    canvasStartSize: 1e3,
+    setupDefaultKeyBuffer: true,
+    turtleAttributesAsGlobals: true,
+    initialiseLocals: true,
+    allowCSTR: true,
+    separateReturnStack: true,
+    separateMemoryControlStack: true,
+    separateSubroutineRegisterStack: true
   };
 
   // client/state/storage.ts
@@ -269,6 +262,7 @@
           break;
         case "value":
           if (typeof value === "string") {
+            ;
             element2.value = value;
           }
           break;
@@ -297,6 +291,7 @@
       }
       element2.appendChild(fragment2);
     } else {
+      ;
       element2.innerHTML = content;
     }
   }
@@ -365,6 +360,7 @@
   var replies = {};
   function on(message, callback) {
     if (replies[message]) {
+      ;
       replies[message].push(callback);
     } else {
       replies[message] = [callback];
@@ -783,7 +779,7 @@
     PCode2[PCode2["dump"] = 154] = "dump";
     PCode2[PCode2["peek"] = 155] = "peek";
     PCode2[PCode2["poke"] = 156] = "poke";
-    PCode2[PCode2["inpt"] = 160] = "inpt";
+    PCode2[PCode2["stat"] = 160] = "stat";
     PCode2[PCode2["iclr"] = 161] = "iclr";
     PCode2[PCode2["bufr"] = 162] = "bufr";
     PCode2[PCode2["read"] = 163] = "read";
@@ -877,7 +873,7 @@
   var width = 1e3;
   var height = 1e3;
   var doubled = false;
-  var detectKeycode = 0;
+  var detectInputcode = 0;
   var detectTimeoutID = 0;
   var readlineTimeoutID = 0;
   var startTime = 0;
@@ -923,9 +919,9 @@
     seed = Date.now();
     running = true;
     paused = false;
-    window.addEventListener("keydown", storeKey);
-    window.addEventListener("keyup", releaseKey);
-    window.addEventListener("keypress", putInBuffer);
+    addEventListener("keydown", storeKey);
+    addEventListener("keyup", releaseKey);
+    addEventListener("keypress", putInBuffer);
     canvas.addEventListener("contextmenu", preventDefault);
     canvas.addEventListener("mousemove", storeMouseXY);
     canvas.addEventListener("touchmove", preventDefault);
@@ -940,11 +936,12 @@
   }
   function halt() {
     if (running) {
-      window.removeEventListener("keydown", storeKey);
-      window.removeEventListener("keyup", releaseKey);
-      window.removeEventListener("keypress", putInBuffer);
-      window.removeEventListener("keyup", detect);
-      window.removeEventListener("keyup", readline);
+      removeEventListener("keydown", storeKey);
+      removeEventListener("keyup", releaseKey);
+      removeEventListener("keypress", putInBuffer);
+      removeEventListener("keyup", detect);
+      removeEventListener("mouseup", detect);
+      removeEventListener("keyup", readline);
       canvas.removeEventListener("contextmenu", preventDefault);
       canvas.removeEventListener("mousemove", storeMouseXY);
       canvas.removeEventListener("touchmove", preventDefault);
@@ -982,8 +979,9 @@
       setTimeout(execute, 1);
       return;
     }
-    window.removeEventListener("keyup", detect);
-    window.removeEventListener("keyup", readline);
+    removeEventListener("keyup", detect);
+    removeEventListener("mouseup", detect);
+    removeEventListener("keyup", readline);
     delayedHeapClear();
     let drawCount = 0;
     let codeCount = 0;
@@ -2412,7 +2410,9 @@
             n3 = memoryStack.pop();
             if (n3 !== void 0) {
               if (n3 + n2 > options.stackSize) {
-                throw new MachineError("Memory stack has overflowed into memory heap. Probable cause is unterminated recursion.");
+                throw new MachineError(
+                  "Memory stack has overflowed into memory heap. Probable cause is unterminated recursion."
+                );
               }
               memoryStack.push(main[n1]);
               setStackTop(main[n1]);
@@ -2550,13 +2550,15 @@
               throw new MachineError("Stack operation called on empty stack.");
             }
             break;
-          case 160 /* inpt */:
+          case 160 /* stat */:
             n1 = stack.pop();
             if (n1 !== void 0) {
-              if (n1 < 0) {
+              if (-11 <= n1 && n1 < 0) {
                 stack.push(query[-n1]);
-              } else {
+              } else if (0 < n1 && n1 < 256) {
                 stack.push(keys[n1]);
+              } else {
+                stack.push(0);
               }
             } else {
               throw new MachineError("Stack operation called on empty stack.");
@@ -2565,13 +2567,17 @@
           case 161 /* iclr */:
             n1 = stack.pop();
             if (n1 !== void 0) {
-              if (n1 < 0) {
+              if (-11 <= n1 && n1 < 0) {
                 query[-n1] = -1;
               } else if (n1 === 0) {
                 main[main[1] + 1] = main[1] + 3;
                 main[main[1] + 2] = main[1] + 3;
-              } else {
+              } else if (0 < n1 && n1 < 256) {
                 keys[n1] = -1;
+              } else if (n1 === 256) {
+                keys.fill(-1);
+                query.fill(-1);
+              } else {
               }
             } else {
               throw new MachineError("Stack operation called on empty stack.");
@@ -2630,8 +2636,8 @@
               line += 1;
               code2 = 0;
             }
-            readlineTimeoutID = window.setTimeout(execute, n1);
-            window.addEventListener("keyup", readline);
+            readlineTimeoutID = setTimeout(execute, n1);
+            addEventListener("keyup", readline);
             return;
           case 165 /* kech */:
             n1 = stack.pop();
@@ -2725,7 +2731,7 @@
                 line += 1;
                 code2 = 0;
               }
-              window.setTimeout(execute, n1);
+              setTimeout(execute, n1);
             } else {
               throw new MachineError("Stack operation called on empty stack.");
             }
@@ -2734,15 +2740,19 @@
             n2 = stack.pop();
             n1 = stack.pop();
             if (n1 !== void 0 && n2 !== void 0) {
-              stack.push(0);
-              code2 += 1;
-              if (code2 === pcode[line].length) {
-                line += 1;
-                code2 = 0;
+              if (-11 <= n1 && n1 < 256) {
+                stack.push(0);
+                code2 += 1;
+                if (code2 === pcode[line].length) {
+                  line += 1;
+                  code2 = 0;
+                }
+                detectInputcode = n1;
+                n3 = n2 === 0 ? Math.pow(2, 31) - 1 : n2;
+                detectTimeoutID = setTimeout(execute, n3);
+                addEventListener("keyup", detect);
+                addEventListener("mouseup", detect);
               }
-              detectKeycode = n2;
-              detectTimeoutID = window.setTimeout(execute, n1);
-              window.addEventListener("keyup", detect);
             } else {
               throw new MachineError("Stack operation called on empty stack.");
             }
@@ -2763,7 +2773,9 @@
           case 189 /* fdir */:
           case 190 /* fnxt */:
           case 191 /* fmov */:
-            throw new MachineError("File processing has not yet been implemented in the online Turtle System. We are working on introducing this very soon. In the meantime, please run this program using the downloable system.");
+            throw new MachineError(
+              "File processing has not yet been implemented in the online Turtle System. We are working on introducing this very soon. In the meantime, please run this program using the downloable system."
+            );
           default:
             console.log(line);
             console.log(code2);
@@ -2772,7 +2784,9 @@
         codeCount += 1;
         code2 += 1;
         if (!pcode[line]) {
-          throw new MachineError("The program has tried to jump to a line that does not exist. This is either a bug in our compiler, or in your assembled code.");
+          throw new MachineError(
+            "The program has tried to jump to a line that does not exist. This is either a bug in our compiler, or in your assembled code."
+          );
         }
         if (code2 === pcode[line].length) {
           line += 1;
@@ -2810,9 +2824,10 @@
     if (event.key === "ArrowUp" || event.key === "ArrowDown" || event.key === "ArrowLeft" || event.key === "ArrowRight") {
       event.preventDefault();
     }
-    const keycode2 = event.keyCode;
-    query[9] = keycode2;
+    const keycode = event.keyCode;
+    query[9] = keycode;
     query[10] = 128;
+    query[11] = keycode;
     if (event.shiftKey) {
       query[10] += 8;
     }
@@ -2822,16 +2837,16 @@
     if (event.ctrlKey) {
       query[10] += 32;
     }
-    keys[keycode2] = query[10];
+    keys[keycode] = query[10];
   }
   function releaseKey(event) {
-    const keycode2 = event.keyCode;
+    const keycode = event.keyCode;
     query[9] = -Math.abs(query[9]);
     query[10] = -Math.abs(query[10]);
-    keys[keycode2] = -Math.abs(keys[keycode2]);
+    keys[keycode] = -Math.abs(keys[keycode]);
   }
   function putInBuffer(event) {
-    const keycode2 = event.keyCode;
+    const keycode = event.keyCode;
     const buffer = main[1];
     if (buffer > 0) {
       let next = 0;
@@ -2841,7 +2856,7 @@
         next = main[buffer + 2] + 1;
       }
       if (next !== main[buffer + 1]) {
-        main[main[buffer + 2]] = keycode2;
+        main[main[buffer + 2]] = keycode;
         main[buffer + 2] = next;
         if (main[buffer + 2] >= main[buffer + 1]) {
           keys[0] = main[buffer + 2] - main[buffer + 1];
@@ -2849,7 +2864,7 @@
           keys[0] = main[buffer + 2] - main[buffer + 1] + main[buffer] - buffer - 2;
         }
         if (keyecho) {
-          send("log", String.fromCharCode(keycode2));
+          send("log", String.fromCharCode(keycode));
         }
       }
     }
@@ -2893,18 +2908,21 @@
             query[1] = query[4];
             query[2] = -1;
             query[3] = -1;
+            query[11] = 1;
             break;
           case 1:
             query[4] += 4;
             query[1] = -1;
             query[2] = -1;
             query[3] = query[4];
+            query[11] = 3;
             break;
           case 2:
             query[4] += 2;
             query[1] = -1;
             query[2] = query[4];
             query[3] = -1;
+            query[11] = 2;
             break;
         }
         break;
@@ -2928,7 +2946,7 @@
             query[1] = -query[1];
             break;
           case 1:
-            query[2] = -query[3];
+            query[3] = -query[3];
             break;
           case 2:
             query[2] = -query[2];
@@ -2944,10 +2962,28 @@
     event.preventDefault();
   }
   function detect(event) {
-    if (event.keyCode === detectKeycode) {
+    let rightThingPressed = false;
+    if (detectInputcode === -11)
+      rightThingPressed = true;
+    if ((detectInputcode === -9 || detectInputcode === -10) && event.keyCode !== void 0)
+      rightThingPressed = true;
+    if (-8 <= detectInputcode && detectInputcode <= -4 && event.keyCode === void 0)
+      rightThingPressed = true;
+    if (detectInputcode === -3 && event.button == 1)
+      rightThingPressed = true;
+    if (detectInputcode === -2 && event.button == 2)
+      rightThingPressed = true;
+    if (detectInputcode === -1 && event.button == 0)
+      rightThingPressed = true;
+    if (detectInputcode === 0 && event.keyCode !== void 0)
+      rightThingPressed = true;
+    if (event.keyCode === detectInputcode)
+      rightThingPressed = true;
+    if (rightThingPressed) {
+      const returnValue = detectInputcode < 0 ? query[-detectInputcode] : keys[detectInputcode];
       stack.pop();
-      stack.push(-1);
-      window.clearTimeout(detectTimeoutID);
+      stack.push(Math.abs(returnValue));
+      clearTimeout(detectTimeoutID);
       execute();
     }
   }
@@ -2964,7 +3000,7 @@
       }
       main[bufferAddress + 1] = readNextAddress < bufferEndAddress ? readNextAddress + 1 : bufferEndAddress + 3;
       makeHeapString(string2);
-      window.clearTimeout(readlineTimeoutID);
+      clearTimeout(readlineTimeoutID);
       execute();
     }
   }
@@ -2995,12 +3031,12 @@
   function virtx(x) {
     const { left, width: width2 } = canvas.getBoundingClientRect();
     const exact = (x - left) * sizex / width2 + startx;
-    return Math.round(exact);
+    return Math.floor(exact);
   }
   function virty(y) {
     const { height: height2, top } = canvas.getBoundingClientRect();
     const exact = (y - top) * sizey / height2 + starty;
-    return Math.round(exact);
+    return Math.floor(exact);
   }
 
   // client/lexer/token.ts
@@ -3037,541 +3073,1783 @@
     }
   };
   var commands = [
-    new Command({ BASIC: "FORWARD", C: "forward", Java: "forward", Pascal: "forward", Python: "forward", TypeScript: "forward" }, [91 /* fwrd */], [new Parameter("n", "integer", false, 1)], null, 0, 0, "Moves the Turtle forward <code>n</code> units, drawing as it goes (unless the pen is up)."),
-    new Command({ BASIC: "BACK", C: "back", Java: "back", Pascal: "back", Python: "back", TypeScript: "back" }, [92 /* back */], [new Parameter("n", "integer", false, 1)], null, 0, 0, "Moves the Turtle back <code>n</code> units, drawing as it goes (unless the pen is up)."),
-    new Command({ BASIC: "LEFT", C: "left", Java: "left", Pascal: "left", Python: "left", TypeScript: "left" }, [93 /* left */], [new Parameter("n", "integer", false, 1)], null, 0, 0, "Rotates the Turtle left by <code>n</code> degrees."),
-    new Command({ BASIC: "RIGHT", C: "right", Java: "right", Pascal: "right", Python: "right", TypeScript: "right" }, [94 /* rght */], [new Parameter("n", "integer", false, 1)], null, 0, 0, "Rotates the Turtle right by <code>n</code> degrees."),
-    new Command({ BASIC: "DRAWXY", C: "drawxy", Java: "drawXY", Pascal: "drawxy", Python: "drawxy", TypeScript: "drawXY" }, [90 /* drxy */], [
-      new Parameter("x", "integer", false, 1),
-      new Parameter("y", "integer", false, 1)
-    ], null, 0, 1, "Moves the Turtle in a straight line to a point <code>x</code> units away along the x-axis and <code>y</code> units away along the y-axis, drawing as it goes (unless the pen is up)."),
-    new Command({ BASIC: "MOVEXY", C: "movexy", Java: "moveXY", Pascal: "movexy", Python: "movexy", TypeScript: "moveXY" }, [89 /* mvxy */], [
-      new Parameter("x", "integer", false, 1),
-      new Parameter("y", "integer", false, 1)
-    ], null, 0, 1, "Moves the Turtle in a straight line to a point <code>x</code> units away along the x-axis and <code>y</code> units away along the y-axis, <em>without</em> drawing (regardless of the current pen status)."),
-    new Command({ BASIC: "HOME", C: "home", Java: "home", Pascal: "home", Python: "home", TypeScript: "home" }, [80 /* home */], [], null, 1, 0, "Moves the Turtle back to its starting position in the centre of the canvas, facing north, drawing as it goes (unless the pen is up)."),
-    new Command({ BASIC: "SETX", C: "setx", Java: "setX", Pascal: "setx", Python: "setx", TypeScript: "setX" }, [81 /* setx */], [new Parameter("x", "integer", false, 1)], null, 1, 0, "Sets the Turtle&rsquo;s <code>x</code> coordinate directly (without movement or drawing on the canvas). This can also be achieved by direct assignment of the global variable <code>turtx</code>."),
-    new Command({ BASIC: "SETY", C: "sety", Java: "setY", Pascal: "sety", Python: "sety", TypeScript: "setY" }, [82 /* sety */], [new Parameter("y", "integer", false, 1)], null, 1, 0, "Sets the Turtle&rsquo;s <code>y</code> coordinate directly (without movement or drawing on the canvas). This can also be achieved by direct assignment of the global variable <code>turty</code>."),
-    new Command({ BASIC: "SETXY", C: "setxy", Java: "setXY", Pascal: "setxy", Python: "setxy", TypeScript: "setXY" }, [88 /* toxy */], [
-      new Parameter("x", "integer", false, 1),
-      new Parameter("y", "integer", false, 1)
-    ], null, 1, 0, "Sets the Turtle&rsquo;s <code>x</code> and <code>y</code> coordinates directly (without movement or drawing on the canvas). This can also be achieved by direct assingment of the global variables <code>turtx</code> and <code>turty</code>."),
-    new Command({ BASIC: "DIRECTION", C: "direction", Java: "direction", Pascal: "direction", Python: "direction", TypeScript: "direction" }, [83 /* setd */], [new Parameter("n", "integer", false, 1)], null, 1, 0, "Sets the Turtle&rsquo;s direction to <code>n</code> degrees (0 for north, 90 for east, 180 for south, 270 for west). This can also be achieved by direct assignment of the global variable <code>turtd</code>. Note that the number of degrees in a circle (360 by default) can be changed with the <code>angles</code> command."),
-    new Command({ BASIC: "ANGLES", C: "angles", Java: "angles", Pascal: "angles", Python: "angles", TypeScript: "angles" }, [84 /* angl */], [new Parameter("degrees", "integer", false, 1)], null, 1, 1, "Sets the number of <code>degrees</code> in a circle (360 by default)."),
-    new Command({ BASIC: "TURNXY", C: "turnxy", Java: "turnXY", Pascal: "turnxy", Python: "turnxy", TypeScript: "turnXY" }, [95 /* turn */], [
-      new Parameter("x", "integer", false, 1),
-      new Parameter("y", "integer", false, 1)
-    ], null, 1, 1, "Turns the Turtle to face the point <code>x</code> units away alongthe x-axis and <code>y</code> units away along the y-axis."),
-    new Command({ BASIC: "CIRCLE", C: "circle", Java: "circle", Pascal: "circle", Python: "circle", TypeScript: "circle" }, [107 /* circ */], [new Parameter("radius", "integer", false, 1)], null, 2, 0, "Draws a circle outline in the Turtle&rsquo;s current colour and thickness, of the given <code>radius</code>, centred on the Turtle&rsquo;s current location."),
-    new Command({ BASIC: "BLOT", C: "blot", Java: "blot", Pascal: "blot", Python: "blot", TypeScript: "blot" }, [108 /* blot */], [new Parameter("radius", "integer", false, 1)], null, 2, 0, "Draws a filled circle in the Turtle&rsquo;s current colour, of the given <code>radius</code>, centred on the Turtle&rsquo;s current location."),
-    new Command({ BASIC: "ELLIPSE", C: "ellipse", Java: "ellipse", Pascal: "ellipse", Python: "ellipse", TypeScript: "ellipse" }, [109 /* elps */], [
-      new Parameter("Xradius", "integer", false, 1),
-      new Parameter("Yradius", "integer", false, 1)
-    ], null, 2, 0, "Draws an ellipse outline in the Turtle&rsquo;s current colour and thickness, of the given <code>Xradius</code> and <code>Yradius</code>, centred on the Turtle&rsquo;s current location."),
-    new Command({ BASIC: "ELLBLOT", C: "ellblot", Java: "ellblot", Pascal: "ellblot", Python: "ellblot", TypeScript: "ellblot" }, [110 /* eblt */], [
-      new Parameter("Xradius", "integer", false, 1),
-      new Parameter("Yradius", "integer", false, 1)
-    ], null, 2, 0, "Draws a filled ellipse in the Turtle&rsquo;s current colour, of the given <code>Xradius</code> and <code>Yradius</code>, centred on the Turtle&rsquo;s current location."),
-    new Command({ BASIC: "POLYLINE", C: "polyline", Java: "polyline", Pascal: "polyline", Python: "polyline", TypeScript: "polyline" }, [105 /* poly */], [new Parameter("n", "integer", false, 1)], null, 2, 1, "Draws a polygon outline in the Turtle&rsquo;s current colour and thickness, connecting the last <code>n</code> locations that the Turtle has visited."),
-    new Command({ BASIC: "POLYGON", C: "polygon", Java: "polygon", Pascal: "polygon", Python: "polygon", TypeScript: "polygon" }, [106 /* pfil */], [new Parameter("n", "integer", false, 1)], null, 2, 1, "Draws a filled polygon in the Turtle&rsquo;s current colour and thickness, connecting the last <code>n</code> locations that the Turtle has visited."),
-    new Command({ BASIC: "FORGET", C: "forget", Java: "forget", Pascal: "forget", Python: "forget", TypeScript: "forget" }, [104 /* frgt */], [new Parameter("n", "integer", false, 1)], null, 2, 1, "Makes the Turtle &ldquo;forget&rdquo; the last <code>n</code> points it has visited. Used in conjunction with <code>polyline</code> and <code>polygon</code>."),
-    new Command({ BASIC: "REMEMBER", C: "remember", Java: "remember", Pascal: "remember", Python: "remember", TypeScript: "remember" }, [103 /* rmbr */], [], null, 2, 1, "Makes the Turtle &ldquo;remember&rdquo; its current location. This is only necessary if its current location was set by a direct assignment of the global variables <code>turtx</code> and <code>turty</code>; when using the standard moving commands, the Turtle automatically remembers where it has been."),
-    new Command({ BASIC: "BOX", C: "box", Java: "box", Pascal: "box", Python: "box", TypeScript: "box" }, [111 /* box */], [
-      new Parameter("x", "integer", false, 1),
-      new Parameter("y", "integer", false, 1),
-      new Parameter("colour", "integer", false, 1),
-      new Parameter("border", "boolean", false, 1)
-    ], null, 2, 1, "Draws a box of width <code>x</code> and height <code>y</code>, with the top left corner in the Turtle&rsquo;s current location, filled with the specified <code>colour</code>. If <code>border</code> is <code>true</code>, a border is drawn around the box in the Turtle&rsquo;s current colour and and thickness. This is intended to be used with the <code>print</code> command, to provide a box for framing text."),
-    new Command({ BASIC: "COLOUR", C: "colour", Java: "colour", Pascal: "colour", Python: "colour", TypeScript: "colour" }, [87 /* colr */], [new Parameter("colour", "integer", false, 1)], null, 3, 0, "Sets the <code>colour</code> of the Turtle&rsquo;s pen. Takes as an argument either an RGB value, or one of the Turtle System&rsquo;s fifty predefined colour constants (see the <b>Colours</b> tab). This can also be achieved by direct assignment of the global variable <code>turtc</code>."),
-    new Command({ BASIC: "RNDCOL", C: "randcol", Java: "randCol", Pascal: "randcol", Python: "randcol", TypeScript: "randCol" }, [7 /* rand */, 4 /* incr */, 101 /* rgb */, 87 /* colr */], [new Parameter("n", "integer", false, 1)], null, 3, 0, "Assigns a random colour to the Turte&rsquo;s pen, between 1 and <code>n</code> (maximum 50). The colours are taken from the Turtle System&rsquo;s fifty predefined colours, which are each assigned a number between 1 and 50 (see the <b>Colours</b> tab)."),
-    new Command({ BASIC: "THICKNESS", C: "thickness", Java: "thickness", Pascal: "thickness", Python: "thickness", TypeScript: "thickness" }, [85 /* thik */], [new Parameter("thickness", "integer", false, 1)], null, 3, 0, "Sets the <code>thickness</code> of the Turtle&rsquo;s pen (for line drawing, and outlines of circles, ellipses, boxes, and polygons). This can also be achieved by direct assignment of the global variable <code>turtt</code>."),
-    new Command({ BASIC: "PENUP", C: "penup", Java: "penUp", Pascal: "penup", Python: "penup", TypeScript: "penUp" }, [112 /* ldin */, 0, 86 /* pen */], [], null, 3, 0, "Lifts the Turtle&rsquo;s pen, so that subsequent movement will not draw a line on the Canvas."),
-    new Command({ BASIC: "PENDOWN", C: "pendown", Java: "penDown", Pascal: "pendown", Python: "pendown", TypeScript: "penDown" }, [112 /* ldin */, -1, 86 /* pen */], [], null, 3, 0, "Lowers the Turtle&rsquo;s pen, so that subsequent movement will draw a line on the Canvas."),
-    new Command({ BASIC: "OUTPUT", C: "output", Java: "output", Pascal: "output", Python: "output", TypeScript: "output" }, [166 /* outp */], [
-      new Parameter("clear", "boolean", false, 1),
-      new Parameter("colour", "integer", false, 1),
-      new Parameter("tofront", "boolean", false, 1)
-    ], null, 3, 1, "Modifies the textual output. If the first argument is <code>true</code>, it clears any existing text. The second argument specifies the background colour, and the third argument is for switching the display. If the third argument is <code>true</code>, it switches to the <b>Output</b> tab, while if it is <code>false</code>, it switches to the <b>Canvas and Console</b> tab."),
-    new Command({ BASIC: "CONSOLE", C: "console", Java: "console", Pascal: "console", Python: "console", TypeScript: "console" }, [167 /* cons */], [
-      new Parameter("clear", "boolean", false, 1),
-      new Parameter("colour", "integer", false, 1)
-    ], null, 3, 1, "Modifies the Console; if the first argument is <code>true</code>, it clears any existing text, while the second argument specifies the background colour."),
-    new Command({ BASIC: "RGB", C: "rgb", Java: "rgb", Pascal: "rgb", Python: "rgb", TypeScript: "rgb" }, [101 /* rgb */], [new Parameter("colour", "integer", false, 1)], "integer", 3, 2, "Returns the RGB value of the input <code>colour</code> (an integer between 1 and 50). For example, <code>rgb(red)=255</code>."),
-    new Command({ BASIC: "MIXCOLS", C: "mixcols", Java: "mixCols", Pascal: "mixcols", Python: "mixcols", TypeScript: "mixCols" }, [102 /* mixc */], [
-      new Parameter("colour1", "integer", false, 1),
-      new Parameter("colour1", "integer", false, 1),
-      new Parameter("proportion1", "integer", false, 1),
-      new Parameter("proportion2", "integer", false, 1)
-    ], "integer", 3, 2, "Mixes the given colours in the given proportions."),
-    new Command({ BASIC: "NEWTURTLE", C: "newturtle", Java: "newTurtle", Pascal: "newturtle", Python: "newturtle", TypeScript: "newTurtle" }, [112 /* ldin */, 0, 123 /* sptr */], [new Parameter("array", "integer", false, 5)], null, 3, 2, "Points the Turtle to a custom array in memory (this must be an array of five integers, corresponding to the Turtle&rsquo;s five properties, <code>turtx</code>, <code>turty</code>, <code>turtd</code>, <code>turtt</code>, and <code>turtc</code>). Use repeatedly to simulate multiple Turtles."),
-    new Command({ BASIC: "OLDTURTLE", C: "oldturtle", Java: "oldTurtle", Pascal: "oldturtle", Python: "oldturtle", TypeScript: "oldTurtle" }, [229 /* oldt */], [], null, 3, 2, "Points the Turtle back to the default (built-in) array in memory. Use in conjunction with <code>newturtle</code>."),
-    new Command({ BASIC: "UPDATE", C: "update", Java: "update", Pascal: "update", Python: "update", TypeScript: "update" }, [112 /* ldin */, -1, 146 /* udat */], [], null, 4, 0, "Makes the Machine update the Canvas, and continue updating with all subsequent drawing commands. Used in conjunction with <em>noupdate</em>."),
-    new Command({ BASIC: "NOUPDATE", C: "noupdate", Java: "noUpdate", Pascal: "noupdate", Python: "noupdate", TypeScript: "noUpdate" }, [112 /* ldin */, 0, 146 /* udat */], [], null, 4, 0, "Makes the Machine refrain from updating the Canvas when executing all subsequent drawing commands, until <em>update</em> is called. Use this to create smooth animations, by queueing up several drawing commands to execute simultaneously."),
-    new Command({ BASIC: "BLANK", C: "blank", Java: "blank", Pascal: "blank", Python: "blank", TypeScript: "blank" }, [96 /* blnk */], [new Parameter("colour", "integer", false, 1)], null, 4, 0, "Blanks the entire Canvas with the specified <code>colour</code>."),
-    new Command({ BASIC: "CANVAS", C: "canvas", Java: "canvas", Pascal: "canvas", Python: "canvas", TypeScript: "canvas" }, [144 /* canv */], [
-      new Parameter("x1", "integer", false, 1),
-      new Parameter("y1", "integer", false, 1),
-      new Parameter("x2", "integer", false, 1),
-      new Parameter("y2", "integer", false, 1)
-    ], null, 4, 1, "Sets the top left Canvas coordinate to <code>(x1,y1)</code>, and the Canvas width and height to <code>x2</code> and <code>y2</code> respectively. Note that the width and height fix the number of virtual points on the Canvas, not the number of actual pixels."),
-    new Command({ BASIC: "RESOLUTION", C: "resolution", Java: "resolution", Pascal: "resolution", Python: "resolution", TypeScript: "resolution" }, [145 /* reso */], [
-      new Parameter("x", "integer", false, 1),
-      new Parameter("y", "integer", false, 1)
-    ], null, 4, 1, "Sets the Canvas resolution, i.e. the number of actual pixels in the <code>x</code> and <code>y</code> dimensions. To be used in conjunction with the <code>canvas</code> command, typically to set the number of actual pixels equal to the number of virtual points on the Canvas."),
-    new Command({ BASIC: "PIXSET", C: "pixset", Java: "pixSet", Pascal: "pixset", Python: "pixset", TypeScript: "pixSet" }, [100 /* pixs */], [
-      new Parameter("x", "integer", false, 1),
-      new Parameter("y", "integer", false, 1),
-      new Parameter("colour", "integer", false, 1)
-    ], null, 4, 2, "Sets the <code>colour</code> at point <code>(x,y)</code>."),
-    new Command({ BASIC: "PIXCOL", C: "pixcol", Java: "pixCol", Pascal: "pixcol", Python: "pixcol", TypeScript: "pixCol" }, [99 /* pixc */], [
-      new Parameter("x", "integer", false, 1),
-      new Parameter("y", "integer", false, 1)
-    ], "integer", 4, 2, "Returns the RGB value of the colour at point <code>(x,y)</code>."),
-    new Command({ BASIC: "RECOLOUR", C: "recolour", Java: "recolour", Pascal: "recolour", Python: "recolour", TypeScript: "recolour" }, [97 /* rcol */], [
-      new Parameter("x", "integer", false, 1),
-      new Parameter("y", "integer", false, 1),
-      new Parameter("colour", "integer", false, 1)
-    ], null, 4, 2, "Floods the Canvas with the specified <code>colour</code>, starting at point <code>(x,y)</code>, until reaching any different colour."),
-    new Command({ BASIC: "FILL", C: "fill", Java: "fill", Pascal: "fill", Python: "fill", TypeScript: "fill" }, [98 /* fill */], [
-      new Parameter("x", "integer", false, 1),
-      new Parameter("y", "integer", false, 1),
-      new Parameter("colour", "integer", false, 1),
-      new Parameter("boundary", "integer", false, 1)
-    ], null, 4, 2, "Floods the Canvas with the specified <code>colour</code>, starting at point <code>(x,y)</code>, until reaching the <code>boundary</code> colour."),
-    new Command({ BASIC: "INC", C: null, Java: null, Pascal: "inc", Python: null, TypeScript: null }, [1 /* dupl */, 122 /* lptr */, 4 /* incr */, 2 /* swap */, 123 /* sptr */], [new Parameter("variable", "integer", true, 1)], null, 5, 0, "Increments the specified <code>variable</code> by 1."),
-    new Command({ BASIC: "DEC", C: null, Java: null, Pascal: "dec", Python: null, TypeScript: null }, [1 /* dupl */, 122 /* lptr */, 5 /* decr */, 2 /* swap */, 123 /* sptr */], [new Parameter("variable", "integer", true, 1)], null, 5, 0, "Decrements the specified <code>variable</code> by 1."),
-    new Command({ BASIC: "ABS", C: "abs", Java: "abs", Pascal: "abs", Python: "abs", TypeScript: "abs" }, [24 /* abs */], [new Parameter("n", "integer", false, 1)], "integer", 5, 0, "Returns the absolute value of <code>n</code>, i.e. <code>n</code> if positive, <code>-n</code> if negative."),
-    new Command({ BASIC: "SGN", C: "sign", Java: "sign", Pascal: "sign", Python: "sign", TypeScript: "sign" }, [25 /* sign */], [new Parameter("a", "integer", false, 1)], "integer", 5, 1, "Returns <code>+1</code> if <code>a</code> is positive, <code>-1</code> if <code>a</code> is negative, and <code>0</code> otherwise."),
-    new Command({ BASIC: "MAX", C: "max", Java: "max", Pascal: "max", Python: "max", TypeScript: "max" }, [38 /* maxi */], [
-      new Parameter("a", "integer", false, 1),
-      new Parameter("b", "integer", false, 1)
-    ], "integer", 5, 1, "Returns the maximum of <code>a</code> and <code>b</code>."),
-    new Command({ BASIC: "MIN", C: "min", Java: "min", Pascal: "min", Python: "min", TypeScript: "min" }, [39 /* mini */], [
-      new Parameter("a", "integer", false, 1),
-      new Parameter("b", "integer", false, 1)
-    ], "integer", 5, 1, "Returns the minimum of <code>a</code> and <code>b</code>."),
-    new Command({ BASIC: "SQR", C: "sqrt", Java: "sqrt", Pascal: "sqrt", Python: "sqrt", TypeScript: "sqrt" }, [49 /* sqrt */], [
-      new Parameter("a", "integer", false, 1),
-      new Parameter("mult", "integer", false, 1)
-    ], "integer", 5, 1, "Returns <code>&radic;a</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
-    new Command({ BASIC: "HYPOT", C: "hypot", Java: "hypot", Pascal: "hypot", Python: "hypot", TypeScript: "hypot" }, [50 /* hyp */], [
-      new Parameter("a", "integer", false, 1),
-      new Parameter("b", "integer", false, 1),
-      new Parameter("mult", "integer", false, 1)
-    ], "integer", 5, 1, "Returns <code>&radic;(a<sup>2</sup>+b<sup>2</sup>)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
-    new Command({ BASIC: "RND", C: null, Java: null, Pascal: null, Python: null, TypeScript: null }, [7 /* rand */, 4 /* incr */], [new Parameter("n", "integer", false, 1)], "integer", 5, 1, "Returns a random integer between 1 and <code>n</code>."),
-    new Command({ BASIC: null, C: "rand", Java: "randInt", Pascal: "random", Python: "randrange", TypeScript: "randInt" }, [7 /* rand */], [new Parameter("n", "integer", false, 1)], "integer", 5, 1, "Returns a random non-negative integer less than <code>n</code>."),
-    new Command({ BASIC: null, C: null, Java: null, Pascal: null, Python: "randint", TypeScript: null }, [2 /* swap */, 1 /* dupl */, 3 /* rota */, 4 /* incr */, 2 /* swap */, 27 /* subt */, 7 /* rand */, 26 /* plus */], [
-      new Parameter("a", "integer", false, 1),
-      new Parameter("b", "integer", false, 1)
-    ], "integer", 5, 1, "Returns a random integer between <code>a</code> and <code>b</code>."),
-    new Command({ BASIC: "RNDSEED", C: "srand", Java: "seed", Pascal: "randseed", Python: "seed", TypeScript: "seed" }, [147 /* seed */], [new Parameter("seed", "integer", false, 1)], "integer", 5, 1, "Initialises the random number generator with the given <code>seed</code>, and returns that seed. If <code>seed</code> is 0, the seed is set from the current system clock."),
-    new Command({ BASIC: "POWER", C: "pow", Java: "power", Pascal: "power", Python: "power", TypeScript: "pow" }, [52 /* powr */], [
-      new Parameter("a", "integer", false, 1),
-      new Parameter("b", "integer", false, 1),
-      new Parameter("c", "integer", false, 1),
-      new Parameter("mult", "integer", false, 1)
-    ], "integer", 5, 2, "Returns <code>(a/b)<sup>c</sup></code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
-    new Command({ BASIC: "ROOT", C: "root", Java: "root", Pascal: "root", Python: "root", TypeScript: "root" }, [51 /* root */], [
-      new Parameter("a", "integer", false, 1),
-      new Parameter("b", "integer", false, 1),
-      new Parameter("c", "integer", false, 1),
-      new Parameter("mult", "integer", false, 1)
-    ], "integer", 5, 2, "Returns <code><sup>c</sup>&radic;(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
-    new Command({ BASIC: "DIVMULT", C: "divmult", Java: "divmult", Pascal: "divmult", Python: "divmult", TypeScript: "divmult" }, [48 /* divm */], [
-      new Parameter("a", "integer", false, 1),
-      new Parameter("b", "integer", false, 1),
-      new Parameter("mult", "integer", false, 1)
-    ], "integer", 5, 2, "Returns <code>a/b</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
-    new Command({ BASIC: "MAXINT", C: "maxint", Java: "maxInt", Pascal: "maxint", Python: "maxint", TypeScript: "maxInt" }, [6 /* mxin */], [], "integer", 5, 2, "Returns the maximum integer that the Machine can deal with (2<sup>31</sup>-1)."),
-    new Command({ BASIC: null, C: null, Java: null, Pascal: "shl", Python: null, TypeScript: null }, [22 /* shft */], [
-      new Parameter("number", "integer", false, 1),
-      new Parameter("shift", "integer", false, 1)
-    ], "integer", 5, 2, "Shift bits left."),
-    new Command({ BASIC: null, C: null, Java: null, Pascal: "shr", Python: null, TypeScript: null }, [23 /* neg */, 22 /* shft */], [
-      new Parameter("number", "integer", false, 1),
-      new Parameter("shift", "integer", false, 1)
-    ], "integer", 5, 2, "Shift bits right."),
-    new Command({ BASIC: "SIN", C: "sin", Java: "sin", Pascal: "sin", Python: "sin", TypeScript: "sin" }, [57 /* sin */], [
-      new Parameter("a", "integer", false, 1),
-      new Parameter("b", "integer", false, 1),
-      new Parameter("mult", "integer", false, 1)
-    ], "integer", 6, 1, "Returns <code>sin(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
-    new Command({ BASIC: "COS", C: "cos", Java: "cos", Pascal: "cos", Python: "cos", TypeScript: "cos" }, [58 /* cos */], [
-      new Parameter("a", "integer", false, 1),
-      new Parameter("b", "integer", false, 1),
-      new Parameter("mult", "integer", false, 1)
-    ], "integer", 6, 1, "Returns <code>cos(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
-    new Command({ BASIC: "TAN", C: "tan", Java: "tan", Pascal: "tan", Python: "tan", TypeScript: "tan" }, [59 /* tan */], [
-      new Parameter("a", "integer", false, 1),
-      new Parameter("b", "integer", false, 1),
-      new Parameter("mult", "integer", false, 1)
-    ], "integer", 6, 1, "Returns <code>tan(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
-    new Command({ BASIC: "PI", C: "pi", Java: "pi", Pascal: "pi", Python: "pi", TypeScript: "PI" }, [63 /* pi */], [new Parameter("mult", "integer", false, 1)], "integer", 6, 1, "Returns the value of Pi, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
-    new Command({ BASIC: "EXP", C: "exp", Java: "exp", Pascal: "exp", Python: "exp", TypeScript: "exp" }, [56 /* exp */], [
-      new Parameter("a", "integer", false, 1),
-      new Parameter("b", "integer", false, 1),
-      new Parameter("mult", "integer", false, 1)
-    ], "integer", 6, 1, "Returns <code>a<sup>b</sup></code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
-    new Command({ BASIC: "LN", C: "log", Java: "log", Pascal: "ln", Python: "log", TypeScript: "log" }, [55 /* ln */], [
-      new Parameter("a", "integer", false, 1),
-      new Parameter("b", "integer", false, 1),
-      new Parameter("mult", "integer", false, 1)
-    ], "integer", 6, 1, "Returns <code>ln(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
-    new Command({ BASIC: "ANTILOG", C: "antilog", Java: "antilog", Pascal: "antilog", Python: "antilog", TypeScript: "antilog" }, [54 /* alog */], [
-      new Parameter("a", "integer", false, 1),
-      new Parameter("b", "integer", false, 1),
-      new Parameter("mult", "integer", false, 1)
-    ], "integer", 6, 2, "Returns <code>antilog<sub>10</sub>(a/b)</code> - i.e. <code>10<sup>a/b</sub></code> - multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
-    new Command({ BASIC: "LOG10", C: "log10", Java: "log10", Pascal: "log10", Python: "log10", TypeScript: "log10" }, [53 /* log */], [
-      new Parameter("a", "integer", false, 1),
-      new Parameter("b", "integer", false, 1),
-      new Parameter("mult", "integer", false, 1)
-    ], "integer", 6, 2, "Returns <code>log<sub>10</sub>(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
-    new Command({ BASIC: "ASN", C: "asin", Java: "asin", Pascal: "arcsin", Python: "asin", TypeScript: "asin" }, [60 /* asin */], [
-      new Parameter("a", "integer", false, 1),
-      new Parameter("b", "integer", false, 1),
-      new Parameter("mult", "integer", false, 1)
-    ], "integer", 6, 2, "Returns <code>arcsin(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
-    new Command({ BASIC: "ACS", C: "acos", Java: "acos", Pascal: "arccos", Python: "acos", TypeScript: "acos" }, [61 /* acos */], [
-      new Parameter("a", "integer", false, 1),
-      new Parameter("b", "integer", false, 1),
-      new Parameter("mult", "integer", false, 1)
-    ], "integer", 6, 2, "Returns <code>arccos(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
-    new Command({ BASIC: "ATN", C: "atan", Java: "atan", Pascal: "arctan", Python: "atan", TypeScript: "atan" }, [62 /* atan */], [
-      new Parameter("a", "integer", false, 1),
-      new Parameter("b", "integer", false, 1),
-      new Parameter("mult", "integer", false, 1)
-    ], "integer", 6, 2, "Returns <code>arctan(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."),
-    new Command({ BASIC: "WRITE", C: "write", Java: "write", Pascal: "write", Python: null, TypeScript: null }, [169 /* writ */], [new Parameter("string", "string", false, 1)], null, 7, 0, "Writes the input <code>string</code> to the console and textual output area of the System."),
-    new Command({ BASIC: "WRITELN", C: "writeline", Java: "writeLine", Pascal: "writeln", Python: "print", TypeScript: "log" }, [169 /* writ */, 170 /* newl */], [new Parameter("string", "string", false, 1)], null, 7, 0, "Writes the input <code>string</code> to the console and textual output area of the System, followed by a line break."),
-    new Command({ BASIC: "DISPLAY", C: "display", Java: "display", Pascal: "display", Python: "display", TypeScript: "display" }, [168 /* prnt */], [
-      new Parameter("string", "string", false, 1),
-      new Parameter("font", "integer", false, 1),
-      new Parameter("size", "integer", false, 1)
-    ], null, 7, 0, "Prints the input <code>string</code> in the Turtle&rsquo;s current colour and at the Turtle&rsquo;s current location, in the specified <code>font</code> and <code>size</code>. Can be used in conjunction with the <code>box</code> drawing command. For a list of available fonts, see the <b>Constants</b> tab."),
-    new Command({ BASIC: "LCASE$", C: "strlwr", Java: "toLowerCase", Pascal: "lowercase", Python: "lower", TypeScript: "toLowerCase" }, [112 /* ldin */, 1, 66 /* case */], [new Parameter("string", "string", false, 1)], "string", 7, 1, "Returns the input <code>string</code> as all lowercase."),
-    new Command({ BASIC: "UCASE$", C: "strupr", Java: "toUpperCase", Pascal: "uppercase", Python: "upper", TypeScript: "toUpperCase" }, [112 /* ldin */, 2, 66 /* case */], [new Parameter("string", "string", false, 1)], "string", 7, 1, "Returns the input <code>string</code> as all uppercase."),
-    new Command({ BASIC: "CCASE$", C: "strcap", Java: "capitalize", Pascal: "initcap", Python: "capitalize", TypeScript: "capitalize" }, [112 /* ldin */, 3, 66 /* case */], [new Parameter("string", "string", false, 1)], "string", 7, 1, "Returns the input <code>string</code> with the first letter capitalized."),
-    new Command({ BASIC: "TCASE$", C: "strtitle", Java: "toTitleCase", Pascal: "titlecase", Python: "title", TypeScript: "toTitleCase" }, [112 /* ldin */, 4, 66 /* case */], [new Parameter("string", "string", false, 1)], "string", 7, 1, "Returns the input <code>string</code> in title case (i.e. the first letter of each word capitalized)."),
-    new Command({ BASIC: "SCASE$", C: "strswap", Java: "swapCase", Pascal: "swapcase", Python: "swapcase", TypeScript: "swapCase" }, [112 /* ldin */, 5, 66 /* case */], [new Parameter("string", "string", false, 1)], "string", 7, 1, "Returns the input <code>string</code> with all the cases swapped."),
-    new Command({ BASIC: "LEN", C: "strlen", Java: "length", Pascal: "length", Python: "len", TypeScript: "length" }, [65 /* slen */], [new Parameter("string", "string", false, 1)], "integer", 7, 1, "Returns the length of the input <code>string</code> (i.e. the number of characters)."),
-    new Command({ BASIC: "DEL$", C: null, Java: null, Pascal: "delete", Python: null, TypeScript: null }, [68 /* dels */], [
-      new Parameter("string", "string", false, 1),
-      new Parameter("index", "integer", false, 1),
-      new Parameter("length", "integer", false, 1)
-    ], "string", 7, 2, "Returns the input <code>string</code> with some characters removed, starting at the given <code>index</code> and of the specified <code>length</code>."),
-    new Command({ BASIC: null, C: "strdel", Java: "delete", Pascal: null, Python: "delete", TypeScript: "delete" }, [2 /* swap */, 4 /* incr */, 2 /* swap */, 68 /* dels */], [
-      new Parameter("string", "string", false, 1),
-      new Parameter("index", "integer", false, 1),
-      new Parameter("length", "integer", false, 1)
-    ], "string", 7, 2, "Returns the input <code>string</code> with some characters removed, starting at the given <code>index</code> and of the specified <code>length</code>."),
-    new Command({ BASIC: "LEFT$", C: null, Java: null, Pascal: null, Python: null, TypeScript: null }, [112 /* ldin */, 1, 2 /* swap */, 67 /* copy */], [
-      new Parameter("string", "string", false, 1),
-      new Parameter("length", "integer", false, 1)
-    ], "string", 7, 2, "Returns a copy of the characters in the input <code>string</code>, starting on the left and of the specified <code>length</code>."),
-    new Command({ BASIC: "MID$", C: null, Java: null, Pascal: "copy", Python: null, TypeScript: null }, [67 /* copy */], [
-      new Parameter("string", "string", false, 1),
-      new Parameter("index", "integer", false, 1),
-      new Parameter("length", "integer", false, 1)
-    ], "string", 7, 2, "Returns a copy of the characters in the input <code>string</code>, starting at the given <code>index</code> and of the specified <code>length</code>."),
-    new Command({ BASIC: null, C: "strcpy", Java: "copy", Pascal: null, Python: "copy", TypeScript: "copy" }, [2 /* swap */, 4 /* incr */, 2 /* swap */, 67 /* copy */], [
-      new Parameter("string", "string", false, 1),
-      new Parameter("index", "integer", false, 1),
-      new Parameter("length", "integer", false, 1)
-    ], "string", 7, 2, "Returns a copy of the characters in the input <code>string</code>, starting at the given <code>index</code> and of the specified <code>length</code>."),
-    new Command({ BASIC: "RIGHT$", C: null, Java: null, Pascal: null, Python: null, TypeScript: null }, [2 /* swap */, 1 /* dupl */, 65 /* slen */, 4 /* incr */, 3 /* rota */, 27 /* subt */, 6 /* mxin */, 67 /* copy */], [
-      new Parameter("string", "string", false, 1),
-      new Parameter("length", "integer", false, 1)
-    ], "string", 7, 2, "Returns a copy of the characters in the input <code>string</code>, starting on the right and of the specified <code>length</code>."),
-    new Command({ BASIC: "INSERT$", C: null, Java: null, Pascal: null, Python: null, TypeScript: null }, [3 /* rota */, 3 /* rota */, 69 /* inss */], [
-      new Parameter("string", "string", false, 1),
-      new Parameter("index", "integer", false, 1),
-      new Parameter("substr", "string", false, 1)
-    ], "string", 7, 2, "Returns the input <code>string</code> with the specified <code>substring</code> inserted at the given <code>index</code>."),
-    new Command({ BASIC: null, C: "strins", Java: "insert", Pascal: null, Python: "insert", TypeScript: "insert" }, [3 /* rota */, 3 /* rota */, 2 /* swap */, 3 /* rota */, 4 /* incr */, 69 /* inss */], [
-      new Parameter("string", "string", false, 1),
-      new Parameter("substr", "string", false, 1),
-      new Parameter("index", "integer", false, 1)
-    ], "string", 7, 2, "Returns the input <code>string</code> with the specified <code>substring</code> inserted at the given <code>index</code>."),
-    new Command({ BASIC: null, C: null, Java: null, Pascal: "insert", Python: null, TypeScript: null }, [69 /* inss */], [
-      new Parameter("substr", "string", false, 1),
-      new Parameter("string", "string", false, 1),
-      new Parameter("index", "integer", false, 1)
-    ], "string", 7, 2, "Returns the input <code>string</code> with the specified <code>substring</code> inserted at the given <code>index</code>."),
-    new Command({ BASIC: "PAD$", C: "strpad", Java: "pad", Pascal: "pad", Python: "pad", TypeScript: null }, [72 /* spad */], [
-      new Parameter("string", "string", false, 1),
-      new Parameter("padding", "string", false, 1),
-      new Parameter("length", "integer", false, 1)
-    ], "string", 7, 2, "Returns the input <code>string</code> with the input <code>padding</code> added either before or after to make a string of minimum given <code>length</cope>. The <code>padding</code> is placed before if <code>length</code> is positive, after if it is negative."),
-    new Command({ BASIC: null, C: null, Java: null, Pascal: null, Python: null, TypeScript: "padStart" }, [72 /* spad */], [
-      new Parameter("string", "string", false, 1),
-      new Parameter("padding", "string", false, 1),
-      new Parameter("length", "integer", false, 1)
-    ], "string", 7, 2, "Returns the input <code>string</code> with the input <code>padding</code> added before to make a string of minimum given <code>length</cope>."),
-    new Command({ BASIC: null, C: null, Java: null, Pascal: null, Python: null, TypeScript: "padEnd" }, [23 /* neg */, 72 /* spad */], [
-      new Parameter("string", "string", false, 1),
-      new Parameter("padding", "string", false, 1),
-      new Parameter("length", "integer", false, 1)
-    ], "string", 7, 2, "Returns the input <code>string</code> with the input <code>padding</code> added after to make a string of minimum given <code>length</cope>."),
-    new Command({ BASIC: "REPLACE$", C: "strrepl", Java: "replace", Pascal: "replace", Python: "replace", TypeScript: null }, [71 /* repl */], [
-      new Parameter("string", "string", false, 1),
-      new Parameter("substr", "string", false, 1),
-      new Parameter("replace", "string", false, 1),
-      new Parameter("n", "integer", false, 1)
-    ], "string", 7, 2, "Returns the input <code>string</code> with up to <code>n</code> occurences of <code>substring</code> replaced by <code>replace</code>. Set <code>n</code> equal to <code>0</code> to replace every occurence."),
-    new Command({ BASIC: "INSTR", C: null, Java: null, Pascal: null, Python: null, TypeScript: null }, [2 /* swap */, 70 /* poss */], [
-      new Parameter("string", "string", false, 1),
-      new Parameter("substr", "string", false, 1)
-    ], "integer", 7, 2, "Searches for the input <code>substring</code> within the given <code>string</code>; returns the index of the first character if found, 0 otherwise."),
-    new Command({ BASIC: null, C: "strpos", Java: "indexOf", Pascal: null, Python: "find", TypeScript: "indexOf" }, [2 /* swap */, 70 /* poss */, 5 /* decr */], [
-      new Parameter("string", "string", false, 1),
-      new Parameter("substr", "string", false, 1)
-    ], "integer", 7, 2, "Searches for the input <code>substring</code> within the given <code>string</code>; returns the index of the first character if found, 0 otherwise."),
-    new Command({ BASIC: null, C: null, Java: null, Pascal: "pos", Python: null, TypeScript: null }, [70 /* poss */], [
-      new Parameter("substr", "string", false, 1),
-      new Parameter("string", "string", false, 1)
-    ], "integer", 7, 2, "Searches for the input <code>substring</code> within the given <code>string</code>; returns the index of the first character if found, 0 otherwise."),
-    new Command({ BASIC: "STR$", C: "itoa", Java: "toString", Pascal: "str", Python: "str", TypeScript: "toString" }, [11 /* itos */], [new Parameter("n", "integer", false, 1)], "string", 8, 0, "Returns the integer <code>n</code> as a string, e.g. <code>str(12)='12'</code>."),
-    new Command({ BASIC: "VAL", C: "atoi", Java: "parseInt", Pascal: "val", Python: "int", TypeScript: "parseInt" }, [112 /* ldin */, 0, 13 /* sval */], [new Parameter("string", "string", false, 1)], "integer", 8, 0, "Returns the input <code>string</code> as an integer, e.g. <code>val('12')=12</code>. Returns <code>0</code> if the string cannot be converted (i.e. if it is not an integer string)."),
-    new Command({ BASIC: "VALDEF", C: "atoidef", Java: "parseIntDef", Pascal: "valdef", Python: "intdef", TypeScript: "parseIntDef" }, [13 /* sval */], [
-      new Parameter("string", "string", false, 1),
-      new Parameter("default", "integer", false, 1)
-    ], "integer", 8, 0, "Returns the input <code>string</code> as an integer, e.g. <code>val('12')=12</code>. Returns the specified <code>default</code> value if the string cannot be converted (i.e. if it is not an integer string)."),
-    new Command({ BASIC: "QSTR$", C: "qitoa", Java: "toStringQ", Pascal: "qstr", Python: "qstr", TypeScript: "toStringQ" }, [14 /* qtos */], [
-      new Parameter("a", "integer", false, 1),
-      new Parameter("b", "integer", false, 1),
-      new Parameter("decplaces", "integer", false, 1)
-    ], "string", 8, 1, "Returns the value of <code>a/b</code> to the specified number of decimal places, as a decimal string, e.g. <code>qstr(2,3,4)='0.6667'</code>."),
-    new Command({ BASIC: "QVAL", C: "qatoi", Java: "parseIntQ", Pascal: "qval", Python: "qint", TypeScript: "parseIntQ" }, [15 /* qval */], [
-      new Parameter("string", "string", false, 1),
-      new Parameter("mult", "integer", false, 1),
-      new Parameter("default", "integer", false, 1)
-    ], "integer", 8, 1, "Returns the input decimal <code>string</code> as an integer, multiplied by <code>mult</code> and rounded to the nearest integer, e.g. <code>qval('1.5',10)=15</code>. Returns the specified <code>default</code> value if the string cannot be converted (i.e. if it is not a decimal string)."),
-    new Command({ BASIC: "CHR$", C: null, Java: null, Pascal: null, Python: "chr", TypeScript: "fromCharCode" }, [9 /* ctos */], [new Parameter("n", "integer", false, 1)], "string", 8, 2, "Returns the character with ASCII character code <code>n</code>."),
-    new Command({ BASIC: null, C: null, Java: "fromCharCode", Pascal: "chr", Python: null, TypeScript: null }, [], [new Parameter("n", "integer", false, 1)], "character", 8, 2, "Returns the character with ASCII character code <code>n</code>."),
-    new Command({ BASIC: "ASC", C: null, Java: "charCode", Pascal: null, Python: "ord", TypeScript: "charCode" }, [10 /* sasc */], [new Parameter("char", "string", false, 1)], "integer", 8, 2, "Returns the ASCII code of the input character, or of the first character of the input string."),
-    new Command({ BASIC: null, C: null, Java: null, Pascal: "ord", Python: null, TypeScript: null }, [], [new Parameter("char", "character", false, 1)], "integer", 8, 2, "Returns the ASCII code of the input character."),
-    new Command({ BASIC: null, C: null, Java: null, Pascal: "boolint", Python: null, TypeScript: null }, [], [new Parameter("boolean", "boolean", false, 1)], "integer", 8, 2, "Returns the input <code>boolean</code> as an integer (-1 for <code>true</code>, 0 for <code>false</code>)."),
-    new Command({ BASIC: null, C: null, Java: null, Pascal: null, Python: "int", TypeScript: null }, [], [new Parameter("boolean", "boolean", false, 1)], "integer", 8, 2, "Returns the input <code>boolean</code> as an integer (1 for <code>true</code>, 0 for <code>false</code>)."),
-    new Command({ BASIC: null, C: null, Java: null, Pascal: null, Python: "bool", TypeScript: null }, [112 /* ldin */, 0, 33 /* noeq */], [new Parameter("integer", "integer", false, 1)], "boolean", 8, 2, "Returns the input <code>integer</code> as a boolean (0 is <code>false</code>, everything else is <code>true</code>)."),
-    new Command({ BASIC: "HEX$", C: "itoahex", Java: "toStringHex", Pascal: "hexstr", Python: "hex", TypeScript: "toStringHex" }, [12 /* hexs */], [
-      new Parameter("n", "integer", false, 1),
-      new Parameter("minlength", "integer", false, 1)
-    ], "string", 8, 2, "Returns a string representation of integer <code>n</code> in hexadecimal format, padded with leading zeros as up to <code>minlength</code>, e.g. <code>hexstr(255,6)='0000FF'</code>."),
-    new Command({ BASIC: "PAUSE", C: "pause", Java: "pause", Pascal: "pause", Python: "pause", TypeScript: "pause" }, [174 /* wait */], [new Parameter("m", "integer", false, 1)], null, 9, 0, "Makes the Turtle Machine wait <code>m</code> milliseconds before performing the next operation. This is useful for controlling the speed of animations."),
-    new Command({ BASIC: "HALT", C: "exit", Java: "halt", Pascal: "halt", Python: "halt", TypeScript: "halt" }, [130 /* halt */], [], null, 9, 0, "Halts the program."),
-    new Command({ BASIC: "GETLINE$", C: "gets", Java: "readLine", Pascal: "readln", Python: "readline", TypeScript: "readLine" }, [164 /* rdln */], [], "string", 9, 0, "Waits for the RETURN key to be pressed, then returns everything in the keybuffer up to (and not including) the new line character."),
-    new Command({ BASIC: "INPUT$", C: "scan", Java: "input", Pascal: "input", Python: "input", TypeScript: "input" }, [169 /* writ */, 170 /* newl */, 164 /* rdln */], [new Parameter("prompt", "string", false, 1)], "string", 9, 0, "Gives an input prompt, then returns the input when the RETURN key is pressed (using the keybuffer)."),
-    new Command({ BASIC: "CURSOR", C: "cursor", Java: "cursor", Pascal: "cursor", Python: "cursor", TypeScript: "cursor" }, [171 /* curs */], [new Parameter("cursorcode", "integer", false, 1)], null, 9, 1, "Sets which cursor to display (1-15) when the mouse pointer is over the canvas. 0 hides the cursor; any value outside the range 0-15 resets the default cursor. For a list of available cursors, see the <b>Cursors</b> tab."),
-    new Command({ BASIC: "KEYECHO", C: "keyecho", Java: "keyEcho", Pascal: "keyecho", Python: "keyecho", TypeScript: "keyEcho" }, [165 /* kech */], [new Parameter("on", "boolean", false, 1)], null, 9, 1, "Turns the keyboard echo to the console on (<code>true</code>) or off (<code>false</code>)."),
-    new Command({ BASIC: "DETECT", C: "detect", Java: "detect", Pascal: "detect", Python: "detect", TypeScript: "detect" }, [175 /* tdet */], [
-      new Parameter("inputcode", "integer", false, 1),
-      new Parameter("m", "integer", false, 1)
-    ], "integer", 9, 1, "Waits a maximum of <code>m</code> milliseconds for the key with the specified <code>inputcode</code> to be pressed; returns its current input value if pressed (and stops waiting), and <code>0</code> otherwise."),
-    new Command({ BASIC: "GET$", C: "get", Java: "read", Pascal: "read", Python: "read", TypeScript: "read" }, [163 /* read */], [new Parameter("n", "integer", false, 1)], "string", 9, 1, "Returns the first <code>n</code> characters from the keybuffer as a string."),
-    new Command({ BASIC: "TIME", C: "time", Java: "time", Pascal: "time", Python: "time", TypeScript: "time" }, [172 /* time */], [], "integer", 9, 1, "Returns the time (in milliseconds) since the program began."),
-    new Command({ BASIC: "TIMESET", C: "timeset", Java: "timeSet", Pascal: "timeset", Python: "timeset", TypeScript: "timeSet" }, [173 /* tset */], [new Parameter("m", "integer", false, 1)], null, 9, 1, "Artificially sets the time since the program began to <code>m</code> milliseconds."),
-    new Command({ BASIC: "RESET", C: "reset", Java: "reset", Pascal: "reset", Python: "reset", TypeScript: "reset" }, [161 /* iclr */], [new Parameter("\\inputcode", "integer", false, 1)], null, 9, 2, "Resets the specified <code>\\inputcode</code> (<code>\\mousex</code>, <code>\\mousey</code>, <code>\\backspace</code>, <code>\\enter</code>, etc.) to its initial value (i.e. -1)."),
-    new Command({ BASIC: "STATUS", C: "status", Java: "status", Pascal: "status", Python: "status", TypeScript: "status" }, [PCode.stat], [new Parameter("\\inputcode", "integer", false, 1)], "integer", 9, 2, "Returns the <code>?kshift</code> value for the most recent press/click of the input with the specified <code>\\inputcode</code>."),
-    new Command({ BASIC: "KEYBUFFER", C: "keybuffer", Java: "keyBuffer", Pascal: "keybuffer", Python: "keybuffer", TypeScript: "keyBuffer" }, [162 /* bufr */, 112 /* ldin */, 1, 123 /* sptr */, 141 /* hfix */], [new Parameter("n", "integer", false, 1)], null, 9, 2, "Creates a new custom keybuffer of length <code>n</code>. A keybuffer of length 32 is available by default; use this command if you need a larger buffer."),
-    new Command({ BASIC: "CHDIR", C: null, Java: null, Pascal: "chdir", Python: null, TypeScript: null }, [176 /* chdr */], [new Parameter("directory name", "string", false, 1)], null, 10, 1, "Changes the current directory."),
-    new Command({ BASIC: "RMDIR", C: null, Java: null, Pascal: "rmdir", Python: null, TypeScript: null }, [112 /* ldin */, 1, 178 /* diry */, 112 /* ldin */, 128, 34 /* less */], [new Parameter("subdirectory name", "string", false, 1)], "boolean", 10, 1, "Removes a subdirectory."),
-    new Command({ BASIC: "MKDIR", C: null, Java: null, Pascal: "mkdir", Python: null, TypeScript: null }, [112 /* ldin */, 2, 178 /* diry */, 112 /* ldin */, 127, 35 /* more */], [new Parameter("subdirectory name", "string", false, 1)], "boolean", 10, 1, "Creates a subdirectory."),
-    new Command({ BASIC: null, C: null, Java: null, Pascal: "openfile", Python: null, TypeScript: null }, [179 /* open */], [
-      new Parameter("filename", "string", false, 1),
-      new Parameter("mode", "integer", false, 1)
-    ], "integer", 10, 1, "Opens a file (1: read, 2: append, 3: write)."),
-    new Command({ BASIC: "OPENIN", C: null, Java: null, Pascal: null, Python: null, TypeScript: null }, [112 /* ldin */, 1, 179 /* open */], [new Parameter("filename", "string", false, 1)], "integer", 10, 1, "Open a file for reading."),
-    new Command({ BASIC: "OPENUP", C: null, Java: null, Pascal: null, Python: null, TypeScript: null }, [112 /* ldin */, 2, 179 /* open */], [new Parameter("filename", "string", false, 1)], "integer", 10, 1, "Opens a file for appending."),
-    new Command({ BASIC: "OPENOUT", C: null, Java: null, Pascal: null, Python: null, TypeScript: null }, [112 /* ldin */, 4, 179 /* open */], [new Parameter("filename", "string", false, 1)], "integer", 10, 1, "Opens a file for writing."),
-    new Command({ BASIC: "CLOSE#", C: null, Java: null, Pascal: "closefile", Python: null, TypeScript: null }, [180 /* clos */], [new Parameter("file handle", "integer", false, 1)], null, 10, 1, "Closes a file."),
-    new Command({ BASIC: "DELETEFILE", C: null, Java: null, Pascal: "deletefile", Python: null, TypeScript: null }, [112 /* ldin */, 1, 177 /* file */, 112 /* ldin */, 128, 34 /* less */], [new Parameter("filename", "string", false, 1)], "boolean", 10, 1, "Deletes a file."),
-    new Command({ BASIC: "FREAD#", C: null, Java: null, Pascal: "fread", Python: null, TypeScript: null }, [184 /* frds */], [
-      new Parameter("file handle", "integer", false, 1),
-      new Parameter("n", "integer", false, 1)
-    ], "string", 10, 1, "Reads n characters (maximum) from a file."),
-    new Command({ BASIC: "FREADLN#", C: null, Java: null, Pascal: "freadln", Python: null, TypeScript: null }, [185 /* frln */], [new Parameter("file handle", "integer", false, 1)], "string", 10, 1, "Reads a line from a file."),
-    new Command({ BASIC: "FWRITE#", C: null, Java: null, Pascal: "fwrite", Python: null, TypeScript: null }, [186 /* fwrs */], [
-      new Parameter("file handle", "integer", false, 1),
-      new Parameter("string", "string", false, 1)
-    ], null, 10, 1, "Writes a string to a file."),
-    new Command({ BASIC: "FWRITELN#", C: null, Java: null, Pascal: "fwriteln", Python: null, TypeScript: null }, [187 /* fwln */], [
-      new Parameter("file handle", "integer", false, 1),
-      new Parameter("string", "string", false, 1)
-    ], null, 10, 1, "Writes a line to a file."),
-    new Command({ BASIC: "EOF#", C: null, Java: null, Pascal: "eof", Python: null, TypeScript: null }, [182 /* eof */], [new Parameter("file handle", "integer", false, 1)], "boolean", 10, 1, "Tests for the end of file."),
-    new Command({ BASIC: "CHECKDIR", C: null, Java: null, Pascal: "checkdir", Python: null, TypeScript: null }, [112 /* ldin */, 0, 178 /* diry */, 112 /* ldin */, 127, 35 /* more */], [
-      new Parameter("directory name", "string", false, 1),
-      new Parameter("code", "integer", false, 1)
-    ], "integer", 10, 2, "Creates/deletes/checks a directory."),
-    new Command({ BASIC: "CHECKFILE", C: null, Java: null, Pascal: "checkfile", Python: null, TypeScript: null }, [112 /* ldin */, 0, 177 /* file */, 112 /* ldin */, 127, 35 /* more */], [
-      new Parameter("filename", "string", false, 1),
-      new Parameter("code", "integer", false, 1)
-    ], "integer", 10, 2, "Creates/deletes/checks a file."),
-    new Command({ BASIC: "COPYFILE", C: null, Java: null, Pascal: "copyfile", Python: null, TypeScript: null }, [112 /* ldin */, 3, 191 /* fmov */], [
-      new Parameter("old name", "string", false, 1),
-      new Parameter("new name", "string", false, 1)
-    ], "boolean", 10, 2, "Copies a file."),
-    new Command({ BASIC: "DIREXISTS", C: null, Java: null, Pascal: "direxists", Python: null, TypeScript: null }, [112 /* ldin */, 0, 178 /* diry */, 112 /* ldin */, 127, 35 /* more */], [new Parameter("subdirectory name", "string", false, 1)], "boolean", 10, 2, "Checks whether a subdirectory exists."),
-    new Command({ BASIC: "FILEEXISTS", C: null, Java: null, Pascal: "fileexists", Python: null, TypeScript: null }, [112 /* ldin */, 0, 177 /* file */, 112 /* ldin */, 127, 35 /* more */], [new Parameter("filename", "string", false, 1)], "boolean", 10, 2, "Checks whether a file exists."),
-    new Command({ BASIC: "FINDDIR", C: null, Java: null, Pascal: "finddir", Python: null, TypeScript: null }, [1 /* dupl */, 122 /* lptr */, 3 /* rota */, 189 /* fdir */, 2 /* swap */, 3 /* rota */, 123 /* sptr */], [
-      new Parameter("directory name pattern", "string", false, 1),
-      new Parameter("file handle", "integer", false, 1)
-    ], "string", 10, 2, "Finds the first directory matching the pattern."),
-    new Command({ BASIC: "FINDFIRST", C: null, Java: null, Pascal: "findfirst", Python: null, TypeScript: null }, [1 /* dupl */, 122 /* lptr */, 3 /* rota */, 188 /* ffnd */, 2 /* swap */, 3 /* rota */, 123 /* sptr */], [
-      new Parameter("filename pattern", "string", false, 1),
-      new Parameter("file handle", "integer", false, 1)
-    ], "string", 10, 2, "Finds the first file matching the pattern."),
-    new Command({ BASIC: "FINDNEXT", C: null, Java: null, Pascal: "findnext", Python: null, TypeScript: null }, [190 /* fnxt */], [new Parameter("file handle", "integer", false, 1)], "string", 10, 2, "Finds the next file/directory matching a pattern."),
-    new Command({ BASIC: "RENAMEFILE", C: null, Java: null, Pascal: "renamefile", Python: null, TypeScript: null }, [112 /* ldin */, 1, 191 /* fmov */], [
-      new Parameter("old filename", "string", false, 1),
-      new Parameter("new filename", "string", false, 1)
-    ], "boolean", 10, 2, "Rename file"),
-    new Command({ BASIC: "MOVEFILE", C: null, Java: null, Pascal: "movefile", Python: null, TypeScript: null }, [112 /* ldin */, 2, 191 /* fmov */], [
-      new Parameter("old filename", "string", false, 1),
-      new Parameter("new filename", "string", false, 1)
-    ], "boolean", 10, 2, "Moves a file."),
-    new Command({ BASIC: "RESTARTFILE", C: null, Java: null, Pascal: "restartfile", Python: null, TypeScript: null }, [181 /* fbeg */], [new Parameter("file handle", "integer", false, 1)], null, 10, 2, "Restarts reading a file."),
-    new Command({ BASIC: "EOLN#", C: null, Java: null, Pascal: "eoln", Python: null, TypeScript: null }, [183 /* eoln */], [new Parameter("file handle", "integer", false, 1)], "boolean", 10, 2, "Tests for end of line in a file."),
-    new Command({ BASIC: "DUMP", C: "dump", Java: "dump", Pascal: "dump", Python: "dump", TypeScript: "dump" }, [154 /* dump */], [], null, 11, 2, "&ldquo;Dumps&rdquo; the current memory state into the display in the memory tab."),
-    new Command({ BASIC: "HEAPRESET", C: "heapreset", Java: "heapReset", Pascal: "heapreset", Python: "heapreset", TypeScript: "heapReset" }, [143 /* hrst */], [], null, 11, 2, "Resets the memory heap to the initial global value."),
-    new Command({ BASIC: "ADDRESS", C: "address", Java: "address", Pascal: "address", Python: "address", TypeScript: "address" }, [], [new Parameter("variable", "integer", true, 1)], "integer", 11, 2, "Returns the address in memory of the given <code>variable</code>."),
-    new Command({ BASIC: "PEEK", C: "peek", Java: "peek", Pascal: "peek", Python: "peek", TypeScript: "peek" }, [155 /* peek */], [new Parameter("address", "integer", false, 1)], "integer", 11, 2, "Peek at the value of the memory at the given <code>address</code>."),
-    new Command({ BASIC: "POKE", C: "poke", Java: "poke", Pascal: "poke", Python: "poke", TypeScript: "poke" }, [156 /* poke */], [
-      new Parameter("address", "integer", false, 1),
-      new Parameter("value", "integer", false, 1)
-    ], null, 11, 2, "Poke the <code>value</code> into the memory at the given <code>address</code>."),
-    new Command({ BASIC: "TRACE", C: "trace", Java: "trace", Pascal: "trace", Python: "trace", TypeScript: "trace" }, [152 /* trac */], [new Parameter("on", "boolean", false, 1)], null, 11, 2, "Turns the PCode trace facility on (<code>true</code>) or off (<code>false</code>)."),
-    new Command({ BASIC: "WATCH", C: "watch", Java: "watch", Pascal: "watch", Python: "watch", TypeScript: "watch" }, [153 /* memw */], [new Parameter("address", "integer", false, 1)], null, 11, 2, "Sets an <code>address</code> in memory for the trace facility to watch.")
+    new Command(
+      { BASIC: "FORWARD", C: "forward", Java: "forward", Pascal: "forward", Python: "forward", TypeScript: "forward" },
+      [91 /* fwrd */],
+      [new Parameter("n", "integer", false, 1)],
+      null,
+      0,
+      0,
+      "Moves the Turtle forward <code>n</code> units, drawing as it goes (unless the pen is up)."
+    ),
+    new Command(
+      { BASIC: "BACK", C: "back", Java: "back", Pascal: "back", Python: "back", TypeScript: "back" },
+      [92 /* back */],
+      [new Parameter("n", "integer", false, 1)],
+      null,
+      0,
+      0,
+      "Moves the Turtle back <code>n</code> units, drawing as it goes (unless the pen is up)."
+    ),
+    new Command(
+      { BASIC: "LEFT", C: "left", Java: "left", Pascal: "left", Python: "left", TypeScript: "left" },
+      [93 /* left */],
+      [new Parameter("n", "integer", false, 1)],
+      null,
+      0,
+      0,
+      "Rotates the Turtle left by <code>n</code> degrees."
+    ),
+    new Command(
+      { BASIC: "RIGHT", C: "right", Java: "right", Pascal: "right", Python: "right", TypeScript: "right" },
+      [94 /* rght */],
+      [new Parameter("n", "integer", false, 1)],
+      null,
+      0,
+      0,
+      "Rotates the Turtle right by <code>n</code> degrees."
+    ),
+    new Command(
+      { BASIC: "DRAWXY", C: "drawxy", Java: "drawXY", Pascal: "drawxy", Python: "drawxy", TypeScript: "drawXY" },
+      [90 /* drxy */],
+      [new Parameter("x", "integer", false, 1), new Parameter("y", "integer", false, 1)],
+      null,
+      0,
+      1,
+      "Moves the Turtle in a straight line to a point <code>x</code> units away along the x-axis and <code>y</code> units away along the y-axis, drawing as it goes (unless the pen is up)."
+    ),
+    new Command(
+      { BASIC: "MOVEXY", C: "movexy", Java: "moveXY", Pascal: "movexy", Python: "movexy", TypeScript: "moveXY" },
+      [89 /* mvxy */],
+      [new Parameter("x", "integer", false, 1), new Parameter("y", "integer", false, 1)],
+      null,
+      0,
+      1,
+      "Moves the Turtle in a straight line to a point <code>x</code> units away along the x-axis and <code>y</code> units away along the y-axis, <em>without</em> drawing (regardless of the current pen status)."
+    ),
+    new Command(
+      { BASIC: "HOME", C: "home", Java: "home", Pascal: "home", Python: "home", TypeScript: "home" },
+      [80 /* home */],
+      [],
+      null,
+      1,
+      0,
+      "Moves the Turtle back to its starting position in the centre of the canvas, facing north, drawing as it goes (unless the pen is up)."
+    ),
+    new Command(
+      { BASIC: "SETX", C: "setx", Java: "setX", Pascal: "setx", Python: "setx", TypeScript: "setX" },
+      [81 /* setx */],
+      [new Parameter("x", "integer", false, 1)],
+      null,
+      1,
+      0,
+      "Sets the Turtle&rsquo;s <code>x</code> coordinate directly (without movement or drawing on the canvas). This can also be achieved by direct assignment of the global variable <code>turtx</code>."
+    ),
+    new Command(
+      { BASIC: "SETY", C: "sety", Java: "setY", Pascal: "sety", Python: "sety", TypeScript: "setY" },
+      [82 /* sety */],
+      [new Parameter("y", "integer", false, 1)],
+      null,
+      1,
+      0,
+      "Sets the Turtle&rsquo;s <code>y</code> coordinate directly (without movement or drawing on the canvas). This can also be achieved by direct assignment of the global variable <code>turty</code>."
+    ),
+    new Command(
+      { BASIC: "SETXY", C: "setxy", Java: "setXY", Pascal: "setxy", Python: "setxy", TypeScript: "setXY" },
+      [88 /* toxy */],
+      [new Parameter("x", "integer", false, 1), new Parameter("y", "integer", false, 1)],
+      null,
+      1,
+      0,
+      "Sets the Turtle&rsquo;s <code>x</code> and <code>y</code> coordinates directly (without movement or drawing on the canvas). This can also be achieved by direct assingment of the global variables <code>turtx</code> and <code>turty</code>."
+    ),
+    new Command(
+      {
+        BASIC: "DIRECTION",
+        C: "direction",
+        Java: "direction",
+        Pascal: "direction",
+        Python: "direction",
+        TypeScript: "direction"
+      },
+      [83 /* setd */],
+      [new Parameter("n", "integer", false, 1)],
+      null,
+      1,
+      0,
+      "Sets the Turtle&rsquo;s direction to <code>n</code> degrees (0 for north, 90 for east, 180 for south, 270 for west). This can also be achieved by direct assignment of the global variable <code>turtd</code>. Note that the number of degrees in a circle (360 by default) can be changed with the <code>angles</code> command."
+    ),
+    new Command(
+      { BASIC: "ANGLES", C: "angles", Java: "angles", Pascal: "angles", Python: "angles", TypeScript: "angles" },
+      [84 /* angl */],
+      [new Parameter("degrees", "integer", false, 1)],
+      null,
+      1,
+      1,
+      "Sets the number of <code>degrees</code> in a circle (360 by default)."
+    ),
+    new Command(
+      { BASIC: "TURNXY", C: "turnxy", Java: "turnXY", Pascal: "turnxy", Python: "turnxy", TypeScript: "turnXY" },
+      [95 /* turn */],
+      [new Parameter("x", "integer", false, 1), new Parameter("y", "integer", false, 1)],
+      null,
+      1,
+      1,
+      "Turns the Turtle to face the point <code>x</code> units away alongthe x-axis and <code>y</code> units away along the y-axis."
+    ),
+    new Command(
+      { BASIC: "CIRCLE", C: "circle", Java: "circle", Pascal: "circle", Python: "circle", TypeScript: "circle" },
+      [107 /* circ */],
+      [new Parameter("radius", "integer", false, 1)],
+      null,
+      2,
+      0,
+      "Draws a circle outline in the Turtle&rsquo;s current colour and thickness, of the given <code>radius</code>, centred on the Turtle&rsquo;s current location."
+    ),
+    new Command(
+      { BASIC: "BLOT", C: "blot", Java: "blot", Pascal: "blot", Python: "blot", TypeScript: "blot" },
+      [108 /* blot */],
+      [new Parameter("radius", "integer", false, 1)],
+      null,
+      2,
+      0,
+      "Draws a filled circle in the Turtle&rsquo;s current colour, of the given <code>radius</code>, centred on the Turtle&rsquo;s current location."
+    ),
+    new Command(
+      { BASIC: "ELLIPSE", C: "ellipse", Java: "ellipse", Pascal: "ellipse", Python: "ellipse", TypeScript: "ellipse" },
+      [109 /* elps */],
+      [new Parameter("Xradius", "integer", false, 1), new Parameter("Yradius", "integer", false, 1)],
+      null,
+      2,
+      0,
+      "Draws an ellipse outline in the Turtle&rsquo;s current colour and thickness, of the given <code>Xradius</code> and <code>Yradius</code>, centred on the Turtle&rsquo;s current location."
+    ),
+    new Command(
+      { BASIC: "ELLBLOT", C: "ellblot", Java: "ellblot", Pascal: "ellblot", Python: "ellblot", TypeScript: "ellblot" },
+      [110 /* eblt */],
+      [new Parameter("Xradius", "integer", false, 1), new Parameter("Yradius", "integer", false, 1)],
+      null,
+      2,
+      0,
+      "Draws a filled ellipse in the Turtle&rsquo;s current colour, of the given <code>Xradius</code> and <code>Yradius</code>, centred on the Turtle&rsquo;s current location."
+    ),
+    new Command(
+      {
+        BASIC: "POLYLINE",
+        C: "polyline",
+        Java: "polyline",
+        Pascal: "polyline",
+        Python: "polyline",
+        TypeScript: "polyline"
+      },
+      [105 /* poly */],
+      [new Parameter("n", "integer", false, 1)],
+      null,
+      2,
+      1,
+      "Draws a polygon outline in the Turtle&rsquo;s current colour and thickness, connecting the last <code>n</code> locations that the Turtle has visited."
+    ),
+    new Command(
+      { BASIC: "POLYGON", C: "polygon", Java: "polygon", Pascal: "polygon", Python: "polygon", TypeScript: "polygon" },
+      [106 /* pfil */],
+      [new Parameter("n", "integer", false, 1)],
+      null,
+      2,
+      1,
+      "Draws a filled polygon in the Turtle&rsquo;s current colour and thickness, connecting the last <code>n</code> locations that the Turtle has visited."
+    ),
+    new Command(
+      { BASIC: "FORGET", C: "forget", Java: "forget", Pascal: "forget", Python: "forget", TypeScript: "forget" },
+      [104 /* frgt */],
+      [new Parameter("n", "integer", false, 1)],
+      null,
+      2,
+      1,
+      "Makes the Turtle &ldquo;forget&rdquo; the last <code>n</code> points it has visited. Used in conjunction with <code>polyline</code> and <code>polygon</code>."
+    ),
+    new Command(
+      {
+        BASIC: "REMEMBER",
+        C: "remember",
+        Java: "remember",
+        Pascal: "remember",
+        Python: "remember",
+        TypeScript: "remember"
+      },
+      [103 /* rmbr */],
+      [],
+      null,
+      2,
+      1,
+      "Makes the Turtle &ldquo;remember&rdquo; its current location. This is only necessary if its current location was set by a direct assignment of the global variables <code>turtx</code> and <code>turty</code>; when using the standard moving commands, the Turtle automatically remembers where it has been."
+    ),
+    new Command(
+      { BASIC: "BOX", C: "box", Java: "box", Pascal: "box", Python: "box", TypeScript: "box" },
+      [111 /* box */],
+      [
+        new Parameter("x", "integer", false, 1),
+        new Parameter("y", "integer", false, 1),
+        new Parameter("colour", "integer", false, 1),
+        new Parameter("border", "boolean", false, 1)
+      ],
+      null,
+      2,
+      1,
+      "Draws a box of width <code>x</code> and height <code>y</code>, with the top left corner in the Turtle&rsquo;s current location, filled with the specified <code>colour</code>. If <code>border</code> is <code>true</code>, a border is drawn around the box in the Turtle&rsquo;s current colour and and thickness. This is intended to be used with the <code>print</code> command, to provide a box for framing text."
+    ),
+    new Command(
+      { BASIC: "COLOUR", C: "colour", Java: "colour", Pascal: "colour", Python: "colour", TypeScript: "colour" },
+      [87 /* colr */],
+      [new Parameter("colour", "integer", false, 1)],
+      null,
+      3,
+      0,
+      "Sets the <code>colour</code> of the Turtle&rsquo;s pen. Takes as an argument either an RGB value, or one of the Turtle System&rsquo;s fifty predefined colour constants (see the <b>Colours</b> tab). This can also be achieved by direct assignment of the global variable <code>turtc</code>."
+    ),
+    new Command(
+      { BASIC: "RNDCOL", C: "randcol", Java: "randCol", Pascal: "randcol", Python: "randcol", TypeScript: "randCol" },
+      [7 /* rand */, 4 /* incr */, 101 /* rgb */, 87 /* colr */],
+      [new Parameter("n", "integer", false, 1)],
+      null,
+      3,
+      0,
+      "Assigns a random colour to the Turte&rsquo;s pen, between 1 and <code>n</code> (maximum 50). The colours are taken from the Turtle System&rsquo;s fifty predefined colours, which are each assigned a number between 1 and 50 (see the <b>Colours</b> tab)."
+    ),
+    new Command(
+      {
+        BASIC: "THICKNESS",
+        C: "thickness",
+        Java: "thickness",
+        Pascal: "thickness",
+        Python: "thickness",
+        TypeScript: "thickness"
+      },
+      [85 /* thik */],
+      [new Parameter("thickness", "integer", false, 1)],
+      null,
+      3,
+      0,
+      "Sets the <code>thickness</code> of the Turtle&rsquo;s pen (for line drawing, and outlines of circles, ellipses, boxes, and polygons). This can also be achieved by direct assignment of the global variable <code>turtt</code>."
+    ),
+    new Command(
+      { BASIC: "PENUP", C: "penup", Java: "penUp", Pascal: "penup", Python: "penup", TypeScript: "penUp" },
+      [112 /* ldin */, 0, 86 /* pen */],
+      [],
+      null,
+      3,
+      0,
+      "Lifts the Turtle&rsquo;s pen, so that subsequent movement will not draw a line on the Canvas."
+    ),
+    new Command(
+      { BASIC: "PENDOWN", C: "pendown", Java: "penDown", Pascal: "pendown", Python: "pendown", TypeScript: "penDown" },
+      [112 /* ldin */, -1, 86 /* pen */],
+      [],
+      null,
+      3,
+      0,
+      "Lowers the Turtle&rsquo;s pen, so that subsequent movement will draw a line on the Canvas."
+    ),
+    new Command(
+      { BASIC: "OUTPUT", C: "output", Java: "output", Pascal: "output", Python: "output", TypeScript: "output" },
+      [166 /* outp */],
+      [
+        new Parameter("clear", "boolean", false, 1),
+        new Parameter("colour", "integer", false, 1),
+        new Parameter("tofront", "boolean", false, 1)
+      ],
+      null,
+      3,
+      1,
+      "Modifies the textual output. If the first argument is <code>true</code>, it clears any existing text. The second argument specifies the background colour, and the third argument is for switching the display. If the third argument is <code>true</code>, it switches to the <b>Output</b> tab, while if it is <code>false</code>, it switches to the <b>Canvas and Console</b> tab."
+    ),
+    new Command(
+      { BASIC: "CONSOLE", C: "console", Java: "console", Pascal: "console", Python: "console", TypeScript: "console" },
+      [167 /* cons */],
+      [new Parameter("clear", "boolean", false, 1), new Parameter("colour", "integer", false, 1)],
+      null,
+      3,
+      1,
+      "Modifies the Console; if the first argument is <code>true</code>, it clears any existing text, while the second argument specifies the background colour."
+    ),
+    new Command(
+      { BASIC: "RGB", C: "rgb", Java: "rgb", Pascal: "rgb", Python: "rgb", TypeScript: "rgb" },
+      [101 /* rgb */],
+      [new Parameter("colour", "integer", false, 1)],
+      "integer",
+      3,
+      2,
+      "Returns the RGB value of the input <code>colour</code> (an integer between 1 and 50). For example, <code>rgb(red)=255</code>."
+    ),
+    new Command(
+      { BASIC: "MIXCOLS", C: "mixcols", Java: "mixCols", Pascal: "mixcols", Python: "mixcols", TypeScript: "mixCols" },
+      [102 /* mixc */],
+      [
+        new Parameter("colour1", "integer", false, 1),
+        new Parameter("colour1", "integer", false, 1),
+        new Parameter("proportion1", "integer", false, 1),
+        new Parameter("proportion2", "integer", false, 1)
+      ],
+      "integer",
+      3,
+      2,
+      "Mixes the given colours in the given proportions."
+    ),
+    new Command(
+      {
+        BASIC: "NEWTURTLE",
+        C: "newturtle",
+        Java: "newTurtle",
+        Pascal: "newturtle",
+        Python: "newturtle",
+        TypeScript: "newTurtle"
+      },
+      [112 /* ldin */, 0, 123 /* sptr */],
+      [new Parameter("array", "integer", false, 5)],
+      null,
+      3,
+      2,
+      "Points the Turtle to a custom array in memory (this must be an array of five integers, corresponding to the Turtle&rsquo;s five properties, <code>turtx</code>, <code>turty</code>, <code>turtd</code>, <code>turtt</code>, and <code>turtc</code>). Use repeatedly to simulate multiple Turtles."
+    ),
+    new Command(
+      {
+        BASIC: "OLDTURTLE",
+        C: "oldturtle",
+        Java: "oldTurtle",
+        Pascal: "oldturtle",
+        Python: "oldturtle",
+        TypeScript: "oldTurtle"
+      },
+      [229 /* oldt */],
+      [],
+      null,
+      3,
+      2,
+      "Points the Turtle back to the default (built-in) array in memory. Use in conjunction with <code>newturtle</code>."
+    ),
+    new Command(
+      { BASIC: "UPDATE", C: "update", Java: "update", Pascal: "update", Python: "update", TypeScript: "update" },
+      [112 /* ldin */, -1, 146 /* udat */],
+      [],
+      null,
+      4,
+      0,
+      "Makes the Machine update the Canvas, and continue updating with all subsequent drawing commands. Used in conjunction with <em>noupdate</em>."
+    ),
+    new Command(
+      {
+        BASIC: "NOUPDATE",
+        C: "noupdate",
+        Java: "noUpdate",
+        Pascal: "noupdate",
+        Python: "noupdate",
+        TypeScript: "noUpdate"
+      },
+      [112 /* ldin */, 0, 146 /* udat */],
+      [],
+      null,
+      4,
+      0,
+      "Makes the Machine refrain from updating the Canvas when executing all subsequent drawing commands, until <em>update</em> is called. Use this to create smooth animations, by queueing up several drawing commands to execute simultaneously."
+    ),
+    new Command(
+      { BASIC: "BLANK", C: "blank", Java: "blank", Pascal: "blank", Python: "blank", TypeScript: "blank" },
+      [96 /* blnk */],
+      [new Parameter("colour", "integer", false, 1)],
+      null,
+      4,
+      0,
+      "Blanks the entire Canvas with the specified <code>colour</code>."
+    ),
+    new Command(
+      { BASIC: "CANVAS", C: "canvas", Java: "canvas", Pascal: "canvas", Python: "canvas", TypeScript: "canvas" },
+      [144 /* canv */],
+      [
+        new Parameter("x1", "integer", false, 1),
+        new Parameter("y1", "integer", false, 1),
+        new Parameter("x2", "integer", false, 1),
+        new Parameter("y2", "integer", false, 1)
+      ],
+      null,
+      4,
+      1,
+      "Sets the top left Canvas coordinate to <code>(x1,y1)</code>, and the Canvas width and height to <code>x2</code> and <code>y2</code> respectively. Note that the width and height fix the number of virtual points on the Canvas, not the number of actual pixels."
+    ),
+    new Command(
+      {
+        BASIC: "RESOLUTION",
+        C: "resolution",
+        Java: "resolution",
+        Pascal: "resolution",
+        Python: "resolution",
+        TypeScript: "resolution"
+      },
+      [145 /* reso */],
+      [new Parameter("x", "integer", false, 1), new Parameter("y", "integer", false, 1)],
+      null,
+      4,
+      1,
+      "Sets the Canvas resolution, i.e. the number of actual pixels in the <code>x</code> and <code>y</code> dimensions. To be used in conjunction with the <code>canvas</code> command, typically to set the number of actual pixels equal to the number of virtual points on the Canvas."
+    ),
+    new Command(
+      { BASIC: "PIXSET", C: "pixset", Java: "pixSet", Pascal: "pixset", Python: "pixset", TypeScript: "pixSet" },
+      [100 /* pixs */],
+      [
+        new Parameter("x", "integer", false, 1),
+        new Parameter("y", "integer", false, 1),
+        new Parameter("colour", "integer", false, 1)
+      ],
+      null,
+      4,
+      2,
+      "Sets the <code>colour</code> at point <code>(x,y)</code>."
+    ),
+    new Command(
+      { BASIC: "PIXCOL", C: "pixcol", Java: "pixCol", Pascal: "pixcol", Python: "pixcol", TypeScript: "pixCol" },
+      [99 /* pixc */],
+      [new Parameter("x", "integer", false, 1), new Parameter("y", "integer", false, 1)],
+      "integer",
+      4,
+      2,
+      "Returns the RGB value of the colour at point <code>(x,y)</code>."
+    ),
+    new Command(
+      {
+        BASIC: "RECOLOUR",
+        C: "recolour",
+        Java: "recolour",
+        Pascal: "recolour",
+        Python: "recolour",
+        TypeScript: "recolour"
+      },
+      [97 /* rcol */],
+      [
+        new Parameter("x", "integer", false, 1),
+        new Parameter("y", "integer", false, 1),
+        new Parameter("colour", "integer", false, 1)
+      ],
+      null,
+      4,
+      2,
+      "Floods the Canvas with the specified <code>colour</code>, starting at point <code>(x,y)</code>, until reaching any different colour."
+    ),
+    new Command(
+      { BASIC: "FILL", C: "fill", Java: "fill", Pascal: "fill", Python: "fill", TypeScript: "fill" },
+      [98 /* fill */],
+      [
+        new Parameter("x", "integer", false, 1),
+        new Parameter("y", "integer", false, 1),
+        new Parameter("colour", "integer", false, 1),
+        new Parameter("boundary", "integer", false, 1)
+      ],
+      null,
+      4,
+      2,
+      "Floods the Canvas with the specified <code>colour</code>, starting at point <code>(x,y)</code>, until reaching the <code>boundary</code> colour."
+    ),
+    new Command(
+      { BASIC: "INC", C: null, Java: null, Pascal: "inc", Python: null, TypeScript: null },
+      [1 /* dupl */, 122 /* lptr */, 4 /* incr */, 2 /* swap */, 123 /* sptr */],
+      [new Parameter("variable", "integer", true, 1)],
+      null,
+      5,
+      0,
+      "Increments the specified <code>variable</code> by 1."
+    ),
+    new Command(
+      { BASIC: "DEC", C: null, Java: null, Pascal: "dec", Python: null, TypeScript: null },
+      [1 /* dupl */, 122 /* lptr */, 5 /* decr */, 2 /* swap */, 123 /* sptr */],
+      [new Parameter("variable", "integer", true, 1)],
+      null,
+      5,
+      0,
+      "Decrements the specified <code>variable</code> by 1."
+    ),
+    new Command(
+      { BASIC: "ABS", C: "abs", Java: "abs", Pascal: "abs", Python: "abs", TypeScript: "abs" },
+      [24 /* abs */],
+      [new Parameter("n", "integer", false, 1)],
+      "integer",
+      5,
+      0,
+      "Returns the absolute value of <code>n</code>, i.e. <code>n</code> if positive, <code>-n</code> if negative."
+    ),
+    new Command(
+      { BASIC: "SGN", C: "sign", Java: "sign", Pascal: "sign", Python: "sign", TypeScript: "sign" },
+      [25 /* sign */],
+      [new Parameter("a", "integer", false, 1)],
+      "integer",
+      5,
+      1,
+      "Returns <code>+1</code> if <code>a</code> is positive, <code>-1</code> if <code>a</code> is negative, and <code>0</code> otherwise."
+    ),
+    new Command(
+      { BASIC: "MAX", C: "max", Java: "max", Pascal: "max", Python: "max", TypeScript: "max" },
+      [38 /* maxi */],
+      [new Parameter("a", "integer", false, 1), new Parameter("b", "integer", false, 1)],
+      "integer",
+      5,
+      1,
+      "Returns the maximum of <code>a</code> and <code>b</code>."
+    ),
+    new Command(
+      { BASIC: "MIN", C: "min", Java: "min", Pascal: "min", Python: "min", TypeScript: "min" },
+      [39 /* mini */],
+      [new Parameter("a", "integer", false, 1), new Parameter("b", "integer", false, 1)],
+      "integer",
+      5,
+      1,
+      "Returns the minimum of <code>a</code> and <code>b</code>."
+    ),
+    new Command(
+      { BASIC: "SQR", C: "sqrt", Java: "sqrt", Pascal: "sqrt", Python: "sqrt", TypeScript: "sqrt" },
+      [49 /* sqrt */],
+      [new Parameter("a", "integer", false, 1), new Parameter("mult", "integer", false, 1)],
+      "integer",
+      5,
+      1,
+      "Returns <code>&radic;a</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."
+    ),
+    new Command(
+      { BASIC: "HYPOT", C: "hypot", Java: "hypot", Pascal: "hypot", Python: "hypot", TypeScript: "hypot" },
+      [50 /* hyp */],
+      [
+        new Parameter("a", "integer", false, 1),
+        new Parameter("b", "integer", false, 1),
+        new Parameter("mult", "integer", false, 1)
+      ],
+      "integer",
+      5,
+      1,
+      "Returns <code>&radic;(a<sup>2</sup>+b<sup>2</sup>)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."
+    ),
+    new Command(
+      { BASIC: "RND", C: null, Java: null, Pascal: null, Python: null, TypeScript: null },
+      [7 /* rand */, 4 /* incr */],
+      [new Parameter("n", "integer", false, 1)],
+      "integer",
+      5,
+      1,
+      "Returns a random integer between 1 and <code>n</code>."
+    ),
+    new Command(
+      { BASIC: null, C: "rand", Java: "randInt", Pascal: "random", Python: "randrange", TypeScript: "randInt" },
+      [7 /* rand */],
+      [new Parameter("n", "integer", false, 1)],
+      "integer",
+      5,
+      1,
+      "Returns a random non-negative integer less than <code>n</code>."
+    ),
+    new Command(
+      { BASIC: null, C: null, Java: null, Pascal: null, Python: "randint", TypeScript: null },
+      [2 /* swap */, 1 /* dupl */, 3 /* rota */, 4 /* incr */, 2 /* swap */, 27 /* subt */, 7 /* rand */, 26 /* plus */],
+      [new Parameter("a", "integer", false, 1), new Parameter("b", "integer", false, 1)],
+      "integer",
+      5,
+      1,
+      "Returns a random integer between <code>a</code> and <code>b</code>."
+    ),
+    new Command(
+      { BASIC: "RNDSEED", C: "srand", Java: "seed", Pascal: "randseed", Python: "seed", TypeScript: "seed" },
+      [147 /* seed */],
+      [new Parameter("seed", "integer", false, 1)],
+      "integer",
+      5,
+      1,
+      "Initialises the random number generator with the given <code>seed</code>, and returns that seed. If <code>seed</code> is 0, the seed is set from the current system clock."
+    ),
+    new Command(
+      { BASIC: "POWER", C: "pow", Java: "power", Pascal: "power", Python: "power", TypeScript: "pow" },
+      [52 /* powr */],
+      [
+        new Parameter("a", "integer", false, 1),
+        new Parameter("b", "integer", false, 1),
+        new Parameter("c", "integer", false, 1),
+        new Parameter("mult", "integer", false, 1)
+      ],
+      "integer",
+      5,
+      2,
+      "Returns <code>(a/b)<sup>c</sup></code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."
+    ),
+    new Command(
+      { BASIC: "ROOT", C: "root", Java: "root", Pascal: "root", Python: "root", TypeScript: "root" },
+      [51 /* root */],
+      [
+        new Parameter("a", "integer", false, 1),
+        new Parameter("b", "integer", false, 1),
+        new Parameter("c", "integer", false, 1),
+        new Parameter("mult", "integer", false, 1)
+      ],
+      "integer",
+      5,
+      2,
+      "Returns <code><sup>c</sup>&radic;(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."
+    ),
+    new Command(
+      { BASIC: "DIVMULT", C: "divmult", Java: "divmult", Pascal: "divmult", Python: "divmult", TypeScript: "divmult" },
+      [48 /* divm */],
+      [
+        new Parameter("a", "integer", false, 1),
+        new Parameter("b", "integer", false, 1),
+        new Parameter("mult", "integer", false, 1)
+      ],
+      "integer",
+      5,
+      2,
+      "Returns <code>a/b</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."
+    ),
+    new Command(
+      { BASIC: "MAXINT", C: "maxint", Java: "maxInt", Pascal: "maxint", Python: "maxint", TypeScript: "maxInt" },
+      [6 /* mxin */],
+      [],
+      "integer",
+      5,
+      2,
+      "Returns the maximum integer that the Machine can deal with (2<sup>31</sup>-1)."
+    ),
+    new Command(
+      { BASIC: null, C: null, Java: null, Pascal: "shl", Python: null, TypeScript: null },
+      [22 /* shft */],
+      [new Parameter("number", "integer", false, 1), new Parameter("shift", "integer", false, 1)],
+      "integer",
+      5,
+      2,
+      "Shift bits left."
+    ),
+    new Command(
+      { BASIC: null, C: null, Java: null, Pascal: "shr", Python: null, TypeScript: null },
+      [23 /* neg */, 22 /* shft */],
+      [new Parameter("number", "integer", false, 1), new Parameter("shift", "integer", false, 1)],
+      "integer",
+      5,
+      2,
+      "Shift bits right."
+    ),
+    new Command(
+      { BASIC: "SIN", C: "sin", Java: "sin", Pascal: "sin", Python: "sin", TypeScript: "sin" },
+      [57 /* sin */],
+      [
+        new Parameter("a", "integer", false, 1),
+        new Parameter("b", "integer", false, 1),
+        new Parameter("mult", "integer", false, 1)
+      ],
+      "integer",
+      6,
+      1,
+      "Returns <code>sin(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."
+    ),
+    new Command(
+      { BASIC: "COS", C: "cos", Java: "cos", Pascal: "cos", Python: "cos", TypeScript: "cos" },
+      [58 /* cos */],
+      [
+        new Parameter("a", "integer", false, 1),
+        new Parameter("b", "integer", false, 1),
+        new Parameter("mult", "integer", false, 1)
+      ],
+      "integer",
+      6,
+      1,
+      "Returns <code>cos(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."
+    ),
+    new Command(
+      { BASIC: "TAN", C: "tan", Java: "tan", Pascal: "tan", Python: "tan", TypeScript: "tan" },
+      [59 /* tan */],
+      [
+        new Parameter("a", "integer", false, 1),
+        new Parameter("b", "integer", false, 1),
+        new Parameter("mult", "integer", false, 1)
+      ],
+      "integer",
+      6,
+      1,
+      "Returns <code>tan(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."
+    ),
+    new Command(
+      { BASIC: "PI", C: "pi", Java: "pi", Pascal: "pi", Python: "pi", TypeScript: "PI" },
+      [63 /* pi */],
+      [new Parameter("mult", "integer", false, 1)],
+      "integer",
+      6,
+      1,
+      "Returns the value of Pi, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."
+    ),
+    new Command(
+      { BASIC: "EXP", C: "exp", Java: "exp", Pascal: "exp", Python: "exp", TypeScript: "exp" },
+      [56 /* exp */],
+      [
+        new Parameter("a", "integer", false, 1),
+        new Parameter("b", "integer", false, 1),
+        new Parameter("mult", "integer", false, 1)
+      ],
+      "integer",
+      6,
+      1,
+      "Returns <code>a<sup>b</sup></code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."
+    ),
+    new Command(
+      { BASIC: "LN", C: "log", Java: "log", Pascal: "ln", Python: "log", TypeScript: "log" },
+      [55 /* ln */],
+      [
+        new Parameter("a", "integer", false, 1),
+        new Parameter("b", "integer", false, 1),
+        new Parameter("mult", "integer", false, 1)
+      ],
+      "integer",
+      6,
+      1,
+      "Returns <code>ln(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."
+    ),
+    new Command(
+      { BASIC: "ANTILOG", C: "antilog", Java: "antilog", Pascal: "antilog", Python: "antilog", TypeScript: "antilog" },
+      [54 /* alog */],
+      [
+        new Parameter("a", "integer", false, 1),
+        new Parameter("b", "integer", false, 1),
+        new Parameter("mult", "integer", false, 1)
+      ],
+      "integer",
+      6,
+      2,
+      "Returns <code>antilog<sub>10</sub>(a/b)</code> - i.e. <code>10<sup>a/b</sub></code> - multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."
+    ),
+    new Command(
+      { BASIC: "LOG10", C: "log10", Java: "log10", Pascal: "log10", Python: "log10", TypeScript: "log10" },
+      [53 /* log */],
+      [
+        new Parameter("a", "integer", false, 1),
+        new Parameter("b", "integer", false, 1),
+        new Parameter("mult", "integer", false, 1)
+      ],
+      "integer",
+      6,
+      2,
+      "Returns <code>log<sub>10</sub>(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."
+    ),
+    new Command(
+      { BASIC: "ASN", C: "asin", Java: "asin", Pascal: "arcsin", Python: "asin", TypeScript: "asin" },
+      [60 /* asin */],
+      [
+        new Parameter("a", "integer", false, 1),
+        new Parameter("b", "integer", false, 1),
+        new Parameter("mult", "integer", false, 1)
+      ],
+      "integer",
+      6,
+      2,
+      "Returns <code>arcsin(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."
+    ),
+    new Command(
+      { BASIC: "ACS", C: "acos", Java: "acos", Pascal: "arccos", Python: "acos", TypeScript: "acos" },
+      [61 /* acos */],
+      [
+        new Parameter("a", "integer", false, 1),
+        new Parameter("b", "integer", false, 1),
+        new Parameter("mult", "integer", false, 1)
+      ],
+      "integer",
+      6,
+      2,
+      "Returns <code>arccos(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."
+    ),
+    new Command(
+      { BASIC: "ATN", C: "atan", Java: "atan", Pascal: "arctan", Python: "atan", TypeScript: "atan" },
+      [62 /* atan */],
+      [
+        new Parameter("a", "integer", false, 1),
+        new Parameter("b", "integer", false, 1),
+        new Parameter("mult", "integer", false, 1)
+      ],
+      "integer",
+      6,
+      2,
+      "Returns <code>arctan(a/b)</code>, multiplied by <code>mult</code> and rounded to the nearest integer. Use the multiplier to approximate real numbers."
+    ),
+    new Command(
+      { BASIC: "WRITE", C: "write", Java: "write", Pascal: "write", Python: null, TypeScript: null },
+      [169 /* writ */],
+      [new Parameter("string", "string", false, 1)],
+      null,
+      7,
+      0,
+      "Writes the input <code>string</code> to the console and textual output area of the System."
+    ),
+    new Command(
+      { BASIC: "WRITELN", C: "writeline", Java: "writeLine", Pascal: "writeln", Python: "print", TypeScript: "log" },
+      [169 /* writ */, 170 /* newl */],
+      [new Parameter("string", "string", false, 1)],
+      null,
+      7,
+      0,
+      "Writes the input <code>string</code> to the console and textual output area of the System, followed by a line break."
+    ),
+    new Command(
+      { BASIC: "DISPLAY", C: "display", Java: "display", Pascal: "display", Python: "display", TypeScript: "display" },
+      [168 /* prnt */],
+      [
+        new Parameter("string", "string", false, 1),
+        new Parameter("font", "integer", false, 1),
+        new Parameter("size", "integer", false, 1)
+      ],
+      null,
+      7,
+      0,
+      "Prints the input <code>string</code> in the Turtle&rsquo;s current colour and at the Turtle&rsquo;s current location, in the specified <code>font</code> and <code>size</code>. Can be used in conjunction with the <code>box</code> drawing command. For a list of available fonts, see the <b>Constants</b> tab."
+    ),
+    new Command(
+      {
+        BASIC: "LCASE$",
+        C: "strlwr",
+        Java: "toLowerCase",
+        Pascal: "lowercase",
+        Python: "lower",
+        TypeScript: "toLowerCase"
+      },
+      [112 /* ldin */, 1, 66 /* case */],
+      [new Parameter("string", "string", false, 1)],
+      "string",
+      7,
+      1,
+      "Returns the input <code>string</code> as all lowercase."
+    ),
+    new Command(
+      {
+        BASIC: "UCASE$",
+        C: "strupr",
+        Java: "toUpperCase",
+        Pascal: "uppercase",
+        Python: "upper",
+        TypeScript: "toUpperCase"
+      },
+      [112 /* ldin */, 2, 66 /* case */],
+      [new Parameter("string", "string", false, 1)],
+      "string",
+      7,
+      1,
+      "Returns the input <code>string</code> as all uppercase."
+    ),
+    new Command(
+      {
+        BASIC: "CCASE$",
+        C: "strcap",
+        Java: "capitalize",
+        Pascal: "initcap",
+        Python: "capitalize",
+        TypeScript: "capitalize"
+      },
+      [112 /* ldin */, 3, 66 /* case */],
+      [new Parameter("string", "string", false, 1)],
+      "string",
+      7,
+      1,
+      "Returns the input <code>string</code> with the first letter capitalized."
+    ),
+    new Command(
+      {
+        BASIC: "TCASE$",
+        C: "strtitle",
+        Java: "toTitleCase",
+        Pascal: "titlecase",
+        Python: "title",
+        TypeScript: "toTitleCase"
+      },
+      [112 /* ldin */, 4, 66 /* case */],
+      [new Parameter("string", "string", false, 1)],
+      "string",
+      7,
+      1,
+      "Returns the input <code>string</code> in title case (i.e. the first letter of each word capitalized)."
+    ),
+    new Command(
+      { BASIC: "SCASE$", C: "strswap", Java: "swapCase", Pascal: "swapcase", Python: "swapcase", TypeScript: "swapCase" },
+      [112 /* ldin */, 5, 66 /* case */],
+      [new Parameter("string", "string", false, 1)],
+      "string",
+      7,
+      1,
+      "Returns the input <code>string</code> with all the cases swapped."
+    ),
+    new Command(
+      { BASIC: "LEN", C: "strlen", Java: "length", Pascal: "length", Python: "len", TypeScript: "length" },
+      [65 /* slen */],
+      [new Parameter("string", "string", false, 1)],
+      "integer",
+      7,
+      1,
+      "Returns the length of the input <code>string</code> (i.e. the number of characters)."
+    ),
+    new Command(
+      { BASIC: "DEL$", C: null, Java: null, Pascal: "delete", Python: null, TypeScript: null },
+      [68 /* dels */],
+      [
+        new Parameter("string", "string", false, 1),
+        new Parameter("index", "integer", false, 1),
+        new Parameter("length", "integer", false, 1)
+      ],
+      "string",
+      7,
+      2,
+      "Returns the input <code>string</code> with some characters removed, starting at the given <code>index</code> and of the specified <code>length</code>."
+    ),
+    new Command(
+      { BASIC: null, C: "strdel", Java: "delete", Pascal: null, Python: "delete", TypeScript: "delete" },
+      [2 /* swap */, 4 /* incr */, 2 /* swap */, 68 /* dels */],
+      [
+        new Parameter("string", "string", false, 1),
+        new Parameter("index", "integer", false, 1),
+        new Parameter("length", "integer", false, 1)
+      ],
+      "string",
+      7,
+      2,
+      "Returns the input <code>string</code> with some characters removed, starting at the given <code>index</code> and of the specified <code>length</code>."
+    ),
+    new Command(
+      { BASIC: "LEFT$", C: null, Java: null, Pascal: null, Python: null, TypeScript: null },
+      [112 /* ldin */, 1, 2 /* swap */, 67 /* copy */],
+      [new Parameter("string", "string", false, 1), new Parameter("length", "integer", false, 1)],
+      "string",
+      7,
+      2,
+      "Returns a copy of the characters in the input <code>string</code>, starting on the left and of the specified <code>length</code>."
+    ),
+    new Command(
+      { BASIC: "MID$", C: null, Java: null, Pascal: "copy", Python: null, TypeScript: null },
+      [67 /* copy */],
+      [
+        new Parameter("string", "string", false, 1),
+        new Parameter("index", "integer", false, 1),
+        new Parameter("length", "integer", false, 1)
+      ],
+      "string",
+      7,
+      2,
+      "Returns a copy of the characters in the input <code>string</code>, starting at the given <code>index</code> and of the specified <code>length</code>."
+    ),
+    new Command(
+      { BASIC: null, C: "strcpy", Java: "copy", Pascal: null, Python: "copy", TypeScript: "copy" },
+      [2 /* swap */, 4 /* incr */, 2 /* swap */, 67 /* copy */],
+      [
+        new Parameter("string", "string", false, 1),
+        new Parameter("index", "integer", false, 1),
+        new Parameter("length", "integer", false, 1)
+      ],
+      "string",
+      7,
+      2,
+      "Returns a copy of the characters in the input <code>string</code>, starting at the given <code>index</code> and of the specified <code>length</code>."
+    ),
+    new Command(
+      { BASIC: "RIGHT$", C: null, Java: null, Pascal: null, Python: null, TypeScript: null },
+      [2 /* swap */, 1 /* dupl */, 65 /* slen */, 4 /* incr */, 3 /* rota */, 27 /* subt */, 6 /* mxin */, 67 /* copy */],
+      [new Parameter("string", "string", false, 1), new Parameter("length", "integer", false, 1)],
+      "string",
+      7,
+      2,
+      "Returns a copy of the characters in the input <code>string</code>, starting on the right and of the specified <code>length</code>."
+    ),
+    new Command(
+      { BASIC: "INSERT$", C: null, Java: null, Pascal: null, Python: null, TypeScript: null },
+      [3 /* rota */, 3 /* rota */, 69 /* inss */],
+      [
+        new Parameter("string", "string", false, 1),
+        new Parameter("index", "integer", false, 1),
+        new Parameter("substr", "string", false, 1)
+      ],
+      "string",
+      7,
+      2,
+      "Returns the input <code>string</code> with the specified <code>substring</code> inserted at the given <code>index</code>."
+    ),
+    new Command(
+      { BASIC: null, C: "strins", Java: "insert", Pascal: null, Python: "insert", TypeScript: "insert" },
+      [3 /* rota */, 3 /* rota */, 2 /* swap */, 3 /* rota */, 4 /* incr */, 69 /* inss */],
+      [
+        new Parameter("string", "string", false, 1),
+        new Parameter("substr", "string", false, 1),
+        new Parameter("index", "integer", false, 1)
+      ],
+      "string",
+      7,
+      2,
+      "Returns the input <code>string</code> with the specified <code>substring</code> inserted at the given <code>index</code>."
+    ),
+    new Command(
+      { BASIC: null, C: null, Java: null, Pascal: "insert", Python: null, TypeScript: null },
+      [69 /* inss */],
+      [
+        new Parameter("substr", "string", false, 1),
+        new Parameter("string", "string", false, 1),
+        new Parameter("index", "integer", false, 1)
+      ],
+      "string",
+      7,
+      2,
+      "Returns the input <code>string</code> with the specified <code>substring</code> inserted at the given <code>index</code>."
+    ),
+    new Command(
+      { BASIC: "PAD$", C: "strpad", Java: "pad", Pascal: "pad", Python: "pad", TypeScript: null },
+      [72 /* spad */],
+      [
+        new Parameter("string", "string", false, 1),
+        new Parameter("padding", "string", false, 1),
+        new Parameter("length", "integer", false, 1)
+      ],
+      "string",
+      7,
+      2,
+      "Returns the input <code>string</code> with the input <code>padding</code> added either before or after to make a string of minimum given <code>length</cope>. The <code>padding</code> is placed before if <code>length</code> is positive, after if it is negative."
+    ),
+    new Command(
+      { BASIC: null, C: null, Java: null, Pascal: null, Python: null, TypeScript: "padStart" },
+      [72 /* spad */],
+      [
+        new Parameter("string", "string", false, 1),
+        new Parameter("padding", "string", false, 1),
+        new Parameter("length", "integer", false, 1)
+      ],
+      "string",
+      7,
+      2,
+      "Returns the input <code>string</code> with the input <code>padding</code> added before to make a string of minimum given <code>length</cope>."
+    ),
+    new Command(
+      { BASIC: null, C: null, Java: null, Pascal: null, Python: null, TypeScript: "padEnd" },
+      [23 /* neg */, 72 /* spad */],
+      [
+        new Parameter("string", "string", false, 1),
+        new Parameter("padding", "string", false, 1),
+        new Parameter("length", "integer", false, 1)
+      ],
+      "string",
+      7,
+      2,
+      "Returns the input <code>string</code> with the input <code>padding</code> added after to make a string of minimum given <code>length</cope>."
+    ),
+    new Command(
+      { BASIC: "REPLACE$", C: "strrepl", Java: "replace", Pascal: "replace", Python: "replace", TypeScript: null },
+      [71 /* repl */],
+      [
+        new Parameter("string", "string", false, 1),
+        new Parameter("substr", "string", false, 1),
+        new Parameter("replace", "string", false, 1),
+        new Parameter("n", "integer", false, 1)
+      ],
+      "string",
+      7,
+      2,
+      "Returns the input <code>string</code> with up to <code>n</code> occurences of <code>substring</code> replaced by <code>replace</code>. Set <code>n</code> equal to <code>0</code> to replace every occurence."
+    ),
+    new Command(
+      { BASIC: "INSTR", C: null, Java: null, Pascal: null, Python: null, TypeScript: null },
+      [2 /* swap */, 70 /* poss */],
+      [new Parameter("string", "string", false, 1), new Parameter("substr", "string", false, 1)],
+      "integer",
+      7,
+      2,
+      "Searches for the input <code>substring</code> within the given <code>string</code>; returns the index of the first character if found, 0 otherwise."
+    ),
+    new Command(
+      { BASIC: null, C: "strpos", Java: "indexOf", Pascal: null, Python: "find", TypeScript: "indexOf" },
+      [2 /* swap */, 70 /* poss */, 5 /* decr */],
+      [new Parameter("string", "string", false, 1), new Parameter("substr", "string", false, 1)],
+      "integer",
+      7,
+      2,
+      "Searches for the input <code>substring</code> within the given <code>string</code>; returns the index of the first character if found, 0 otherwise."
+    ),
+    new Command(
+      { BASIC: null, C: null, Java: null, Pascal: "pos", Python: null, TypeScript: null },
+      [70 /* poss */],
+      [new Parameter("substr", "string", false, 1), new Parameter("string", "string", false, 1)],
+      "integer",
+      7,
+      2,
+      "Searches for the input <code>substring</code> within the given <code>string</code>; returns the index of the first character if found, 0 otherwise."
+    ),
+    new Command(
+      { BASIC: "STR$", C: "itoa", Java: "toString", Pascal: "str", Python: "str", TypeScript: "toString" },
+      [11 /* itos */],
+      [new Parameter("n", "integer", false, 1)],
+      "string",
+      8,
+      0,
+      "Returns the integer <code>n</code> as a string, e.g. <code>str(12)='12'</code>."
+    ),
+    new Command(
+      { BASIC: "VAL", C: "atoi", Java: "parseInt", Pascal: "val", Python: "int", TypeScript: "parseInt" },
+      [112 /* ldin */, 0, 13 /* sval */],
+      [new Parameter("string", "string", false, 1)],
+      "integer",
+      8,
+      0,
+      "Returns the input <code>string</code> as an integer, e.g. <code>val('12')=12</code>. Returns <code>0</code> if the string cannot be converted (i.e. if it is not an integer string)."
+    ),
+    new Command(
+      {
+        BASIC: "VALDEF",
+        C: "atoidef",
+        Java: "parseIntDef",
+        Pascal: "valdef",
+        Python: "intdef",
+        TypeScript: "parseIntDef"
+      },
+      [13 /* sval */],
+      [new Parameter("string", "string", false, 1), new Parameter("default", "integer", false, 1)],
+      "integer",
+      8,
+      0,
+      "Returns the input <code>string</code> as an integer, e.g. <code>val('12')=12</code>. Returns the specified <code>default</code> value if the string cannot be converted (i.e. if it is not an integer string)."
+    ),
+    new Command(
+      { BASIC: "QSTR$", C: "qitoa", Java: "toStringQ", Pascal: "qstr", Python: "qstr", TypeScript: "toStringQ" },
+      [14 /* qtos */],
+      [
+        new Parameter("a", "integer", false, 1),
+        new Parameter("b", "integer", false, 1),
+        new Parameter("decplaces", "integer", false, 1)
+      ],
+      "string",
+      8,
+      1,
+      "Returns the value of <code>a/b</code> to the specified number of decimal places, as a decimal string, e.g. <code>qstr(2,3,4)='0.6667'</code>."
+    ),
+    new Command(
+      { BASIC: "QVAL", C: "qatoi", Java: "parseIntQ", Pascal: "qval", Python: "qint", TypeScript: "parseIntQ" },
+      [15 /* qval */],
+      [
+        new Parameter("string", "string", false, 1),
+        new Parameter("mult", "integer", false, 1),
+        new Parameter("default", "integer", false, 1)
+      ],
+      "integer",
+      8,
+      1,
+      "Returns the input decimal <code>string</code> as an integer, multiplied by <code>mult</code> and rounded to the nearest integer, e.g. <code>qval('1.5',10)=15</code>. Returns the specified <code>default</code> value if the string cannot be converted (i.e. if it is not a decimal string)."
+    ),
+    new Command(
+      { BASIC: "CHR$", C: null, Java: null, Pascal: null, Python: "chr", TypeScript: "fromCharCode" },
+      [9 /* ctos */],
+      [new Parameter("n", "integer", false, 1)],
+      "string",
+      8,
+      2,
+      "Returns the character with ASCII character code <code>n</code>."
+    ),
+    new Command(
+      { BASIC: null, C: null, Java: "fromCharCode", Pascal: "chr", Python: null, TypeScript: null },
+      [],
+      [new Parameter("n", "integer", false, 1)],
+      "character",
+      8,
+      2,
+      "Returns the character with ASCII character code <code>n</code>."
+    ),
+    new Command(
+      { BASIC: "ASC", C: null, Java: "charCode", Pascal: null, Python: "ord", TypeScript: "charCode" },
+      [10 /* sasc */],
+      [new Parameter("char", "string", false, 1)],
+      "integer",
+      8,
+      2,
+      "Returns the ASCII code of the input character, or of the first character of the input string."
+    ),
+    new Command(
+      { BASIC: null, C: null, Java: null, Pascal: "ord", Python: null, TypeScript: null },
+      [],
+      [new Parameter("char", "character", false, 1)],
+      "integer",
+      8,
+      2,
+      "Returns the ASCII code of the input character."
+    ),
+    new Command(
+      { BASIC: null, C: null, Java: null, Pascal: "boolint", Python: null, TypeScript: null },
+      [],
+      [new Parameter("boolean", "boolean", false, 1)],
+      "integer",
+      8,
+      2,
+      "Returns the input <code>boolean</code> as an integer (-1 for <code>true</code>, 0 for <code>false</code>)."
+    ),
+    new Command(
+      { BASIC: null, C: null, Java: null, Pascal: null, Python: "int", TypeScript: null },
+      [],
+      [new Parameter("boolean", "boolean", false, 1)],
+      "integer",
+      8,
+      2,
+      "Returns the input <code>boolean</code> as an integer (1 for <code>true</code>, 0 for <code>false</code>)."
+    ),
+    new Command(
+      { BASIC: null, C: null, Java: null, Pascal: null, Python: "bool", TypeScript: null },
+      [112 /* ldin */, 0, 33 /* noeq */],
+      [new Parameter("integer", "integer", false, 1)],
+      "boolean",
+      8,
+      2,
+      "Returns the input <code>integer</code> as a boolean (0 is <code>false</code>, everything else is <code>true</code>)."
+    ),
+    new Command(
+      { BASIC: "HEX$", C: "itoahex", Java: "toStringHex", Pascal: "hexstr", Python: "hex", TypeScript: "toStringHex" },
+      [12 /* hexs */],
+      [new Parameter("n", "integer", false, 1), new Parameter("minlength", "integer", false, 1)],
+      "string",
+      8,
+      2,
+      "Returns a string representation of integer <code>n</code> in hexadecimal format, padded with leading zeros as up to <code>minlength</code>, e.g. <code>hexstr(255,6)='0000FF'</code>."
+    ),
+    new Command(
+      { BASIC: "PAUSE", C: "pause", Java: "pause", Pascal: "pause", Python: "pause", TypeScript: "pause" },
+      [174 /* wait */],
+      [new Parameter("m", "integer", false, 1)],
+      null,
+      9,
+      0,
+      "Makes the Turtle Machine wait <code>m</code> milliseconds before performing the next operation. This is useful for controlling the speed of animations."
+    ),
+    new Command(
+      { BASIC: "HALT", C: "exit", Java: "halt", Pascal: "halt", Python: "halt", TypeScript: "halt" },
+      [130 /* halt */],
+      [],
+      null,
+      9,
+      0,
+      "Halts the program."
+    ),
+    new Command(
+      { BASIC: "GETLINE$", C: "gets", Java: "readLine", Pascal: "readln", Python: "readline", TypeScript: "readLine" },
+      [164 /* rdln */],
+      [],
+      "string",
+      9,
+      0,
+      "Waits for the RETURN key to be pressed, then returns everything in the keybuffer up to (and not including) the new line character."
+    ),
+    new Command(
+      { BASIC: "INPUT$", C: "scan", Java: "input", Pascal: "input", Python: "input", TypeScript: "input" },
+      [169 /* writ */, 170 /* newl */, 164 /* rdln */],
+      [new Parameter("prompt", "string", false, 1)],
+      "string",
+      9,
+      0,
+      "Gives an input prompt, then returns the input when the RETURN key is pressed (using the keybuffer)."
+    ),
+    new Command(
+      { BASIC: "CURSOR", C: "cursor", Java: "cursor", Pascal: "cursor", Python: "cursor", TypeScript: "cursor" },
+      [171 /* curs */],
+      [new Parameter("cursorcode", "integer", false, 1)],
+      null,
+      9,
+      1,
+      "Sets which cursor to display (1-15) when the mouse pointer is over the canvas. 0 hides the cursor; any value outside the range 0-15 resets the default cursor. For a list of available cursors, see the <b>Cursors</b> tab."
+    ),
+    new Command(
+      { BASIC: "KEYECHO", C: "keyecho", Java: "keyEcho", Pascal: "keyecho", Python: "keyecho", TypeScript: "keyEcho" },
+      [165 /* kech */],
+      [new Parameter("on", "boolean", false, 1)],
+      null,
+      9,
+      1,
+      "Turns the keyboard echo to the console on (<code>true</code>) or off (<code>false</code>)."
+    ),
+    new Command(
+      { BASIC: "DETECT", C: "detect", Java: "detect", Pascal: "detect", Python: "detect", TypeScript: "detect" },
+      [175 /* tdet */],
+      [new Parameter("inputcode", "integer", false, 1), new Parameter("m", "integer", false, 1)],
+      "integer",
+      9,
+      1,
+      "Waits a maximum of <code>m</code> milliseconds for the key with the specified <code>inputcode</code> to be pressed; returns its current input value if pressed (and stops waiting), and <code>0</code> otherwise."
+    ),
+    new Command(
+      { BASIC: "GET$", C: "get", Java: "read", Pascal: "read", Python: "read", TypeScript: "read" },
+      [163 /* read */],
+      [new Parameter("n", "integer", false, 1)],
+      "string",
+      9,
+      1,
+      "Returns the first <code>n</code> characters from the keybuffer as a string."
+    ),
+    new Command(
+      { BASIC: "TIME", C: "time", Java: "time", Pascal: "time", Python: "time", TypeScript: "time" },
+      [172 /* time */],
+      [],
+      "integer",
+      9,
+      1,
+      "Returns the time (in milliseconds) since the program began."
+    ),
+    new Command(
+      { BASIC: "TIMESET", C: "timeset", Java: "timeSet", Pascal: "timeset", Python: "timeset", TypeScript: "timeSet" },
+      [173 /* tset */],
+      [new Parameter("m", "integer", false, 1)],
+      null,
+      9,
+      1,
+      "Artificially sets the time since the program began to <code>m</code> milliseconds."
+    ),
+    new Command(
+      { BASIC: "RESET", C: "reset", Java: "reset", Pascal: "reset", Python: "reset", TypeScript: "reset" },
+      [161 /* iclr */],
+      [new Parameter("\\inputcode", "integer", false, 1)],
+      null,
+      9,
+      2,
+      "Resets the specified <code>\\inputcode</code> (<code>\\mousex</code>, <code>\\mousey</code>, <code>\\backspace</code>, <code>\\enter</code>, etc.) to its initial value (i.e. -1)."
+    ),
+    new Command(
+      { BASIC: "STATUS", C: "status", Java: "status", Pascal: "status", Python: "status", TypeScript: "status" },
+      [160 /* stat */],
+      [new Parameter("\\inputcode", "integer", false, 1)],
+      "integer",
+      9,
+      2,
+      "Returns the <code>?kshift</code> value for the most recent press/click of the input with the specified <code>\\inputcode</code>."
+    ),
+    new Command(
+      {
+        BASIC: "KEYBUFFER",
+        C: "keybuffer",
+        Java: "keyBuffer",
+        Pascal: "keybuffer",
+        Python: "keybuffer",
+        TypeScript: "keyBuffer"
+      },
+      [162 /* bufr */, 112 /* ldin */, 1, 123 /* sptr */, 141 /* hfix */],
+      [new Parameter("n", "integer", false, 1)],
+      null,
+      9,
+      2,
+      "Creates a new custom keybuffer of length <code>n</code>. A keybuffer of length 32 is available by default; use this command if you need a larger buffer."
+    ),
+    new Command(
+      { BASIC: "CHDIR", C: null, Java: null, Pascal: "chdir", Python: null, TypeScript: null },
+      [176 /* chdr */],
+      [new Parameter("directory name", "string", false, 1)],
+      null,
+      10,
+      1,
+      "Changes the current directory."
+    ),
+    new Command(
+      { BASIC: "RMDIR", C: null, Java: null, Pascal: "rmdir", Python: null, TypeScript: null },
+      [112 /* ldin */, 1, 178 /* diry */, 112 /* ldin */, 128, 34 /* less */],
+      [new Parameter("subdirectory name", "string", false, 1)],
+      "boolean",
+      10,
+      1,
+      "Removes a subdirectory."
+    ),
+    new Command(
+      { BASIC: "MKDIR", C: null, Java: null, Pascal: "mkdir", Python: null, TypeScript: null },
+      [112 /* ldin */, 2, 178 /* diry */, 112 /* ldin */, 127, 35 /* more */],
+      [new Parameter("subdirectory name", "string", false, 1)],
+      "boolean",
+      10,
+      1,
+      "Creates a subdirectory."
+    ),
+    new Command(
+      { BASIC: null, C: null, Java: null, Pascal: "openfile", Python: null, TypeScript: null },
+      [179 /* open */],
+      [new Parameter("filename", "string", false, 1), new Parameter("mode", "integer", false, 1)],
+      "integer",
+      10,
+      1,
+      "Opens a file (1: read, 2: append, 3: write)."
+    ),
+    new Command(
+      { BASIC: "OPENIN", C: null, Java: null, Pascal: null, Python: null, TypeScript: null },
+      [112 /* ldin */, 1, 179 /* open */],
+      [new Parameter("filename", "string", false, 1)],
+      "integer",
+      10,
+      1,
+      "Open a file for reading."
+    ),
+    new Command(
+      { BASIC: "OPENUP", C: null, Java: null, Pascal: null, Python: null, TypeScript: null },
+      [112 /* ldin */, 2, 179 /* open */],
+      [new Parameter("filename", "string", false, 1)],
+      "integer",
+      10,
+      1,
+      "Opens a file for appending."
+    ),
+    new Command(
+      { BASIC: "OPENOUT", C: null, Java: null, Pascal: null, Python: null, TypeScript: null },
+      [112 /* ldin */, 4, 179 /* open */],
+      [new Parameter("filename", "string", false, 1)],
+      "integer",
+      10,
+      1,
+      "Opens a file for writing."
+    ),
+    new Command(
+      { BASIC: "CLOSE#", C: null, Java: null, Pascal: "closefile", Python: null, TypeScript: null },
+      [180 /* clos */],
+      [new Parameter("file handle", "integer", false, 1)],
+      null,
+      10,
+      1,
+      "Closes a file."
+    ),
+    new Command(
+      { BASIC: "DELETEFILE", C: null, Java: null, Pascal: "deletefile", Python: null, TypeScript: null },
+      [112 /* ldin */, 1, 177 /* file */, 112 /* ldin */, 128, 34 /* less */],
+      [new Parameter("filename", "string", false, 1)],
+      "boolean",
+      10,
+      1,
+      "Deletes a file."
+    ),
+    new Command(
+      { BASIC: "FREAD#", C: null, Java: null, Pascal: "fread", Python: null, TypeScript: null },
+      [184 /* frds */],
+      [new Parameter("file handle", "integer", false, 1), new Parameter("n", "integer", false, 1)],
+      "string",
+      10,
+      1,
+      "Reads n characters (maximum) from a file."
+    ),
+    new Command(
+      { BASIC: "FREADLN#", C: null, Java: null, Pascal: "freadln", Python: null, TypeScript: null },
+      [185 /* frln */],
+      [new Parameter("file handle", "integer", false, 1)],
+      "string",
+      10,
+      1,
+      "Reads a line from a file."
+    ),
+    new Command(
+      { BASIC: "FWRITE#", C: null, Java: null, Pascal: "fwrite", Python: null, TypeScript: null },
+      [186 /* fwrs */],
+      [new Parameter("file handle", "integer", false, 1), new Parameter("string", "string", false, 1)],
+      null,
+      10,
+      1,
+      "Writes a string to a file."
+    ),
+    new Command(
+      { BASIC: "FWRITELN#", C: null, Java: null, Pascal: "fwriteln", Python: null, TypeScript: null },
+      [187 /* fwln */],
+      [new Parameter("file handle", "integer", false, 1), new Parameter("string", "string", false, 1)],
+      null,
+      10,
+      1,
+      "Writes a line to a file."
+    ),
+    new Command(
+      { BASIC: "EOF#", C: null, Java: null, Pascal: "eof", Python: null, TypeScript: null },
+      [182 /* eof */],
+      [new Parameter("file handle", "integer", false, 1)],
+      "boolean",
+      10,
+      1,
+      "Tests for the end of file."
+    ),
+    new Command(
+      { BASIC: "CHECKDIR", C: null, Java: null, Pascal: "checkdir", Python: null, TypeScript: null },
+      [112 /* ldin */, 0, 178 /* diry */, 112 /* ldin */, 127, 35 /* more */],
+      [new Parameter("directory name", "string", false, 1), new Parameter("code", "integer", false, 1)],
+      "integer",
+      10,
+      2,
+      "Creates/deletes/checks a directory."
+    ),
+    new Command(
+      { BASIC: "CHECKFILE", C: null, Java: null, Pascal: "checkfile", Python: null, TypeScript: null },
+      [112 /* ldin */, 0, 177 /* file */, 112 /* ldin */, 127, 35 /* more */],
+      [new Parameter("filename", "string", false, 1), new Parameter("code", "integer", false, 1)],
+      "integer",
+      10,
+      2,
+      "Creates/deletes/checks a file."
+    ),
+    new Command(
+      { BASIC: "COPYFILE", C: null, Java: null, Pascal: "copyfile", Python: null, TypeScript: null },
+      [112 /* ldin */, 3, 191 /* fmov */],
+      [new Parameter("old name", "string", false, 1), new Parameter("new name", "string", false, 1)],
+      "boolean",
+      10,
+      2,
+      "Copies a file."
+    ),
+    new Command(
+      { BASIC: "DIREXISTS", C: null, Java: null, Pascal: "direxists", Python: null, TypeScript: null },
+      [112 /* ldin */, 0, 178 /* diry */, 112 /* ldin */, 127, 35 /* more */],
+      [new Parameter("subdirectory name", "string", false, 1)],
+      "boolean",
+      10,
+      2,
+      "Checks whether a subdirectory exists."
+    ),
+    new Command(
+      { BASIC: "FILEEXISTS", C: null, Java: null, Pascal: "fileexists", Python: null, TypeScript: null },
+      [112 /* ldin */, 0, 177 /* file */, 112 /* ldin */, 127, 35 /* more */],
+      [new Parameter("filename", "string", false, 1)],
+      "boolean",
+      10,
+      2,
+      "Checks whether a file exists."
+    ),
+    new Command(
+      { BASIC: "FINDDIR", C: null, Java: null, Pascal: "finddir", Python: null, TypeScript: null },
+      [1 /* dupl */, 122 /* lptr */, 3 /* rota */, 189 /* fdir */, 2 /* swap */, 3 /* rota */, 123 /* sptr */],
+      [new Parameter("directory name pattern", "string", false, 1), new Parameter("file handle", "integer", false, 1)],
+      "string",
+      10,
+      2,
+      "Finds the first directory matching the pattern."
+    ),
+    new Command(
+      { BASIC: "FINDFIRST", C: null, Java: null, Pascal: "findfirst", Python: null, TypeScript: null },
+      [1 /* dupl */, 122 /* lptr */, 3 /* rota */, 188 /* ffnd */, 2 /* swap */, 3 /* rota */, 123 /* sptr */],
+      [new Parameter("filename pattern", "string", false, 1), new Parameter("file handle", "integer", false, 1)],
+      "string",
+      10,
+      2,
+      "Finds the first file matching the pattern."
+    ),
+    new Command(
+      { BASIC: "FINDNEXT", C: null, Java: null, Pascal: "findnext", Python: null, TypeScript: null },
+      [190 /* fnxt */],
+      [new Parameter("file handle", "integer", false, 1)],
+      "string",
+      10,
+      2,
+      "Finds the next file/directory matching a pattern."
+    ),
+    new Command(
+      { BASIC: "RENAMEFILE", C: null, Java: null, Pascal: "renamefile", Python: null, TypeScript: null },
+      [112 /* ldin */, 1, 191 /* fmov */],
+      [new Parameter("old filename", "string", false, 1), new Parameter("new filename", "string", false, 1)],
+      "boolean",
+      10,
+      2,
+      "Rename file"
+    ),
+    new Command(
+      { BASIC: "MOVEFILE", C: null, Java: null, Pascal: "movefile", Python: null, TypeScript: null },
+      [112 /* ldin */, 2, 191 /* fmov */],
+      [new Parameter("old filename", "string", false, 1), new Parameter("new filename", "string", false, 1)],
+      "boolean",
+      10,
+      2,
+      "Moves a file."
+    ),
+    new Command(
+      { BASIC: "RESTARTFILE", C: null, Java: null, Pascal: "restartfile", Python: null, TypeScript: null },
+      [181 /* fbeg */],
+      [new Parameter("file handle", "integer", false, 1)],
+      null,
+      10,
+      2,
+      "Restarts reading a file."
+    ),
+    new Command(
+      { BASIC: "EOLN#", C: null, Java: null, Pascal: "eoln", Python: null, TypeScript: null },
+      [183 /* eoln */],
+      [new Parameter("file handle", "integer", false, 1)],
+      "boolean",
+      10,
+      2,
+      "Tests for end of line in a file."
+    ),
+    new Command(
+      { BASIC: "DUMP", C: "dump", Java: "dump", Pascal: "dump", Python: "dump", TypeScript: "dump" },
+      [154 /* dump */],
+      [],
+      null,
+      11,
+      2,
+      "&ldquo;Dumps&rdquo; the current memory state into the display in the memory tab."
+    ),
+    new Command(
+      {
+        BASIC: "HEAPRESET",
+        C: "heapreset",
+        Java: "heapReset",
+        Pascal: "heapreset",
+        Python: "heapreset",
+        TypeScript: "heapReset"
+      },
+      [143 /* hrst */],
+      [],
+      null,
+      11,
+      2,
+      "Resets the memory heap to the initial global value."
+    ),
+    new Command(
+      { BASIC: "ADDRESS", C: "address", Java: "address", Pascal: "address", Python: "address", TypeScript: "address" },
+      [],
+      [new Parameter("variable", "integer", true, 1)],
+      "integer",
+      11,
+      2,
+      "Returns the address in memory of the given <code>variable</code>."
+    ),
+    new Command(
+      { BASIC: "PEEK", C: "peek", Java: "peek", Pascal: "peek", Python: "peek", TypeScript: "peek" },
+      [155 /* peek */],
+      [new Parameter("address", "integer", false, 1)],
+      "integer",
+      11,
+      2,
+      "Peek at the value of the memory at the given <code>address</code>."
+    ),
+    new Command(
+      { BASIC: "POKE", C: "poke", Java: "poke", Pascal: "poke", Python: "poke", TypeScript: "poke" },
+      [156 /* poke */],
+      [new Parameter("address", "integer", false, 1), new Parameter("value", "integer", false, 1)],
+      null,
+      11,
+      2,
+      "Poke the <code>value</code> into the memory at the given <code>address</code>."
+    ),
+    new Command(
+      { BASIC: "TRACE", C: "trace", Java: "trace", Pascal: "trace", Python: "trace", TypeScript: "trace" },
+      [152 /* trac */],
+      [new Parameter("on", "boolean", false, 1)],
+      null,
+      11,
+      2,
+      "Turns the PCode trace facility on (<code>true</code>) or off (<code>false</code>)."
+    ),
+    new Command(
+      { BASIC: "WATCH", C: "watch", Java: "watch", Pascal: "watch", Python: "watch", TypeScript: "watch" },
+      [153 /* memw */],
+      [new Parameter("address", "integer", false, 1)],
+      null,
+      11,
+      2,
+      "Sets an <code>address</code> in memory for the trace facility to watch."
+    )
   ];
 
   // client/constants/inputs.ts
   var Input = class {
     constructor(name, value) {
-      this.names = {
-        BASIC: name.length > 2 ? name.toUpperCase() : name,
-        C: name,
-        Java: name,
-        Pascal: name,
-        Python: name,
-        TypeScript: name
-      };
+      this.name = name;
       this.value = value;
     }
   };
   var inputs = [
-    new Input("?kshift", -10),
-    new Input("?key", -9),
-    new Input("?mousey", -8),
-    new Input("?mousex", -7),
-    new Input("?clicky", -6),
-    new Input("?clickx", -5),
-    new Input("?click", -4),
-    new Input("?mmouse", -3),
-    new Input("?rmouse", -2),
-    new Input("?lmouse", -1),
-    new Input("\\keybuffer", 0),
-    new Input("\\backspace", 8),
-    new Input("\\tab", 9),
-    new Input("\\enter", 13),
-    new Input("\\return", 13),
-    new Input("\\shift", 16),
-    new Input("\\ctrl", 17),
-    new Input("\\alt", 18),
-    new Input("\\pause", 19),
-    new Input("\\capslock", 20),
-    new Input("\\escape", 27),
-    new Input("\\space", 32),
-    new Input("\\pgup", 33),
-    new Input("\\pgdn", 34),
-    new Input("\\end", 35),
-    new Input("\\home", 36),
-    new Input("\\left", 37),
-    new Input("\\up", 38),
-    new Input("\\right", 39),
-    new Input("\\down", 40),
-    new Input("\\insert", 45),
-    new Input("\\delete", 46),
-    new Input("\\0", 48),
-    new Input("\\1", 49),
-    new Input("\\2", 50),
-    new Input("\\3", 51),
-    new Input("\\4", 52),
-    new Input("\\5", 53),
-    new Input("\\6", 54),
-    new Input("\\7", 55),
-    new Input("\\8", 56),
-    new Input("\\9", 57),
-    new Input("\\a", 65),
-    new Input("\\b", 66),
-    new Input("\\c", 67),
-    new Input("\\d", 68),
-    new Input("\\e", 69),
-    new Input("\\f", 70),
-    new Input("\\g", 71),
-    new Input("\\h", 72),
-    new Input("\\i", 73),
-    new Input("\\j", 74),
-    new Input("\\k", 75),
-    new Input("\\l", 76),
-    new Input("\\m", 77),
-    new Input("\\n", 78),
-    new Input("\\o", 79),
-    new Input("\\p", 80),
-    new Input("\\q", 81),
-    new Input("\\r", 82),
-    new Input("\\s", 83),
-    new Input("\\t", 84),
-    new Input("\\u", 85),
-    new Input("\\v", 86),
-    new Input("\\w", 87),
-    new Input("\\x", 88),
-    new Input("\\y", 89),
-    new Input("\\z", 90),
-    new Input("\\lwin", 91),
-    new Input("\\rwin", 92),
-    new Input("\\#0", 96),
-    new Input("\\#1", 97),
-    new Input("\\#2", 98),
-    new Input("\\#3", 99),
-    new Input("\\#4", 100),
-    new Input("\\#5", 101),
-    new Input("\\#6", 102),
-    new Input("\\#7", 103),
-    new Input("\\#8", 104),
-    new Input("\\#9", 105),
-    new Input("\\multiply", 106),
-    new Input("\\add", 107),
-    new Input("\\subtract", 109),
-    new Input("\\decimal", 110),
-    new Input("\\divide", 111),
-    new Input("\\f1", 112),
-    new Input("\\f2", 113),
-    new Input("\\f3", 114),
-    new Input("\\f4", 115),
-    new Input("\\f5", 116),
-    new Input("\\f6", 117),
-    new Input("\\f7", 118),
-    new Input("\\f8", 119),
-    new Input("\\f9", 120),
-    new Input("\\f10", 121),
-    new Input("\\f11", 122),
-    new Input("\\f12", 123),
-    new Input("\\numlock", 144),
-    new Input("\\scrolllock", 145),
-    new Input("\\semicolon", 186),
-    new Input("\\equals", 187),
-    new Input("\\comma", 188),
-    new Input("\\dash", 189),
-    new Input("\\fullstop", 190),
-    new Input("\\forwardslash", 191),
-    new Input("\\singlequote", 192),
-    new Input("\\openbracket", 219),
-    new Input("\\backslash", 220),
-    new Input("\\closebracket", 221),
-    new Input("\\hash", 222),
-    new Input("\\backtick", 223)
+    new Input("mousekey", -11),
+    new Input("kshift", -10),
+    new Input("key", -9),
+    new Input("mousey", -8),
+    new Input("mousex", -7),
+    new Input("clicky", -6),
+    new Input("clickx", -5),
+    new Input("click", -4),
+    new Input("mmouse", -3),
+    new Input("rmouse", -2),
+    new Input("lmouse", -1),
+    new Input("keybuffer", 0),
+    new Input("backspace", 8),
+    new Input("tab", 9),
+    new Input("enter", 13),
+    new Input("return", 13),
+    new Input("shift", 16),
+    new Input("ctrl", 17),
+    new Input("alt", 18),
+    new Input("pause", 19),
+    new Input("capslock", 20),
+    new Input("escape", 27),
+    new Input("space", 32),
+    new Input("pgup", 33),
+    new Input("pgdn", 34),
+    new Input("end", 35),
+    new Input("home", 36),
+    new Input("left", 37),
+    new Input("up", 38),
+    new Input("right", 39),
+    new Input("down", 40),
+    new Input("insert", 45),
+    new Input("delete", 46),
+    new Input("0", 48),
+    new Input("1", 49),
+    new Input("2", 50),
+    new Input("3", 51),
+    new Input("4", 52),
+    new Input("5", 53),
+    new Input("6", 54),
+    new Input("7", 55),
+    new Input("8", 56),
+    new Input("9", 57),
+    new Input("a", 65),
+    new Input("b", 66),
+    new Input("c", 67),
+    new Input("d", 68),
+    new Input("e", 69),
+    new Input("f", 70),
+    new Input("g", 71),
+    new Input("h", 72),
+    new Input("i", 73),
+    new Input("j", 74),
+    new Input("k", 75),
+    new Input("l", 76),
+    new Input("m", 77),
+    new Input("n", 78),
+    new Input("o", 79),
+    new Input("p", 80),
+    new Input("q", 81),
+    new Input("r", 82),
+    new Input("s", 83),
+    new Input("t", 84),
+    new Input("u", 85),
+    new Input("v", 86),
+    new Input("w", 87),
+    new Input("x", 88),
+    new Input("y", 89),
+    new Input("z", 90),
+    new Input("lwin", 91),
+    new Input("rwin", 92),
+    new Input("#0", 96),
+    new Input("#1", 97),
+    new Input("#2", 98),
+    new Input("#3", 99),
+    new Input("#4", 100),
+    new Input("#5", 101),
+    new Input("#6", 102),
+    new Input("#7", 103),
+    new Input("#8", 104),
+    new Input("#9", 105),
+    new Input("multiply", 106),
+    new Input("add", 107),
+    new Input("subtract", 109),
+    new Input("decimal", 110),
+    new Input("divide", 111),
+    new Input("f1", 112),
+    new Input("f2", 113),
+    new Input("f3", 114),
+    new Input("f4", 115),
+    new Input("f5", 116),
+    new Input("f6", 117),
+    new Input("f7", 118),
+    new Input("f8", 119),
+    new Input("f9", 120),
+    new Input("f10", 121),
+    new Input("f11", 122),
+    new Input("f12", 123),
+    new Input("numlock", 144),
+    new Input("scrolllock", 145),
+    new Input("semicolon", 186),
+    new Input("equals", 187),
+    new Input("comma", 188),
+    new Input("dash", 189),
+    new Input("fullstop", 190),
+    new Input("forwardslash", 191),
+    new Input("singlequote", 192),
+    new Input("openbracket", 219),
+    new Input("backslash", 220),
+    new Input("closebracket", 221),
+    new Input("hash", 222),
+    new Input("backtick", 223),
+    new Input("all", 256)
   ];
 
   // client/constants/keywords.ts
@@ -3676,7 +4954,7 @@
     let line2 = 1;
     let character = 1;
     while (code3.length > 0) {
-      const token = spaces(code3, language2, line2, character) || newline(code3, language2, line2, character) || comment(code3, language2, line2, character) || operatorOrDelimiter(code3, language2, line2, character) || string(code3, language2, line2, character) || boolean(code3, language2, line2, character) || binary(code3, language2, line2, character) || octal(code3, language2, line2, character) || hexadecimal(code3, language2, line2, character) || decimal(code3, language2, line2, character) || keyword(code3, language2, line2, character) || type(code3, language2, line2, character) || keycode(code3, language2, line2, character) || query2(code3, language2, line2, character) || turtle2(code3, language2, line2, character) || identifier(code3, language2, line2, character) || illegal(code3, language2, line2, character);
+      const token = spaces(code3, language2, line2, character) || newline(code3, language2, line2, character) || comment(code3, language2, line2, character) || operatorOrDelimiter(code3, language2, line2, character) || string(code3, language2, line2, character) || boolean(code3, language2, line2, character) || binary(code3, language2, line2, character) || octal(code3, language2, line2, character) || hexadecimal(code3, language2, line2, character) || decimal(code3, language2, line2, character) || keyword(code3, language2, line2, character) || type(code3, language2, line2, character) || inputcode(code3, language2, line2, character) || querycode(code3, language2, line2, character) || turtle2(code3, language2, line2, character) || identifier(code3, language2, line2, character) || illegal(code3, language2, line2, character);
       tokens.push(token);
       code3 = code3.slice(token.content.length);
       if (token.type === "newline") {
@@ -3688,25 +4966,27 @@
     }
     return tokens;
   }
-  function spaces(code3, language2, line2, character) {
+  function spaces(code3, _language, line2, character) {
     const test = code3.match(/^( +)/);
     return test ? new Token("spaces", test[0], line2, character) : false;
   }
-  function newline(code3, language2, line2, character) {
+  function newline(code3, _language, line2, character) {
     const test = code3[0] === "\n";
     return test ? new Token("newline", "\n", line2, character) : false;
   }
   function comment(code3, language2, line2, character) {
     switch (language2) {
-      case "BASIC":
+      case "BASIC": {
         const startBASIC = code3.match(/^REM/);
         return startBASIC ? new Token("comment", code3.split("\n")[0], line2, character) : false;
+      }
       case "C":
       case "Java":
-      case "TypeScript":
+      case "TypeScript": {
         const startCorTS = code3.match(/^\/\//);
         return startCorTS ? new Token("comment", code3.split("\n")[0], line2, character) : false;
-      case "Pascal":
+      }
+      case "Pascal": {
         const start = code3[0] === "{";
         const end = code3.match(/}/);
         if (start && end) {
@@ -3716,9 +4996,11 @@
           return new Token("unterminated-comment", code3.split("\n")[0], line2, character);
         }
         return false;
-      case "Python":
+      }
+      case "Python": {
         const startPython = code3.match(/^#/);
         return startPython ? new Token("comment", code3.split("\n")[0], line2, character) : false;
+      }
     }
   }
   function operatorOrDelimiter(code3, language2, line2, character) {
@@ -3791,7 +5073,7 @@
       case "C":
       case "Java":
       case "Python":
-      case "TypeScript":
+      case "TypeScript": {
         const start1 = code3[0] === "'";
         const start2 = code3[0] === '"';
         const end1 = code3.match(/[^\\](')/);
@@ -3809,6 +5091,7 @@
           return new Token("unterminated-string", code3.split("\n")[0], line2, character);
         }
         return false;
+      }
     }
   }
   function boolean(code3, language2, line2, character) {
@@ -3826,7 +5109,7 @@
   function binary(code3, language2, line2, character) {
     switch (language2) {
       case "BASIC":
-      case "Pascal":
+      case "Pascal": {
         const good = code3.match(/^(%[01]+)\b/);
         const bad = code3.match(/^(0b[01]+)\b/);
         if (good) {
@@ -3836,22 +5119,24 @@
           return new Token("bad-binary", bad[0], line2, character);
         }
         return false;
+      }
       case "C":
       case "Java":
       case "Python":
-      case "TypeScript":
+      case "TypeScript": {
         const test = code3.match(/^(0b[01]+)\b/);
         if (test) {
           return new Token("binary", test[0], line2, character);
         }
         return false;
+      }
     }
   }
   function octal(code3, language2, line2, character) {
     switch (language2) {
       case "BASIC":
         return false;
-      case "Pascal":
+      case "Pascal": {
         const goodPascal = code3.match(/^(&[0-7]+)\b/);
         const badPascal = code3.match(/^(0o[0-7]+)\b/);
         if (goodPascal) {
@@ -3861,15 +5146,17 @@
           return new Token("bad-octal", badPascal[0], line2, character);
         }
         return false;
+      }
       case "C":
       case "Java":
       case "Python":
-      case "TypeScript":
+      case "TypeScript": {
         const testPython = code3.match(/^(0o[0-7]+)\b/);
         if (testPython) {
           return new Token("octal", testPython[0], line2, character);
         }
         return false;
+      }
     }
   }
   function hexadecimal(code3, language2, line2, character) {
@@ -3899,7 +5186,7 @@
     }
     return false;
   }
-  function decimal(code3, language2, line2, character) {
+  function decimal(code3, _language, line2, character) {
     const good = code3.match(/^(\d+)\b/);
     const bad = code3.match(/^(\d+\.\d+)/);
     if (bad) {
@@ -3934,29 +5221,29 @@
     }
     return test ? new Token("type", test[0], line2, character) : false;
   }
-  function keycode(code3, language2, line2, character) {
-    const names = inputs.filter((x) => x.value >= 0).map((x) => x.names[language2].replace(/\\/, "\\\\")).join("|");
+  function inputcode(code3, language2, line2, character) {
+    const names = inputs.map((x) => `\\\\${x.name}`).join("|");
     const regex = language2 === "Pascal" ? new RegExp(`^(${names})\\b`, "i") : new RegExp(`^(${names})\\b`);
     const good = code3.match(regex);
     const bad = code3.match(/^(\\[#a-zA-Z0-9]*)\b/);
     if (good) {
-      return new Token("keycode", good[0], line2, character);
+      return new Token("inputcode", good[0], line2, character);
     }
     if (bad) {
-      return new Token("bad-keycode", bad[0], line2, character);
+      return new Token("bad-inputcode", bad[0], line2, character);
     }
     return false;
   }
-  function query2(code3, language2, line2, character) {
-    const names = inputs.filter((x) => x.value < 0).map((x) => x.names[language2].replace(/\?/, "\\?")).join("|");
+  function querycode(code3, language2, line2, character) {
+    const names = inputs.map((x) => `\\?${x.name}`).join("|");
     const regex = language2 === "Pascal" ? new RegExp(`^(${names})\\b`, "i") : new RegExp(`^(${names})\\b`);
     const good = code3.match(regex);
     const bad = code3.match(/^(\?[#a-zA-Z0-9]*)\b/);
     if (good) {
-      return new Token("query", good[0], line2, character);
+      return new Token("querycode", good[0], line2, character);
     }
     if (bad) {
-      return new Token("bad-query", bad[0], line2, character);
+      return new Token("bad-querycode", bad[0], line2, character);
     }
     return false;
   }
@@ -3991,7 +5278,7 @@
     }
     return false;
   }
-  function illegal(code3, language2, line2, character) {
+  function illegal(code3, _language, line2, character) {
     return new Token("illegal", code3.split(/\s/)[0], line2, character);
   }
 
@@ -4222,20 +5509,20 @@
       }
     }
   };
-  var KeycodeLexeme = class extends LexemeClass {
+  var InputcodeLexeme = class extends LexemeClass {
     constructor(token, language2) {
       super(token.line, token.character, token.content);
       this.type = "input";
-      this.subtype = "keycode";
-      this.value = language2 === "Pascal" ? token.content.toLowerCase() : token.content;
+      this.subtype = "inputcode";
+      this.value = language2 === "Pascal" ? token.content.slice(1).toLowerCase() : token.content.slice(1);
     }
   };
-  var QueryLexeme = class extends LexemeClass {
+  var QuerycodeLexeme = class extends LexemeClass {
     constructor(token, language2) {
       super(token.line, token.character, token.content);
       this.type = "input";
-      this.subtype = "query";
-      this.value = language2 === "Pascal" ? token.content.toLowerCase() : token.content;
+      this.subtype = "querycode";
+      this.value = language2 === "Pascal" ? token.content.slice(1).toLowerCase() : token.content.slice(1);
     }
   };
   var IdentifierLexeme = class extends LexemeClass {
@@ -4303,7 +5590,7 @@
         case "delimiter":
           lexemes.push(new DelimiterLexeme(tokens[index]));
           break;
-        case "string":
+        case "string": {
           const stringLexeme = new StringLexeme(tokens[index], language2);
           const isCharacter = stringLexeme.value.length === 1;
           if (isCharacter && (language2 === "C" || language2 === "Java" || language2 === "Pascal")) {
@@ -4312,6 +5599,7 @@
             lexemes.push(stringLexeme);
           }
           break;
+        }
         case "boolean":
           lexemes.push(new BooleanLexeme(tokens[index], language2));
           break;
@@ -4327,11 +5615,11 @@
         case "decimal":
           lexemes.push(new IntegerLexeme(tokens[index], 10));
           break;
-        case "keycode":
-          lexemes.push(new KeycodeLexeme(tokens[index], language2));
+        case "inputcode":
+          lexemes.push(new InputcodeLexeme(tokens[index], language2));
           break;
-        case "query":
-          lexemes.push(new QueryLexeme(tokens[index], language2));
+        case "querycode":
+          lexemes.push(new QuerycodeLexeme(tokens[index], language2));
           break;
         case "command":
         case "turtle":
@@ -4349,9 +5637,9 @@
           throw new CompilerError("Ill-formed integer literal.", tokens[index]);
         case "real":
           throw new CompilerError("The Turtle System does not support real numbers.", tokens[index]);
-        case "bad-keycode":
-          throw new CompilerError("Unrecognised input keycode.", tokens[index]);
-        case "bad-query":
+        case "bad-inputcode":
+          throw new CompilerError("Unrecognised input code.", tokens[index]);
+        case "bad-querycode":
           throw new CompilerError("Unrecognised input query.", tokens[index]);
         case "illegal":
           throw new CompilerError("Illegal character in this context.", tokens[index]);
@@ -4384,7 +5672,10 @@
     } else if (name.slice(0, 2) === "FN") {
       subroutineType = "function";
     } else {
-      throw new CompilerError('{lex} is not a valid subroutine name. (Procedure names must begin with "PROC", and function names must begin with "FN".)', lexemes.get(-1));
+      throw new CompilerError(
+        '{lex} is not a valid subroutine name. (Procedure names must begin with "PROC", and function names must begin with "FN".)',
+        lexemes.get(-1)
+      );
     }
     const test = name.match(/\$(\d+)$/);
     let type8 = "boolint";
@@ -4410,7 +5701,10 @@
       type8 = "string";
       stringLength = parseInt(test[1], 10);
     } else {
-      throw new CompilerError('{lex} is not the name of any recognised command or a valid variable name. (Boolean and integer variables end with "%", and string variables end with "$".)', lexemes.get(-1));
+      throw new CompilerError(
+        '{lex} is not the name of any recognised command or a valid variable name. (Boolean and integer variables end with "%", and string variables end with "$".)',
+        lexemes.get(-1)
+      );
     }
     return [name, type8, stringLength];
   }
@@ -4467,14 +5761,7 @@
       return variable7;
     }
     get turtleVariables() {
-      return [
-        this.turt("x"),
-        this.turt("y"),
-        this.turt("d"),
-        this.turt("a"),
-        this.turt("t"),
-        this.turt("c")
-      ];
+      return [this.turt("x"), this.turt("y"), this.turt("d"), this.turt("a"), this.turt("t"), this.turt("c")];
     }
     get resultAddress() {
       return this.allSubroutines.length + this.baseGlobals;
@@ -4608,7 +5895,7 @@
   }
   function input2(routine, name) {
     const searchName = routine.language === "Pascal" ? name.toLowerCase() : name;
-    return inputs.find((x) => x.names[routine.language] === searchName);
+    return inputs.find((x) => x.name === searchName);
   }
   function variable(routine, name) {
     const searchName = routine.language === "Pascal" ? name.toLowerCase() : name;
@@ -5725,12 +7012,14 @@
     if (variableLexeme.subtype === "turtle") {
       throw new CompilerError('Turtle attribute cannot be used as a "FOR" variable.', variableLexeme);
     }
-    let foo = variable(routine, variableLexeme.content);
-    if (!foo) {
+    let foo;
+    const existing = variable(routine, variableLexeme.content);
+    if (!existing) {
       const program3 = routine instanceof Program ? routine : routine.program;
       foo = variable2(lexemes, program3);
       program3.variables.push(foo);
     } else {
+      foo = existing;
       lexemes.next();
     }
     if (foo.type !== "integer" && foo.type !== "boolint") {
@@ -5761,20 +7050,29 @@
     const mreqLexeme = new OperatorLexeme(mreqToken, "BASIC");
     const left = new VariableValue(variableLexeme, foo);
     const right = new IntegerValue(oneLexeme);
-    let change = new VariableAssignment(assignmentLexeme, foo, [], new CompoundExpression(plusLexeme, left, right, "plus"));
+    let change = new VariableAssignment(
+      assignmentLexeme,
+      foo,
+      [],
+      new CompoundExpression(plusLexeme, left, right, "plus")
+    );
     let condition = new CompoundExpression(lseqLexeme, left, finalValue, "lseq");
     if (lexemes.get() && lexemes.get()?.content === "STEP") {
       lexemes.next();
       if (!lexemes.get()) {
         throw new CompilerError('"STEP" instruction must be followed by an integer value.', lexemes.get(-1));
       }
-      let stepValue = expression(lexemes, routine);
-      typeCheck(stepValue, "integer");
+      const stepValue = typeCheck(expression(lexemes, routine), "integer");
       const evaluatedStepValue = evaluate(stepValue, "BASIC", "step");
       if (evaluatedStepValue === 0) {
         throw new CompilerError("Step value cannot be zero.", stepValue.lexeme);
       }
-      change = new VariableAssignment(assignmentLexeme, foo, [], new CompoundExpression(plusLexeme, left, stepValue, "plus"));
+      change = new VariableAssignment(
+        assignmentLexeme,
+        foo,
+        [],
+        new CompoundExpression(plusLexeme, left, stepValue, "plus")
+      );
       if (evaluatedStepValue < 0) {
         condition = new CompoundExpression(mreqLexeme, left, finalValue, "mreq");
       } else {
@@ -5935,9 +7233,15 @@
     subroutine8.end = subroutine8.type === "procedure" ? lexemes.index - 2 : lexemes.index;
     if (!finished) {
       if (subroutine8.type === "procedure") {
-        throw new CompilerError(`Procedure "${subroutine8.name}" does not have an end (expected "ENDPROC").`, lexemes.lexemes[subroutine8.start]);
+        throw new CompilerError(
+          `Procedure "${subroutine8.name}" does not have an end (expected "ENDPROC").`,
+          lexemes.lexemes[subroutine8.start]
+        );
       }
-      throw new CompilerError(`Function "${subroutine8.name}" does not have an end (expected "=<expression>").`, lexemes.lexemes[subroutine8.end]);
+      throw new CompilerError(
+        `Function "${subroutine8.name}" does not have an end (expected "=<expression>").`,
+        lexemes.lexemes[subroutine8.end]
+      );
     }
     newLine(lexemes);
     return subroutine8;
@@ -6008,7 +7312,10 @@
       throw new CompilerError('Expected type definition ("bool", "char", "int", "string", or "void").', lexemes.get(-1));
     }
     if (typeLexeme.type !== "type") {
-      throw new CompilerError('{lex} is not a valid type definition (expected "bool", "char", "int", "string", or "void").', typeLexeme);
+      throw new CompilerError(
+        '{lex} is not a valid type definition (expected "bool", "char", "int", "string", or "void").',
+        typeLexeme
+      );
     }
     const type8 = typeLexeme.subtype;
     lexemes.next();
@@ -6061,7 +7368,10 @@
   function constant3(lexemes, routine) {
     const [constantType] = type3(lexemes);
     if (constantType === null) {
-      throw new CompilerError('Constant type cannot be void (expected "bool", "char", "int", or "string").', lexemes.get());
+      throw new CompilerError(
+        'Constant type cannot be void (expected "bool", "char", "int", or "string").',
+        lexemes.get()
+      );
     }
     const name = identifier3(lexemes, routine);
     if (!lexemes.get()) {
@@ -6156,7 +7466,10 @@
             statement8 = ifStatement2(lexeme, lexemes, routine);
             break;
           case "else":
-            throw new CompilerError('Statement cannot begin with "else". If you have an "if" above, you may be missing a closing bracket "}".', lexemes.get());
+            throw new CompilerError(
+              'Statement cannot begin with "else". If you have an "if" above, you may be missing a closing bracket "}".',
+              lexemes.get()
+            );
           case "for":
             lexemes.next();
             statement8 = forStatement2(lexeme, lexemes, routine);
@@ -6184,7 +7497,7 @@
         lexemes.next();
         routine.constants.push(constant3(lexemes, routine));
         return new PassStatement();
-      case "type":
+      case "type": {
         const variableLexeme = lexemes.get(1);
         const foo = variable3(lexemes, routine);
         routine.variables.push(foo);
@@ -6193,7 +7506,8 @@
         } else {
           return new PassStatement();
         }
-      case "identifier":
+      }
+      case "identifier": {
         const bar = variable(routine, lexeme.value);
         const baz = command(routine, lexeme.value);
         if (bar) {
@@ -6206,6 +7520,7 @@
         } else {
           throw new CompilerError("{lex} is not defined.", lexemes.get());
         }
+      }
     }
   }
   function variableAssignment2(variableLexeme, lexemes, routine, variable7) {
@@ -6490,7 +7805,10 @@
             program3.constants.push(constant3(lexemes, program3));
             eosCheck(lexemes);
           } else {
-            throw new CompilerError("Program can only contain constant definitions, variable declarations, and subroutine defintions.", lexeme);
+            throw new CompilerError(
+              "Program can only contain constant definitions, variable declarations, and subroutine defintions.",
+              lexeme
+            );
           }
           break;
         case "type":
@@ -6506,7 +7824,10 @@
           }
           break;
         default:
-          throw new CompilerError("Program can only contain constant definitions, variable declarations, and subroutine defintions.", lexeme);
+          throw new CompilerError(
+            "Program can only contain constant definitions, variable declarations, and subroutine defintions.",
+            lexeme
+          );
       }
     }
     for (const subroutine8 of program3.allSubroutines) {
@@ -6538,7 +7859,10 @@
       throw new CompilerError("{lex} is not a valid program name.", identifier8);
     }
     if (identifier8.subtype === "turtle") {
-      throw new CompilerError("{lex} is the name of a predefined Turtle attribute, and cannot be used as the name of the program.", identifier8);
+      throw new CompilerError(
+        "{lex} is the name of a predefined Turtle attribute, and cannot be used as the name of the program.",
+        identifier8
+      );
     }
     const firstCharacterCode = identifier8.content.charCodeAt(0);
     if (firstCharacterCode < 65 || firstCharacterCode > 90) {
@@ -6566,10 +7890,16 @@
   function type4(lexemes, routine) {
     const typeLexeme = lexemes.get();
     if (!typeLexeme) {
-      throw new CompilerError('Expected type definition ("boolean", "char", "int", "String", or "void").', lexemes.get(-1));
+      throw new CompilerError(
+        'Expected type definition ("boolean", "char", "int", "String", or "void").',
+        lexemes.get(-1)
+      );
     }
     if (typeLexeme.type !== "type") {
-      throw new CompilerError('{lex} is not a valid type definition (expected "boolean", "char", "int", "String", or "void").', lexemes.get(-1));
+      throw new CompilerError(
+        '{lex} is not a valid type definition (expected "boolean", "char", "int", "String", or "void").',
+        lexemes.get(-1)
+      );
     }
     const type8 = typeLexeme.subtype;
     lexemes.next();
@@ -6651,7 +7981,10 @@
   function constant4(lexemes, routine) {
     const [constantType, , arrayDimensions] = type4(lexemes, routine);
     if (constantType === null) {
-      throw new CompilerError('Constant type cannot be void (expected "boolean", "char", "int", or "String").', lexemes.get());
+      throw new CompilerError(
+        'Constant type cannot be void (expected "boolean", "char", "int", or "String").',
+        lexemes.get()
+      );
     }
     if (arrayDimensions.length > 0) {
       throw new CompilerError("Constant cannot be an array.", lexemes.get());
@@ -6714,7 +8047,10 @@
             statement8 = ifStatement3(lexeme, lexemes, routine);
             break;
           case "else":
-            throw new CompilerError('Statement cannot begin with "else". If you have an "if" above, you may be missing a closing bracket "}".', lexeme);
+            throw new CompilerError(
+              'Statement cannot begin with "else". If you have an "if" above, you may be missing a closing bracket "}".',
+              lexeme
+            );
           case "for":
             lexemes.next();
             statement8 = forStatement3(lexeme, lexemes, routine);
@@ -6742,7 +8078,7 @@
         lexemes.next();
         routine.constants.push(constant4(lexemes, routine));
         return new PassStatement();
-      case "type":
+      case "type": {
         const variableLexeme = lexemes.get(1);
         const foo = variable4(lexemes, routine);
         routine.variables.push(foo);
@@ -6751,7 +8087,8 @@
         } else {
           return new PassStatement();
         }
-      case "identifier":
+      }
+      case "identifier": {
         const bar = variable(routine, lexeme.value);
         const baz = command(routine, lexeme.value);
         if (bar) {
@@ -6764,6 +8101,7 @@
         } else {
           throw new CompilerError("{lex} is not defined.", lexemes.get());
         }
+      }
     }
   }
   function variableAssignment3(variableLexeme, lexemes, routine, variable7) {
@@ -7052,7 +8390,10 @@
             prog.constants.push(constant4(lexemes, prog));
             eosCheck2(lexemes);
           } else {
-            throw new CompilerError("Program can only contain constant definitions, variable declarations, and subroutine defintions.", lexeme);
+            throw new CompilerError(
+              "Program can only contain constant definitions, variable declarations, and subroutine defintions.",
+              lexeme
+            );
           }
           break;
         case "type":
@@ -7068,7 +8409,10 @@
           }
           break;
         default:
-          throw new CompilerError("Program can only contain constant definitions, variable declarations, and subroutine defintions.", lexeme);
+          throw new CompilerError(
+            "Program can only contain constant definitions, variable declarations, and subroutine defintions.",
+            lexeme
+          );
       }
     }
     for (const subroutine8 of prog.allSubroutines) {
@@ -7308,7 +8652,10 @@
     const change = new VariableAssignment(assignmentLexeme, variable7, [], value);
     lexemes.next();
     if (!lexemes.get()) {
-      throw new CompilerError(`"${toOrDownTo.toUpperCase()}" must be followed by an integer (or integer constant).`, toLexeme);
+      throw new CompilerError(
+        `"${toOrDownTo.toUpperCase()}" must be followed by an integer (or integer constant).`,
+        toLexeme
+      );
     }
     let finalValue = expression(lexemes, routine);
     finalValue = typeCheck(finalValue, "integer");
@@ -7481,10 +8828,16 @@
     }
     const typeLexeme = lexemes.get();
     if (!typeLexeme) {
-      throw new CompilerError('Expected type definition ("array", "boolean", "char", "integer", or "string").', lexemes.get(-1));
+      throw new CompilerError(
+        'Expected type definition ("array", "boolean", "char", "integer", or "string").',
+        lexemes.get(-1)
+      );
     }
     if (typeLexeme.type !== "type") {
-      throw new CompilerError('{lex} is not a valid type definition (expected "array", "boolean", "char", "integer", or "string").', lexemes.get());
+      throw new CompilerError(
+        '{lex} is not a valid type definition (expected "array", "boolean", "char", "integer", or "string").',
+        lexemes.get()
+      );
     }
     const type8 = typeLexeme.subtype;
     lexemes.next();
@@ -7667,10 +9020,16 @@
           switch (lexeme.subtype) {
             case "const": {
               if (program3.variables.length > 0) {
-                throw new CompilerError("Constant definitions must be placed above any variable declarations.", lexemes.get());
+                throw new CompilerError(
+                  "Constant definitions must be placed above any variable declarations.",
+                  lexemes.get()
+                );
               }
               if (program3.subroutines.length > 0) {
-                throw new CompilerError("Constant definitions must be placed above any subroutine definitions.", lexemes.get());
+                throw new CompilerError(
+                  "Constant definitions must be placed above any subroutine definitions.",
+                  lexemes.get()
+                );
               }
               lexemes.next();
               const constantsSoFar = program3.constants.length;
@@ -7684,7 +9043,10 @@
             }
             case "var":
               if (program3.subroutines.length > 0) {
-                throw new CompilerError("Variable declarations must be placed above any subroutine definitions.", lexemes.get());
+                throw new CompilerError(
+                  "Variable declarations must be placed above any subroutine definitions.",
+                  lexemes.get()
+                );
               }
               lexemes.next();
               program3.variables.push(...variables2(lexemes, program3));
@@ -7839,7 +9201,10 @@
         return arrayType;
       }
       default:
-        throw new CompilerError('{lex} is not a valid type specification (expected "bool", "int", or "str")', lexemes.get());
+        throw new CompilerError(
+          '{lex} is not a valid type specification (expected "bool", "int", or "str")',
+          lexemes.get()
+        );
     }
   }
 
@@ -8031,7 +9396,10 @@
             statement8 = ifStatement5(lexeme, lexemes, routine);
             break;
           case "else":
-            throw new CompilerError('Statement cannot begin with "else". If you have an "if" above, this line may need to be indented more.', lexemes.get());
+            throw new CompilerError(
+              'Statement cannot begin with "else". If you have an "if" above, this line may need to be indented more.',
+              lexemes.get()
+            );
           case "for":
             lexemes.next();
             statement8 = forStatement5(lexeme, lexemes, routine);
@@ -8099,7 +9467,10 @@
     }
     if (assignmentLexeme.content === ":") {
       if (variable7.turtle) {
-        throw new CompilerError("{lex} is the name of a predefined Turtle attribute, and cannot be given a type hit.", lexemes.get(-1));
+        throw new CompilerError(
+          "{lex} is the name of a predefined Turtle attribute, and cannot be given a type hit.",
+          lexemes.get(-1)
+        );
       }
       throw new CompilerError("Type of variable {lex} has already been given.", lexemes.get(-1));
     }
@@ -8312,18 +9683,33 @@
     switch (providedValues.length) {
       case 1:
         initialisation = new VariableAssignment(assignmentLexeme, variable7, [], zero2);
-        change = new VariableAssignment(assignmentLexeme, variable7, [], new CompoundExpression(plusLexeme, left, one, "plus"));
+        change = new VariableAssignment(
+          assignmentLexeme,
+          variable7,
+          [],
+          new CompoundExpression(plusLexeme, left, one, "plus")
+        );
         condition = new CompoundExpression(lessLexeme, left, providedValues[0], "less");
         break;
       case 2:
         initialisation = new VariableAssignment(assignmentLexeme, variable7, [], providedValues[0]);
-        change = new VariableAssignment(assignmentLexeme, variable7, [], new CompoundExpression(plusLexeme, left, one, "plus"));
+        change = new VariableAssignment(
+          assignmentLexeme,
+          variable7,
+          [],
+          new CompoundExpression(plusLexeme, left, one, "plus")
+        );
         condition = new CompoundExpression(lessLexeme, left, providedValues[1], "less");
         break;
       case 3: {
         initialisation = new VariableAssignment(assignmentLexeme, variable7, [], providedValues[0]);
         const stepValue = evaluate(providedValues[2], "Python", "step");
-        change = new VariableAssignment(assignmentLexeme, variable7, [], new CompoundExpression(plusLexeme, left, providedValues[2], "plus"));
+        change = new VariableAssignment(
+          assignmentLexeme,
+          variable7,
+          [],
+          new CompoundExpression(plusLexeme, left, providedValues[2], "plus")
+        );
         condition = stepValue < 0 ? new CompoundExpression(moreLexeme, left, providedValues[1], "more") : new CompoundExpression(lessLexeme, left, providedValues[1], "less");
         break;
       }
@@ -8349,7 +9735,10 @@
       throw new CompilerError('No statements found after "for <variable> in range(...):".', lexemes.get(-1));
     }
     if (lexemes.get()?.type !== "newline") {
-      throw new CompilerError('Statements following "for <variable> in range(...):" must be on a new line.', lexemes.get());
+      throw new CompilerError(
+        'Statements following "for <variable> in range(...):" must be on a new line.',
+        lexemes.get()
+      );
     }
     lexemes.next();
     const forStatement8 = new ForStatement(forLexeme, initialisation, condition, change);
@@ -8490,7 +9879,10 @@
       throw new CompilerError('Expected type definition ("boolean", "number", "string", or "void").', lexemes.get(-1));
     }
     if (typeLexeme.type !== "type") {
-      throw new CompilerError('{lex} is not a valid type definition (expected "boolean", "number", "string", or "void").', typeLexeme);
+      throw new CompilerError(
+        '{lex} is not a valid type definition (expected "boolean", "number", "string", or "void").',
+        typeLexeme
+      );
     }
     const type8 = typeLexeme.subtype;
     lexemes.next();
@@ -8690,7 +10082,10 @@
             statement8 = ifStatement6(lexeme, lexemes, routine);
             break;
           case "else":
-            throw new CompilerError('Statement cannot begin with "else". If you have an "if" above, you may be missing a closing bracket "}".', lexeme);
+            throw new CompilerError(
+              'Statement cannot begin with "else". If you have an "if" above, you may be missing a closing bracket "}".',
+              lexeme
+            );
           case "for":
             lexemes.next();
             statement8 = forStatement6(lexeme, lexemes, routine);
@@ -9076,22 +10471,14 @@
       new Category(20, "Command structures", keywords.BASIC),
       new Category(21, "Variable scope modifiers", keywords.BASIC)
     ],
-    C: [
-      new Category(20, "Command structures", keywords.C)
-    ],
-    Java: [
-      new Category(20, "Command structures", keywords.Java)
-    ],
-    Pascal: [
-      new Category(20, "Command structures", keywords.Pascal)
-    ],
+    C: [new Category(20, "Command structures", keywords.C)],
+    Java: [new Category(20, "Command structures", keywords.Java)],
+    Pascal: [new Category(20, "Command structures", keywords.Pascal)],
     Python: [
       new Category(20, "Command structures", keywords.Python),
       new Category(21, "Variable scope modifiers", keywords.Python)
     ],
-    TypeScript: [
-      new Category(20, "Command structures", keywords.TypeScript)
-    ]
+    TypeScript: [new Category(20, "Command structures", keywords.TypeScript)]
   };
 
   // client/analyser/analyse.ts
@@ -9191,22 +10578,23 @@
         return castExpression(exp, program3, options2);
     }
   }
-  function literalIntegerValue(exp, options2) {
+  function literalIntegerValue(exp, _options) {
     return [112 /* ldin */, exp.value];
   }
-  function literalStringValue(exp, options2) {
+  function literalStringValue(exp, _options) {
     return [118 /* lstr */, exp.value.length].concat(Array.from(exp.value).map((x) => x.charCodeAt(0)));
   }
-  function inputValue(exp, options2) {
-    return exp.input.value < 0 ? [112 /* ldin */, exp.input.value, 160 /* inpt */] : [112 /* ldin */, exp.input.value];
+  function inputValue(exp, _options) {
+    return exp.input.value < 0 ? [112 /* ldin */, exp.input.value, 160 /* stat */] : [112 /* ldin */, exp.input.value];
   }
-  function colourValue(exp, options2) {
+  function colourValue(exp, _options) {
     return [112 /* ldin */, exp.colour.value];
   }
   function constantValue(exp, program3, options2) {
     const pcode2 = [];
     if (exp.constant.type === "string") {
-      pcode2.push([118 /* lstr */, exp.constant.value.length].concat(Array.from(exp.constant.value).map((x) => x.charCodeAt(0))));
+      const value = exp.constant.value;
+      pcode2.push([118 /* lstr */, value.length].concat(Array.from(value).map((x) => x.charCodeAt(0))));
       if (exp.indexes.length > 0) {
         const indexExp = expression2(exp.indexes[0], program3, options2);
         merge(pcode2, indexExp);
@@ -9256,7 +10644,7 @@
     return pcode2;
   }
   function variableValue(exp, program3, options2) {
-    let pcode2 = [];
+    const pcode2 = [];
     if (exp.variable.isArray && exp.indexes.length > 0) {
       const baseVariableExp = new VariableValue(exp.lexeme, exp.variable);
       pcode2.push(...expression2(baseVariableExp, program3, options2));
@@ -9353,7 +10741,7 @@
     }
     return pcode2;
   }
-  function operator3(op, program3, options2) {
+  function operator3(op, program3, _options) {
     switch (op) {
       case "not":
         if (program3.language === "C" || program3.language === "Python") {
@@ -9576,7 +10964,7 @@
     pcode2.push([130 /* halt */]);
     return pcode2;
   }
-  function programStart(program3, options2) {
+  function programStart(program3, _options) {
     const pcode2 = [
       [
         112 /* ldin */,
@@ -10674,19 +12062,22 @@
       }
     }
     openLocalFile() {
-      const state = this;
+      const state2 = this;
       const fileInput = input({
         type: "file",
-        on: ["change", function() {
-          if (fileInput.files) {
-            const file = fileInput.files[0];
-            const fr = new FileReader();
-            fr.onload = function() {
-              state.openFile(file.name, fr.result);
-            };
-            fr.readAsText(file);
+        on: [
+          "change",
+          function() {
+            if (fileInput.files) {
+              const file = fileInput.files[0];
+              const fr = new FileReader();
+              fr.onload = function() {
+                state2.openFile(file.name, fr.result);
+              };
+              fr.readAsText(file);
+            }
           }
-        }]
+        ]
       });
       fileInput.click();
     }
@@ -10745,6 +12136,26 @@
         send("error", error);
       }
     }
+    async outputAllExamples() {
+      let allExamplesText = "";
+      for (const example of examples) {
+        const filename = `${example.id}.${extensions[this.language]}`;
+        const response = await window.fetch(`/examples/${this.language}/${example.groupId}/${filename}`);
+        const content = await response.text();
+        allExamplesText += `Example ${example.id}:
+----------
+`;
+        allExamplesText += `${content}
+
+
+`;
+      }
+      const a2 = document.createElement("a");
+      const blob = new window.Blob([allExamplesText], { type: "text/plain;charset=utf-8" });
+      a2.setAttribute("href", URL.createObjectURL(blob));
+      a2.setAttribute("download", `${this.language}_examples.txt`);
+      a2.click();
+    }
     backupCode() {
       this.file.backup = this.file.code;
     }
@@ -10775,7 +12186,7 @@
       send("closeMenu", "system");
     }
   };
-  var state_default = new State();
+  var state = new State();
 
   // client/components/view.ts
   function toggleMenu(id) {
@@ -10814,10 +12225,10 @@
     const a2 = document.querySelector(`[data-action="toggleMenu"][data-arg="${id}"]`);
     const menu = document.querySelector(`[data-menu="${id}"]`);
     if (a2 && menu) {
-      for (const subMenu of menu.querySelectorAll("[data-menu]")) {
+      for (const subMenu of Array.from(menu.querySelectorAll("[data-menu]"))) {
         closeMenu(subMenu.dataset.menu);
       }
-      for (const subMenu of menu.querySelectorAll("[data-system-menu]")) {
+      for (const subMenu of Array.from(menu.querySelectorAll("[data-system-menu]"))) {
         closeSystemMenu(subMenu.dataset.systemMenu);
       }
       menu.classList.remove("open");
@@ -10845,9 +12256,11 @@
     if (a2 && menu) {
       openMenu("system");
       const subMenus = a2.parentElement?.parentElement?.querySelectorAll('[data-action="toggleSystemMenu"]');
-      for (const subMenu of subMenus || []) {
-        const id2 = subMenu.dataset.arg;
-        closeSystemMenu(id2);
+      if (subMenus !== void 0) {
+        for (const subMenu of Array.from(subMenus)) {
+          const id2 = subMenu.dataset.arg;
+          closeSystemMenu(id2);
+        }
       }
       a2.classList.add("open");
       menu.classList.add("open");
@@ -10862,15 +12275,15 @@
     }
   }
   function selectTab(id) {
-    for (const select of document.querySelectorAll('[data-action="selectTab"]')) {
-      for (const option2 of select.children) {
+    for (const select of Array.from(document.querySelectorAll('[data-action="selectTab"]'))) {
+      for (const option2 of Array.from(select.children)) {
         if (option2.value === id)
           option2.selected = true;
       }
     }
-    for (const tabPane of document.querySelectorAll(`[data-tab="${id}"]`)) {
+    for (const tabPane of Array.from(document.querySelectorAll(`[data-tab="${id}"]`))) {
       if (tabPane.parentElement) {
-        for (const sibling of tabPane.parentElement.children) {
+        for (const sibling of Array.from(tabPane.parentElement.children)) {
           sibling.classList.remove("active");
         }
       }
@@ -10880,7 +12293,7 @@
 
   // client/components/actions.ts
   var notImplemented = new SystemError("This feature has not yet been implemented in the online system.");
-  for (const element2 of document.querySelectorAll("[data-action]")) {
+  for (const element2 of Array.from(document.querySelectorAll("[data-action]"))) {
     const el = element2;
     switch (el.dataset.action) {
       case "toggleMenu":
@@ -10964,22 +12377,22 @@
         break;
       case "newProgram":
         el.addEventListener("click", function() {
-          state_default.newFile();
+          state.newFile();
         });
         break;
       case "newSkeletonProgram":
         el.addEventListener("click", function() {
-          state_default.newFile(true);
+          state.newFile(true);
         });
         break;
       case "openProgram":
         el.addEventListener("click", function() {
-          state_default.openLocalFile();
+          state.openLocalFile();
         });
         break;
       case "saveProgram":
         el.addEventListener("click", function() {
-          state_default.saveLocalFile();
+          state.saveLocalFile();
         });
         break;
       case "saveExportFile":
@@ -10989,7 +12402,7 @@
         break;
       case "closeProgram":
         el.addEventListener("click", function() {
-          state_default.closeCurrentFile();
+          state.closeCurrentFile();
         });
         break;
       case "copyCanvasGraphic":
@@ -11019,32 +12432,32 @@
         break;
       case "undo":
         el.addEventListener("click", function() {
-          state_default.undo();
+          state.undo();
         });
         break;
       case "redo":
         el.addEventListener("click", function() {
-          state_default.redo();
+          state.redo();
         });
         break;
       case "cut":
         el.addEventListener("click", function() {
-          state_default.cut();
+          state.cut();
         });
         break;
       case "copy":
         el.addEventListener("click", function() {
-          state_default.copy();
+          state.copy();
         });
         break;
       case "paste":
         el.addEventListener("click", function() {
-          state_default.paste();
+          state.paste();
         });
         break;
       case "selectAll":
         el.addEventListener("click", function() {
-          state_default.selectAll();
+          state.selectAll();
         });
         break;
       case "findAndReplace":
@@ -11059,17 +12472,17 @@
         break;
       case "storeCopy":
         el.addEventListener("click", function() {
-          state_default.backupCode();
+          state.backupCode();
         });
         break;
       case "restoreCopy":
         el.addEventListener("click", function() {
-          state_default.restoreCode();
+          state.restoreCode();
         });
         break;
       case "compile":
         el.addEventListener("click", function() {
-          state_default.compileCurrentFile();
+          state.compileCurrentFile();
         });
         break;
       case "savePCodeJson":
@@ -11085,7 +12498,7 @@
       case "run":
         el.addEventListener("click", function() {
           el.blur();
-          state_default.playPauseMachine();
+          state.playPauseMachine();
         });
         break;
       case "halt":
@@ -11120,18 +12533,18 @@
         break;
       case "saveSettings":
         el.addEventListener("click", function() {
-          state_default.saveSettings();
+          state.saveSettings();
         });
         break;
       case "resetSettings":
         el.addEventListener("click", function() {
-          state_default.resetDefaults();
+          state.resetDefaults();
         });
         break;
       case "dumpMemory":
         el.addEventListener("click", function() {
           el.blur();
-          state_default.dumpMemory();
+          state.dumpMemory();
         });
         break;
       default:
@@ -11141,25 +12554,25 @@
   }
 
   // client/components/bindings.ts
-  for (const element2 of document.querySelectorAll("[data-binding]")) {
+  for (const element2 of Array.from(document.querySelectorAll("[data-binding]"))) {
     switch (element2.dataset.binding) {
       case "language":
         fillLanguage(element2);
         element2.addEventListener("change", function() {
-          state_default.language = element2.value;
+          state.language = element2.value;
         });
         on("languageChanged", function() {
-          element2.value = state_default.language;
+          element2.value = state.language;
         });
         break;
       case "mode":
         element2.addEventListener("change", function() {
           if (element2.checked) {
-            state_default.mode = element2.value;
+            state.mode = element2.value;
           }
         });
         on("modeChanged", function() {
-          if (element2.value === state_default.mode) {
+          if (element2.value === state.mode) {
             element2.checked = true;
           }
         });
@@ -11167,62 +12580,62 @@
       case "editorFontFamily":
         fillFont(element2);
         element2.addEventListener("change", function() {
-          state_default.editorFontFamily = element2.value;
+          state.editorFontFamily = element2.value;
         });
         on("editorFontFamilyChanged", function() {
-          element2.value = state_default.editorFontFamily;
+          element2.value = state.editorFontFamily;
         });
         break;
       case "editorFontSize":
         element2.addEventListener("change", function() {
-          state_default.editorFontSize = parseInt(element2.value);
+          state.editorFontSize = parseInt(element2.value);
         });
         on("editorFontSizeChanged", function() {
-          element2.value = state_default.editorFontSize.toString(10);
+          element2.value = state.editorFontSize.toString(10);
         });
         break;
       case "outputFontFamily":
         fillFont(element2);
         element2.addEventListener("change", function() {
-          state_default.outputFontFamily = element2.value;
+          state.outputFontFamily = element2.value;
         });
         on("outputFontFamilyChanged", function() {
-          element2.value = state_default.outputFontFamily;
+          element2.value = state.outputFontFamily;
         });
         break;
       case "outputFontSize":
         element2.addEventListener("change", function() {
-          state_default.outputFontSize = parseInt(element2.value);
+          state.outputFontSize = parseInt(element2.value);
         });
         on("outputFontSizeChanged", function() {
-          element2.value = state_default.outputFontSize.toString(10);
+          element2.value = state.outputFontSize.toString(10);
         });
         break;
       case "includeCommentsInExamples":
         disableInput(element2);
         element2.addEventListener("change", function() {
-          state_default.includeCommentsInExamples = element2.checked;
+          state.includeCommentsInExamples = element2.checked;
         });
         on("includeCommentsInExamplesChanged", function() {
-          element2.checked = state_default.includeCommentsInExamples;
+          element2.checked = state.includeCommentsInExamples;
         });
         break;
       case "loadCorrespondingExample":
         element2.addEventListener("change", function() {
-          state_default.loadCorrespondingExample = element2.checked;
+          state.loadCorrespondingExample = element2.checked;
         });
         on("loadCorrespondingExampleChanged", function() {
-          element2.checked = state_default.loadCorrespondingExample;
+          element2.checked = state.loadCorrespondingExample;
         });
         break;
       case "assembler":
         element2.addEventListener("change", function() {
           if (element2.checked) {
-            state_default.assembler = element2.value === "assembler";
+            state.assembler = element2.value === "assembler";
           }
         });
         on("assemblerChanged", function() {
-          if (state_default.assembler) {
+          if (state.assembler) {
             element2.checked = element2.value === "assembler";
           } else {
             element2.checked = element2.value !== "assembler";
@@ -11232,11 +12645,11 @@
       case "decimal":
         element2.addEventListener("change", function() {
           if (element2.checked) {
-            state_default.decimal = element2.value === "decimal";
+            state.decimal = element2.value === "decimal";
           }
         });
         on("decimalChanged", function() {
-          if (state_default.decimal) {
+          if (state.decimal) {
             element2.checked = element2.value === "decimal";
           } else {
             element2.checked = element2.value !== "decimal";
@@ -11246,192 +12659,192 @@
       case "autoCompileOnLoad":
         disableInput(element2);
         element2.addEventListener("change", function() {
-          state_default.autoCompileOnLoad = element2.checked;
+          state.autoCompileOnLoad = element2.checked;
         });
         on("autoCompileOnLoadChanged", function() {
-          element2.checked = state_default.autoCompileOnLoad;
+          element2.checked = state.autoCompileOnLoad;
         });
         break;
       case "autoRunOnLoad":
         disableInput(element2);
         element2.addEventListener("change", function() {
-          state_default.autoRunOnLoad = element2.checked;
+          state.autoRunOnLoad = element2.checked;
         });
         on("autoRunOnLoadChanged", function() {
-          element2.checked = state_default.autoRunOnLoad;
+          element2.checked = state.autoRunOnLoad;
         });
         break;
       case "autoFormatOnLoad":
         disableInput(element2);
         element2.addEventListener("change", function() {
-          state_default.autoFormatOnLoad = element2.checked;
+          state.autoFormatOnLoad = element2.checked;
         });
         on("autoFormatOnLoadChanged", function() {
-          element2.checked = state_default.autoFormatOnLoad;
+          element2.checked = state.autoFormatOnLoad;
         });
         break;
       case "alwaysSaveSettings":
         disableInputIfNotLoggedIn(element2);
         element2.addEventListener("change", function() {
-          state_default.alwaysSaveSettings = element2.checked;
+          state.alwaysSaveSettings = element2.checked;
         });
         on("alwaysSaveSettingsChanged", function() {
-          element2.checked = state_default.alwaysSaveSettings;
+          element2.checked = state.alwaysSaveSettings;
         });
         break;
       case "commandsCategoryIndex":
         fillCommandsCategory(element2);
         element2.addEventListener("change", function() {
-          state_default.commandsCategoryIndex = parseInt(element2.value);
+          state.commandsCategoryIndex = parseInt(element2.value);
         });
         on("commandsCategoryIndexChanged", function() {
-          element2.value = state_default.commandsCategoryIndex.toString(10);
+          element2.value = state.commandsCategoryIndex.toString(10);
         });
         break;
       case "showSimpleCommands":
         element2.addEventListener("change", function() {
-          state_default.showSimpleCommands = element2.checked;
+          state.showSimpleCommands = element2.checked;
         });
         on("showSimpleCommandsChanged", function() {
-          element2.checked = state_default.showSimpleCommands;
+          element2.checked = state.showSimpleCommands;
         });
         break;
       case "showIntermediateCommands":
         element2.addEventListener("change", function() {
-          state_default.showIntermediateCommands = element2.checked;
+          state.showIntermediateCommands = element2.checked;
         });
         on("showIntermediateCommandsChanged", function() {
-          element2.checked = state_default.showIntermediateCommands;
+          element2.checked = state.showIntermediateCommands;
         });
         break;
       case "showAdvancedCommands":
         element2.addEventListener("change", function() {
-          state_default.showAdvancedCommands = element2.checked;
+          state.showAdvancedCommands = element2.checked;
         });
         on("showAdvancedCommandsChanged", function() {
-          element2.checked = state_default.showAdvancedCommands;
+          element2.checked = state.showAdvancedCommands;
         });
         break;
       case "currentFileIndex":
         fillFile(element2);
         element2.addEventListener("change", function() {
-          state_default.currentFileIndex = parseInt(element2.value);
+          state.currentFileIndex = parseInt(element2.value);
         });
         on("filesChanged", function() {
           fillFile(element2);
         });
         on("currentFileIndexChanged", function() {
-          element2.value = state_default.currentFileIndex.toString(10);
+          element2.value = state.currentFileIndex.toString(10);
         });
         break;
       case "filename":
         element2.addEventListener("change", function() {
-          state_default.filename = element2.value;
+          state.filename = element2.value;
         });
         on("filenameChanged", function() {
-          element2.value = state_default.filename;
+          element2.value = state.filename;
         });
         break;
       case "showCanvasOnRun":
         element2.addEventListener("change", function() {
-          state_default.showCanvasOnRun = element2.checked;
+          state.showCanvasOnRun = element2.checked;
         });
         on("showCanvasOnRunChanged", function() {
-          element2.checked = state_default.showCanvasOnRun;
+          element2.checked = state.showCanvasOnRun;
         });
         break;
       case "showOutputOnWrite":
         element2.addEventListener("change", function() {
-          state_default.showOutputOnWrite = element2.checked;
+          state.showOutputOnWrite = element2.checked;
         });
         on("showOutputOnWriteChanged", function() {
-          element2.checked = state_default.showOutputOnWrite;
+          element2.checked = state.showOutputOnWrite;
         });
         break;
       case "showMemoryOnDump":
         element2.addEventListener("change", function() {
-          state_default.showMemoryOnDump = element2.checked;
+          state.showMemoryOnDump = element2.checked;
         });
         on("showMemoryOnDumpChanged", function() {
-          element2.checked = state_default.showMemoryOnDump;
+          element2.checked = state.showMemoryOnDump;
         });
         break;
       case "drawCountMax":
         element2.addEventListener("change", function() {
-          state_default.drawCountMax = parseInt(element2.value);
+          state.drawCountMax = parseInt(element2.value);
         });
         on("drawCountMaxChanged", function() {
-          element2.value = state_default.drawCountMax.toString(10);
+          element2.value = state.drawCountMax.toString(10);
         });
         break;
       case "codeCountMax":
         element2.addEventListener("change", function() {
-          state_default.codeCountMax = parseInt(element2.value);
+          state.codeCountMax = parseInt(element2.value);
         });
         on("codeCountMaxChanged", function() {
-          element2.value = state_default.codeCountMax.toString(10);
+          element2.value = state.codeCountMax.toString(10);
         });
         break;
       case "smallSize":
         element2.addEventListener("change", function() {
-          state_default.smallSize = parseInt(element2.value);
+          state.smallSize = parseInt(element2.value);
         });
         on("smallSizeChanged", function() {
-          element2.value = state_default.smallSize.toString(10);
+          element2.value = state.smallSize.toString(10);
         });
         break;
       case "stackSize":
         element2.addEventListener("change", function() {
-          state_default.stackSize = parseInt(element2.value);
+          state.stackSize = parseInt(element2.value);
         });
         on("stackSizeChanged", function() {
-          element2.value = state_default.stackSize.toString(10);
+          element2.value = state.stackSize.toString(10);
         });
         break;
       case "traceOnRun":
         disableInput(element2);
         element2.addEventListener("change", function() {
-          state_default.traceOnRun = element2.checked;
+          state.traceOnRun = element2.checked;
         });
         on("traceOnRunChanged", function() {
-          element2.checked = state_default.traceOnRun;
+          element2.checked = state.traceOnRun;
         });
         break;
       case "activateHCLR":
         disableInput(element2);
         element2.addEventListener("change", function() {
-          state_default.activateHCLR = element2.checked;
+          state.activateHCLR = element2.checked;
         });
         on("activateHCLRChanged", function() {
-          element2.checked = state_default.activateHCLR;
+          element2.checked = state.activateHCLR;
         });
         break;
       case "preventStackCollision":
         disableInput(element2);
         element2.addEventListener("change", function() {
-          state_default.preventStackCollision = element2.checked;
+          state.preventStackCollision = element2.checked;
         });
         on("preventStackCollisionChanged", function() {
-          element2.checked = state_default.preventStackCollision;
+          element2.checked = state.preventStackCollision;
         });
         break;
       case "rangeCheckArrays":
         disableInput(element2);
         element2.addEventListener("change", function() {
-          state_default.rangeCheckArrays = element2.checked;
+          state.rangeCheckArrays = element2.checked;
         });
         on("rangeCheckArraysChanged", function() {
-          element2.checked = state_default.rangeCheckArrays;
+          element2.checked = state.rangeCheckArrays;
         });
         break;
       case "canvasStartSize":
         element2.addEventListener("change", function() {
           if (element2.checked) {
-            state_default.canvasStartSize = parseInt(element2.value);
+            state.canvasStartSize = parseInt(element2.value);
           }
         });
         on("canvasStartSizeChanged", function() {
-          if (element2.value === state_default.canvasStartSize.toString(10)) {
+          if (element2.value === state.canvasStartSize.toString(10)) {
             element2.checked = true;
           }
         });
@@ -11439,64 +12852,64 @@
       case "setupDefaultKeyBuffer":
         disableInput(element2);
         element2.addEventListener("change", function() {
-          state_default.setupDefaultKeyBuffer = element2.checked;
+          state.setupDefaultKeyBuffer = element2.checked;
         });
         on("setupDefaultKeyBufferChanged", function() {
-          element2.checked = state_default.setupDefaultKeyBuffer;
+          element2.checked = state.setupDefaultKeyBuffer;
         });
         break;
       case "turtleAttributesAsGlobals":
         disableInput(element2);
         element2.addEventListener("change", function() {
-          state_default.turtleAttributesAsGlobals = element2.checked;
+          state.turtleAttributesAsGlobals = element2.checked;
         });
         on("turtleAttributesAsGlobalsChanged", function() {
-          element2.checked = state_default.turtleAttributesAsGlobals;
+          element2.checked = state.turtleAttributesAsGlobals;
         });
         break;
       case "initialiseLocals":
         disableInput(element2);
         element2.addEventListener("change", function() {
-          state_default.initialiseLocals = element2.checked;
+          state.initialiseLocals = element2.checked;
         });
         on("initialiseLocalsChanged", function() {
-          element2.checked = state_default.initialiseLocals;
+          element2.checked = state.initialiseLocals;
         });
         break;
       case "allowCSTR":
         disableInput(element2);
         element2.addEventListener("change", function() {
-          state_default.allowCSTR = element2.checked;
+          state.allowCSTR = element2.checked;
         });
         on("allowCSTRChanged", function() {
-          element2.checked = state_default.allowCSTR;
+          element2.checked = state.allowCSTR;
         });
         break;
       case "separateReturnStack":
         disableInput(element2);
         element2.addEventListener("change", function() {
-          state_default.separateReturnStack = element2.checked;
+          state.separateReturnStack = element2.checked;
         });
         on("separateReturnStackChanged", function() {
-          element2.checked = state_default.separateReturnStack;
+          element2.checked = state.separateReturnStack;
         });
         break;
       case "separateMemoryControlStack":
         disableInput(element2);
         element2.addEventListener("change", function() {
-          state_default.separateMemoryControlStack = element2.checked;
+          state.separateMemoryControlStack = element2.checked;
         });
         on("separateMemoryControlStackChanged", function() {
-          element2.checked = state_default.separateMemoryControlStack;
+          element2.checked = state.separateMemoryControlStack;
         });
         break;
       case "separateSubroutineRegisterStack":
         disableInput(element2);
         element2.addEventListener("change", function() {
-          state_default.separateSubroutineRegisterStack = element2.checked;
+          state.separateSubroutineRegisterStack = element2.checked;
         });
         on("separateSubroutineRegisterStackChanged", function() {
-          element2.checked = state_default.separateSubroutineRegisterStack;
+          element2.checked = state.separateSubroutineRegisterStack;
         });
         break;
       default:
@@ -11505,7 +12918,10 @@
     }
   }
   function fillLanguage(input3) {
-    fill(input3, languages.map((x) => option({ value: x, content: `Turtle ${x}` })));
+    fill(
+      input3,
+      languages.map((x) => option({ value: x, content: `Turtle ${x}` }))
+    );
   }
   function fillFont(input3) {
     fill(input3, [
@@ -11516,14 +12932,24 @@
     ]);
   }
   function fillCommandsCategory(input3) {
-    fill(input3, commandCategories.map((x) => option({ value: x.index.toString(10), content: `${(x.index + 1).toString(10)}. ${x.title}` })));
+    fill(
+      input3,
+      commandCategories.map(
+        (x) => option({ value: x.index.toString(10), content: `${(x.index + 1).toString(10)}. ${x.title}` })
+      )
+    );
   }
   function fillFile(input3) {
-    fill(input3, state_default.files.map((file, index) => option({
-      value: index.toString(10),
-      content: `${(index + 1).toString(10).padStart(2, "0")} [${file.language}] ${file.name || "[no name]"}`,
-      selected: state_default.currentFileIndex === index ? "selected" : void 0
-    })));
+    fill(
+      input3,
+      state.files.map(
+        (file, index) => option({
+          value: index.toString(10),
+          content: `${(index + 1).toString(10).padStart(2, "0")} [${file.language}] ${file.name || "[no name]"}`,
+          selected: state.currentFileIndex === index ? "selected" : void 0
+        })
+      )
+    );
   }
   function disableInput(input3) {
     input3.setAttribute("disabled", "disabled");
@@ -11575,8 +13001,8 @@
         case "bad-octal":
         case "bad-hexadecimal":
         case "real":
-        case "bad-keycode":
-        case "bad-query":
+        case "bad-inputcode":
+        case "bad-querycode":
         case "illegal":
           return `<span class="error">${token.content}</span>`;
         case "binary":
@@ -11584,9 +13010,10 @@
         case "hexadecimal":
         case "decimal":
           return `<span class="integer">${token.content}</span>`;
-        case "colour":
+        case "colour": {
           const colour2 = colours.find((x) => x.names[language2] === token.content);
           return colour2 ? `<span class="colour" style="border-color:#${colour2.hex};">${token.content}</span>` : `<span class="colour">${token.content}</span>`;
+        }
         default:
           return `<span class="${token.type}">${token.content}</span>`;
       }
@@ -11595,14 +13022,14 @@
 
   // client/components/languages.ts
   var codeElements = document.querySelectorAll("code[data-language]");
-  for (const code3 of codeElements) {
+  for (const code3 of Array.from(codeElements)) {
     code3.innerHTML = highlight(code3.innerText, code3.dataset.language);
   }
   on("languageChanged", language);
   function language() {
     const languageElements = document.querySelectorAll("[data-language]");
-    for (const element2 of languageElements) {
-      if (state_default.language === element2.dataset.language || element2.id === "turtle") {
+    for (const element2 of Array.from(languageElements)) {
+      if (state.language === element2.dataset.language || element2.id === "turtle") {
         element2.classList.remove("hidden");
       } else {
         element2.classList.add("hidden");
@@ -11615,10 +13042,10 @@
   function mode() {
     const modeElements = document.querySelectorAll("[data-mode]");
     const guideToc = document.querySelector('[data-component="guide-toc"]');
-    for (const element2 of modeElements) {
+    for (const element2 of Array.from(modeElements)) {
       if (element2.dataset.mode) {
         const modes = element2.dataset.mode.split(",");
-        if (modes.includes(state_default.mode) || element2.id === "turtle") {
+        if (modes.includes(state.mode) || element2.id === "turtle") {
           element2.classList.remove("hidden");
         } else {
           element2.classList.add("hidden");
@@ -11629,8 +13056,8 @@
       }
     }
     if (guideToc) {
-      for (const child of guideToc.children) {
-        if (state_default.mode === "simple" || state_default.mode === "normal") {
+      for (const child of Array.from(guideToc.children)) {
+        if (state.mode === "simple" || state.mode === "normal") {
           switch (child.value) {
             case "the-compile-menu":
             case "the-tabs-menu":
@@ -11698,7 +13125,7 @@
     return `
     <th>${colour2.index}</th>
     <td style="background:#${colour2.hex};color:${colour2.text}">
-      ${colour2.names[state_default.language]}<br>${hex2(state_default.language, colour2.hex)}
+      ${colour2.names[state.language]}<br>${hex2(state.language, colour2.hex)}
     </td>`;
   }
   function hex2(language2, hex3) {
@@ -11723,27 +13150,29 @@
   }
   function updateTable2() {
     if (commandsTableBody) {
-      let commands2 = commandCategories[state_default.commandsCategoryIndex].expressions;
-      if (!state_default.showSimpleCommands)
+      let commands2 = commandCategories[state.commandsCategoryIndex].expressions;
+      if (!state.showSimpleCommands)
         commands2 = commands2.filter((x) => x.level !== 0);
-      if (!state_default.showIntermediateCommands)
+      if (!state.showIntermediateCommands)
         commands2 = commands2.filter((x) => x.level !== 1);
-      if (!state_default.showAdvancedCommands)
+      if (!state.showAdvancedCommands)
         commands2 = commands2.filter((x) => x.level !== 2);
-      commands2 = commands2.filter((x) => x.names[state_default.language]);
+      commands2 = commands2.filter((x) => x.names[state.language]);
       fill(commandsTableBody, commands2.map(commandTableRow));
     }
   }
   function commandTableRow(expression3) {
     const command2 = expression3;
-    return tr({ content: [
-      td({ content: [
-        code({ content: highlight(command2.names[state_default.language], state_default.language) })
-      ] }),
-      td({ content: command2.parameters.map((x) => `<code>${highlight(x.name, state_default.language)}</code> (${x.type})`).join("<br>") }),
-      td({ content: command2.returns || "-" }),
-      td({ content: command2.description })
-    ] });
+    return tr({
+      content: [
+        td({ content: [code({ content: highlight(command2.names[state.language], state.language) })] }),
+        td({
+          content: command2.parameters.map((x) => `<code>${highlight(x.name, state.language)}</code> (${x.type})`).join("<br>")
+        }),
+        td({ content: command2.returns || "-" }),
+        td({ content: command2.description })
+      ]
+    });
   }
 
   // client/constants/cursors.ts
@@ -11830,15 +13259,18 @@
     }
   }
   function fontTableRow(font) {
-    return tr({ style: `font-family: ${font.css};`, content: [
-      td({ content: font.name }),
-      td({ content: font.index.toString(10) }),
-      td({ style: "font-style: italic;", content: (font.index + 16).toString(10) }),
-      td({ style: "font-weight: bold;", content: (font.index + 32).toString(10) }),
-      td({ style: "font-style: italic; font-weight: bold;", content: (font.index + 48).toString(10) }),
-      td({ style: "text-decoration: underline;", content: (font.index + 64).toString(10) }),
-      td({ style: "text-decoration: line-through;", content: (font.index + 128).toString(10) })
-    ] });
+    return tr({
+      style: `font-family: ${font.css};`,
+      content: [
+        td({ content: font.name }),
+        td({ content: font.index.toString(10) }),
+        td({ style: "font-style: italic;", content: (font.index + 16).toString(10) }),
+        td({ style: "font-weight: bold;", content: (font.index + 32).toString(10) }),
+        td({ style: "font-style: italic; font-weight: bold;", content: (font.index + 48).toString(10) }),
+        td({ style: "text-decoration: underline;", content: (font.index + 64).toString(10) }),
+        td({ style: "text-decoration: line-through;", content: (font.index + 128).toString(10) })
+      ]
+    });
   }
 
   // client/components/reference/keycodes.ts
@@ -11851,11 +13283,10 @@
       fill(keycodesTableBody, inputs.filter((x) => x.value > 0).map(keycodeTableRow));
     }
   }
-  function keycodeTableRow(keycode2) {
-    return tr({ content: [
-      td({ content: [code({ content: keycode2.names[state_default.language] })] }),
-      td({ content: keycode2.value.toString(10) })
-    ] });
+  function keycodeTableRow(keycode) {
+    return tr({
+      content: [td({ content: [code({ content: keycode.name })] }), td({ content: keycode.value.toString(10) })]
+    });
   }
 
   // client/components/system/canvas.ts
@@ -12047,14 +13478,11 @@
   var commentsTableBody = document.querySelector('[data-component="commentsTableBody"]');
   if (commentsTableBody) {
     on("lexemesChanged", function() {
-      fill(commentsTableBody, state_default.comments.map(commentTableRow));
+      fill(commentsTableBody, state.comments.map(commentTableRow));
     });
   }
   function commentTableRow(comment2) {
-    return tr({ content: [
-      td({ content: comment2.line.toString(10) }),
-      td({ content: comment2.value })
-    ] });
+    return tr({ content: [td({ content: comment2.line.toString(10) }), td({ content: comment2.value })] });
   }
 
   // client/components/system/console.ts
@@ -12098,19 +13526,22 @@
 
   // client/components/system/editor.ts
   var editor = document.querySelector('[data-component="editor"]');
+  function updateCodeDisplay(lineNumbers, code3, textarea, pre) {
+    const lines = state.code.split("\n");
+    fill(
+      lineNumbers,
+      lines.map((_x, y) => li({ content: (y + 1).toString(10) }))
+    );
+    fill(code3, highlight(state.tokens, state.language));
+    requestAnimationFrame(function() {
+      textarea.value = state.code;
+      textarea.style.height = `${lines.length * 1.5}em`;
+      textarea.style.width = `${pre.scrollWidth.toString(10)}px`;
+      pre.style.height = `${lines.length * 1.5}em`;
+      lineNumbers.style.height = `${lines.length * 1.5}em`;
+    });
+  }
   if (editor) {
-    let updateCodeDisplay = function() {
-      const lines = state_default.code.split("\n");
-      fill(lineNumbers, lines.map((x, y) => li({ content: (y + 1).toString(10) })));
-      fill(code3, highlight(state_default.tokens, state_default.language));
-      window.requestAnimationFrame(function() {
-        textarea.value = state_default.code;
-        textarea.style.height = `${lines.length * 1.5}em`;
-        textarea.style.width = `${pre.scrollWidth.toString(10)}px`;
-        pre.style.height = `${lines.length * 1.5}em`;
-        lineNumbers.style.height = `${lines.length * 1.5}em`;
-      });
-    };
     const lineNumbers = editor.querySelector(".line-numbers");
     const codeWrapper = editor.querySelector(".code-wrapper");
     const textarea = editor.querySelector("textarea");
@@ -12123,7 +13554,7 @@
         const right = textarea.value.slice(pos);
         event.preventDefault();
         textarea.value = [left, right].join("  ");
-        state_default.code = textarea.value;
+        state.code = textarea.value;
         textarea.selectionStart = pos + 2;
         textarea.selectionEnd = pos + 2;
       }
@@ -12131,22 +13562,22 @@
         codeWrapper.scrollLeft = 0;
       }
     });
-    textarea.addEventListener("input", function() {
-      state_default.code = textarea.value;
+    textarea.addEventListener("input", () => {
+      state.code = textarea.value;
     });
-    on("codeChanged", updateCodeDisplay);
-    on("editorFontFamilyChanged", function() {
-      editor.style.fontFamily = state_default.editorFontFamily;
-      updateCodeDisplay();
+    on("codeChanged", () => updateCodeDisplay(lineNumbers, code3, textarea, pre));
+    on("editorFontFamilyChanged", () => {
+      editor.style.fontFamily = state.editorFontFamily;
+      updateCodeDisplay(lineNumbers, code3, textarea, pre);
     });
-    on("editorFontSizeChanged", function() {
-      editor.style.fontSize = `${state_default.editorFontSize.toString(10)}px`;
-      updateCodeDisplay();
+    on("editorFontSizeChanged", () => {
+      editor.style.fontSize = `${state.editorFontSize.toString(10)}px`;
+      updateCodeDisplay(lineNumbers, code3, textarea, pre);
     });
-    on("selectAll", function() {
+    on("selectAll", () => {
       textarea.select();
     });
-    codeWrapper.addEventListener("scroll", function() {
+    codeWrapper.addEventListener("scroll", () => {
       lineNumbers.scrollTop = codeWrapper.scrollTop;
       if (codeWrapper.scrollLeft <= 8) {
         codeWrapper.scrollLeft = 0;
@@ -12163,9 +13594,12 @@
   }
   function exampleGroupLink(group) {
     return a({
-      on: ["click", function() {
-        toggleMenu(group.id);
-      }],
+      on: [
+        "click",
+        function() {
+          toggleMenu(group.id);
+        }
+      ],
       "data-action": "toggleMenu",
       "data-arg": group.id,
       content: [
@@ -12180,25 +13614,28 @@
       "data-menu": group.id,
       content: [
         a({
-          on: ["click", function() {
-            closeMenu(group.id);
-          }],
+          on: [
+            "click",
+            function() {
+              closeMenu(group.id);
+            }
+          ],
           "data-action": "closeMenu",
           "data-arg": group.id,
-          content: [
-            i({ className: "fa fa-caret-left", "aria-hidden": "true" }),
-            span({ content: "back" })
-          ]
+          content: [i({ className: "fa fa-caret-left", "aria-hidden": "true" }), span({ content: "back" })]
         })
       ].concat(group.examples.map(exampleLink))
     });
   }
   function exampleLink(example) {
     return a({
-      on: ["click", function() {
-        state_default.openExampleFile(example.id);
-      }],
-      content: [span({ content: example.names[state_default.language] })]
+      on: [
+        "click",
+        function() {
+          state.openExampleFile(example.id);
+        }
+      ],
+      content: [span({ content: example.names[state.language] })]
     });
   }
 
@@ -12244,11 +13681,11 @@
   var list = document.querySelector('[data-component="pcodeList"]');
   if (list) {
     on("pcodeChanged", function() {
-      fill(list, state_default.pcode.map(pcodeListItem));
+      fill(list, state.pcode.map(pcodeListItem));
     });
   }
   function pcodeListItem(line2) {
-    const content = state_default.assembler ? assemble(line2, 0) : line2.reduce((sofar, current) => sofar.concat(cell(current)), []);
+    const content = state.assembler ? assemble(line2, 0) : line2.reduce((sofar, current) => sofar.concat(cell(current)), []);
     while (content.length % 10 > 0) {
       content.push(div());
     }
@@ -12284,7 +13721,7 @@
       return div({ content: ":(" });
     } else if (typeof content === "string") {
       return div({ content });
-    } else if (state_default.decimal) {
+    } else if (state.decimal) {
       return div({ content: content.toString(10) });
     } else {
       return div({ content: content.toString(16).toUpperCase() });
@@ -12295,7 +13732,7 @@
   var syntaxTableBody = document.querySelector('[data-component="syntaxTableBody"]');
   if (syntaxTableBody) {
     on("lexemesChanged", function() {
-      fill(syntaxTableBody, state_default.lexemes.map(tableBodyRow));
+      fill(syntaxTableBody, state.lexemes.map(tableBodyRow));
     });
   }
   function tableBodyRow(lexeme, index) {
@@ -12305,11 +13742,12 @@
         td({ content: lexeme.line.toString(10) }),
         td({
           className: "wide",
-          content: [
-            code({ content: lexeme.content ? highlight(lexeme.content, state_default.language) : "" })
-          ]
+          content: [code({ content: lexeme.content ? highlight(lexeme.content, state.language) : "" })]
         }),
-        td({ className: "wide", content: `${lexeme.type}${lexeme.subtype ? ` (${lexeme.subtype})` : ""}` })
+        td({
+          className: "wide",
+          content: `${lexeme.type}${lexeme.subtype ? ` (${lexeme.subtype})` : ""}`
+        })
       ]
     });
   }
@@ -12348,25 +13786,18 @@
   var usageTableBody = document.querySelector('[data-component="usageTableBody"]');
   if (usageTableBody) {
     on("usageChanged", function() {
-      fill(usageTableBody, state_default.usage.map(categoryFragment));
+      fill(usageTableBody, state.usage.map(categoryFragment));
     });
   }
   function categoryFragment(category) {
     return fragment([
       tr({
         className: "category-heading",
-        content: [
-          th({ colspan: "4", content: category.category })
-        ]
+        content: [th({ colspan: "4", content: category.category })]
       }),
       fragment(category.expressions.map(expressionRow)),
       tr({
-        content: [
-          td(),
-          td({ content: "TOTAL:" }),
-          td({ content: category.total.toString(10) }),
-          td()
-        ]
+        content: [td(), td({ content: "TOTAL:" }), td({ content: category.total.toString(10) }), td()]
       })
     ]);
   }
@@ -12374,9 +13805,7 @@
     return tr({
       content: [
         td({
-          content: [
-            code({ content: highlight(expression3.name, state_default.language) })
-          ]
+          content: [code({ content: highlight(expression3.name, state.language) })]
         }),
         td({ content: expression3.level.toString(10) }),
         td({ content: expression3.count.toString(10) }),
@@ -12387,36 +13816,37 @@
 
   // client/index.ts
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", function() {
-      navigator.serviceWorker.register("/service-worker.js");
+    addEventListener("load", function() {
+      navigator.serviceWorker.register("/js/service-worker.js");
     });
   }
-  globalThis.state = state_default;
+  var glob = globalThis;
+  glob.state = state;
   var turtle3 = document.getElementById("turtle");
   if (turtle3) {
     if (turtle3.dataset.language) {
       if (languages.includes(turtle3.dataset.language)) {
-        state_default.language = turtle3.dataset.language;
+        state.language = turtle3.dataset.language;
       }
     }
     if (turtle3.dataset.example) {
-      state_default.openExampleFile(turtle3.dataset.example);
+      state.openExampleFile(turtle3.dataset.example);
     }
     if (turtle3.dataset.file) {
-      state_default.openRemoteFile(turtle3.dataset.file);
+      state.openRemoteFile(turtle3.dataset.file);
     }
     on("systemReady", function() {
       turtle3.classList.remove("hidden");
     });
   }
-  window.addEventListener("beforeunload", function() {
-    if (state_default.alwaysSaveSettings) {
-      state_default.saveSettings();
+  addEventListener("beforeunload", function() {
+    if (state.alwaysSaveSettings) {
+      state.saveSettings();
     }
   });
   on("error", function(error) {
     console.error(error);
     window.alert(error.message);
   });
-  state_default.init();
+  state.init();
 })();

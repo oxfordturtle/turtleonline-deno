@@ -1,0 +1,5 @@
+export { default as colours } from "./tables/colours.tsx"
+export { default as commands } from "./tables/commands.tsx"
+export { default as cursors } from "./tables/cursors.tsx"
+export { default as fonts } from "./tables/fonts.tsx"
+export { default as keycodes } from "./tables/keycodes.tsx"
