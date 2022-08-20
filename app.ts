@@ -1,4 +1,4 @@
-import { serve } from "./deps.ts"
+import { serve } from "http"
 import router from "./server/router.ts"
 import imp from "./server/imp.ts"
 

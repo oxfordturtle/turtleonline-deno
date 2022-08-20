@@ -1,5 +1,0 @@
-export { default as colours } from "./notes/colours.tsx"
-export { default as commands } from "./notes/commands.tsx"
-export { default as cursors } from "./notes/cursors.tsx"
-export { default as fonts } from "./notes/fonts.tsx"
-export { default as keycodes } from "./notes/keycodes.tsx"

@@ -1,11 +1,11 @@
-import type { Maybe } from "./utils/tools.ts"
+import type { Either, Maybe } from "./utils/tools.ts"
 
 export type Imp = {
   readFile: (path: string) => Promise<Maybe<Uint8Array>>
-  createUser: (user: User) => Promise<boolean>
+  createUser: (user: User) => Promise<Either<Error, void>>
   readUser: (username: string) => Promise<User | undefined>
-  updateUser: (username: string, userDetails: Partial<User>) => Promise<boolean>
-  deleteUser: (username: string) => Promise<boolean>
+  updateUser: (username: string, userDetails: Partial<User>) => Promise<Either<Error, void>>
+  deleteUser: (username: string) => Promise<Either<Error, void>>
 }
 
 export type RequestParams = {

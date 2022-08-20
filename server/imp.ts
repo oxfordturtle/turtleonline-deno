@@ -1,30 +1,6 @@
-import type { Imp, User } from "./types.ts"
-import { type Maybe, asafely, asafelyOptional } from "./utils/tools.ts"
-
-const readFile = async (path: string): Promise<Maybe<Uint8Array>> =>
-  await asafelyOptional(async () => await Deno.readFile(path))
-
-const createUser = async (user: User): Promise<boolean> => {
-  const result = await asafely(() => Deno.writeTextFile(`./data/user/${user.username}.json`, JSON.stringify(user)))
-  return result[0] === "right"
-}
-
-const readUser = (username: string): Promise<Maybe<User>> =>
-  asafelyOptional(async () => JSON.parse(await Deno.readTextFile(`./data/user/${username}.json`)))
-
-const updateUser = async (username: string, userDetails: Partial<User>): Promise<boolean> => {
-  const user = await readUser(username)
-  if (user) {
-    const result = await asafely(() => Deno.writeTextFile(`./data/user/${user.username}.json`, JSON.stringify({ ...user, ... userDetails })))
-    return result[0] === "right"
-  }
-  return false
-}
-
-const deleteUser = async (username: string): Promise<boolean> => {
-  const result = await asafely(() => Deno.remove(`./data/user/${username}.json`))
-  return result[0] === "right"
-}
+import type { Imp } from "./types.ts"
+import { readFile } from "./imp/file.ts"
+import { createUser, readUser, updateUser, deleteUser } from "./imp/user.ts"
 
 const imp: Imp = {
   readFile,
@@ -35,3 +11,28 @@ const imp: Imp = {
 }
 
 export default imp
+
+// dummy implementations for use in tests
+export const testImpFail: Imp = {
+  readFile: async () => await undefined,
+  createUser: async () => await ["left", new Error()],
+  readUser: async () => await undefined,
+  updateUser: async () => await ["left", new Error()],
+  deleteUser: async () => await ["left", new Error()],
+}
+
+export const testImpSucceed: Imp = {
+  readFile: async () => await new Uint8Array(),
+  createUser: async () => await ["right", undefined],
+  readUser: async () => await {
+    username: "dummy",
+    password: "12345",
+    firstName: "Dummy",
+    lastName: "Dummy",
+    email: "dummy@dummail.com",
+    accountType: 1,
+    receivingEmails: true,
+  },
+  updateUser: async () => await ["right", undefined],
+  deleteUser: async () => await ["right", undefined],
+}

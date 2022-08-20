@@ -13816,9 +13816,7 @@
 
   // client/index.ts
   if ("serviceWorker" in navigator) {
-    addEventListener("load", function() {
-      navigator.serviceWorker.register("/js/service-worker.js");
-    });
+    navigator.serviceWorker.register("/js/service-worker.js", { scope: "/" });
   }
   var glob = globalThis;
   glob.state = state;
