@@ -29,7 +29,7 @@ const main = (
           v15
         </option>
       </select>
-      <a href="/turtle/download/15" className="button" id="download-link">
+      <a href="/download/15" className="button" id="download-link">
         <span className="icon">
           <i className="fa fa-download"></i>
         </span>

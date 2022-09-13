@@ -8,6 +8,9 @@ const dummyUser: User = {
   firstName: "Dummy",
   lastName: "Dummy",
   email: "dummy@dummail.com",
+  emailConfirmed: true,
+  token: "",
+  tokenExpires: new Date().toString(),
   accountType: 1,
   receivingEmails: true,
 }

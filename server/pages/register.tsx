@@ -25,7 +25,7 @@ const handleForm = async (requestParams: RequestParams, imp: Imp): Promise<Respo
     return registerResponse(requestParams, { ok: false, message: "You didn't submit any form data." })
   }
 
-  // get field fields
+  // get form fields
   const username = getFormField("username", requestParams.formData)
   const email = getFormField("email", requestParams.formData)
   const password1 = getFormField("password1", requestParams.formData)
@@ -40,24 +40,48 @@ const handleForm = async (requestParams: RequestParams, imp: Imp): Promise<Respo
   const schoolPostcode = getFormField("schoolPostcode", requestParams.formData)
 
   // validate form data
-  if (!username) return registerResponse(requestParams, { ok: false, message: "Username is required." })
-  if (await imp.readUser(username))
+  if (!username) {
+    return registerResponse(requestParams, { ok: false, message: "Username is required." })
+  }
+  if (await imp.readUser(username)) {
     return registerResponse(requestParams, { ok: false, message: "Username is already taken." })
-  if (!email) return registerResponse(requestParams, { ok: false, message: "Email is required." })
-  if (!password1) return registerResponse(requestParams, { ok: false, message: "Password is required." })
-  if (!password2) return registerResponse(requestParams, { ok: false, message: "Repeated password is required." })
-  if (password1 !== password2) return registerResponse(requestParams, { ok: false, message: "Passwords don't match." })
-  if (!firstName) return registerResponse(requestParams, { ok: false, message: "First name is required." })
-  if (!lastName) return registerResponse(requestParams, { ok: false, message: "Last name is required." })
-  if (!accountType) return registerResponse(requestParams, { ok: false, message: "Invalid account type." })
-  if (accountType === 2 && !guardian)
+  }
+  if (!email) {
+    return registerResponse(requestParams, { ok: false, message: "Email is required." })
+  }
+  if (!password1) {
+    return registerResponse(requestParams, { ok: false, message: "Password is required." })
+  }
+  if (!password2) {
+    return registerResponse(requestParams, { ok: false, message: "Repeated password is required." })
+  }
+  if (password1 !== password2) {
+    return registerResponse(requestParams, { ok: false, message: "Passwords don't match." })
+  }
+  if (!firstName) {
+    return registerResponse(requestParams, { ok: false, message: "First name is required." })
+  }
+  if (!lastName) {
+    return registerResponse(requestParams, { ok: false, message: "Last name is required." })
+  }
+  if (!accountType) {
+    return registerResponse(requestParams, { ok: false, message: "Invalid account type." })
+  }
+  if (accountType === 2 && !guardian) {
     return registerResponse(requestParams, { ok: false, message: "Full name of parent/guardian is required." })
+  }
 
   // create user out of form data
+  const token = crypto.randomUUID()
+  const tokenExpires = new Date()
+  tokenExpires.setHours(tokenExpires.getHours() + 24)
   const user: User = {
     username,
     email,
     password: await bcrypt.hash(password1, await bcrypt.genSalt()),
+    emailConfirmed: false,
+    token,
+    tokenExpires: tokenExpires.toString(),
     firstName,
     lastName,
     accountType,
@@ -68,12 +92,26 @@ const handleForm = async (requestParams: RequestParams, imp: Imp): Promise<Respo
   }
 
   // (try to) create an account
-  return (await imp.createUser(user))
-    ? redirectResponse(requestParams.url.origin, user.username)
-    : registerResponse(requestParams, {
-        ok: false,
-        message: "Something went wrong creating your account. Please try again.",
-      })
+  const result = await imp.createUser(user)
+
+  if (result[0] === "left") {
+    return registerResponse(requestParams, {
+      ok: false,
+      message: "Something went wrong creating your account. Please try again.",
+    })
+  }
+
+  // (try to) send a confirmation email
+  const response = await imp.sendVerifyEmail(user)
+  if (!response.success) {
+    return registerResponse(requestParams, {
+      ok: false,
+      message: "Couldn't send verification email. Please try again later.",
+    })
+  }
+
+  // return happy response
+  return redirectResponse(requestParams.url.origin, user.username)
 }
 
 const header = (

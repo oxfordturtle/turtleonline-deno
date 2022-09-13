@@ -6,7 +6,5 @@ export type FeedbackProps = {
 }
 
 export default (props: FeedbackProps): JSX.Element => (
-  <div className={`notice ${props.ok ? "success" : "error"}`}>
-    <p>{props.message}</p>
-  </div>
+  <div className={`notice ${props.ok ? "success" : "error"}`}>{props.message}</div>
 )
