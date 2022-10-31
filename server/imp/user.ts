@@ -1,64 +1,108 @@
 import type { User } from "../types.ts"
 import { type Either, type Maybe, asafely, asafelyOptional } from "../utils/tools.ts"
 
-export const createUser = async (user: User): Promise<Either<Error, void>> => {
-  const existingUser = await readUser(user.username)
-  return existingUser
-    ? ["left", new Error("duplicate username")]
-    : await asafely(() => Deno.writeTextFile(path(user.username), JSON.stringify(user)))
+export const readUser = async (usernameOrFields: string | Partial<User>): Promise<Maybe<User>> => {
+  const fields = typeof usernameOrFields === "string" ? { username: usernameOrFields } : usernameOrFields
+  const users = await readUsers(fields)
+  return users[0]
 }
 
-export const readUser = async (fields: string | Partial<User>): Promise<Maybe<User>> =>
-  typeof fields === "string"
-    ? asafelyOptional(async () => JSON.parse(await Deno.readTextFile(path(fields))))
-    : (await readUsers(fields))[0]
+export const readUsers = async (fields: Partial<User> = {}): Promise<User[]> => {
+  const users = await asafelyOptional<User[]>(async () => JSON.parse(await Deno.readTextFile(usersPath)))
+  return users !== undefined
+    ? users.filter(user => matches(user, fields))
+    : []
+}
 
-export const readUsers = async (fields: Partial<User>): Promise<User[]> => {
-  const users: User[] = []
-  for await (const dirEntry of Deno.readDir("./data/user")) {
-    if (dirEntry.isFile) {
-      const user = await asafelyOptional<User>(async () =>
-        JSON.parse(await Deno.readTextFile(`./data/user/${dirEntry.name}`))
-      )
-      if (user && matches(user, fields)) {
-        users.push(user)
-      }
+export const createUser = async (newUser: User): Promise<Either<Error, void>> => {
+  const users = await readUsers()
+
+  // prevent username clash
+  if (users.find(user => user.username === newUser.username)) {
+    return ["left", new Error("duplicate username")]
+  }
+
+  // prevent email clash
+  if (users.find(user => user.email === newUser.email)) {
+    return ["left", new Error("duplicate email")]
+  }
+
+  // add user
+  users.push(newUser)
+
+  // save to disk
+  return updateUsersOnDisk(users)
+}
+
+export const updateUser = async (username: string, newDetails: Partial<User>): Promise<Either<Error, void>> => {
+  const users = await readUsers()
+  const user = users.find(user => user.username === username)
+  const userIndex = users.findIndex(user => user.username === username)
+
+  // check user exists
+  if (user === undefined) {
+    return ["left", new Error("user not found")]
+  }
+
+  // prevent new username clash
+  if (newDetails.username && newDetails.username !== user.username) {
+    const existingUser = users.find(user => user.username === newDetails.username)
+    if (existingUser) {
+      return ["left", new Error("duplicate username")]
     }
   }
-  return users
-}
 
-export const updateUser = async (username: string, userDetails: Partial<User>): Promise<Either<Error, void>> => {
-  const user = await readUser({ username })
-  if (user === undefined) return ["left", new Error("user not found")]
-
-  if (userDetails.username && userDetails.username !== username) {
-    const existingUser = await readUser(userDetails.username)
-    if (existingUser) return ["left", new Error("duplicate username")]
-    return await asafely(async () => {
-      await Deno.writeTextFile(path(userDetails.username!), JSON.stringify({ ...user, ...userDetails }))
-      await deleteUser(username)
-    })
+  // prevent new email clash
+  if (newDetails.email && newDetails.email !== user.email) {
+    const existingUser = users.find(user => user.email === newDetails.email)
+    if (existingUser) {
+      return ["left", new Error("duplicate email")]
+    }
+    // make sure emailedConfirmed is false
+    newDetails.emailConfirmed = false
   }
 
-  return await asafely(() => Deno.writeTextFile(path(username), JSON.stringify({ ...user, ...userDetails })))
+  // update user in memory
+  users[userIndex] = { ...user, ...newDetails }
+
+  // update users on disk
+  return await updateUsersOnDisk(users)
 }
 
-export const deleteUser = async (username: string): Promise<Either<Error, void>> =>
-  await asafely(() => Deno.remove(path(username)))
+export const deleteUser = async (username: string): Promise<Either<Error, void>> => {
+  const users = await readUsers()
+  const userIndex = users.findIndex(user => user.username === username)
 
-const path = (username: string): string => `./data/user/${username}.json`
+  // check user exists
+  if (userIndex < 0) {
+    return ["left", new Error("user not found")]
+  }
+
+  // update users in memory
+  users.splice(userIndex, 1)
+
+  // update users on disk
+  return await updateUsersOnDisk(users)
+}
+
+const updateUsersOnDisk = (users: User[]): Promise<Either<Error, void>> =>
+  asafely(() => Deno.writeTextFile(usersPath, JSON.stringify(users)))
+
+const usersPath = "./data/users.json"
 
 const matches = (user: User, fields: Partial<User>): boolean =>
   (fields.username === undefined || fields.username === user.username) &&
   (fields.email === undefined || fields.email === user.email) &&
-  (fields.password === undefined || fields.password === user.password) &&
   (fields.emailConfirmed === undefined || fields.emailConfirmed === user.emailConfirmed) &&
+  (fields.password === undefined || fields.password === user.password) &&
+  (fields.lastLoginDate === undefined || fields.lastLoginDate === user.lastLoginDate) &&
   (fields.token === undefined || fields.token === user.token) &&
+  (fields.tokenExpires === undefined || fields.tokenExpires === user.tokenExpires) &&
   (fields.firstName === undefined || fields.firstName === user.firstName) &&
   (fields.lastName === undefined || fields.lastName === user.lastName) &&
-  (fields.accountType === undefined || fields.accountType === user.accountType) &&
-  (fields.guardian === undefined || fields.guardian === user.guardian) &&
   (fields.schoolName === undefined || fields.schoolName === user.schoolName) &&
   (fields.schoolPostcode === undefined || fields.schoolPostcode === user.schoolPostcode) &&
-  (fields.receivingEmails === undefined || fields.receivingEmails === user.receivingEmails)
+  (fields.guardian === undefined || fields.guardian === user.guardian) &&
+  (fields.admin === undefined || fields.admin === user.admin) &&
+  (fields.receivingEmails === undefined || fields.receivingEmails === user.receivingEmails) &&
+  (fields.systemSettings === undefined || fields.systemSettings === user.systemSettings)

@@ -29,15 +29,17 @@ export type Session = {
 export type User = {
   username: string
   email: string
-  password: string
   emailConfirmed: boolean
+  password: string
+  lastLoginDate: string | null
   token: string
   tokenExpires: string
   firstName: string
   lastName: string
-  accountType: 1 | 2
-  guardian?: string
-  schoolName?: string
-  schoolPostcode?: string
+  schoolName: string | null
+  schoolPostcode: string | null
+  guardian: string | null
+  admin: boolean
   receivingEmails: boolean
+  systemSettings: string | null
 }

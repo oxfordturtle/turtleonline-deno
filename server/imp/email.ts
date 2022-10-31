@@ -9,16 +9,26 @@ export const sendVerifyEmail = (user: User): Promise<IResult> =>
 export const sendCredentialsEmail = (user: User): Promise<IResult> =>
   sendEmail("Oxford Turtle System: Reset Password", user.email, credentialsEmail(user))
 
-const sendEmail = (subject: string, to: string, content: string): Promise<IResult> =>
+const sendEmail = async (subject: string, to: string, content: string): Promise<IResult> =>
   sendSimpleMail(
     {
       subject,
       to: [{ email: prod() ? to : "merivale@gmail.com" }],
       from: { email: "turtle@cs.ox.ac.uk" },
-      content: [{ type: "text/html", value: content }],
+      content: [{ type: "text/html", value: await wrapContent(content) }],
     },
     { apiKey: apiKey() }
   )
+
+const wrapContent = async (content: string): Promise<string> => `
+  <!doctype html>
+  <html>
+    <head>
+      <style>${await Deno.readTextFile("./public/css/email.css")}</style>
+    </head>
+    <body>${content}</body>
+  </html>
+`
 
 const apiKey = (): string => Deno.env.get("SENDGRID_KEY") ?? ""
 

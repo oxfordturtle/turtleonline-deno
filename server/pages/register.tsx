@@ -49,6 +49,9 @@ const handleForm = async (requestParams: RequestParams, imp: Imp): Promise<Respo
   if (!email) {
     return registerResponse(requestParams, { ok: false, message: "Email is required." })
   }
+  if (await imp.readUser({ email })) {
+    return registerResponse(requestParams, { ok: false, message: "Email is already taken." })
+  }
   if (!password1) {
     return registerResponse(requestParams, { ok: false, message: "Password is required." })
   }
@@ -78,17 +81,19 @@ const handleForm = async (requestParams: RequestParams, imp: Imp): Promise<Respo
   const user: User = {
     username,
     email,
-    password: await bcrypt.hash(password1, await bcrypt.genSalt()),
     emailConfirmed: false,
+    password: await bcrypt.hash(password1, await bcrypt.genSalt()),
+    lastLoginDate: null,
     token,
     tokenExpires: tokenExpires.toString(),
     firstName,
     lastName,
-    accountType,
     guardian,
     schoolName,
     schoolPostcode,
+    admin: false,
     receivingEmails: true,
+    systemSettings: null,
   }
 
   // (try to) create an account

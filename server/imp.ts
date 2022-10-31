@@ -41,13 +41,18 @@ export const testImpSucceed: Imp = {
 
 const dummyUser: User = {
   username: "dummy",
-  password: "12345",
-  firstName: "Dummy",
-  lastName: "Dummy",
   email: "dummy@dummail.com",
   emailConfirmed: true,
+  password: "12345",
+  lastLoginDate: null,
   token: "",
   tokenExpires: new Date().toString(),
-  accountType: 1,
+  firstName: "Dummy",
+  lastName: "Dummy",
+  guardian: null,
+  schoolName: null,
+  schoolPostcode: null,
+  admin: false,
   receivingEmails: true,
+  systemSettings: null,
 }

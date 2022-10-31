@@ -41,13 +41,12 @@ const handleForm = async (requestParams: RequestParams, user: User, imp: Imp): P
   if (username) userDetails.username = username
   if (firstName) userDetails.firstName = firstName
   if (lastName) userDetails.lastName = lastName
-  if (accountType) userDetails.accountType = accountType
   if (guardian) userDetails.guardian = guardian
   if (schoolName) userDetails.schoolName = schoolName
   if (schoolPostcode) userDetails.schoolPostcode = schoolPostcode
 
   // validate user details
-  if (userDetails.accountType === 2 && userDetails.guardian === undefined) {
+  if (accountType === 2 && userDetails.guardian === undefined) {
     return detailsResponse(requestParams, user, { ok: false, message: "Name of parent or guardian is required." })
   }
   if (username && username !== user.username && (await imp.readUser(username)) !== undefined) {
@@ -92,12 +91,12 @@ const main = (user: User, feedback?: FeedbackProps): JSX.Element => (
           <FormOption
             label="This account is for me, and I am at least 13 years old"
             value="1"
-            selectedValue={user.accountType.toString()}
+            selectedValue={user.guardian ? "2" : "1"}
           />
           <FormOption
             label="This account is for a child under 13, and I am their legal guardian"
             value="2"
-            selectedValue={user.accountType.toString()}
+            selectedValue={user.guardian ? "2" : "1"}
           />
         </FormSelect>
         <FormInput id="guardian" label="Full Name of Parent/Guardian" type="text" value={user.guardian} />
