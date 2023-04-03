@@ -6453,7 +6453,7 @@
         lexemes.next();
         return lexeme.subtype === "string" ? new StringValue(lexeme) : new IntegerValue(lexeme);
       case "input": {
-        const input3 = input2(routine, lexeme.content);
+        const input3 = input2(routine, lexeme.value);
         if (input3) {
           lexemes.next();
           return new InputValue(lexeme, input3);
