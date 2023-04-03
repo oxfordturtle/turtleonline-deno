@@ -1,4 +1,4 @@
-import { Status } from "http"
+import { Status } from "https://deno.land/std@0.161.0/http/mod.ts"
 import type { Imp, RequestParams, User } from "../types.ts"
 import error from "./error.tsx"
 import account from "./account/account.tsx"

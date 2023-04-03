@@ -1,4 +1,4 @@
-import { type IResult, sendSimpleMail } from "sendgrid"
+import { type IResult, sendSimpleMail } from "https://deno.land/x/sendgrid@0.0.3/mod.ts"
 import { type User } from "../types.ts"
 import verifyEmail from "../emails/verify.ts"
 import credentialsEmail from "../emails/credentials.ts"

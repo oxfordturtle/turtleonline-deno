@@ -1,4 +1,4 @@
-import React from "react"
+import React from "https://esm.sh/react@18.2.0"
 import type { RequestParams } from "../types.ts"
 import page from "./_layout/page.tsx"
 import { htmlResponse } from "../utils/response.ts"

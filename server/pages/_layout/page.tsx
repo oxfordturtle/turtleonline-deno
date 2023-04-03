@@ -1,5 +1,5 @@
-import React from "react"
-import ReactDOMServer from "react_dom_server"
+import React from "https://esm.sh/react@18.2.0"
+import ReactDOMServer from "https://esm.sh/react-dom@18.2.0/server"
 import type { RequestParams } from "../../types.ts"
 
 export default (requestParams: RequestParams, headerContent: JSX.Element, mainContent: JSX.Element): string =>

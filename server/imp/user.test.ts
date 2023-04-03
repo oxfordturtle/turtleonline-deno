@@ -1,4 +1,4 @@
-import { assertEquals } from "testing"
+import { assertEquals } from "https://deno.land/std@0.161.0/testing/asserts.ts"
 import type { User } from "../types.ts"
 import { createUser, readUser, updateUser, deleteUser } from "./user.ts"
 

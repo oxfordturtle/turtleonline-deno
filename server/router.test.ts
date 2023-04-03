@@ -1,5 +1,5 @@
-import { Status } from "http"
-import { assertEquals } from "testing"
+import { Status } from "https://deno.land/std@0.161.0/http/mod.ts"
+import { assertEquals } from "https://deno.land/std@0.161.0/testing/asserts.ts"
 import { testImpSucceed } from "./imp.ts"
 import router from "./router.ts"
 

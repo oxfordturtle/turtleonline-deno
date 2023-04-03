@@ -1,4 +1,4 @@
-import { Status } from "http"
+import { Status } from "https://deno.land/std@0.161.0/http/mod.ts"
 import type { Imp } from "./types.ts"
 import { asafely } from "./utils/tools.ts"
 import parseRequest from "./router/parseRequest.ts"
