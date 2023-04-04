@@ -1,4 +1,4 @@
-import React from "https://esm.sh/react@18.2.0"
+import { React } from "../../../deps.ts"
 import File from "./menu/file.tsx"
 import Edit from "./menu/edit.tsx"
 import View from "./menu/view.tsx"

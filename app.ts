@@ -1,5 +1,4 @@
-import { config } from "dotenv"
-import { serve } from "http"
+import { config, serve } from "./deps.ts"
 import router from "./server/router.ts"
 import imp from "./server/imp.ts"
 

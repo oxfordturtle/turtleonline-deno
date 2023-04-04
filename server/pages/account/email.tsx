@@ -1,5 +1,4 @@
-import React from "https://esm.sh/react@18.2.0"
-import { Status } from "https://deno.land/std@0.161.0/http/mod.ts"
+import { React, Status } from "../../../deps.ts"
 import type { Imp, RequestParams, User } from "../../types.ts"
 import page from "../_layout/page.tsx"
 import { FormInput, FormSelect, FormOption } from "../_layout/form.tsx"

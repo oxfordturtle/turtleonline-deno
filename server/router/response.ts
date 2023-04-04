@@ -1,5 +1,4 @@
-import { Status } from "https://deno.land/std@0.161.0/http/mod.ts"
-import { extname } from "https://deno.land/std@0.161.0/path/mod.ts"
+import { Status, extname } from "../../deps.ts"
 import type { Imp, RequestParams } from "../types.ts"
 import { fileResponse } from "../utils/response.ts"
 import about from "../pages/about.tsx"

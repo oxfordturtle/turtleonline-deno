@@ -1,6 +1,4 @@
-import { Status, deleteCookie, setCookie } from "https://deno.land/std@0.161.0/http/mod.ts"
-import { contentType } from "https://deno.land/std@0.161.0/media_types/mod.ts"
-import * as bcrypt from "https://deno.land/x/bcrypt@v0.4.1/mod.ts"
+import { Status, deleteCookie, setCookie, contentType, bcrypt } from "../../deps.ts"
 
 export const htmlResponse = async (html: string, status: Status = Status.OK, username?: string | null): Promise<Response> =>
   new Response(html, await responseInit("text/html", status, username))

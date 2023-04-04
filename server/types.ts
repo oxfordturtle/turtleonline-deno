@@ -1,4 +1,4 @@
-import { type IResult } from "https://deno.land/x/sendgrid@0.0.3/mod.ts"
+import { type IResult } from "../deps.ts"
 import type { Either, Maybe } from "./utils/tools.ts"
 
 export type Imp = {

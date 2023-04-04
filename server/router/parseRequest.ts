@@ -1,5 +1,4 @@
-import { getCookies } from "https://deno.land/std@0.161.0/http/mod.ts"
-import * as bcrypt from "https://deno.land/x/bcrypt@v0.4.1/mod.ts"
+import { getCookies, bcrypt } from "../../deps.ts"
 import type { Imp, RequestParams, User } from "../types.ts"
 import { asafelyOptional } from "../utils/tools.ts"
 
