@@ -1,11 +1,11 @@
-export { Status, getCookies, deleteCookie, setCookie, serve } from "https://deno.land/std@0.182.0/http/mod.ts";
-export { contentType } from "https://deno.land/std@0.182.0/media_types/mod.ts";
-export { extname } from "https://deno.land/std@0.182.0/path/mod.ts";
-export { assert, assertEquals } from "https://deno.land/std@0.182.0/testing/asserts.ts";
-export { build } from "https://deno.land/x/esbuild@v0.15.12/mod.js";
+export { load } from "https://deno.land/std@v0.188.0/dotenv/mod.ts";
+export { Status, getCookies, deleteCookie, setCookie, serve } from "https://deno.land/std@0.188.0/http/mod.ts";
+export { contentType } from "https://deno.land/std@0.188.0/media_types/mod.ts";
+export { extname } from "https://deno.land/std@0.188.0/path/mod.ts";
+export { assert, assertEquals } from "https://deno.land/std@0.188.0/testing/asserts.ts";
+export { build } from "https://deno.land/x/esbuild@v0.17.19/mod.js";
 export * as bcrypt from "https://deno.land/x/bcrypt@v0.4.1/mod.ts";
 export { type IResult, sendSimpleMail } from "https://deno.land/x/sendgrid@0.0.3/mod.ts";
-export { default as sass } from "https://deno.land/x/denosass@1.0.4/mod.ts";
-export { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
+export { default as sass } from "https://deno.land/x/denosass@1.0.6/mod.ts";
 export { default as React } from "https://esm.sh/react@18.2.0";
 export * as ReactDOMServer from "https://esm.sh/react-dom@18.2.0/server";

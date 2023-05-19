@@ -1,7 +1,7 @@
-import { config, serve } from "./deps.ts"
+import { load, serve } from "./deps.ts"
 import router from "./server/router.ts"
 import imp from "./server/imp.ts"
 
-config({ export: true })
+await load()
 
 serve((request) => router(request, imp))
