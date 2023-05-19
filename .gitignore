@@ -1,6 +1,6 @@
 /.vscode
 /data
 /files
-/public/css/screen.css
+/public/css/*.css
 /public/js/index.js
 /.env
