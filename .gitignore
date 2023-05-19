@@ -1,6 +1,7 @@
 /.vscode
 /data
-/files
+!/data/.gitkeep
 /public/css/*.css
+!/public/css/.gitkeep
 /public/js/index.js
 /.env
