@@ -9,4 +9,4 @@
 /public/turtle
 !/public/turtle/.gitkeep
 /.env
-/.deno.lock
+/deno.lock
