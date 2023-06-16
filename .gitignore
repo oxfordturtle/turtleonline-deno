@@ -4,4 +4,9 @@
 /public/css/*.css
 !/public/css/.gitkeep
 /public/js/index.js
+/public/downloads
+!/public/downloads/.gitkeep
+/public/turtle
+!/public/turtle/.gitkeep
 /.env
+/.deno.lock
