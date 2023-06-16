@@ -14,7 +14,7 @@ const sendEmail = async (subject: string, to: string, content: string): Promise<
     {
       subject,
       to: [{ email: prod() ? to : "merivale@gmail.com" }],
-      from: { email: "turtle@cs.ox.ac.uk" },
+      from: { email: "amyas.merivale@philosophy.ox.ac.uk" },
       content: [{ type: "text/html", value: await wrapContent(content) }],
     },
     { apiKey: apiKey() }
