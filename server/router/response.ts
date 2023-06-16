@@ -25,10 +25,7 @@ export default async (requestParams: RequestParams, imp: Imp): Promise<Response>
 }
 
 const asset = async (requestParams: RequestParams, imp: Imp): Promise<Response> => {
-  const path =
-    requestParams.sections[0] === "downloads"
-      ? `./files/downloads/${requestParams.sections.join("/")}`
-      : `./public/${requestParams.sections.join("/")}`
+  const path = `./public/${requestParams.sections.join("/")}`
   const fileInfo = await imp.readFile(path)
   return fileInfo === undefined ? error(requestParams, Status.NotFound) : fileResponse(fileInfo, extname(path))
 }
