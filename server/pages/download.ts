@@ -9,7 +9,7 @@ export default (requestParams: RequestParams, imp: Imp): Promise<Response> =>
     : error(requestParams, Status.NotFound)
 
 const downloadResponse = async (requestParams: RequestParams, version: string, imp: Imp): Promise<Response> => {
-  const path = `./files/turtle/TurtleSystem_${version}.exe`
+  const path = `./public/turtle/TurtleSystem_${version}.exe`
   const fileInfo = await imp.readFile(path)
   return fileInfo === undefined ? error(requestParams, Status.NotFound) : fileResponse(fileInfo, extname(path))
 }
