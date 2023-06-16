@@ -1,4 +1,4 @@
-import { Status } from "../../deps.ts"
+import { Status } from "http"
 import type { Imp, RequestParams, User } from "../types.ts"
 import error from "./error.tsx"
 import account from "./account/account.tsx"

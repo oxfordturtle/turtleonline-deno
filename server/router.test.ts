@@ -1,4 +1,5 @@
-import { Status, assertEquals } from "../deps.ts"
+import { assertEquals } from "testing"
+import { Status } from "http"
 import { testImpSucceed } from "./imp.ts"
 import router from "./router.ts"
 

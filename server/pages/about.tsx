@@ -1,4 +1,4 @@
-import { React } from "../../deps.ts"
+import React from "react"
 import type { RequestParams } from "../types.ts"
 import page from "./_layout/page.tsx"
 import { htmlResponse } from "../utils/response.ts"

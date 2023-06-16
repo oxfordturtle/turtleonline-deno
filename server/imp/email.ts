@@ -1,4 +1,4 @@
-import { type IResult, sendSimpleMail } from "../../deps.ts"
+import { type IResult, sendSimpleMail } from "sendgrid"
 import { type User } from "../types.ts"
 import verifyEmail from "../emails/verify.ts"
 import credentialsEmail from "../emails/credentials.ts"

@@ -1,4 +1,5 @@
-import { React, ReactDOMServer } from "../../../deps.ts"
+import React from "react"
+import ReactDOMServer from "react_dom_server"
 import type { RequestParams } from "../../types.ts"
 
 export default (requestParams: RequestParams, headerContent: JSX.Element, mainContent: JSX.Element): string =>

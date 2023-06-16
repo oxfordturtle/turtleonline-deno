@@ -1,4 +1,5 @@
-import { Status, extname } from "../../deps.ts"
+import { Status } from "http"
+import { extname } from "path"
 import { Imp, RequestParams } from "../types.ts"
 import { fileResponse } from "../utils/response.ts"
 import error from "./error.tsx"

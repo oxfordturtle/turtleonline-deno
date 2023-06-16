@@ -1,4 +1,4 @@
-import { type IResult } from "../deps.ts"
+import { type IResult } from "sendgrid"
 import type { Either, Maybe } from "./utils/tools.ts"
 
 export type Imp = {

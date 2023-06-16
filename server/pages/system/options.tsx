@@ -1,4 +1,4 @@
-import { React } from "../../../deps.ts"
+import React from "react"
 
 export default (): JSX.Element => <>
 <div className="system-tab-pane" data-tab="options" data-mode="machine">

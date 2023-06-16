@@ -1,4 +1,4 @@
-import { Status } from "../deps.ts"
+import { Status } from "http"
 import type { Imp } from "./types.ts"
 import { asafely } from "./utils/tools.ts"
 import parseRequest from "./router/parseRequest.ts"

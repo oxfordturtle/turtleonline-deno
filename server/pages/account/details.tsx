@@ -1,4 +1,5 @@
-import { React, Status } from "../../../deps.ts"
+import React from "react"
+import { Status } from "http"
 import type { Imp, RequestParams, User } from "../../types.ts"
 import page from "../_layout/page.tsx"
 import { FormInput, FormOption, FormSelect } from "../_layout/form.tsx"

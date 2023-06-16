@@ -1,4 +1,4 @@
-import { assert, assertEquals } from "../../deps.ts"
+import { assert, assertEquals } from "testing"
 import { readFile } from "./file.ts"
 
 Deno.test({

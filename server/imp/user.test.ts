@@ -1,4 +1,4 @@
-import { assertEquals } from "../../deps.ts"
+import { assertEquals } from "testing"
 import type { User } from "../types.ts"
 import { createUser, readUser, updateUser, deleteUser } from "./user.ts"
 

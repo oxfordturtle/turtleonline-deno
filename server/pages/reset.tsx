@@ -1,4 +1,6 @@
-import { React, Status, bcrypt } from "../../deps.ts"
+import React from "react"
+import { Status } from "http"
+import * as bcrypt from "bcrypt"
 import type { Imp, RequestParams } from "../types.ts"
 import page from "./_layout/page.tsx"
 import { htmlResponse } from "../utils/response.ts"

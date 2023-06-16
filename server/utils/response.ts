@@ -1,4 +1,6 @@
-import { Status, deleteCookie, setCookie, contentType, bcrypt } from "../../deps.ts"
+import { Status, deleteCookie, setCookie } from "http"
+import { contentType } from "media_types"
+import * as bcrypt from "bcrypt"
 
 export const htmlResponse = async (html: string, status: Status = Status.OK, username?: string | null): Promise<Response> =>
   new Response(html, await responseInit("text/html", status, username))

@@ -1,4 +1,4 @@
-import { React } from "../../../../../deps.ts"
+import React from "react"
 
 export default (): JSX.Element => <>
   <h3>Programs and Procedures: the Basics</h3>

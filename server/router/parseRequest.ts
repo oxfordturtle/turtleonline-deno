@@ -1,4 +1,5 @@
-import { getCookies, bcrypt } from "../../deps.ts"
+import { getCookies } from "http"
+import * as bcrypt from "bcrypt"
 import type { Imp, RequestParams, User } from "../types.ts"
 import { asafelyOptional } from "../utils/tools.ts"
 

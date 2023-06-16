@@ -1,4 +1,4 @@
-import { React } from "../../../deps.ts"
+import React from "react"
 import File from "./menu/file.tsx"
 import Edit from "./menu/edit.tsx"
 import View from "./menu/view.tsx"
