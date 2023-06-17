@@ -86,7 +86,7 @@ export const deleteUser = async (username: string): Promise<Either<Error, void>>
 }
 
 const updateUsersOnDisk = (users: User[]): Promise<Either<Error, void>> =>
-  asafely(() => Deno.writeTextFile(usersPath, JSON.stringify(users)))
+  asafely(() => Deno.writeTextFile(usersPath, JSON.stringify(users, null, 2)))
 
 const usersPath = "./data/users.json"
 
