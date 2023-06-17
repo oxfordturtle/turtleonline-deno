@@ -32,14 +32,51 @@ export type User = {
   emailConfirmed: boolean
   password: string
   lastLoginDate: string | null
-  token: string
-  tokenExpires: string
+  token: string | null
+  tokenExpires: string | null
   firstName: string
   lastName: string
   schoolName: string | null
   schoolPostcode: string | null
+  accountType: 1 | 2 // 1 = over 13, account created by user, 2 = under 13, account created by guardian
   guardian: string | null
   admin: boolean
   receivingEmails: boolean
-  systemSettings: string | null
+  systemSettings: SystemSettings | null
+}
+
+export type SystemSettings = {
+  language: string
+  mode: string
+  editorFontFamily: string
+  editorFontSize: number
+  outputFontFamily: string
+  outputFontSize: number
+  includeCommentsInExamples: boolean
+  loadCorrespondingExample: boolean
+  assembler: boolean
+  decimal: boolean
+  autoCompileOnLoad: boolean
+  autoRunOnLoad: boolean
+  autoFormatOnLoad: boolean
+  alwaysSaveSettings: boolean
+  showCanvasOnRun: boolean
+  showOutputOnWrite: boolean
+  showMemoryOnDump: boolean
+  drawCountMax: number
+  codeCountMax: number
+  smallSize: number
+  stackSize: number
+  traceOnRun: boolean
+  activateHCLR: boolean
+  preventStackCollision: boolean
+  rangeCheckArrays: boolean
+  canvasStartSize: number
+  setupDefaultKeyBuffer: boolean
+  turtleAttributesAsGlobals: boolean
+  initialiseLocals: boolean
+  allowCSTR: boolean
+  separateReturnStack: boolean
+  separateMemoryControlStack: boolean
+  separateSubroutineRegisterStack: boolean
 }

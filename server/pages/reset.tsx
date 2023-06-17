@@ -18,9 +18,11 @@ export default async (requestParams: RequestParams, imp: Imp): Promise<Response>
       : error(requestParams, Status.MethodNotAllowed)
     : error(requestParams, Status.NotFound)
 
+// TODO: this function is duplicated in verify.tsx
 const isValidUserToken = async (imp: Imp, username: string, token: string): Promise<boolean> => {
   const user = await imp.readUser(username)
-  return user !== undefined && user.token === token && new Date(user.tokenExpires) > new Date()
+  // if tokenExpires is null, the date comparison will be false, which is fine
+  return user !== undefined && user.token === token && new Date(user.tokenExpires!) > new Date()
 }
 
 const resetResponse = (requestParams: RequestParams, feedback?: FeedbackProps): Promise<Response> =>

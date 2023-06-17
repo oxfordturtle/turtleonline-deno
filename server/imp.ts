@@ -49,6 +49,7 @@ const dummyUser: User = {
   tokenExpires: new Date().toString(),
   firstName: "Dummy",
   lastName: "Dummy",
+  accountType: 1,
   guardian: null,
   schoolName: null,
   schoolPostcode: null,

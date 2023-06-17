@@ -88,6 +88,7 @@ const handleForm = async (requestParams: RequestParams, imp: Imp): Promise<Respo
     tokenExpires: tokenExpires.toString(),
     firstName,
     lastName,
+    accountType,
     guardian,
     schoolName,
     schoolPostcode,
