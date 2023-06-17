@@ -1,4 +1,5 @@
-import { build, sass } from "./deps.ts"
+import { build } from "esbuild"
+import sass from "denosass"
 
 // build javascript
 console.log("Building client/index.ts...")
