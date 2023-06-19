@@ -351,7 +351,7 @@ function setupLocalVariable(variable: Variable): number[][] {
 /** creates pcode for the end of a subroutine */
 function subroutineEndCode(
   subroutine: Subroutine,
-  options: Options
+  _options: Options
 ): number[][] {
   const pcode: number[] = [];
   if (subroutine.type === "function") {

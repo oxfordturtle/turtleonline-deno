@@ -100,16 +100,12 @@ export class ConstantValue {
 
   get type(): Type {
     // type is not known in advance, as it depends on this.indexes.length
-    switch (this.constant.language) {
-      case "C":
-      case "Java":
-      case "Pascal":
-        return this.constant.type === "string" && this.indexes.length > 0
-          ? "character"
-          : this.constant.type;
-      default:
-        return this.constant.type;
+    if (["C", "Java", "Pascal"].includes(this.constant.language)) {
+      return this.constant.type === "string" && this.indexes.length > 0
+        ? "character"
+        : this.constant.type;
     }
+    return this.constant.type;
   }
 }
 

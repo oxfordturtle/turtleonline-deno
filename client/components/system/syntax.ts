@@ -38,7 +38,7 @@ function tableBodyRow(lexeme: Lexeme, index: number): HTMLTableRowElement {
       td({
         className: "wide",
         content: `${lexeme.type}${
-          (lexeme as any).subtype ? ` (${(lexeme as any).subtype})` : ""
+          "subtype" in lexeme ? ` (${lexeme.subtype})` : ""
         }`,
       }),
     ],

@@ -22,7 +22,7 @@ export default function constant(lexemes: Lexemes, routine: Program): Constant {
   lexemes.next();
 
   // expecting an expression
-  let exp = expression(lexemes, routine);
+  const exp = expression(lexemes, routine);
   const value = evaluate(exp, "Pascal", "constant");
 
   // create the constant

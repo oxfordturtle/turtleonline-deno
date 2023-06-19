@@ -85,7 +85,7 @@ export default function type(
   }
 
   // possibly expecting brackets (for arrays)
-  let arrayDimensions: [number, number][] = [];
+  const arrayDimensions: [number, number][] = [];
   while (lexemes.get()?.content === "[") {
     lexemes.next();
 

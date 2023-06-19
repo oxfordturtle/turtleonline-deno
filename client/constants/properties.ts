@@ -61,7 +61,7 @@ export const properties = [
 ] as const;
 
 /** default values */
-export const defaults: Record<Property, any> = {
+export const defaults = {
   // whether user's saved settings have been loaded in this session
   savedSettingsHaveBeenLoaded: false,
   // system settings

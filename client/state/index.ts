@@ -1063,9 +1063,8 @@ export class State {
       send("error", new SystemError(`Unknown example "${exampleId}".`));
     } else {
       const filename = `${example.id}.${extensions[this.language]}`;
-      window
-        .fetch(`/examples/${this.language}/${example.groupId}/${filename}`)
-        .then((response) => {
+      fetch(`/examples/${this.language}/${example.groupId}/${filename}`).then(
+        (response) => {
           if (response.ok) {
             response.text().then((content) => {
               this.openFile(filename, content.trim(), exampleId);
@@ -1078,7 +1077,8 @@ export class State {
               )
             );
           }
-        });
+        }
+      );
     }
   }
 
@@ -1095,7 +1095,7 @@ export class State {
 
   saveLocalFile() {
     const a = document.createElement("a");
-    const blob = new window.Blob([this.file.code], {
+    const blob = new Blob([this.file.code], {
       type: "text/plain;charset=utf-8",
     });
     a.setAttribute("href", URL.createObjectURL(blob));

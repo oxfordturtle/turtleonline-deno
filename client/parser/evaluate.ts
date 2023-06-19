@@ -83,7 +83,7 @@ export default function evaluate(
       return evaluate(expression.expression, language, context);
 
     // compound expressions
-    case "compound":
+    case "compound": {
       const left = expression.left
         ? evaluate(expression.left, language, context)
         : null;
@@ -157,5 +157,6 @@ export default function evaluate(
         case "mult":
           return (left as number) * (right as number);
       }
+    }
   }
 }

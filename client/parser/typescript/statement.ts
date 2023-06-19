@@ -80,7 +80,7 @@ export function statement(
     case "keyword":
       switch (lexeme.subtype) {
         // function
-        case "function":
+        case "function": {
           // the subroutine will have been defined in the first pass
           const sub = find.subroutine(
             routine,
@@ -92,6 +92,7 @@ export function statement(
           lexemes.index = sub.end + 1;
           statement = new PassStatement();
           break;
+        }
 
         // start of variable declaration/assignment
         case "const": // fallthrough
@@ -169,7 +170,7 @@ export function simpleStatement(
           return new PassStatement();
 
         // "var" means a variable declaration
-        case "var":
+        case "var": {
           lexemes.next();
           // on the second pass, we know the next lexeme is an identifier, and that it
           // names a variable that has been defined
@@ -185,6 +186,7 @@ export function simpleStatement(
           } else {
             return new PassStatement();
           }
+        }
 
         // any other keyword is an error
         default:
@@ -197,7 +199,7 @@ export function simpleStatement(
       }
 
     // identifier means variable assignment or procedure call
-    case "identifier":
+    case "identifier": {
       const foo = find.constant(routine, lexeme.value);
       const bar = find.variable(routine, lexeme.value);
       const baz = find.command(routine, lexeme.value);
@@ -216,6 +218,7 @@ export function simpleStatement(
       } else {
         throw new CompilerError("{lex} is not defined.", lexemes.get());
       }
+    }
   }
 }
 

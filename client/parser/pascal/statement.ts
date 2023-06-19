@@ -574,7 +574,7 @@ function block(
   start: "begin" | "repeat"
 ): Statement[] {
   const statements: Statement[] = [];
-  let end: boolean = false;
+  let end = false;
 
   // expecting something
   if (!lexemes.get()) {
