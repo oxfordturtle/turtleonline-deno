@@ -1,16 +1,16 @@
-import { defaults } from "../constants/properties.ts"
+import { defaults } from "../constants/properties.ts";
 
 /** compiler options */
 export type Options = {
-  canvasStartSize: number
-  setupDefaultKeyBuffer: boolean
-  turtleAttributesAsGlobals: boolean
-  initialiseLocals: boolean
-  allowCSTR: boolean
-  separateReturnStack: boolean
-  separateMemoryControlStack: boolean
-  separateSubroutineRegisterStack: boolean
-}
+  canvasStartSize: number;
+  setupDefaultKeyBuffer: boolean;
+  turtleAttributesAsGlobals: boolean;
+  initialiseLocals: boolean;
+  allowCSTR: boolean;
+  separateReturnStack: boolean;
+  separateMemoryControlStack: boolean;
+  separateSubroutineRegisterStack: boolean;
+};
 
 /** default compiler options */
 export const defaultOptions: Options = {
@@ -22,4 +22,4 @@ export const defaultOptions: Options = {
   separateReturnStack: defaults.separateReturnStack,
   separateMemoryControlStack: defaults.separateMemoryControlStack,
   separateSubroutineRegisterStack: defaults.separateSubroutineRegisterStack,
-}
+};

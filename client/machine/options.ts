@@ -1,19 +1,19 @@
 // module imports
-import { defaults } from "../constants/properties.ts"
+import { defaults } from "../constants/properties.ts";
 
 export type Options = {
-  showCanvasOnRun: boolean
-  showOutputOnWrite: boolean
-  showMemoryOnDump: boolean
-  drawCountMax: number
-  codeCountMax: number
-  smallSize: number
-  stackSize: number
-  traceOnRun: boolean
-  activateHCLR: boolean
-  preventStackCollision: boolean
-  rangeCheckArrays: boolean
-}
+  showCanvasOnRun: boolean;
+  showOutputOnWrite: boolean;
+  showMemoryOnDump: boolean;
+  drawCountMax: number;
+  codeCountMax: number;
+  smallSize: number;
+  stackSize: number;
+  traceOnRun: boolean;
+  activateHCLR: boolean;
+  preventStackCollision: boolean;
+  rangeCheckArrays: boolean;
+};
 
 export const defaultOptions: Options = {
   showCanvasOnRun: defaults.showCanvasOnRun,
@@ -27,4 +27,4 @@ export const defaultOptions: Options = {
   activateHCLR: defaults.activateHCLR,
   preventStackCollision: defaults.preventStackCollision,
   rangeCheckArrays: defaults.rangeCheckArrays,
-}
+};

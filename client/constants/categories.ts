@@ -1,29 +1,31 @@
 /**
  * Command and keywords categories (for help tables and usage analysis).
  */
-import type { Command } from "./commands.ts"
-import { commands } from "./commands.ts"
-import type { Keyword } from "./keywords.ts"
-import { keywords } from "./keywords.ts"
-import type { Language } from "./languages.ts"
-import { Subroutine } from "../parser/definitions/subroutine.ts"
+import type { Command } from "./commands.ts";
+import { commands } from "./commands.ts";
+import type { Keyword } from "./keywords.ts";
+import { keywords } from "./keywords.ts";
+import type { Language } from "./languages.ts";
+import { Subroutine } from "../parser/definitions/subroutine.ts";
 
 /** expression type definition */
-export type Expression = Command | Keyword | Subroutine
+export type Expression = Command | Keyword | Subroutine;
 
 /** category class defintiion */
 export class Category {
-  readonly index: number
-  readonly title: string
-  readonly expressions: Expression[]
+  readonly index: number;
+  readonly title: string;
+  readonly expressions: Expression[];
 
   constructor(index: number, title: string, expressions: Expression[]) {
-    this.index = index
-    this.title = title
+    this.index = index;
+    this.title = title;
     this.expressions =
       expressions[0] && expressions[0] instanceof Subroutine
         ? expressions
-        : expressions.filter((x) => (x as Command | Keyword).category === index)
+        : expressions.filter(
+            (x) => (x as Command | Keyword).category === index
+          );
   }
 }
 
@@ -41,7 +43,7 @@ export const commandCategories: Category[] = [
   new Category(9, "Input and timing routines", commands),
   new Category(10, "File processing", commands),
   new Category(11, "Turtle Machine monitoring", commands),
-]
+];
 
 /** arrays of keyword categories for each language */
 export const keywordCategories: Record<Language, Category[]> = {
@@ -57,4 +59,4 @@ export const keywordCategories: Record<Language, Category[]> = {
     new Category(21, "Variable scope modifiers", keywords.Python),
   ],
   TypeScript: [new Category(20, "Command structures", keywords.TypeScript)],
-}
+};

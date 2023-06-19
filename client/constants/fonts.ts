@@ -2,14 +2,14 @@
  * An array of fonts.
  */
 export class Font {
-  readonly index: number
-  readonly name: string
-  readonly css: string
+  readonly index: number;
+  readonly name: string;
+  readonly css: string;
 
   constructor(index: number, name: string, css: string) {
-    this.index = index
-    this.name = name
-    this.css = css
+    this.index = index;
+    this.name = name;
+    this.css = css;
   }
 }
 
@@ -25,9 +25,13 @@ export const fonts: Font[] = [
   new Font(0x8, "Lucida Calligraphy", '"Lucida Calligraphy", cursive, serif'),
   new Font(0x9, "Lucida Handwriting", '"Lucida Handwriting", cursive, serif'),
   new Font(0xa, "Lucida Sans", '"Lucida Sans Unicode", sans-serif'),
-  new Font(0xb, "Lucida Sans Typewriter", '"Lucida Sans Typewriter", sans-serif'),
+  new Font(
+    0xb,
+    "Lucida Sans Typewriter",
+    '"Lucida Sans Typewriter", sans-serif'
+  ),
   new Font(0xc, "Old English Text MT", '"Old English Text MT", serif'),
   new Font(0xd, "Symbol", "Symbol"),
   new Font(0xe, "Times New Roman", '"Times New Roman", Times, serif'),
   new Font(0xf, "Verdana", "Verdana, Geneva, sans-serif"),
-]
+];

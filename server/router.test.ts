@@ -1,7 +1,7 @@
-import { assertEquals } from "testing"
-import { Status } from "http"
-import { testImpSucceed } from "./imp.ts"
-import router from "./router.ts"
+import { assertEquals } from "testing";
+import { Status } from "http";
+import { testImpSucceed } from "./imp.ts";
+import router from "./router.ts";
 
 Deno.test({
   name: "smoke test all pages",
@@ -21,14 +21,14 @@ Deno.test({
       "contact",
       "register",
       "login",
-    ]
+    ];
     for (const page of pages) {
-      const request = new Request(`http://localhost/${page}`)
-      const response = await router(request, testImpSucceed)
-      assertEquals(response.status, Status.OK)
+      const request = new Request(`http://localhost/${page}`);
+      const response = await router(request, testImpSucceed);
+      assertEquals(response.status, Status.OK);
     }
-    const request = new Request("http://localhost/documentation")
-    const response = await router(request, testImpSucceed)
-    assertEquals(response.status, Status.Found)
-  }
-})
+    const request = new Request("http://localhost/documentation");
+    const response = await router(request, testImpSucceed);
+    assertEquals(response.status, Status.Found);
+  },
+});

@@ -1,14 +1,14 @@
-import { Example, Group, groups } from "../../constants/examples.ts"
-import { fill, a, span, i, div } from "../../tools/elements.ts"
-import { state } from "../../state/index.ts"
-import { closeMenu, toggleMenu } from "../view.ts"
+import { Example, Group, groups } from "../../constants/examples.ts";
+import { fill, a, span, i, div } from "../../tools/elements.ts";
+import { state } from "../../state/index.ts";
+import { closeMenu, toggleMenu } from "../view.ts";
 
-const examplesMenu = document.querySelector('[data-component="examplesMenu"]')
+const examplesMenu = document.querySelector('[data-component="examplesMenu"]');
 
 if (examplesMenu) {
-  const groupLinks = groups.slice(1).map(exampleGroupLink)
-  const groupMenus = groups.slice(1).map(exampleGroupMenu)
-  fill(examplesMenu as HTMLElement, groupLinks.concat(groupMenus))
+  const groupLinks = groups.slice(1).map(exampleGroupLink);
+  const groupMenus = groups.slice(1).map(exampleGroupMenu);
+  fill(examplesMenu as HTMLElement, groupLinks.concat(groupMenus));
 }
 
 function exampleGroupLink(group: Group): HTMLElement {
@@ -16,16 +16,18 @@ function exampleGroupLink(group: Group): HTMLElement {
     on: [
       "click",
       function () {
-        toggleMenu(group.id)
+        toggleMenu(group.id);
       },
     ],
     "data-action": "toggleMenu",
     "data-arg": group.id,
     content: [
-      span({ content: `Examples ${group.index.toString(10)} - ${group.title}` }),
+      span({
+        content: `Examples ${group.index.toString(10)} - ${group.title}`,
+      }),
       i({ className: "fa fa-caret-right", "aria-hidden": "true" }),
     ],
-  })
+  });
 }
 
 function exampleGroupMenu(group: Group): HTMLElement {
@@ -37,15 +39,18 @@ function exampleGroupMenu(group: Group): HTMLElement {
         on: [
           "click",
           function () {
-            closeMenu(group.id)
+            closeMenu(group.id);
           },
         ],
         "data-action": "closeMenu",
         "data-arg": group.id,
-        content: [i({ className: "fa fa-caret-left", "aria-hidden": "true" }), span({ content: "back" })],
+        content: [
+          i({ className: "fa fa-caret-left", "aria-hidden": "true" }),
+          span({ content: "back" }),
+        ],
       }) as HTMLElement,
     ].concat(group.examples.map(exampleLink)),
-  })
+  });
 }
 
 function exampleLink(example: Example): HTMLElement {
@@ -53,9 +58,9 @@ function exampleLink(example: Example): HTMLElement {
     on: [
       "click",
       function () {
-        state.openExampleFile(example.id)
+        state.openExampleFile(example.id);
       },
     ],
     content: [span({ content: example.names[state.language] })],
-  })
+  });
 }

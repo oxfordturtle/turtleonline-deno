@@ -1,7 +1,13 @@
-import type { Imp, User } from "./types.ts"
-import { readFile } from "./imp/file.ts"
-import { createUser, readUser, updateUser, deleteUser, readUsers } from "./imp/user.ts"
-import { sendVerifyEmail, sendCredentialsEmail } from "./imp/email.ts"
+import type { Imp, User } from "./types.ts";
+import { readFile } from "./imp/file.ts";
+import {
+  createUser,
+  readUser,
+  updateUser,
+  deleteUser,
+  readUsers,
+} from "./imp/user.ts";
+import { sendVerifyEmail, sendCredentialsEmail } from "./imp/email.ts";
 
 const imp: Imp = {
   readFile,
@@ -12,9 +18,9 @@ const imp: Imp = {
   deleteUser,
   sendVerifyEmail,
   sendCredentialsEmail,
-}
+};
 
-export default imp
+export default imp;
 
 // dummy implementations for use in tests
 export const testImpFail: Imp = {
@@ -26,7 +32,7 @@ export const testImpFail: Imp = {
   deleteUser: async () => await ["left", new Error()],
   sendVerifyEmail: async () => await { success: false },
   sendCredentialsEmail: async () => await { success: false },
-}
+};
 
 export const testImpSucceed: Imp = {
   readFile: async () => await new Uint8Array(),
@@ -37,7 +43,7 @@ export const testImpSucceed: Imp = {
   deleteUser: async () => await ["right", undefined],
   sendVerifyEmail: async () => await { success: true },
   sendCredentialsEmail: async () => await { success: true },
-}
+};
 
 const dummyUser: User = {
   username: "dummy",
@@ -56,4 +62,4 @@ const dummyUser: User = {
   admin: false,
   receivingEmails: true,
   systemSettings: null,
-}
+};

@@ -1,317 +1,327 @@
-import { state } from "../state/index.ts"
-import * as machine from "../machine/index.ts"
-import { fill, i } from "../tools/elements.ts"
-import { on, send } from "../tools/hub.ts"
-import { toggleMenu, openMenu, closeMenu, toggleSystemMenu, openSystemMenu, closeSystemMenu, selectTab } from "./view.ts"
-import { SystemError } from "../tools/error.ts"
+import { state } from "../state/index.ts";
+import * as machine from "../machine/index.ts";
+import { fill, i } from "../tools/elements.ts";
+import { on, send } from "../tools/hub.ts";
+import {
+  toggleMenu,
+  openMenu,
+  closeMenu,
+  toggleSystemMenu,
+  openSystemMenu,
+  closeSystemMenu,
+  selectTab,
+} from "./view.ts";
+import { SystemError } from "../tools/error.ts";
 
-const notImplemented = new SystemError("This feature has not yet been implemented in the online system.")
+const notImplemented = new SystemError(
+  "This feature has not yet been implemented in the online system."
+);
 
 for (const element of Array.from(document.querySelectorAll("[data-action]"))) {
-  const el = element as HTMLButtonElement
+  const el = element as HTMLButtonElement;
   switch (el.dataset.action) {
     // general actions
     case "toggleMenu":
       el.addEventListener("click", function (): void {
-        el.blur()
+        el.blur();
         if (el.dataset.arg) {
-          toggleMenu(el.dataset.arg)
+          toggleMenu(el.dataset.arg);
         }
-      })
-      on("toggleMenu", toggleMenu)
-      break
+      });
+      on("toggleMenu", toggleMenu);
+      break;
 
     case "openMenu":
       el.addEventListener("click", function (): void {
-        el.blur()
+        el.blur();
         if (el.dataset.arg) {
-          openMenu(el.dataset.arg)
+          openMenu(el.dataset.arg);
         }
-      })
-      on("openMenu", openMenu)
-      break
+      });
+      on("openMenu", openMenu);
+      break;
 
     case "closeMenu":
       el.addEventListener("click", function (): void {
-        el.blur()
+        el.blur();
         if (el.dataset.arg) {
-          closeMenu(el.dataset.arg)
+          closeMenu(el.dataset.arg);
         }
-      })
-      on("closeMenu", closeMenu)
-      break
+      });
+      on("closeMenu", closeMenu);
+      break;
 
     case "closeSiteMenus":
       el.addEventListener("click", function (): void {
-        closeMenu("site")
-        closeMenu("documentation")
-        closeMenu("user")
-      })
-      break
+        closeMenu("site");
+        closeMenu("documentation");
+        closeMenu("user");
+      });
+      break;
 
     case "toggleSystemMenu":
       el.addEventListener("click", function (): void {
-        el.blur()
+        el.blur();
         if (el.dataset.arg) {
-          toggleSystemMenu(el.dataset.arg)
+          toggleSystemMenu(el.dataset.arg);
         }
-      })
-      on("toggleSystemMenu", toggleSystemMenu)
-      break
+      });
+      on("toggleSystemMenu", toggleSystemMenu);
+      break;
 
     case "openSystemMenu":
       el.addEventListener("click", function (): void {
-        el.blur()
+        el.blur();
         if (el.dataset.arg) {
-          openSystemMenu(el.dataset.arg)
+          openSystemMenu(el.dataset.arg);
         }
-      })
-      on("openSystemMenu", openSystemMenu)
-      break
+      });
+      on("openSystemMenu", openSystemMenu);
+      break;
 
     case "closeSystemMenu":
       el.addEventListener("click", function (): void {
-        el.blur()
+        el.blur();
         if (el.dataset.arg) {
-          closeSystemMenu(el.dataset.arg)
+          closeSystemMenu(el.dataset.arg);
         }
-      })
-      on("closeSystemMenu", closeSystemMenu)
-      break
+      });
+      on("closeSystemMenu", closeSystemMenu);
+      break;
 
     case "selectTab":
       el.addEventListener("change", function (): void {
-        el.blur()
-        selectTab(el.value)
-      })
-      on("selectTab", selectTab)
-      break
+        el.blur();
+        selectTab(el.value);
+      });
+      on("selectTab", selectTab);
+      break;
 
     case "maximize":
       el.addEventListener("click", function (): void {
-        el.blur()
-        document.body.classList.toggle("fullscreen")
+        el.blur();
+        document.body.classList.toggle("fullscreen");
         if (document.body.classList.contains("fullscreen")) {
-          fill(el, [i({ className: "fa fa-compress", title: "Expand down" })])
+          fill(el, [i({ className: "fa fa-compress", title: "Expand down" })]);
         } else {
-          fill(el, [i({ className: "fa fa-expand", title: "Maximize" })])
+          fill(el, [i({ className: "fa fa-expand", title: "Maximize" })]);
         }
-      })
-      break
+      });
+      break;
 
     // file menu actions
     case "newProgram":
       el.addEventListener("click", function () {
-        state.newFile()
-      })
-      break
+        state.newFile();
+      });
+      break;
 
     case "newSkeletonProgram":
       el.addEventListener("click", function () {
-        state.newFile(true)
-      })
-      break
+        state.newFile(true);
+      });
+      break;
 
     case "openProgram":
       el.addEventListener("click", function () {
-        state.openLocalFile()
-      })
-      break
+        state.openLocalFile();
+      });
+      break;
 
     case "saveProgram":
       el.addEventListener("click", function () {
-        state.saveLocalFile()
-      })
-      break
+        state.saveLocalFile();
+      });
+      break;
 
     case "saveExportFile":
       el.addEventListener("click", function () {
-        send("error", notImplemented)
-      })
-      break
+        send("error", notImplemented);
+      });
+      break;
 
     case "closeProgram":
       el.addEventListener("click", function () {
-        state.closeCurrentFile()
-      })
-      break
+        state.closeCurrentFile();
+      });
+      break;
 
     case "copyCanvasGraphic":
       el.addEventListener("click", function () {
-        send("error", notImplemented)
-      })
-      break
+        send("error", notImplemented);
+      });
+      break;
 
     case "saveCanvasGraphic":
       el.addEventListener("click", function () {
-        send("error", notImplemented)
-      })
-      break
+        send("error", notImplemented);
+      });
+      break;
 
     case "printProgram":
       el.addEventListener("click", function () {
-        send("error", notImplemented)
-      })
-      break
+        send("error", notImplemented);
+      });
+      break;
 
     case "printOutputText":
       el.addEventListener("click", function () {
-        send("error", notImplemented)
-      })
-      break
+        send("error", notImplemented);
+      });
+      break;
 
     case "printConsoleText":
       el.addEventListener("click", function () {
-        send("error", notImplemented)
-      })
-      break
+        send("error", notImplemented);
+      });
+      break;
 
     // edit actions
     case "undo":
       el.addEventListener("click", function () {
-        state.undo()
-      })
-      break
+        state.undo();
+      });
+      break;
 
     case "redo":
       el.addEventListener("click", function () {
-        state.redo()
-      })
-      break
+        state.redo();
+      });
+      break;
 
     case "cut":
       el.addEventListener("click", function () {
-        state.cut()
-      })
-      break
+        state.cut();
+      });
+      break;
 
     case "copy":
       el.addEventListener("click", function () {
-        state.copy()
-      })
-      break
+        state.copy();
+      });
+      break;
 
     case "paste":
       el.addEventListener("click", function () {
-        state.paste()
-      })
-      break
+        state.paste();
+      });
+      break;
 
     case "selectAll":
       el.addEventListener("click", function () {
-        state.selectAll()
-      })
-      break
+        state.selectAll();
+      });
+      break;
 
     case "findAndReplace":
       el.addEventListener("click", function () {
-        send("error", notImplemented)
-      })
-      break
+        send("error", notImplemented);
+      });
+      break;
 
     case "autoFormat":
       el.addEventListener("click", function () {
-        send("error", notImplemented)
-      })
-      break
+        send("error", notImplemented);
+      });
+      break;
 
     case "storeCopy":
       el.addEventListener("click", function () {
-        state.backupCode()
-      })
-      break
+        state.backupCode();
+      });
+      break;
 
     case "restoreCopy":
       el.addEventListener("click", function () {
-        state.restoreCode()
-      })
-      break
+        state.restoreCode();
+      });
+      break;
 
     // compile actions
     case "compile":
       el.addEventListener("click", function () {
-        state.compileCurrentFile()
-      })
-      break
+        state.compileCurrentFile();
+      });
+      break;
 
     case "savePCodeJson":
       el.addEventListener("click", function () {
-        send("error", notImplemented)
-      })
-      break
+        send("error", notImplemented);
+      });
+      break;
 
     case "savePCodeBinary":
       el.addEventListener("click", function () {
-        send("error", notImplemented)
-      })
-      break
+        send("error", notImplemented);
+      });
+      break;
 
     // run actions
     case "run":
       el.addEventListener("click", function (): void {
-        el.blur()
-        state.playPauseMachine()
-      })
-      break
+        el.blur();
+        state.playPauseMachine();
+      });
+      break;
 
     case "halt":
       el.addEventListener("click", function (): void {
-        el.blur()
-        machine.halt()
-      })
-      break
+        el.blur();
+        machine.halt();
+      });
+      break;
 
     case "pause":
       el.addEventListener("click", function (): void {
-        el.blur()
-        machine.pause()
-      })
-      break
+        el.blur();
+        machine.pause();
+      });
+      break;
 
     case "resetMachine":
       el.addEventListener("click", function (): void {
-        el.blur()
-        machine.reset()
-        closeMenu("system")
-      })
-      break
+        el.blur();
+        machine.reset();
+        closeMenu("system");
+      });
+      break;
 
     case "viewMachineOptions":
       el.addEventListener("click", function (): void {
-        send("selectTab", "options")
-        closeMenu("system")
-      })
-      break
+        send("selectTab", "options");
+        closeMenu("system");
+      });
+      break;
 
     case "loadAndRunPCode":
       el.addEventListener("click", function (): void {
-        send("error", notImplemented)
-      })
-      break
+        send("error", notImplemented);
+      });
+      break;
 
     // options actions
     case "saveSettings":
       el.addEventListener("click", function (): void {
-        state.saveSettings()
-      })
-      break
+        state.saveSettings();
+      });
+      break;
 
     case "resetSettings":
       el.addEventListener("click", function (): void {
-        state.resetDefaults()
-      })
-      break
+        state.resetDefaults();
+      });
+      break;
 
     // other actions
     case "dumpMemory":
       el.addEventListener("click", function () {
-        el.blur()
-        state.dumpMemory()
-      })
-      break
+        el.blur();
+        state.dumpMemory();
+      });
+      break;
 
     default:
-      console.error(`Unknown action '${el.dataset.action}'.`)
-      break
+      console.error(`Unknown action '${el.dataset.action}'.`);
+      break;
   }
 }

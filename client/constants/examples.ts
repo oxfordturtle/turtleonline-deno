@@ -4,38 +4,49 @@
  * Example program code is stored in the /public/examples directory, to be
  * fetched as needed.
  */
-import type { Language } from "./languages.ts"
+import type { Language } from "./languages.ts";
 
 /** Example class */
 export class Example {
-  readonly groupId: string
-  readonly id: string
-  readonly names: Record<Language, string>
+  readonly groupId: string;
+  readonly id: string;
+  readonly names: Record<Language, string>;
 
   /** constructor */
-  constructor(groupId: string, id: string, names: Record<Language, string> | string) {
-    this.groupId = groupId
-    this.id = id
+  constructor(
+    groupId: string,
+    id: string,
+    names: Record<Language, string> | string
+  ) {
+    this.groupId = groupId;
+    this.id = id;
     this.names =
       typeof names === "string"
-        ? { BASIC: names, C: names, Java: names, Pascal: names, Python: names, TypeScript: names }
-        : names
+        ? {
+            BASIC: names,
+            C: names,
+            Java: names,
+            Pascal: names,
+            Python: names,
+            TypeScript: names,
+          }
+        : names;
   }
 }
 
 /** Example group class */
 export class Group {
-  readonly index: number
-  readonly id: string
-  readonly title: string
-  readonly examples: Example[]
+  readonly index: number;
+  readonly id: string;
+  readonly title: string;
+  readonly examples: Example[];
 
   /** constructor */
   constructor(index: number, id: string, title: string) {
-    this.index = index
-    this.id = id
-    this.title = title
-    this.examples = examples.filter((x) => x.groupId === id)
+    this.index = index;
+    this.id = id;
+    this.title = title;
+    this.examples = examples.filter((x) => x.groupId === id);
   }
 }
 
@@ -70,7 +81,11 @@ export const examples: Example[] = [
   new Example("Procedures", "ColourSpiral", "Spiral of colours (simple PCODE)"),
   new Example("Procedures", "SimpleProc", "Simple procedure (using REPEAT)"),
   new Example("Procedures", "ParameterProc", "Procedure with parameter"),
-  new Example("Procedures", "ResizableFace", "Resizable face (nested procedures)"),
+  new Example(
+    "Procedures",
+    "ResizableFace",
+    "Resizable face (nested procedures)"
+  ),
   new Example("Procedures", "Polygons", "Polygons (two parameters)"),
   new Example("Procedures", "Stars", "Stars (using ANGLES and FORGET)"),
   new Example("Procedures", "PolygonRings", "Polygon rings (three parameters)"),
@@ -88,7 +103,11 @@ export const examples: Example[] = [
   new Example("Further", "RefParams", "Reference parameters"),
   new Example("Further", "Balls3D", "3D colour effects"),
   new Example("Further", "StringFunctions", "Standard string functions"),
-  new Example("Further", "UserStringFunctions", "User-defined string functions"),
+  new Example(
+    "Further",
+    "UserStringFunctions",
+    "User-defined string functions"
+  ),
   new Example("Further", "MathFunctions", "Mathematical functions"),
   new Example("Further", "TrigGraphs", "Trigonometric graphs"),
   // examples 4 - Movement
@@ -107,13 +126,25 @@ export const examples: Example[] = [
   new Example("Interaction", "QuickClick", "Mouse reaction game"),
   new Example("Interaction", "TypingTest", "Typing test (checking characters)"),
   new Example("Interaction", "TypingTestKeys", "Typing test (checking keys)"),
-  new Example("Interaction", "IterationGame", "Iteration game (Collatz sequence)"),
-  new Example("Interaction", "SpongeThrow", "Throwing sponges at a moving face"),
+  new Example(
+    "Interaction",
+    "IterationGame",
+    "Iteration game (Collatz sequence)"
+  ),
+  new Example(
+    "Interaction",
+    "SpongeThrow",
+    "Throwing sponges at a moving face"
+  ),
   new Example("Interaction", "Arcade", "Arcade shooting game"),
   new Example("Interaction", "SnakeGame", "Snake (classic game)"),
   new Example("Interaction", "SimpleDraw", "Drawing to the mouse"),
   new Example("Interaction", "PaintApp", "Painting application"),
-  new Example("Interaction", "MultipleTurtles", "Multiple turtles and varying ANGLES"),
+  new Example(
+    "Interaction",
+    "MultipleTurtles",
+    "Multiple turtles and varying ANGLES"
+  ),
   // examples 6 - Files
   new Example("Files", "WriteAndReadFile", "Writing and reading a text file"),
   new Example("Files", "RenameAndDeleteFile", "Renaming and deleting a file"),
@@ -150,21 +181,37 @@ export const examples: Example[] = [
   new Example("Fractals", "KochSnowflake", "Koch snowflake"),
   new Example("Fractals", "SquareKoch", "Square Koch fractal curves"),
   new Example("Fractals", "Sierpinski", "Sierpinski triangle (by deletion)"),
-  new Example("Fractals", "SierpinskiDots", "Sierpinski triangle (by random dots)"),
-  new Example("Fractals", "IFSBackground", "Iterated function systems (IFS) background"),
+  new Example(
+    "Fractals",
+    "SierpinskiDots",
+    "Sierpinski triangle (by random dots)"
+  ),
+  new Example(
+    "Fractals",
+    "IFSBackground",
+    "Iterated function systems (IFS) background"
+  ),
   new Example("Fractals", "IFSColour", "IFS mappings on coloured background"),
   new Example("Fractals", "IFSDemonstrator", "IFS demonstrator program"),
   new Example("Fractals", "Logistic", "Logistic equation"),
   new Example("Fractals", "LogisticSpider", "Logistic spider"),
   new Example("Fractals", "MandelbrotDemo", "Mandelbrot multi-colour"),
-  new Example("Fractals", "MandelbrotSpectrumDemo", "Mandelbrot spectral colours"),
+  new Example(
+    "Fractals",
+    "MandelbrotSpectrumDemo",
+    "Mandelbrot spectral colours"
+  ),
   new Example("Fractals", "Quine", "Quine (self-replicating) program"),
   // examples 10 - Logic&CS
   new Example("Logic&CS", "Hanoi", "Tower of Hanoi by recursion"),
   new Example("Logic&CS", "IterateRoot", "Square roots by iteration"),
   new Example("Logic&CS", "Fibonaccis", "Fibonaccis (using ARRAY and TIME)"),
   new Example("Logic&CS", "Sorting", "Comparison of sorting methods"),
-  new Example("Logic&CS", "SortingStrings", "Comparison of sorting methods (strings)"),
+  new Example(
+    "Logic&CS",
+    "SortingStrings",
+    "Comparison of sorting methods (strings)"
+  ),
   new Example("Logic&CS", "NoughtsAndCrosses", "Noughts and crosses"),
   new Example("Logic&CS", "NimLearn", "Nim learning program"),
   new Example("Logic&CS", "MultiNim", "Nim with multiple piles"),
@@ -172,7 +219,7 @@ export const examples: Example[] = [
   // these last two examples don't yet compile properly :(
   // new Example('Logic&CS', 'TuringMachines', 'Turing machine simulator'),
   // new Example('Logic&CS', 'Syllogisms', 'Syllogism testing program')
-]
+];
 
 /** array of example groups */
 export const groups: Group[] = [
@@ -187,4 +234,4 @@ export const groups: Group[] = [
   new Group(7, "Models", "other models"),
   new Group(8, "Fractals", "self-similarity and chaos"),
   new Group(9, "Logic&CS", "computer science and logic"),
-]
+];

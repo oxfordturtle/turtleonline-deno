@@ -2,14 +2,14 @@
  * Cursors.
  */
 export class Cursor {
-  index: number
-  name: string
-  css: string
+  index: number;
+  name: string;
+  css: string;
 
   constructor(index: number, name: string, css: string) {
-    this.index = index
-    this.name = name
-    this.css = css
+    this.index = index;
+    this.name = name;
+    this.css = css;
   }
 }
 
@@ -30,4 +30,4 @@ export const cursors: Cursor[] = [
   new Cursor(0xd, "No Drop", "no-drop"),
   new Cursor(0xe, "Forbidden", "not-allowed"),
   new Cursor(0xf, "Help", "help"),
-]
+];

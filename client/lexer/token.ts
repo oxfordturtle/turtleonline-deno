@@ -1,15 +1,20 @@
 /** token class definition */
 export class Token {
-  readonly type: TokenType
-  readonly content: string
-  readonly line: number
-  readonly character: number
+  readonly type: TokenType;
+  readonly content: string;
+  readonly line: number;
+  readonly character: number;
 
-  constructor(type: TokenType, content: string, line: number, character: number) {
-    this.type = type
-    this.content = content
-    this.line = line
-    this.character = character
+  constructor(
+    type: TokenType,
+    content: string,
+    line: number,
+    character: number
+  ) {
+    this.type = type;
+    this.content = content;
+    this.line = line;
+    this.character = character;
   }
 }
 
@@ -42,4 +47,4 @@ export type TokenType =
   | "command"
   | "colour"
   | "identifier"
-  | "illegal"
+  | "illegal";

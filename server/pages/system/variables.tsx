@@ -1,7 +1,16 @@
-import React from "react"
+import React from "react";
 
-export default (): JSX.Element => <>
-  <div className="system-tab-pane" data-tab="variables" data-mode="expert,machine">
-    <p>Details of program variables and subroutines are not yet available in the online system.</p>
-  </div>
-</>
+export default (): JSX.Element => (
+  <>
+    <div
+      className="system-tab-pane"
+      data-tab="variables"
+      data-mode="expert,machine"
+    >
+      <p>
+        Details of program variables and subroutines are not yet available in
+        the online system.
+      </p>
+    </div>
+  </>
+);

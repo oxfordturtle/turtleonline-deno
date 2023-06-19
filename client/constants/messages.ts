@@ -1,5 +1,5 @@
 /** message type */
-export type Message = typeof messages[number]
+export type Message = (typeof messages)[number];
 
 /** array of messages */
 export const messages = [
@@ -94,4 +94,4 @@ export const messages = [
   "turtaChanged",
   "turttChanged",
   "turtcChanged",
-] as const
+] as const;

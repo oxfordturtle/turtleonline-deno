@@ -1,18 +1,18 @@
 /**
  * Keywords for the Turtle languages.
  */
-import type { Language } from "./languages.ts"
+import type { Language } from "./languages.ts";
 
 /** keyword class definition */
 export class Keyword {
-  readonly category: number
-  readonly level: number
-  readonly name: string
+  readonly category: number;
+  readonly level: number;
+  readonly name: string;
 
   constructor(category: number, level: number, name: string) {
-    this.category = category
-    this.level = level
-    this.name = name
+    this.category = category;
+    this.level = level;
+    this.name = name;
   }
 }
 
@@ -41,7 +41,7 @@ const BASIC = [
   new Keyword(22, 0, "NEXT"),
   new Keyword(22, 0, "UNTIL"),
   new Keyword(22, 0, "ENDWHILE"),
-]
+];
 
 /** keywords for Turtle C */
 const C = [
@@ -54,7 +54,7 @@ const C = [
   // other keywords (not shown in usage tables)
   new Keyword(22, 0, "const"),
   new Keyword(22, 0, "return"),
-]
+];
 
 /** keywords for Turtle Java */
 const Java = [
@@ -68,7 +68,7 @@ const Java = [
   new Keyword(22, 0, "class"),
   new Keyword(22, 0, "final"),
   new Keyword(22, 0, "return"),
-]
+];
 
 /** keywords for Turtle Pascal */
 const Pascal = [
@@ -93,7 +93,7 @@ const Pascal = [
   new Keyword(22, 0, "downto"),
   new Keyword(22, 0, "do"),
   new Keyword(22, 0, "until"),
-]
+];
 
 /** keywords for Turtle Python */
 const Python = [
@@ -111,7 +111,7 @@ const Python = [
   new Keyword(22, 0, "in"),
   new Keyword(22, 0, "pass"),
   new Keyword(22, 0, "return"),
-]
+];
 
 /** keywords for Turtle TypeScript */
 const TypeScript = [
@@ -126,7 +126,14 @@ const TypeScript = [
   new Keyword(22, 0, "var"),
   new Keyword(22, 0, "const"),
   new Keyword(22, 0, "return"),
-]
+];
 
 /** export a record of all keywords */
-export const keywords: Record<Language, Keyword[]> = { BASIC, C, Java, Pascal, Python, TypeScript }
+export const keywords: Record<Language, Keyword[]> = {
+  BASIC,
+  C,
+  Java,
+  Pascal,
+  Python,
+  TypeScript,
+};

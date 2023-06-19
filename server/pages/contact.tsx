@@ -1,20 +1,22 @@
-import React from "react"
-import type { RequestParams } from "../types.ts"
-import page from "./_layout/page.tsx"
-import { htmlResponse } from "../utils/response.ts"
+import React from "react";
+import type { RequestParams } from "../types.ts";
+import page from "./_layout/page.tsx";
+import { htmlResponse } from "../utils/response.ts";
 
-export default (requestParams: RequestParams): Promise<Response> => htmlResponse(page(requestParams, header, main))
+export default (requestParams: RequestParams): Promise<Response> =>
+  htmlResponse(page(requestParams, header, main));
 
 const header = (
   <>
     <h1>Contact Us</h1>
     <p>
-      If you have any questions about the <i>Turtle System</i>, its use in the National Curriculum, or if you have any
-      requests or suggestions for how it could be improved, please get in touch. We particularly welcome input from
+      If you have any questions about the <i>Turtle System</i>, its use in the
+      National Curriculum, or if you have any requests or suggestions for how it
+      could be improved, please get in touch. We particularly welcome input from
       teachers in the UK, for whom the software is primarily intended.
     </p>
   </>
-)
+);
 
 const main = (
   <>
@@ -55,4 +57,4 @@ const main = (
       </a>
     </p>
   </>
-)
+);

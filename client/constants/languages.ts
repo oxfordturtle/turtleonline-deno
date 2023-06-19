@@ -1,9 +1,16 @@
 /*
  * Turtle languages.
  */
-export type Language = typeof languages[number]
+export type Language = (typeof languages)[number];
 
-export const languages = ["BASIC", "C", "Java", "Pascal", "Python", "TypeScript"] as const
+export const languages = [
+  "BASIC",
+  "C",
+  "Java",
+  "Pascal",
+  "Python",
+  "TypeScript",
+] as const;
 
 export const extensions = {
   BASIC: "tbas",
@@ -12,4 +19,4 @@ export const extensions = {
   Pascal: "tpas",
   Python: "tpy",
   TypeScript: "tts",
-}
+};

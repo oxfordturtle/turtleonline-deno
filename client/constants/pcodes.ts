@@ -212,7 +212,7 @@ export enum PCode {
 export function pcodeArgs(pcode: PCode): number {
   switch (pcode) {
     case PCode.lstr:
-      return -1 // varies; the next code specifies how many
+      return -1; // varies; the next code specifies how many
 
     case PCode.ldin: // fallthrough
     case PCode.ldvg: // fallthrough
@@ -223,7 +223,7 @@ export function pcodeArgs(pcode: PCode): number {
     case PCode.subr: // fallthrough
     case PCode.pssr: // fallthrough
     case PCode.memr:
-      return 1
+      return 1;
 
     case PCode.ldvv: // fallthrough
     case PCode.ldvr: // fallthrough
@@ -231,9 +231,9 @@ export function pcodeArgs(pcode: PCode): number {
     case PCode.stvv: // fallthrough
     case PCode.stvr: // fallthrough
     case PCode.memc:
-      return 2
+      return 2;
 
     default:
-      return 0
+      return 0;
   }
 }

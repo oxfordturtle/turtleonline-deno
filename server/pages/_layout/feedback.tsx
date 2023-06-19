@@ -1,10 +1,12 @@
-import React from "react"
+import React from "react";
 
 export type FeedbackProps = {
-  ok: boolean
-  message: string
-}
+  ok: boolean;
+  message: string;
+};
 
 export default (props: FeedbackProps): JSX.Element => (
-  <div className={`notice ${props.ok ? "success" : "error"}`}>{props.message}</div>
-)
+  <div className={`notice ${props.ok ? "success" : "error"}`}>
+    {props.message}
+  </div>
+);

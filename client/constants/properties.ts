@@ -3,7 +3,7 @@
  */
 
 /** property type */
-export type Property = typeof properties[number]
+export type Property = (typeof properties)[number];
 
 /** array of property names */
 export const properties = [
@@ -58,7 +58,7 @@ export const properties = [
   "separateReturnStack",
   "separateMemoryControlStack",
   "separateSubroutineRegisterStack",
-] as const
+] as const;
 
 /** default values */
 export const defaults: Record<Property, any> = {
@@ -113,4 +113,4 @@ export const defaults: Record<Property, any> = {
   separateReturnStack: true,
   separateMemoryControlStack: true,
   separateSubroutineRegisterStack: true,
-} as const
+} as const;

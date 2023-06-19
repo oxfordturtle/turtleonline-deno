@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 
 export default (): JSX.Element => (
   <div className="dashboard-back-button">
@@ -9,4 +9,4 @@ export default (): JSX.Element => (
       <span className="text">back</span>
     </a>
   </div>
-)
+);

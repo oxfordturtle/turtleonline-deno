@@ -1,70 +1,85 @@
-import type { Type, Operator, Lexeme } from "../../lexer/lexeme.ts"
+import type { Type, Operator, Lexeme } from "../../lexer/lexeme.ts";
 
 /** gets the type of an expression with the given operator */
 export function type(operator: Operator): Type {
   switch (operator) {
     case "plus":
-      return "integer"
+      return "integer";
     case "scat":
-      return "string"
+      return "string";
     case "subt":
-      return "integer"
+      return "integer";
     case "or":
-      return "boolint"
+      return "boolint";
     case "orl":
-      return "boolint"
+      return "boolint";
     case "xor":
-      return "boolint"
+      return "boolint";
     case "and":
-      return "boolint"
+      return "boolint";
     case "andl":
-      return "boolint"
+      return "boolint";
     case "div":
-      return "integer"
+      return "integer";
     case "divr":
-      return "integer"
+      return "integer";
     case "mod":
-      return "integer"
+      return "integer";
     case "mult":
-      return "integer"
+      return "integer";
     case "neg":
-      return "integer"
+      return "integer";
     default:
-      return "boolean"
+      return "boolean";
   }
 }
 
 /** arrays of all operators */
 export const operators: [Operator[], Operator[], Operator[], Operator[]] = [
-  ["eqal", "less", "lseq", "more", "mreq", "noeq", "seql", "sles", "sleq", "smor", "smeq", "sneq"],
+  [
+    "eqal",
+    "less",
+    "lseq",
+    "more",
+    "mreq",
+    "noeq",
+    "seql",
+    "sles",
+    "sleq",
+    "smor",
+    "smeq",
+    "sneq",
+  ],
   ["plus", "scat", "subt", "or", "orl", "xor"],
   ["and", "andl", "div", "divr", "mod", "mult"],
   ["neg", "not"],
-]
+];
 
 /** gets an operator of the given level from a lexeme */
 export function operator(lexeme: Lexeme, level: number): Operator | undefined {
-  return operators[level].find((x) => lexeme.type === "operator" && lexeme.subtype === x)
+  return operators[level].find(
+    (x) => lexeme.type === "operator" && lexeme.subtype === x
+  );
 }
 
 /** maps boolean or integer operators to their string equivalents */
 export function stringOperator(operator: Operator): Operator {
   switch (operator) {
     case "eqal":
-      return "seql"
+      return "seql";
     case "less":
-      return "sles"
+      return "sles";
     case "lseq":
-      return "sleq"
+      return "sleq";
     case "more":
-      return "smor"
+      return "smor";
     case "mreq":
-      return "smeq"
+      return "smeq";
     case "noeq":
-      return "sneq"
+      return "sneq";
     case "plus":
-      return "scat"
+      return "scat";
     default:
-      return operator
+      return operator;
   }
 }

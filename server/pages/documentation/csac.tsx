@@ -1,41 +1,52 @@
-import React from "react"
-import type { RequestParams } from "../../types.ts"
-import page from "../_layout/page.tsx"
-import { htmlResponse } from "../../utils/response.ts"
+import React from "react";
+import type { RequestParams } from "../../types.ts";
+import page from "../_layout/page.tsx";
+import { htmlResponse } from "../../utils/response.ts";
 
-export default (requestParams: RequestParams): Promise<Response> => htmlResponse(page(requestParams, header, main))
+export default (requestParams: RequestParams): Promise<Response> =>
+  htmlResponse(page(requestParams, header, main));
 
 const header = (
   <>
     <h1>Computer Science Across the Curriculum</h1>
     <p>
-      As part of a joint project between Oxford University and Queen Mary, University of London, and with funding from
-      the Department for Education, a book entitled “Computer Science Across the Curriculum” has been written, to
-      illustrate the value of Computer Science in various different aspects of the national curriculum.
+      As part of a joint project between Oxford University and Queen Mary,
+      University of London, and with funding from the Department for Education,
+      a book entitled “Computer Science Across the Curriculum” has been written,
+      to illustrate the value of Computer Science in various different aspects
+      of the national curriculum.
     </p>
   </>
-)
+);
 
 const main = (
   <>
     <h2>Overview of Contents</h2>
     <p>
-      The book contains a general introductory chapter, followed by another that explains how to handle animation and
-      movement, after which it moves on to simulations in Physics (notably modelling projectile flight and spacecraft).
-      Then a chapter on cellular automata (including a model of disease and cell patterning, and the famous “Game of
-      Life”) prepares the way for a chapter on Chemistry, covering models of diffusion and Brownian motion. The chapter
-      devoted to Biology includes co-evolution of hunter and prey (cheetahs and gazelles), evolution of the sex ratio,
-      and flocking behaviour.
+      The book contains a general introductory chapter, followed by another that
+      explains how to handle animation and movement, after which it moves on to
+      simulations in Physics (notably modelling projectile flight and
+      spacecraft). Then a chapter on cellular automata (including a model of
+      disease and cell patterning, and the famous “Game of Life”) prepares the
+      way for a chapter on Chemistry, covering models of diffusion and Brownian
+      motion. The chapter devoted to Biology includes co-evolution of hunter and
+      prey (cheetahs and gazelles), evolution of the sex ratio, and flocking
+      behaviour.
     </p>
     <p>
-      Up to this point, the programs have been explained in a fair amount of detail, such as could support teaching in
-      class, but the remaining chapters aim instead to give a brief flavour of more advanced material for independent
-      exploration, with programs and further detail provided online, but only key ideas discussed in the book. In this
-      spirit, there is a chapter on chaos and self-similarity, with mathematical and especially biological examples
-      (population dynamics, algae and plant growth); and another chapter on wave phenomena, which is especially relevant
-      to Physics. Then follows a chapter on games and computer science — implementing three nice examples from cs4fn
-      (tic-tac-toe, Nim, and the knights’ tour), and leading up to the Turing machine — and finally a chapter on
-      Philosophy, covering the Turing test and the theory of the syllogism.
+      Up to this point, the programs have been explained in a fair amount of
+      detail, such as could support teaching in class, but the remaining
+      chapters aim instead to give a brief flavour of more advanced material for
+      independent exploration, with programs and further detail provided online,
+      but only key ideas discussed in the book. In this spirit, there is a
+      chapter on chaos and self-similarity, with mathematical and especially
+      biological examples (population dynamics, algae and plant growth); and
+      another chapter on wave phenomena, which is especially relevant to
+      Physics. Then follows a chapter on games and computer science —
+      implementing three nice examples from cs4fn (tic-tac-toe, Nim, and the
+      knights’ tour), and leading up to the Turing machine — and finally a
+      chapter on Philosophy, covering the Turing test and the theory of the
+      syllogism.
     </p>
     <h2>Links to the Programs</h2>
     <ol className="csac-examples">
@@ -57,13 +68,19 @@ const main = (
             <a href="/run?x=MovingBall">2.1 Moving ball (using variables)</a>
           </li>
           <li>
-            <a href="/run?x=BouncingBall">2.2 Bouncing ball (using variables)</a>
+            <a href="/run?x=BouncingBall">
+              2.2 Bouncing ball (using variables)
+            </a>
           </li>
           <li>
-            <a href="/run?x=TurtleMove">2.3 (a) Moving ball (using the Turtle)</a>
+            <a href="/run?x=TurtleMove">
+              2.3 (a) Moving ball (using the Turtle)
+            </a>
           </li>
           <li>
-            <a href="/run?x=TurtleBounce">2.3 (b) Bouncing ball (using the Turtle)</a>
+            <a href="/run?x=TurtleBounce">
+              2.3 (b) Bouncing ball (using the Turtle)
+            </a>
           </li>
           <li>
             <a href="/run?x=AskInput">2.4.1 Asking for typed input</a>
@@ -88,10 +105,14 @@ const main = (
         </ol>
       </li>
       <li>
-        <b>4. Cellular Automata: Modelling Disease, “Life”, and Shell Patterns</b>
+        <b>
+          4. Cellular Automata: Modelling Disease, “Life”, and Shell Patterns
+        </b>
         <ol className="csac-examples">
           <li>
-            <a href="/run?x=LifeStart">4.1 Initialising Conway's Game of Life</a>
+            <a href="/run?x=LifeStart">
+              4.1 Initialising Conway's Game of Life
+            </a>
           </li>
           <li>
             <a href="/run?x=Disease">4.2 Spread of disease</a>
@@ -145,10 +166,14 @@ const main = (
             <a href="/run?x=MandelbrotMini">7.2.1 Mandelbrot mini</a>
           </li>
           <li>
-            <a href="/run?x=MandelbrotSpectrum">7.2.2 (a) Mandelbrot spectrum</a>
+            <a href="/run?x=MandelbrotSpectrum">
+              7.2.2 (a) Mandelbrot spectrum
+            </a>
           </li>
           <li>
-            <a href="/run?x=MandelbrotMiniSpectrum">7.2.2 (b) Mandelbrot mini spectrum</a>
+            <a href="/run?x=MandelbrotMiniSpectrum">
+              7.2.2 (b) Mandelbrot mini spectrum
+            </a>
           </li>
           <li>
             <a href="/run?x=Triangles">7.3 (a) Recursive triangles</a>
@@ -160,7 +185,9 @@ const main = (
             <a href="/run?x=SierpinskiDots">7.3 (c) Sierpinski dots</a>
           </li>
           <li>
-            <a href="/run?x=IFSBackground">7.4 (a) Iterated function systems (IFS) background</a>
+            <a href="/run?x=IFSBackground">
+              7.4 (a) Iterated function systems (IFS) background
+            </a>
           </li>
           <li>
             <a href="/run?x=SierpinskiColour">7.4 (b) Sierpinski colour</a>
@@ -215,4 +242,4 @@ const main = (
       </li>
     </ol>
   </>
-)
+);

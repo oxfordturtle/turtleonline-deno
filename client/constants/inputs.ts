@@ -4,12 +4,12 @@
 
 /** input class definition */
 export class Input {
-  readonly name: string
-  readonly value: number
+  readonly name: string;
+  readonly value: number;
 
   constructor(name: string, value: number) {
-    this.name = name
-    this.value = value
+    this.name = name;
+    this.value = value;
   }
 }
 
@@ -128,4 +128,4 @@ export const inputs: Input[] = [
   new Input("hash", 222),
   new Input("backtick", 223),
   new Input("all", 256),
-]
+];

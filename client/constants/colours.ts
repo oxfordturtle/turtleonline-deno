@@ -1,24 +1,31 @@
 /*
  * An array of colours.
  */
-import type { Language } from "./languages.ts"
+import type { Language } from "./languages.ts";
 
 /** colour class definition */
 export class Colour {
-  readonly index: number
-  readonly names: Record<Language, string>
-  readonly type: "integer"
-  readonly value: number
-  readonly hex: string
-  readonly text: "white" | "black"
+  readonly index: number;
+  readonly names: Record<Language, string>;
+  readonly type: "integer";
+  readonly value: number;
+  readonly hex: string;
+  readonly text: "white" | "black";
 
   constructor(index: number, name: string, value: number, dark: boolean) {
-    this.index = index
-    this.names = { BASIC: name.toUpperCase(), C: name, Java: name, Pascal: name, Python: name, TypeScript: name }
-    this.type = "integer"
-    this.value = value
-    this.hex = value.toString(16).padStart(6, "0").toUpperCase()
-    this.text = dark ? "white" : "black"
+    this.index = index;
+    this.names = {
+      BASIC: name.toUpperCase(),
+      C: name,
+      Java: name,
+      Pascal: name,
+      Python: name,
+      TypeScript: name,
+    };
+    this.type = "integer";
+    this.value = value;
+    this.hex = value.toString(16).padStart(6, "0").toUpperCase();
+    this.text = dark ? "white" : "black";
   }
 }
 
@@ -74,4 +81,4 @@ export const colours: Colour[] = [
   new Colour(48, "silver", 0xc0c0c0, false),
   new Colour(49, "white", 0xffffff, false),
   new Colour(50, "black", 0x000000, true),
-]
+];
