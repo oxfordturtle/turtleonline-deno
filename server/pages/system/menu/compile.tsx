@@ -37,7 +37,7 @@ export default (): JSX.Element => (
           <span>Initialise local variables (to zero/false)</span>
         </label>
         <label data-mode="machine">
-          <inpu t type="checkbox" data-binding="allowCSTR" />
+          <input type="checkbox" data-binding="allowCSTR" />
           <span>Allow quick string parameter copying with CSTR</span>
         </label>
         <hr data-mode="machine" />

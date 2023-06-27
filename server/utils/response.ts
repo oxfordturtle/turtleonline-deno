@@ -1,5 +1,6 @@
 import { Status, deleteCookie, setCookie } from "http";
 import { contentType } from "media_types";
+import { basename, extname } from "path";
 import * as bcrypt from "bcrypt";
 
 export const htmlResponse = async (
@@ -21,15 +22,16 @@ export const jsonResponse = async (
 
 export const fileResponse = async (
   file: Uint8Array,
-  ext: string,
+  path: string,
   username?: string | null
 ): Promise<Response> =>
   new Response(
     file,
     await responseInit(
-      contentType(ext) ?? "application/octet-stream",
+      contentType(extname(path)) ?? "application/octet-stream",
       Status.OK,
-      username
+      username,
+      basename(path)
     )
   );
 
@@ -42,9 +44,13 @@ export const redirectResponse = async (
 const responseInit = async (
   contentType: string,
   status: number,
-  username?: string | null
+  username?: string | null,
+  filename?: string
 ): Promise<ResponseInit> => {
   const headers = new Headers(headersInit(contentType));
+  if (filename !== undefined) {
+    headers.append("content-disposition", `attachment; filename=${filename}`);
+  }
   await fixCookies(headers, username);
   return { headers, status };
 };

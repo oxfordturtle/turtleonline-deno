@@ -36,7 +36,7 @@ const asset = async (
   const fileInfo = await imp.readFile(path);
   return fileInfo === undefined
     ? error(requestParams, Status.NotFound)
-    : fileResponse(fileInfo, extname(path));
+    : fileResponse(fileInfo, path);
 };
 
 const page = async (
