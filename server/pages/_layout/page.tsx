@@ -122,6 +122,12 @@ const Nav = ({
             </a>
             <div className="site-sub-menu" data-menu="documentation">
               <a
+                href="/documentation/programming"
+                className={requestParams.page === "programming" ? "active" : ""}
+              >
+                Programming with the Turtle System
+              </a>
+              <a
                 href="/documentation/system"
                 className={requestParams.page === "system" ? "active" : ""}
               >
