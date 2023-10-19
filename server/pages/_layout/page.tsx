@@ -125,7 +125,7 @@ const Nav = ({
                 href="/documentation/system"
                 className={requestParams.page === "system" ? "active" : ""}
               >
-                Turtle System User Guide
+                Turtle System User Guides
               </a>
               <a
                 href="/documentation/help"
@@ -139,7 +139,7 @@ const Nav = ({
               >
                 Commands &amp; Constants Reference
               </a>
-              <a
+              {/* <a
                 href="/documentation/exercises"
                 className={requestParams.page === "exercises" ? "active" : ""}
               >
@@ -156,7 +156,7 @@ const Nav = ({
                 className={requestParams.page === "languages" ? "active" : ""}
               >
                 Turtle Language Specifications
-              </a>
+              </a> */}
               <a
                 href="/documentation/csac"
                 className={requestParams.page === "csac" ? "active" : ""}
