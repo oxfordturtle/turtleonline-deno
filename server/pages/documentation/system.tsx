@@ -23,6 +23,35 @@ const header = (
 
 const main = (
   <>
+    <h2>Python Guides</h2>
+    <ul>
+      <li>
+        <a href="/downloads/docs/Turtle_Python_1_Getting_Started.pdf">
+          Turtle Python 1 - Getting Started
+        </a>
+      </li>
+      <li>
+        <a href="/downloads/docs/Turtle_Python_2_Spirals_and_Shapes.pdf">
+          Turtle Python 2 - Spirals and Shapes
+        </a>
+      </li>
+      <li>
+        <a href="/downloads/docs/Turtle_Python_3_Introducing_Recursion.pdf">
+          Turtle Python 3 - Introducing Recursion
+        </a>
+      </li>
+      <li>
+        <a href="/downloads/docs/Turtle_Python_4_Animation_and_Input.pdf">
+          Turtle Python 4 - Animation and Input
+        </a>
+      </li>
+      <li>
+        <a href="/downloads/docs/Turtle_Python_5_Cellular_Models.pdf">
+          Turtle Python 5 - Cellular Models
+        </a>
+      </li>
+    </ul>
+    <h2>General Guides</h2>
     <ul>
       <li>
         <a href="/downloads/docs/Guide_for_Normal_Users.pdf">
