@@ -10,7 +10,7 @@ const header = <h1>Turtle Language Specifications</h1>;
 
 const main = (
   <p>
-    Updated specifications for the Turtle languages are currently being
-    prepared. Please check back here soon.
+    Updated specifications for the Turtle languages are currently being prepared. Please check back
+    here soon.
   </p>
 );

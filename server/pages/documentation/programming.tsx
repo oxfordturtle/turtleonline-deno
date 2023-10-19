@@ -24,7 +24,7 @@ const main = (
   <>
     <p>
       <em>
-        Note: versions of these documents for other languages will be available soon (Autumn 2023).
+        Note: versions of these documents for other languages will be available soon (Winter 2023).
       </em>
     </p>
     <ul>

@@ -10,20 +10,17 @@ const header = (
   <>
     <h1>Turtle System User Guides</h1>
     <p>
-      The <i>Turtle System</i> is designed to be as easy to use and
-      self-explanatory as possible, and consequently you should have little
-      difficulty at least in getting started. However, there are several
-      features&mdash;particularly those designed to help teachers&mdash;that
-      will not be obvious unless you know to look for them. The following guides
-      point these out to you, while going systematically through the various
-      menus.
+      The <i>Turtle System</i> is designed to be as easy to use and self-explanatory as possible,
+      and consequently you should have little difficulty at least in getting started. However, there
+      are several features&mdash;particularly those designed to help teachers&mdash;that will not be
+      obvious unless you know to look for them. The following guides point these out to you, while
+      going systematically through the various menus.
     </p>
   </>
 );
 
 const main = (
   <>
-    <p><em>Note: these guides are currently being updated to reflect recent developments of the Turtle System (Autumn 2023).</em></p>
     <ul>
       <li>
         <a href="/downloads/docs/Guide_for_Normal_Users.pdf">
@@ -41,9 +38,7 @@ const main = (
         </a>
       </li>
       <li>
-        <a href="/downloads/docs/Guide_for_Teachers.pdf">
-          The Turtle System - Guide for Teachers
-        </a>
+        <a href="/downloads/docs/Guide_for_Teachers.pdf">The Turtle System - Guide for Teachers</a>
       </li>
     </ul>
   </>

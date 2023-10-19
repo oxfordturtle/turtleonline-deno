@@ -10,7 +10,7 @@ const header = <h1>Turtle Machine Specification</h1>;
 
 const main = (
   <p>
-    Updated documentation for the virtual Turtle Machine is currently being
-    prepared. Please check back here soon.
+    Updated documentation for the virtual Turtle Machine is currently being prepared. Please check
+    back here soon.
   </p>
 );
