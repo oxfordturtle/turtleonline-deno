@@ -53,7 +53,11 @@ const main = (
           Turtle Python 5 - Cellular Models
         </a>
       </li>
-      <li>Turtle Python 6 - Cellular Automata (in preparation, Autumn 2023)</li>
+      <li>
+        <a href="/downloads/docs/Turtle_Python_6_Cellular_Automata.pdf">
+          Turtle Python 6 - Cellular Automata
+        </a>
+      </li>
       <li>Turtle Python 7 - Chaos and Self-Similarity (in preparation, Autumn 2023)</li>
       <li>Turtle Python 8 - Models in Biology (in preparation, Autumn 2023)</li>
       <li>Turtle Python 9 - Models in Physics (in preparation, Autumn 2023)</li>
