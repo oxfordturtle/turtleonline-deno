@@ -49,7 +49,7 @@ const responseInit = async (
 ): Promise<ResponseInit> => {
   const headers = new Headers(headersInit(contentType));
   if (filename !== undefined) {
-    headers.append("content-disposition", `attachment; filename=${filename}`);
+    headers.append("content-disposition", `inline; filename=${filename}`);
   }
   await fixCookies(headers, username);
   return { headers, status };
