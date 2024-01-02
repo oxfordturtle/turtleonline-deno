@@ -960,39 +960,39 @@ export class State {
       case "tgb": // support old file extension
         file.language = "BASIC";
         file.name = name;
-        file.code = content.trim();
+        file.code = content.trim().replace(/\r\n/g, "\n");
         break;
 
       case "tc":
         file.language = "C";
         file.name = name;
-        file.code = content.trim();
+        file.code = content.trim().replace(/\r\n/g, "\n");
         break;
 
       case "tjav":
         file.language = "Java";
         file.name = name;
-        file.code = content.trim();
+        file.code = content.trim().replace(/\r\n/g, "\n");
         break;
 
       case "tpas": // fallthrough
       case "tgp": // support old file extension
         file.language = "Pascal";
         file.name = name;
-        file.code = content.trim();
+        file.code = content.trim().replace(/\r\n/g, "\n");
         break;
 
       case "tpy": // fallthrough
       case "tgy": // support old file extension
         file.language = "Python";
         file.name = name;
-        file.code = content.trim();
+        file.code = content.trim().replace(/\r\n/g, "\n");
         break;
 
       case "tts":
         file.language = "TypeScript";
         file.name = name;
-        file.code = content.trim();
+        file.code = content.trim().replace(/\r\n/g, "\n");
         break;
 
       case "tmx": // fallthrough
@@ -1008,11 +1008,11 @@ export class State {
           ) {
             file.language = json.language;
             file.name = json.name;
-            file.code = json.code.trim();
+            file.code = json.code.trim().replace(/\r\n/g, "\n");
           } else {
             send("error", new SystemError("Invalid TMX file."));
           }
-        } catch (ignore) {
+        } catch {
           send("error", new SystemError("Invalid TMX file."));
         }
         break;
@@ -1063,7 +1063,10 @@ export class State {
       send("error", new SystemError(`Unknown example "${exampleId}".`));
     } else {
       const filename = `${example.id}.${extensions[this.language]}`;
-      fetch(`/examples/${this.language}/${example.groupId}/${filename}`).then(
+      const path = this.language === "Python"
+        ? `/examples/_new/${this.language}/${example.groupId}/${filename}`
+        :  `/examples/${this.language}/${example.groupId}/${filename}`;
+      fetch(path).then(
         (response) => {
           if (response.ok) {
             response.text().then((content) => {

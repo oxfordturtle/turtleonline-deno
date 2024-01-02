@@ -1,0 +1,8 @@
+PROGRAM Schelling;
+CONST width=50;
+      height=50;
+      empty=green;
+VAR test,tryi,tryj: integer;
+    this,i,j: integer;
+
+ Function happy(x,y
