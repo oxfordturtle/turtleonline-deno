@@ -110,9 +110,7 @@ export enum PCode {
   lrem = 0x57,
   lrev = 0x58,
   liad = 0x59,
-  lsad = 0x5a,
-  lihp = 0x5b,
-  lshp = 0x5c,
+  lihp = 0x5a,
   // file processing
   chdr = 0x60,
   file = 0x61,
@@ -143,7 +141,7 @@ export enum PCode {
   trac = 0x78,
   memw = 0x79,
   dump = 0x7a,
-  pcoh = 0x7b, // what about peek???
+  pcoh = 0x7b,
   poke = 0x7c,
   // canvas state
   canv = 0x7d,
@@ -185,7 +183,7 @@ export enum PCode {
   elps = 0x9d,
   eblt = 0x9e,
   box = 0x9f,
-  // loading evaluation stack
+  // loading the (evaluation) stack
   ldin = 0xa0,
   ldvg = 0xa1,
   ldvv = 0xa2,
@@ -193,22 +191,21 @@ export enum PCode {
   ldag = 0xa4,
   ldav = 0xa5,
   lstr = 0xa6,
-  // storing from stack
+  // storing from the (evaluation) stack
   stvg = 0xa7,
   stvv = 0xa8,
   stvr = 0xa9,
-  // pointer and array operations
+  // pointer and string/array operations
   lptr = 0xaa,
   sptr = 0xab,
   zptr = 0xac,
   cptr = 0xad,
   cstr = 0xae,
   hstr = 0xaf,
-  // basic flow control
+  // flow control
   jump = 0xb0,
   ifno = 0xb1,
   halt = 0xb2,
-  // subroutine flow control
   subr = 0xb3,
   retn = 0xb4,
   pssr = 0xb5,
@@ -231,19 +228,18 @@ export enum PCode {
   rdln = 0xc4,
   tdet = 0xc5,
   curs = 0xc6,
-  // text output control
+  // text output
   kech = 0xc7,
   outp = 0xc8,
   cons = 0xc9,
-  // string output
-  disp = 0xca,
+  disp = 0xca, // formerly prnt
   writ = 0xcb,
-  newl = 0xcc, // what's happened to pcPrnt???
+  newl = 0xcc,
   // timing
   time = 0xcd,
   tset = 0xce,
   wait = 0xcf,
-  // 0xe0s - dummy codes
+  // dummy codes
   addr = 0xf0,
   dopr = 0xf1,
   fopr = 0xf2,
@@ -264,6 +260,19 @@ export function pcodeArgs(pcode: PCode): number {
     case PCode.lstr:
       return -1; // varies; the next code specifies how many
 
+    case PCode.pick: // fallthrough
+    case PCode.true: // fallthrough
+    case PCode.lapp: // fallthrough
+    case PCode.lcpy: // fallthrough
+    case PCode.lext: // fallthrough
+    case PCode.lidx: // fallthrough
+    case PCode.lins: // fallthrough
+    case PCode.lmul: // fallthrough
+    case PCode.lprt: // fallthrough
+    case PCode.lrem: // fallthrough
+    case PCode.lrev: // fallthrough
+    case PCode.liad: // fallthrough
+    case PCode.lihp: // fallthrough
     case PCode.ldin: // fallthrough
     case PCode.ldvg: // fallthrough
     case PCode.ldag: // fallthrough

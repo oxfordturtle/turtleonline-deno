@@ -44,6 +44,8 @@ let startTime = 0;
 let update = false;
 let keyecho = false;
 let seed = 0;
+let trueValue = 1;
+let pcodeHalt = -1;
 
 /** sets the canvas and context */
 export function setCanvasAndContext(
@@ -215,8 +217,15 @@ function execute(): void {
       codeCount <= options.codeCountMax
     ) {
       switch (pcode[line][code]) {
-        // 0x0 - basic stack operations, conversion operators
+        // basic stack operations
         case PCode.null:
+          break;
+
+        case PCode.drop:
+          n1 = memory.stack.pop();
+          if (n1 === undefined) {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
           break;
 
         case PCode.dupl:
@@ -249,6 +258,35 @@ function execute(): void {
           }
           break;
 
+        case PCode.roll:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            if (n1 > 0) {
+              [n2] = memory.stack.splice(n1, 1);
+              memory.stack.push(n2);
+            } else if (n1 < 0) {
+              n2 = memory.stack.pop();
+              if (n2 !== undefined) {
+                memory.stack.splice(n1, 0, n2);
+              } else {
+                throw new MachineError("Argument to ROLL cannot be zero.");
+              }
+            } else {
+              throw new MachineError("Argument to ROLL cannot be zero.");
+            }
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.pick:
+          n1 = pcode[line][code + 1];
+          n2 = memory.stack[n1];
+          memory.stack.push(n2);
+          code += 1;
+          break;
+
+        // operators on stack value
         case PCode.incr:
           n1 = memory.stack.pop();
           if (n1 !== undefined) {
@@ -267,10 +305,34 @@ function execute(): void {
           }
           break;
 
-        case PCode.mxin:
-          memory.stack.push(Math.pow(2, 31) - 1);
+        case PCode.neg:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            memory.stack.push(-n1);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
           break;
 
+        case PCode.abs:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            memory.stack.push(Math.abs(n1));
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.sign:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            memory.stack.push(Math.sign(n1));
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        // random numbers
         case PCode.rand:
           n1 = memory.stack.pop();
           if (n1 !== undefined) {
@@ -282,106 +344,47 @@ function execute(): void {
           }
           break;
 
-        case PCode.hstr:
+        case PCode.seed:
           n1 = memory.stack.pop();
           if (n1 !== undefined) {
-            s1 = memory.getHeapString(n1);
-            memory.makeHeapString(s1);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.ctos:
-          n1 = memory.stack.pop();
-          if (n1 !== undefined) {
-            memory.makeHeapString(String.fromCharCode(n1));
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.sasc:
-          n1 = memory.stack.pop();
-          if (n1 !== undefined) {
-            s1 = memory.getHeapString(n1);
-            if (s1.length === 0) {
-              memory.stack.push(0);
+            if (n1 === 0) {
+              memory.stack.push(seed);
             } else {
-              memory.stack.push(s1.charCodeAt(0));
+              seed = n1;
+              memory.stack.push(n1);
             }
           } else {
             throw new MachineError("Stack operation called on empty stack.");
           }
           break;
 
-        case PCode.itos:
-          n1 = memory.stack.pop();
-          if (n1 !== undefined) {
-            memory.makeHeapString(n1.toString(10));
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
+        // maximum integer
+        case PCode.mxin:
+          memory.stack.push(Math.pow(2, 31) - 1);
           break;
 
-        case PCode.hexs:
+        // true value
+        case PCode.true:
+          n1 = pcode[line][code];
+          trueValue = n1;
+          code += 1;
+          break;
+
+        // Boolean (bitwise) operators
+        case PCode.shft:
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
           if (n1 !== undefined && n2 !== undefined) {
-            s1 = n1.toString(16).toUpperCase();
-            while (s1.length < n2) {
-              s1 = "0" + s1;
-            }
-            memory.makeHeapString(s1);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.sval:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            s1 = memory.getHeapString(n1);
-            if (s1[0] === "#") {
-              n3 = isNaN(parseInt(s1.slice(1), 16))
-                ? n2
-                : parseInt(s1.slice(1), 16);
+            if (n2 < 0) {
+              memory.stack.push(n1 << -n2);
             } else {
-              n3 = isNaN(parseInt(s1, 10)) ? n2 : parseInt(s1, 10);
+              memory.stack.push(n1 >> n2);
             }
-            memory.stack.push(n3);
           } else {
             throw new MachineError("Stack operation called on empty stack.");
           }
           break;
 
-        case PCode.qtos:
-          n4 = memory.stack.pop();
-          n3 = memory.stack.pop();
-          n2 = memory.stack.pop();
-          if (n2 !== undefined && n3 !== undefined && n4 !== undefined) {
-            n1 = n2 / n3;
-            memory.makeHeapString(n1.toFixed(n4));
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.qval:
-          n3 = memory.stack.pop();
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
-            s1 = memory.getHeapString(n1);
-            n4 = isNaN(parseFloat(s1)) ? n3 : parseFloat(s1);
-            memory.stack.push(Math.round(n4 * n2));
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        // 0x10s - Boolean operators, integer operators
         case PCode.not:
           n1 = memory.stack.pop();
           if (n1 !== undefined) {
@@ -421,6 +424,7 @@ function execute(): void {
           }
           break;
 
+        // lazy Boolean operators
         case PCode.andl:
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
@@ -441,47 +445,7 @@ function execute(): void {
           }
           break;
 
-        case PCode.shft:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            if (n2 < 0) {
-              memory.stack.push(n1 << -n2);
-            } else {
-              memory.stack.push(n1 >> n2);
-            }
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.neg:
-          n1 = memory.stack.pop();
-          if (n1 !== undefined) {
-            memory.stack.push(-n1);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.abs:
-          n1 = memory.stack.pop();
-          if (n1 !== undefined) {
-            memory.stack.push(Math.abs(n1));
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.sign:
-          n1 = memory.stack.pop();
-          if (n1 !== undefined) {
-            memory.stack.push(Math.sign(n1));
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
+        // binary integer operators
         case PCode.plus:
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
@@ -550,184 +514,32 @@ function execute(): void {
           }
           break;
 
-        // 0x20s - comparison operators
-        case PCode.eqal:
+        // floored integer division
+        case PCode.divf:
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
           if (n1 !== undefined && n2 !== undefined) {
-            memory.stack.push(n1 === n2 ? -1 : 0);
+            if (n2 === 0) {
+              throw new MachineError("Cannot divide by zero.");
+            }
+            n3 = n1 / n2;
+            memory.stack.push(Math.floor(n3));
           } else {
             throw new MachineError("Stack operation called on empty stack.");
           }
           break;
 
-        case PCode.noeq:
+        case PCode.modf:
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
           if (n1 !== undefined && n2 !== undefined) {
-            memory.stack.push(n1 !== n2 ? -1 : 0);
+            memory.stack.push(n1 - Math.floor(n1 / n2) * n2);
           } else {
             throw new MachineError("Stack operation called on empty stack.");
           }
           break;
 
-        case PCode.less:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            memory.stack.push(n1 < n2 ? -1 : 0);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.more:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            memory.stack.push(n1 > n2 ? -1 : 0);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.lseq:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            memory.stack.push(n1 <= n2 ? -1 : 0);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.mreq:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            memory.stack.push(n1 >= n2 ? -1 : 0);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.maxi:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            memory.stack.push(Math.max(n1, n2));
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.mini:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            memory.stack.push(Math.min(n1, n2));
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.seql:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            s2 = memory.getHeapString(n2);
-            s1 = memory.getHeapString(n1);
-            memory.stack.push(s1 === s2 ? -1 : 0);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.sneq:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            s2 = memory.getHeapString(n2);
-            s1 = memory.getHeapString(n1);
-            memory.stack.push(s1 !== s2 ? -1 : 0);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.sles:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            s2 = memory.getHeapString(n1);
-            s1 = memory.getHeapString(n2);
-            memory.stack.push(n1 < n2 ? -1 : 0);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.smor:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            s2 = memory.getHeapString(n2);
-            s1 = memory.getHeapString(n1);
-            memory.stack.push(n1 > n2 ? -1 : 0);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.sleq:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            s2 = memory.getHeapString(n2);
-            s1 = memory.getHeapString(n1);
-            memory.stack.push(s1 <= s2 ? -1 : 0);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.smeq:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            s2 = memory.getHeapString(n2);
-            s1 = memory.getHeapString(n1);
-            memory.stack.push(s1 >= s2 ? -1 : 0);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.smax:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            s2 = memory.getHeapString(n2);
-            s1 = memory.getHeapString(n1);
-            memory.makeHeapString(s2 > s1 ? s2 : s1);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.smin:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            s2 = memory.getHeapString(n2);
-            s1 = memory.getHeapString(n1);
-            memory.makeHeapString(s2 < s1 ? s2 : s1);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        // 0x30s - pseudo-real operators
+        // pseudo-real number operators
         case PCode.divm:
           n3 = memory.stack.pop();
           n2 = memory.stack.pop();
@@ -919,28 +731,185 @@ function execute(): void {
           }
           break;
 
-        // 0x40s - string operators
-        case PCode.scat:
+        // integer/Boolean comparison operators
+        case PCode.eqal:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            memory.stack.push(n1 === n2 ? trueValue : 0);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.noeq:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            memory.stack.push(n1 !== n2 ? trueValue : 0);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.less:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            memory.stack.push(n1 < n2 ? trueValue : 0);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.more:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            memory.stack.push(n1 > n2 ? trueValue : 0);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.lseq:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            memory.stack.push(n1 <= n2 ? trueValue : 0);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.mreq:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            memory.stack.push(n1 >= n2 ? trueValue : 0);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.maxi:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            memory.stack.push(Math.max(n1, n2));
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.mini:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            memory.stack.push(Math.min(n1, n2));
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        // string comparison operators
+        case PCode.seql:
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
           if (n1 !== undefined && n2 !== undefined) {
             s2 = memory.getHeapString(n2);
             s1 = memory.getHeapString(n1);
-            memory.makeHeapString(s1 + s2);
+            memory.stack.push(s1 === s2 ? trueValue : 0);
           } else {
             throw new MachineError("Stack operation called on empty stack.");
           }
           break;
 
-        case PCode.slen:
+        case PCode.sneq:
+          n2 = memory.stack.pop();
           n1 = memory.stack.pop();
-          if (n1 !== undefined) {
-            memory.stack.push(memory.main[n1]);
+          if (n1 !== undefined && n2 !== undefined) {
+            s2 = memory.getHeapString(n2);
+            s1 = memory.getHeapString(n1);
+            memory.stack.push(s1 !== s2 ? trueValue : 0);
           } else {
             throw new MachineError("Stack operation called on empty stack.");
           }
           break;
 
+        case PCode.sles:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            s2 = memory.getHeapString(n1);
+            s1 = memory.getHeapString(n2);
+            memory.stack.push(n1 < n2 ? trueValue : 0);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.smor:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            s2 = memory.getHeapString(n2);
+            s1 = memory.getHeapString(n1);
+            memory.stack.push(n1 > n2 ? trueValue : 0);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.sleq:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            s2 = memory.getHeapString(n2);
+            s1 = memory.getHeapString(n1);
+            memory.stack.push(s1 <= s2 ? trueValue : 0);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.smeq:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            s2 = memory.getHeapString(n2);
+            s1 = memory.getHeapString(n1);
+            memory.stack.push(s1 >= s2 ? trueValue : 0);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.smax:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            s2 = memory.getHeapString(n2);
+            s1 = memory.getHeapString(n1);
+            memory.makeHeapString(s2 > s1 ? s2 : s1);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.smin:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            s2 = memory.getHeapString(n2);
+            s1 = memory.getHeapString(n1);
+            memory.makeHeapString(s2 < s1 ? s2 : s1);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        // string operators
         case PCode.case:
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
@@ -1070,6 +1039,42 @@ function execute(): void {
           }
           break;
 
+        case PCode.scat:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            s2 = memory.getHeapString(n2);
+            s1 = memory.getHeapString(n1);
+            memory.makeHeapString(s1 + s2);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.slen:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            memory.stack.push(memory.main[n1]);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.smul:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            s1 = memory.getHeapString(n1);
+            while (n2 > 0) {
+              s1 = s1 + s1;
+              n2 -= 1;
+            }
+            memory.makeHeapString(s1);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
         case PCode.spad:
           n3 = memory.stack.pop();
           n2 = memory.stack.pop();
@@ -1100,7 +1105,305 @@ function execute(): void {
           }
           break;
 
-        // 0x50s - turtle settings and movement
+        // python string tests
+        case PCode.ctst:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            s1 = memory.getHeapString(n1);
+            if (s1.length !== 1) {
+              throw new MachineError("String is not a character."); // TODO: better error message
+            }
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.ernf:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            if (n1 < 0) {
+              throw new MachineError("Not found."); // TODO: better error message
+            }
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        // string/array/list bound test
+        case PCode.test:
+          n2 = memory.stack[memory.stack.length - 1]; // leave the stack unchanged
+          n1 = memory.stack[memory.stack.length - 2];
+          if (n1 !== undefined && n2 !== undefined) {
+            if (n1 < 0 || n1 > memory.main[n2]) {
+              // TODO: make range check a runtime option
+              throw new MachineError(
+                `Array index out of range (${line}, ${code}).`
+              );
+            }
+          }
+          break;
+
+        // exception handling
+        case PCode.try:
+          // TODO
+          break;
+
+        case PCode.xcpt:
+          // TODO
+          break;
+
+        // list operators
+        case PCode.lapp: // fallthrough
+        case PCode.lcpy: // fallthrough
+        case PCode.lext: // fallthrough
+        case PCode.lidx: // fallthrough
+        case PCode.lins: // fallthrough
+        case PCode.lmul: // fallthrough
+        case PCode.lprt: // fallthrough
+        case PCode.lrem: // fallthrough
+        case PCode.lrev: // fallthrough
+        case PCode.liad: // fallthrough
+        case PCode.lihp:
+          // TODO
+          throw new Error("Not yet implemented.");
+
+        // file processing
+        case PCode.chdr: // fallthrough
+        case PCode.file: // fallthrough
+        case PCode.diry: // fallthrough
+        case PCode.open: // fallthrough
+        case PCode.clos: // fallthrough
+        case PCode.fbeg: // fallthrough
+        case PCode.eof: // fallthrough
+        case PCode.eoln: // fallthrough
+        case PCode.frds: // fallthrough
+        case PCode.frln: // fallthrough
+        case PCode.fwrs: // fallthrough
+        case PCode.fwln: // fallthrough
+        case PCode.ffnd: // fallthrough
+        case PCode.fdir: // fallthrough
+        case PCode.fnxt: // fallthrough
+        case PCode.fmov:
+          // not yet implemented
+          throw new MachineError(
+            "File processing has not yet been implemented in the online Turtle System. We are working on introducing this very soon. In the meantime, please run this program using the downloable system."
+          );
+
+        // type conversion operators
+        case PCode.ctos:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            memory.makeHeapString(String.fromCharCode(n1));
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.sasc:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            s1 = memory.getHeapString(n1);
+            if (s1.length === 0) {
+              memory.stack.push(0);
+            } else {
+              memory.stack.push(s1.charCodeAt(0));
+            }
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.itos:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            memory.makeHeapString(n1.toString(10));
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.hexs:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            s1 = n1.toString(16).toUpperCase();
+            while (s1.length < n2) {
+              s1 = "0" + s1;
+            }
+            memory.makeHeapString(s1);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.sval: // fallthrough for now
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            s1 = memory.getHeapString(n1);
+            s2 = n2 === 1 ? "$" : n2 === 2 ? "#" : "0x";
+            n3 = s1.startsWith("#") ? parseInt(s1.slice(1), 16) : parseInt(s1, 10);
+            if (isNaN(n3)) {
+              throw new MachineError(`Cannot parse ${s1} to integer.`);
+            } else {
+              memory.stack.push(n3);
+            }
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.svdf:
+          n3 = memory.stack.pop();
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
+            s1 = memory.getHeapString(n1);
+            s2 = n3 === 1 ? "$" : n3 === 2 ? "#" : "0x";
+            n4 = s1.startsWith("#") ? parseInt(s1.slice(1), 16) : parseInt(s1, 10);
+            memory.stack.push(isNaN(n4) ? n2 : n4);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.qtos:
+          n4 = memory.stack.pop();
+          n3 = memory.stack.pop();
+          n2 = memory.stack.pop();
+          if (n2 !== undefined && n3 !== undefined && n4 !== undefined) {
+            n1 = n2 / n3;
+            memory.makeHeapString(n1.toFixed(n4));
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.qval:
+          n3 = memory.stack.pop();
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
+            s1 = memory.getHeapString(n1);
+            n4 = isNaN(parseFloat(s1)) ? n3 : parseFloat(s1);
+            memory.stack.push(Math.round(n4 * n2));
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        // debugging and tracing
+        case PCode.trac:
+          // not implemented -
+          // just pop the top off the stack
+          memory.stack.pop();
+          break;
+
+        case PCode.memw:
+          // not implemented -
+          // just pop the top off the stack
+          memory.stack.pop();
+          break;
+
+        case PCode.dump:
+          send("memoryDumped", memory.dump());
+          if (options.showMemoryOnDump) {
+            send("selectTab", "memory");
+          }
+          break;
+
+        case PCode.pcoh:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            pcodeHalt = n1;
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.poke:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            memory.main[n1] = n2;
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        // canvas state
+        case PCode.canv:
+          n4 = memory.stack.pop();
+          n3 = memory.stack.pop();
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (
+            n1 !== undefined &&
+            n2 !== undefined &&
+            n3 !== undefined &&
+            n4 !== undefined
+          ) {
+            sizey = n4;
+            sizex = n3;
+            starty = n2;
+            startx = n1;
+            send("canvas", {
+              startx: startx,
+              starty: starty,
+              sizex: sizex,
+              sizey: sizey,
+              width: width,
+              height: height,
+              doubled: doubled,
+            });
+            memory.setTurtX(Math.round(startx + sizex / 2));
+            memory.setTurtY(Math.round(starty + sizey / 2));
+            memory.setTurtD(0);
+            send("turtxChanged", memory.getTurtX());
+            send("turtyChanged", memory.getTurtY());
+            send("turtdChanged", memory.getTurtD());
+            memory.coords.push([memory.getTurtX(), memory.getTurtY()]);
+            drawCount = options.drawCountMax; // force update
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.reso:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            if (Math.min(n1, n2) <= options.smallSize) {
+              n1 *= 2;
+              n2 *= 2;
+              doubled = true;
+            } else {
+              doubled = false;
+            }
+            width = n1;
+            height = n2;
+            send("resolution", { width: n1, height: n2 });
+            send("blank", "#FFFFFF");
+            drawCount = options.drawCountMax; // force update
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.udat:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            bool1 = n1 !== 0;
+            update = bool1;
+            if (bool1) {
+              drawCount = options.drawCountMax; // force update
+            }
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        // basic turtle settings
         case PCode.home:
           n1 = startx + sizex / 2;
           n2 = starty + sizey / 2;
@@ -1184,16 +1487,6 @@ function execute(): void {
           }
           break;
 
-        case PCode.colr:
-          n1 = memory.stack.pop();
-          if (n1 !== undefined) {
-            memory.setTurtC(n1);
-            send("turtcChanged", hex(n1));
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
         case PCode.pen:
           n1 = memory.stack.pop();
           if (n1 !== undefined) {
@@ -1207,6 +1500,17 @@ function execute(): void {
           }
           break;
 
+        case PCode.colr:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            memory.setTurtC(n1);
+            send("turtcChanged", hex(n1));
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        // turtle movement
         case PCode.toxy:
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
@@ -1369,7 +1673,7 @@ function execute(): void {
           }
           break;
 
-        // 0x60s - colour operators, shapes and fills
+        // fills and colours
         case PCode.blnk:
           n1 = memory.stack.pop();
           if (n1 !== undefined) {
@@ -1502,6 +1806,7 @@ function execute(): void {
           }
           break;
 
+        // drawing shapes
         case PCode.rmbr:
           memory.coords.push([memory.getTurtX(), memory.getTurtY()]);
           break;
@@ -1650,7 +1955,7 @@ function execute(): void {
           }
           break;
 
-        // 0x70s - loading from stack, storing from stack, pointer and array operations
+        // loading the (evaluation) stack
         case PCode.ldin:
           n1 = pcode[line][code + 1];
           memory.stack.push(n1);
@@ -1702,6 +2007,7 @@ function execute(): void {
           memory.makeHeapString(s1);
           break;
 
+        // storing from the (evaluation) stack
         case PCode.stvg:
           n1 = memory.stack.pop();
           if (n1 !== undefined) {
@@ -1736,6 +2042,7 @@ function execute(): void {
           }
           break;
 
+        // pointer and string/array operations
         case PCode.lptr:
           n1 = memory.stack.pop();
           if (n1 !== undefined) {
@@ -1788,20 +2095,17 @@ function execute(): void {
           }
           break;
 
-        case PCode.test:
-          n2 = memory.stack[memory.stack.length - 1]; // leave the stack unchanged
-          n1 = memory.stack[memory.stack.length - 2];
-          if (n1 !== undefined && n2 !== undefined) {
-            if (n1 < 0 || n1 > memory.main[n2]) {
-              // TODO: make range check a runtime option
-              throw new MachineError(
-                `Array index out of range (${line}, ${code}).`
-              );
-            }
+        case PCode.hstr:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            s1 = memory.getHeapString(n1);
+            memory.makeHeapString(s1);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
           }
           break;
 
-        // 0x80s - flow control, memory control
+        // flow control
         case PCode.jump:
           line = pcode[line][code + 1] - 1;
           code = -1;
@@ -1868,6 +2172,7 @@ function execute(): void {
           }
           break;
 
+        // memory management
         case PCode.ldmt:
           memory.stack.push(memory.memoryStack.length - 1);
           break;
@@ -1930,131 +2235,7 @@ function execute(): void {
           memory.heapReset();
           break;
 
-        // 0x90s - runtime variables, debugging
-        case PCode.canv:
-          n4 = memory.stack.pop();
-          n3 = memory.stack.pop();
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (
-            n1 !== undefined &&
-            n2 !== undefined &&
-            n3 !== undefined &&
-            n4 !== undefined
-          ) {
-            sizey = n4;
-            sizex = n3;
-            starty = n2;
-            startx = n1;
-            send("canvas", {
-              startx: startx,
-              starty: starty,
-              sizex: sizex,
-              sizey: sizey,
-              width: width,
-              height: height,
-              doubled: doubled,
-            });
-            memory.setTurtX(Math.round(startx + sizex / 2));
-            memory.setTurtY(Math.round(starty + sizey / 2));
-            memory.setTurtD(0);
-            send("turtxChanged", memory.getTurtX());
-            send("turtyChanged", memory.getTurtY());
-            send("turtdChanged", memory.getTurtD());
-            memory.coords.push([memory.getTurtX(), memory.getTurtY()]);
-            drawCount = options.drawCountMax; // force update
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.reso:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            if (Math.min(n1, n2) <= options.smallSize) {
-              n1 *= 2;
-              n2 *= 2;
-              doubled = true;
-            } else {
-              doubled = false;
-            }
-            width = n1;
-            height = n2;
-            send("resolution", { width: n1, height: n2 });
-            send("blank", "#FFFFFF");
-            drawCount = options.drawCountMax; // force update
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.udat:
-          n1 = memory.stack.pop();
-          if (n1 !== undefined) {
-            bool1 = n1 !== 0;
-            update = bool1;
-            if (bool1) {
-              drawCount = options.drawCountMax; // force update
-            }
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.seed:
-          n1 = memory.stack.pop();
-          if (n1 !== undefined) {
-            if (n1 === 0) {
-              memory.stack.push(seed);
-            } else {
-              seed = n1;
-              memory.stack.push(n1);
-            }
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.trac:
-          // not implemented -
-          // just pop the top off the stack
-          memory.stack.pop();
-          break;
-
-        case PCode.memw:
-          // not implemented -
-          // just pop the top off the stack
-          memory.stack.pop();
-          break;
-
-        case PCode.dump:
-          send("memoryDumped", memory.dump());
-          if (options.showMemoryOnDump) {
-            send("selectTab", "memory");
-          }
-          break;
-
-        case PCode.peek:
-          n1 = memory.stack.pop();
-          if (n1 !== undefined) {
-            memory.stack.push(memory.main[n1]);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.poke:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            memory.main[n1] = n2;
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        // 0xA0s - text output, timing
+        // input
         case PCode.stat:
           n1 = memory.stack.pop();
           if (n1 !== undefined) {
@@ -2157,6 +2338,38 @@ function execute(): void {
           addEventListener("keyup", readline);
           return;
 
+        case PCode.tdet:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            if (-11 <= n1 && n1 < 256) {
+              memory.stack.push(0);
+              code += 1;
+              if (code === pcode[line].length) {
+                line += 1;
+                code = 0;
+              }
+              detectInputcode = n1;
+              n3 = n2 === 0 ? Math.pow(2, 31) - 1 : n2; // 0 means "as long as possible"
+              detectTimeoutID = setTimeout(execute, n3);
+              addEventListener("keyup", detect);
+              addEventListener("mouseup", detect);
+            }
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          return;
+
+        case PCode.curs:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            send("cursor", n1);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        // text output
         case PCode.kech:
           n1 = memory.stack.pop();
           if (n1 !== undefined) {
@@ -2194,7 +2407,7 @@ function execute(): void {
           }
           break;
 
-        case PCode.prnt:
+        case PCode.disp:
           n3 = memory.stack.pop();
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
@@ -2225,15 +2438,7 @@ function execute(): void {
           send("log", "\n");
           break;
 
-        case PCode.curs:
-          n1 = memory.stack.pop();
-          if (n1 !== undefined) {
-            send("cursor", n1);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
+        // timing
         case PCode.time:
           n1 = Date.now();
           n1 = n1 - startTime;
@@ -2264,50 +2469,6 @@ function execute(): void {
           }
           return;
 
-        case PCode.tdet:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            if (-11 <= n1 && n1 < 256) {
-              memory.stack.push(0);
-              code += 1;
-              if (code === pcode[line].length) {
-                line += 1;
-                code = 0;
-              }
-              detectInputcode = n1;
-              n3 = n2 === 0 ? Math.pow(2, 31) - 1 : n2; // 0 means "as long as possible"
-              detectTimeoutID = setTimeout(execute, n3);
-              addEventListener("keyup", detect);
-              addEventListener("mouseup", detect);
-            }
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          return;
-
-        // 0xB0s - file processing
-        case PCode.chdr: // fallthrough
-        case PCode.file: // fallthrough
-        case PCode.diry: // fallthrough
-        case PCode.open: // fallthrough
-        case PCode.clos: // fallthrough
-        case PCode.fbeg: // fallthrough
-        case PCode.eof: // fallthrough
-        case PCode.eoln: // fallthrough
-        case PCode.frds: // fallthrough
-        case PCode.frln: // fallthrough
-        case PCode.fwrs: // fallthrough
-        case PCode.fwln: // fallthrough
-        case PCode.ffnd: // fallthrough
-        case PCode.fdir: // fallthrough
-        case PCode.fnxt: // fallthrough
-        case PCode.fmov:
-          // not yet implemented
-          throw new MachineError(
-            "File processing has not yet been implemented in the online Turtle System. We are working on introducing this very soon. In the meantime, please run this program using the downloable system."
-          );
-
         // anything else is an error
         default:
           console.log(line);
@@ -2322,6 +2483,9 @@ function execute(): void {
         throw new MachineError(
           "The program has tried to jump to a line that does not exist. This is either a bug in our compiler, or in your assembled code."
         );
+      }
+      if (pcodeHalt === line) {
+        halt();
       }
       if (code === pcode[line].length) {
         // line wrap
