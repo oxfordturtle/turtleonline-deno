@@ -70,7 +70,7 @@ export function array(
       );
     }
     const exp = expression(lexemes, routine);
-    typeCheck(exp, "integer");
+    typeCheck(routine.language, exp, "integer");
     const value = evaluate(exp, "BASIC", "array");
     if (typeof value === "string") {
       throw new CompilerError("Array size must be an integer.", lexemes.get());

@@ -202,7 +202,7 @@ export function variableAssignment(
       while (lexemes.get() && lexemes.get()?.content !== "]") {
         // expecting integer expression for the element index
         let exp = expression(lexemes, routine);
-        exp = typeCheck(exp, variable);
+        exp = typeCheck(routine.language, exp, variable);
         indexes.push(exp);
         // maybe move past "]["
         if (lexemes.get()?.content === "]" && lexemes.get(1)?.content === "[") {
@@ -223,7 +223,7 @@ export function variableAssignment(
       lexemes.next();
       // expecting integer expression for the character index
       let exp = expression(lexemes, routine);
-      exp = typeCheck(exp, variable);
+      exp = typeCheck(routine.language, exp, variable);
       indexes.push(exp);
       // expecting closing bracket
       if (!lexemes.get() || lexemes.get()?.content !== "]") {
@@ -304,7 +304,7 @@ export function variableAssignment(
   variableValue.indexes.push(...indexes);
 
   // type checking
-  value = typeCheck(value, variable);
+  value = typeCheck(routine.language, value, variable);
 
   // create and return the variable assignment statement
   return new VariableAssignment(assignmentLexeme, variable, indexes, value);
@@ -374,7 +374,7 @@ function returnStatement(
   let value = expression(lexemes, routine);
   if (routine.returns !== null) {
     // check against previous return statements
-    value = typeCheck(value, routine.returns);
+    value = typeCheck(routine.language, value, routine.returns);
   } else {
     // otherwise create a return variable
     const result = new Variable("!result", routine);
@@ -406,7 +406,7 @@ function ifStatement(
     );
   }
   let condition = expression(lexemes, routine);
-  condition = typeCheck(condition, "boolean");
+  condition = typeCheck(routine.language, condition, "boolean");
 
   // expecting a colon
   if (!lexemes.get()) {
@@ -613,7 +613,7 @@ function forStatement(
     );
   }
   const providedValues: [Expression, Expression?, Expression?] = [
-    typeCheck(expression(lexemes, routine), "integer"),
+    typeCheck(routine.language, expression(lexemes, routine), "integer"),
   ];
 
   // expecting a comma or closing bracket
@@ -639,7 +639,7 @@ function forStatement(
         lexemes.get(-1)
       );
     }
-    providedValues.push(typeCheck(expression(lexemes, routine), "integer"));
+    providedValues.push(typeCheck(routine.language, expression(lexemes, routine), "integer"));
   }
 
   // expecting a comma or closing bracket
@@ -665,7 +665,7 @@ function forStatement(
         lexemes.get(-1)
       );
     }
-    providedValues.push(typeCheck(expression(lexemes, routine), "integer"));
+    providedValues.push(typeCheck(routine.language, expression(lexemes, routine), "integer"));
   }
 
   // the things we want to know
@@ -873,7 +873,7 @@ function whileStatement(
     );
   }
   let condition = expression(lexemes, routine);
-  condition = typeCheck(condition, "boolean");
+  condition = typeCheck(routine.language, condition, "boolean");
 
   // expecting a colon
   if (!lexemes.get()) {

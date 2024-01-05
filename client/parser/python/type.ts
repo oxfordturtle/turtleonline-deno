@@ -127,7 +127,7 @@ export default function type(
 
       // expecting integer expression (size of array)
       const exp = expression(lexemes, routine);
-      typeCheck(exp, "integer");
+      typeCheck(routine.language, exp, "integer");
       const value = evaluate(exp, "Python", "array");
       if (typeof value === "string") {
         throw new CompilerError("List length must be an integer.", exp.lexeme);

@@ -28,9 +28,11 @@ import {
 } from "./definitions/expression.ts";
 import { operator, stringOperator } from "./definitions/operators.ts";
 import { CompilerError } from "../tools/error.ts";
+import { Language } from "../constants/languages.ts";
 
 /** checks types match (throws an error if not) */
 export function typeCheck(
+  language: Language,
   found: Expression,
   expected: Type | Variable | Parameter
 ): Expression {
@@ -131,6 +133,14 @@ export function typeCheck(
     return found;
   }
 
+  // if INTEGER is found and BOOLEAN is expected, that's fine in Python and TypeScript
+  if (
+    (language === "Python" || language === "TypeScript") &&
+    (expectedType === "boolean" && found.type === "integer")
+  ) {
+    return found;
+  }
+
   // everything else is an error
   throw new CompilerError(
     `Type error: '${expectedType}' expected but '${found.type}' found.`,
@@ -166,8 +176,8 @@ export function expression(
     // check types match (check both ways - so that if there's a character on
     // either side, and a string on the other, we'll know to convert the
     // character to a string)
-    exp = typeCheck(exp, nextExp.type);
-    nextExp = typeCheck(nextExp, exp.type);
+    exp = typeCheck(routine.language, exp, nextExp.type);
+    nextExp = typeCheck(routine.language, nextExp, exp.type);
 
     // maybe replace provisional operator with its string equivalent
     if (exp.type === "string" || nextExp.type === "string") {
@@ -202,13 +212,13 @@ function factor(lexemes: Lexemes, routine: Program | Subroutine): Expression {
         case "subt":
           lexemes.next();
           exp = factor(lexemes, routine);
-          exp = typeCheck(exp, "integer");
+          exp = typeCheck(routine.language, exp, "integer");
           return new CompoundExpression(lexeme, null, exp, "neg");
 
         case "not":
           lexemes.next();
           exp = factor(lexemes, routine);
-          exp = typeCheck(exp, "boolint");
+          exp = typeCheck(routine.language, exp, "boolint");
           return new CompoundExpression(lexeme, null, exp, "not");
 
         case "and": {
@@ -270,7 +280,7 @@ function factor(lexemes: Lexemes, routine: Program | Subroutine): Expression {
             lexemes.next();
             // expecting an integer expression for the character index
             let exp = expression(lexemes, routine);
-            exp = typeCheck(exp, "integer");
+            exp = typeCheck(routine.language, exp, "integer");
             constantValue.indexes.push(exp);
             // expecting closing bracket
             if (!lexemes.get() || lexemes.get()?.content !== close) {
@@ -300,7 +310,7 @@ function factor(lexemes: Lexemes, routine: Program | Subroutine): Expression {
             while (lexemes.get() && lexemes.get()?.content !== close) {
               // expecting integer expression for the element index
               let exp = expression(lexemes, routine);
-              exp = typeCheck(exp, "integer");
+              exp = typeCheck(routine.language, exp, "integer");
               variableValue.indexes.push(exp);
               if (
                 routine.language === "BASIC" ||
@@ -341,7 +351,7 @@ function factor(lexemes: Lexemes, routine: Program | Subroutine): Expression {
             lexemes.next();
             // expecting integer expression for the character index
             exp = expression(lexemes, routine);
-            exp = typeCheck(exp, "integer");
+            exp = typeCheck(routine.language, exp, "integer");
             variableValue.indexes.push(exp);
             // expecting closing bracket
             if (!lexemes.get() || lexemes.get()?.content !== close) {

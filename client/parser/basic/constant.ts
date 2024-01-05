@@ -27,7 +27,7 @@ export default function constant(
   // expecting an expression
   let exp = expression(lexemes, routine);
   const value = evaluate(exp, "BASIC", "constant");
-  exp = typeCheck(exp, foo.type);
+  exp = typeCheck(routine.language, exp, foo.type);
 
   // create and return the constant
   return new Constant("BASIC", foo.name, value);

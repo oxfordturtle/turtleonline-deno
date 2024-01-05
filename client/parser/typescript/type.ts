@@ -97,7 +97,7 @@ export default function type(
       );
     }
     const exp = expression(lexemes, routine);
-    typeCheck(exp, "integer");
+    typeCheck(routine.language, exp, "integer");
     const value = evaluate(exp, "TypeScript", "array");
     if (typeof value === "string") {
       throw new CompilerError("Array size must be an integer.", lexemes.get());

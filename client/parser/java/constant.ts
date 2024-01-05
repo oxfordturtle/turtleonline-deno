@@ -45,7 +45,7 @@ export default function constant(
 
   // expecting value expression
   const exp = expression(lexemes, routine);
-  typeCheck(exp, constantType);
+  typeCheck(routine.language, exp, constantType);
   const value = evaluate(exp, "Java", "constant");
 
   // create and return the constant

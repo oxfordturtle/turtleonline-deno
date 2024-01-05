@@ -187,7 +187,7 @@ function variableAssignment(
       while (lexemes.get() && lexemes.get()?.content !== "]") {
         // expecting integer expression for the element index
         let exp = expression(lexemes, routine);
-        exp = typeCheck(exp, "integer");
+        exp = typeCheck(routine.language, exp, "integer");
         indexes.push(exp);
         // maybe move past comma
         if (lexemes.get()?.content === ",") {
@@ -214,7 +214,7 @@ function variableAssignment(
       lexemes.next();
       // expecting integer expression for the character index
       let exp = expression(lexemes, routine);
-      exp = typeCheck(exp, "integer");
+      exp = typeCheck(routine.language, exp, "integer");
       indexes.push(exp);
       // expecting closing bracket
       if (!lexemes.get() || lexemes.get()?.content !== "]") {
@@ -272,7 +272,7 @@ function variableAssignment(
       ? "character"
       : variable.type;
   let value = expression(lexemes, routine);
-  value = typeCheck(value, typeToCheck);
+  value = typeCheck(routine.language, value, typeToCheck);
 
   // create and return the variable assignment
   return new VariableAssignment(assignmentLexeme, variable, indexes, value);
@@ -292,7 +292,7 @@ function ifStatement(
     );
   }
   let condition = expression(lexemes, routine);
-  condition = typeCheck(condition, "boolean");
+  condition = typeCheck(routine.language, condition, "boolean");
 
   // now we can create the statement
   const ifStatement = new IfStatement(ifLexeme, condition);
@@ -436,7 +436,7 @@ function forStatement(
     );
   }
   let finalValue = expression(lexemes, routine);
-  finalValue = typeCheck(finalValue, "integer");
+  finalValue = typeCheck(routine.language, finalValue, "integer");
   const comparisonToken = new Token(
     "operator",
     toOrDownTo === "to" ? "<=" : ">=",
@@ -506,7 +506,7 @@ function repeatStatement(
     );
   }
   let condition = expression(lexemes, routine);
-  condition = typeCheck(condition, "boolean");
+  condition = typeCheck(routine.language, condition, "boolean");
 
   // now we have everything we need
   const repeatStatement = new RepeatStatement(repeatLexeme, condition);
@@ -528,7 +528,7 @@ function whileStatement(
     );
   }
   let condition = expression(lexemes, routine);
-  condition = typeCheck(condition, "boolean");
+  condition = typeCheck(routine.language, condition, "boolean");
 
   // now we can create the statement
   const whileStatement = new WhileStatement(whileLexeme, condition);

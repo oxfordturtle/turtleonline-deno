@@ -190,17 +190,17 @@ function _arguments(
             !(argument instanceof VariableValue) ||
             !argument.variable.isArray
           ) {
-            argument = typeCheck(argument, parameter);
+            argument = typeCheck(routine.language, argument, parameter);
           }
           break;
 
         default:
           // standard type check by default
-          argument = typeCheck(argument, parameter);
+          argument = typeCheck(routine.language, argument, parameter);
           break;
       }
     } else {
-      argument = typeCheck(argument, parameter);
+      argument = typeCheck(routine.language, argument, parameter);
     }
     commandCall.arguments.push(argument);
     argsGiven += 1;

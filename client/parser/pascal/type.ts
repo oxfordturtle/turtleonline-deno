@@ -58,7 +58,7 @@ export default function type(
       while (lexemes.get() && lexemes.get()?.content !== "]") {
         // expecting start index
         const startExp = expression(lexemes, routine);
-        typeCheck(startExp, "integer");
+        typeCheck(routine.language, startExp, "integer");
         const start = evaluate(startExp, "Pascal", "array") as number;
         // expecting ".."
         if (!lexemes.get() || lexemes.get()?.content !== "..") {
@@ -70,7 +70,7 @@ export default function type(
         lexemes.next();
         // expecting end index
         const endExp = expression(lexemes, routine);
-        typeCheck(endExp, "integer");
+        typeCheck(routine.language, endExp, "integer");
         const end = evaluate(endExp, "Pascal", "array") as number;
         // push the dimensions and move on
         arrayDimensions.push([start, end]);
@@ -126,7 +126,7 @@ export default function type(
       lexemes.next();
       // expecting positive integer
       const stringLengthExp = expression(lexemes, routine);
-      typeCheck(stringLengthExp, "integer");
+      typeCheck(routine.language, stringLengthExp, "integer");
       stringLength = evaluate(stringLengthExp, "Pascal", "string") as number;
       // expecting closing bracket
       if (!lexemes.get()) {

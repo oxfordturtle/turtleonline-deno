@@ -245,7 +245,7 @@ function variableAssignment(
       while (lexemes.get() && lexemes.get()?.content !== ")") {
         // expecting integer expression for the element index
         let exp = expression(lexemes, routine);
-        exp = typeCheck(exp, "integer");
+        exp = typeCheck(routine.language, exp, "integer");
         indexes.push(exp);
         // maybe move past comma
         if (lexemes.get()?.content === ",") {
@@ -317,7 +317,7 @@ function variableAssignment(
     );
   }
   let value = expression(lexemes, routine);
-  value = typeCheck(value, variable.type);
+  value = typeCheck(routine.language, value, variable.type);
 
   // create and return the variable assignment statement
   return new VariableAssignment(assignmentLexeme, variable, indexes, value);
@@ -342,7 +342,7 @@ function returnStatement(
 
   // expecting an expression of the right type
   let value = expression(lexemes, routine);
-  value = typeCheck(value, routine.returns as Type);
+  value = typeCheck(routine.language, value, routine.returns as Type);
 
   // create and return the statement
   return new ReturnStatement(lexeme, routine, value);
@@ -364,7 +364,7 @@ function ifStatement(
     );
   }
   let condition = expression(lexemes, routine);
-  condition = typeCheck(condition, "boolean");
+  condition = typeCheck(routine.language, condition, "boolean");
 
   // expecting "then"
   if (!lexemes.get()) {
@@ -516,7 +516,7 @@ function forStatement(
     );
   }
   let finalValue = expression(lexemes, routine);
-  finalValue = typeCheck(finalValue, "integer");
+  finalValue = typeCheck(routine.language, finalValue, "integer");
 
   // create some dummy lexemes for the condition and step change
   const oneToken = new Token("decimal", "1", lexeme.line, -1);
@@ -550,7 +550,7 @@ function forStatement(
         lexemes.get(-1)
       );
     }
-    const stepValue = typeCheck(expression(lexemes, routine), "integer");
+    const stepValue = typeCheck(routine.language, expression(lexemes, routine), "integer");
     const evaluatedStepValue = evaluate(stepValue, "BASIC", "step") as number;
     if (evaluatedStepValue === 0) {
       throw new CompilerError("Step value cannot be zero.", stepValue.lexeme);
@@ -627,7 +627,7 @@ function repeatStatement(
     );
   }
   let condition = expression(lexemes, routine);
-  condition = typeCheck(condition, "boolean");
+  condition = typeCheck(routine.language, condition, "boolean");
 
   // now we have everything we need
   const repeatStatement = new RepeatStatement(lexeme, condition);
@@ -649,7 +649,7 @@ function whileStatement(
     );
   }
   let condition = expression(lexemes, routine);
-  condition = typeCheck(condition, "boolean");
+  condition = typeCheck(routine.language, condition, "boolean");
 
   // create the statement
   const whileStatement = new WhileStatement(lexeme, condition);

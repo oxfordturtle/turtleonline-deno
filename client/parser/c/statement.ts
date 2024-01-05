@@ -179,7 +179,7 @@ function variableAssignment(
       while (lexemes.get() && lexemes.get()?.content !== "]") {
         // expecting integer expression for the element index
         let exp = expression(lexemes, routine);
-        exp = typeCheck(exp, "integer");
+        exp = typeCheck(routine.language, exp, "integer");
         indexes.push(exp);
         // maybe move past "]["
         if (lexemes.get()?.content === "]" && lexemes.get(1)?.content === "[") {
@@ -200,7 +200,7 @@ function variableAssignment(
       lexemes.next();
       // expecting integer expression for the character index
       let exp = expression(lexemes, routine);
-      exp = typeCheck(exp, "integer");
+      exp = typeCheck(routine.language, exp, "integer");
       indexes.push(exp);
       // expecting closing bracket
       if (!lexemes.get() || lexemes.get()?.content !== "]") {
@@ -263,7 +263,7 @@ function variableAssignment(
   variableValue.indexes.push(...indexes);
   // check against variableValue.type rather than variableAssignment.variable.type
   // in case string has indexes and should be a character
-  value = typeCheck(value, variableValue.type);
+  value = typeCheck(routine.language, value, variableValue.type);
 
   // create and return the variable assignment statement
   return new VariableAssignment(assignmentLexeme, variable, indexes, value);
@@ -281,7 +281,7 @@ function returnStatement(
 
   // expecting an expression of the right type, followed by semicolon
   let value = expression(lexemes, routine);
-  value = typeCheck(value, routine.returns as Type);
+  value = typeCheck(routine.language, value, routine.returns as Type);
   eosCheck(lexemes);
 
   // mark that this function has a return statement
@@ -314,7 +314,7 @@ function ifStatement(
     );
   }
   let condition = expression(lexemes, routine);
-  condition = typeCheck(condition, "boolean");
+  condition = typeCheck(routine.language, condition, "boolean");
 
   // expecting a closing bracket
   if (!lexemes.get() || lexemes.get()?.content !== ")") {
@@ -417,7 +417,7 @@ function forStatement(
     );
   }
   let condition = expression(lexemes, routine);
-  condition = typeCheck(condition, "boolean");
+  condition = typeCheck(routine.language, condition, "boolean");
   eosCheck(lexemes);
 
   // expecting a variable assignment
@@ -528,7 +528,7 @@ function doStatement(
     );
   }
   let condition = expression(lexemes, routine);
-  condition = typeCheck(condition, "boolean");
+  condition = typeCheck(routine.language, condition, "boolean");
   // negate the condition
   const notToken = new Token(
     "operator",
@@ -580,7 +580,7 @@ function whileStatement(
     );
   }
   let condition = expression(lexemes, routine);
-  condition = typeCheck(condition, "boolean");
+  condition = typeCheck(routine.language, condition, "boolean");
 
   // expecting a closing bracket
   if (!lexemes.get() || lexemes.get()?.content !== ")") {
