@@ -12,6 +12,7 @@ export const stack: number[] = [];
 export const memoryStack: number[] = [];
 export const returnStack: number[] = [];
 export const subroutineStack: number[] = [];
+export const tryStack: number[] = [];
 
 // stack top and heapBase markers
 let stackTop = 0;
@@ -45,6 +46,7 @@ export function init(options: Options): void {
   memoryStack.length = 0;
   returnStack.length = 0;
   subroutineStack.length = 0;
+  tryStack.length = 0;
   // set up stack top and markers.heapBase markers
   stackTop = 0;
   heapGlobal = -1;

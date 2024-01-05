@@ -1,24 +1,21 @@
 /// <reference lib="dom" />
 
 // type imports
-import type { Options } from "./options.ts";
-import type { Turtle } from "./turtle.ts";
+import type { Options, VirtualCanvas } from "./types.ts";
 
 // module imports
 import * as memory from "./memory.ts";
 import { defaultOptions } from "./options.ts";
-import { mixBytes } from "./misc.ts";
 import { colours } from "../constants/colours.ts";
 import { PCode } from "../constants/pcodes.ts";
 import { MachineError } from "../tools/error.ts";
 import { send } from "../tools/hub.ts";
 import hex from "../tools/hex.ts";
+import { turtle, turtx, turty, vcoords, virtx, virty } from "./turtle.ts";
 
 // machine variables
-let canvas: HTMLCanvasElement = document.createElement("canvas");
-let context: CanvasRenderingContext2D = document
-  .createElement("canvas")
-  .getContext("2d") as CanvasRenderingContext2D;
+let canvas = document.createElement("canvas");
+let context = document.createElement("canvas").getContext("2d")!;
 let running = false;
 let paused = false;
 let pcode: number[][] = [];
@@ -27,13 +24,15 @@ let code = 0;
 let options: Options = defaultOptions;
 
 // the virtual canvas
-let startx = 0;
-let starty = 0;
-let sizex = 1000;
-let sizey = 1000;
-let width = 1000;
-let height = 1000;
-let doubled = false;
+const virtualCanvas: VirtualCanvas = {
+  startx: 0,
+  starty: 0,
+  sizex: 1000,
+  sizey: 1000,
+  width: 1000,
+  height: 1000,
+  doubled: false,
+};
 
 let detectInputcode = 0;
 let detectTimeoutID = 0;
@@ -59,13 +58,13 @@ export function setCanvasAndContext(
 /** resets the machine */
 export function reset(): void {
   // reset the virtual canvas
-  startx = 0;
-  starty = 0;
-  sizex = 1000;
-  sizey = 1000;
-  width = 1000;
-  height = 1000;
-  doubled = false;
+  virtualCanvas.startx = 0;
+  virtualCanvas.starty = 0;
+  virtualCanvas.sizex = 1000;
+  virtualCanvas.sizey = 1000;
+  virtualCanvas.width = 1000;
+  virtualCanvas.height = 1000;
+  virtualCanvas.doubled = false;
   // send reset machine components signals
   send("resolution", { width: 1000, height: 1000 });
   send("console", { clear: true, colour: "#FFFFFF" });
@@ -1145,11 +1144,12 @@ function execute(): void {
 
         // exception handling
         case PCode.try:
-          // TODO
+          code += 1;
+          memory.tryStack.push(pcode[line][code]);
           break;
 
         case PCode.xcpt:
-          // TODO
+          // nothing to do here, this is just an anchor for TRY to jump to
           break;
 
         // list operators
@@ -1242,7 +1242,9 @@ function execute(): void {
           if (n1 !== undefined && n2 !== undefined) {
             s1 = memory.getHeapString(n1);
             s2 = n2 === 1 ? "$" : n2 === 2 ? "#" : "0x";
-            n3 = s1.startsWith("#") ? parseInt(s1.slice(1), 16) : parseInt(s1, 10);
+            n3 = s1.startsWith("#")
+              ? parseInt(s1.slice(1), 16)
+              : parseInt(s1, 10);
             if (isNaN(n3)) {
               throw new MachineError(`Cannot parse ${s1} to integer.`);
             } else {
@@ -1260,7 +1262,9 @@ function execute(): void {
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
             s1 = memory.getHeapString(n1);
             s2 = n3 === 1 ? "$" : n3 === 2 ? "#" : "0x";
-            n4 = s1.startsWith("#") ? parseInt(s1.slice(1), 16) : parseInt(s1, 10);
+            n4 = s1.startsWith("#")
+              ? parseInt(s1.slice(1), 16)
+              : parseInt(s1, 10);
             memory.stack.push(isNaN(n4) ? n2 : n4);
           } else {
             throw new MachineError("Stack operation called on empty stack.");
@@ -1343,21 +1347,17 @@ function execute(): void {
             n3 !== undefined &&
             n4 !== undefined
           ) {
-            sizey = n4;
-            sizex = n3;
-            starty = n2;
-            startx = n1;
-            send("canvas", {
-              startx: startx,
-              starty: starty,
-              sizex: sizex,
-              sizey: sizey,
-              width: width,
-              height: height,
-              doubled: doubled,
-            });
-            memory.setTurtX(Math.round(startx + sizex / 2));
-            memory.setTurtY(Math.round(starty + sizey / 2));
+            virtualCanvas.sizey = n4;
+            virtualCanvas.sizex = n3;
+            virtualCanvas.starty = n2;
+            virtualCanvas.startx = n1;
+            send("canvas", virtualCanvas);
+            memory.setTurtX(
+              Math.round(virtualCanvas.startx + virtualCanvas.sizex / 2)
+            );
+            memory.setTurtY(
+              Math.round(virtualCanvas.starty + virtualCanvas.sizey / 2)
+            );
             memory.setTurtD(0);
             send("turtxChanged", memory.getTurtX());
             send("turtyChanged", memory.getTurtY());
@@ -1376,12 +1376,12 @@ function execute(): void {
             if (Math.min(n1, n2) <= options.smallSize) {
               n1 *= 2;
               n2 *= 2;
-              doubled = true;
+              virtualCanvas.doubled = true;
             } else {
-              doubled = false;
+              virtualCanvas.doubled = false;
             }
-            width = n1;
-            height = n2;
+            virtualCanvas.width = n1;
+            virtualCanvas.height = n2;
             send("resolution", { width: n1, height: n2 });
             send("blank", "#FFFFFF");
             drawCount = options.drawCountMax; // force update
@@ -1405,8 +1405,8 @@ function execute(): void {
 
         // basic turtle settings
         case PCode.home:
-          n1 = startx + sizex / 2;
-          n2 = starty + sizey / 2;
+          n1 = virtualCanvas.startx + virtualCanvas.sizex / 2;
+          n2 = virtualCanvas.starty + virtualCanvas.sizey / 2;
           memory.setTurtX(Math.round(n1));
           memory.setTurtY(Math.round(n2));
           memory.setTurtD(0);
@@ -1548,7 +1548,11 @@ function execute(): void {
             n2 += memory.getTurtY();
             n1 += memory.getTurtX();
             if (memory.getTurtT() > 0) {
-              send("line", { turtle: turtle(), x: turtx(n1), y: turty(n2) });
+              send("line", {
+                turtle: turtle(virtualCanvas),
+                x: turtx(virtualCanvas, n1),
+                y: turty(virtualCanvas, n2),
+              });
               if (update) {
                 drawCount += 1;
               }
@@ -1576,7 +1580,11 @@ function execute(): void {
             n1 = Math.round(n1 * n3);
             n1 += memory.getTurtX();
             if (memory.getTurtT() > 0) {
-              send("line", { turtle: turtle(), x: turtx(n1), y: turty(n2) });
+              send("line", {
+                turtle: turtle(virtualCanvas),
+                x: turtx(virtualCanvas, n1),
+                y: turty(virtualCanvas, n2),
+              });
               if (update) {
                 drawCount += 1;
               }
@@ -1604,7 +1612,11 @@ function execute(): void {
             n1 = -Math.round(n1 * n3);
             n1 += memory.getTurtX();
             if (memory.getTurtT() > 0) {
-              send("line", { turtle: turtle(), x: turtx(n1), y: turty(n2) });
+              send("line", {
+                turtle: turtle(virtualCanvas),
+                x: turtx(virtualCanvas, n1),
+                y: turty(virtualCanvas, n2),
+              });
               if (update) {
                 drawCount += 1;
               }
@@ -1692,8 +1704,8 @@ function execute(): void {
           n1 = memory.stack.pop();
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
             send("flood", {
-              x: turtx(n1),
-              y: turty(n2),
+              x: turtx(virtualCanvas, n1),
+              y: turty(virtualCanvas, n2),
               c1: n3,
               c2: 0,
               boundary: false,
@@ -1718,8 +1730,8 @@ function execute(): void {
             n4 !== undefined
           ) {
             send("flood", {
-              x: turtx(n1),
-              y: turty(n2),
+              x: turtx(virtualCanvas, n1),
+              y: turty(virtualCanvas, n2),
               c1: n3,
               c2: n4,
               boundary: true,
@@ -1736,7 +1748,12 @@ function execute(): void {
           n3 = memory.stack.pop();
           n2 = memory.stack.pop();
           if (n2 !== undefined && n3 !== undefined) {
-            image = context.getImageData(turtx(n2), turty(n3), 1, 1);
+            image = context.getImageData(
+              turtx(virtualCanvas, n2),
+              turty(virtualCanvas, n3),
+              1,
+              1
+            );
             memory.stack.push(
               image.data[0] * 65536 + image.data[1] * 256 + image.data[2]
             );
@@ -1751,10 +1768,10 @@ function execute(): void {
           n1 = memory.stack.pop();
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
             send("pixset", {
-              x: turtx(n1),
-              y: turty(n2),
+              x: turtx(virtualCanvas, n1),
+              y: turty(virtualCanvas, n2),
               c: n3,
-              doubled: doubled,
+              doubled: virtualCanvas.doubled,
             });
             if (update) {
               drawCount += 1;
@@ -1789,19 +1806,16 @@ function execute(): void {
             n3 !== undefined &&
             n4 !== undefined
           ) {
-            r = mixBytes(
-              Math.floor(n1 / 0x10000),
-              Math.floor(n2 / 0x10000),
-              n3,
-              n4
-            ); // red byte
-            g = mixBytes(
-              Math.floor((n1 & 0xff00) / 0x100),
-              Math.floor((n2 & 0xff00) / 0x100),
-              n3,
-              n4
-            ); // green byte
-            b = mixBytes(n1 & 0xff, n2 & 0xff, n3, n4); // blue byte
+            r = Math.round(
+              (Math.floor(n1 / 0x10000) * n3 + Math.floor(n2 / 0x10000) * n4) /
+                (n3 + n4)
+            );
+            g = Math.round(
+              (Math.floor((n1 & 0xff00) / 0x100) * n3 +
+                Math.floor((n2 & 0xff00) / 0x100) * n4) /
+                (n3 + n4)
+            );
+            b = Math.round((n1 & (0xff * n3 + n2) & (0xff * n4)) / (n3 + n4));
             memory.stack.push(r * 0x10000 + g * 0x100 + b);
           }
           break;
@@ -1826,8 +1840,10 @@ function execute(): void {
             n2 = memory.coords.length;
             n1 = n3 > n2 ? 0 : n2 - n3;
             send("poly", {
-              turtle: turtle(),
-              coords: memory.coords.slice(n1, n2).map(vcoords),
+              turtle: turtle(virtualCanvas),
+              coords: memory.coords
+                .slice(n1, n2)
+                .map(vcoords.bind(null, virtualCanvas)),
               fill: false,
             });
             if (update) {
@@ -1844,8 +1860,10 @@ function execute(): void {
             n2 = memory.coords.length;
             n1 = n3 > n2 ? 0 : n2 - n3;
             send("poly", {
-              turtle: turtle(),
-              coords: memory.coords.slice(n1, n2).map(vcoords),
+              turtle: turtle(virtualCanvas),
+              coords: memory.coords
+                .slice(n1, n2)
+                .map(vcoords.bind(null, virtualCanvas)),
               fill: true,
             });
             if (update) {
@@ -1860,9 +1878,9 @@ function execute(): void {
           n1 = memory.stack.pop();
           if (n1 !== undefined) {
             send("arc", {
-              turtle: turtle(),
-              x: turtx(n1 + startx),
-              y: turty(n1 + starty),
+              turtle: turtle(virtualCanvas),
+              x: turtx(virtualCanvas, n1 + virtualCanvas.startx),
+              y: turty(virtualCanvas, n1 + virtualCanvas.starty),
               fill: false,
             });
             if (update) {
@@ -1877,9 +1895,9 @@ function execute(): void {
           n1 = memory.stack.pop();
           if (n1 !== undefined) {
             send("arc", {
-              turtle: turtle(),
-              x: turtx(n1 + startx),
-              y: turty(n1 + starty),
+              turtle: turtle(virtualCanvas),
+              x: turtx(virtualCanvas, n1 + virtualCanvas.startx),
+              y: turty(virtualCanvas, n1 + virtualCanvas.starty),
               fill: true,
             });
             if (update) {
@@ -1895,9 +1913,9 @@ function execute(): void {
           n1 = memory.stack.pop();
           if (n1 !== undefined && n2 !== undefined) {
             send("arc", {
-              turtle: turtle(),
-              x: turtx(n1 + startx),
-              y: turty(n2 + starty),
+              turtle: turtle(virtualCanvas),
+              x: turtx(virtualCanvas, n1 + virtualCanvas.startx),
+              y: turty(virtualCanvas, n2 + virtualCanvas.starty),
               fill: false,
             });
             if (update) {
@@ -1913,9 +1931,9 @@ function execute(): void {
           n1 = memory.stack.pop();
           if (n1 !== undefined && n2 !== undefined) {
             send("arc", {
-              turtle: turtle(),
-              x: turtx(n1 + startx),
-              y: turty(n2 + starty),
+              turtle: turtle(virtualCanvas),
+              x: turtx(virtualCanvas, n1 + virtualCanvas.startx),
+              y: turty(virtualCanvas, n2 + virtualCanvas.starty),
               fill: true,
             });
             if (update) {
@@ -1941,9 +1959,9 @@ function execute(): void {
             n2 += memory.getTurtY();
             n1 += memory.getTurtX();
             send("box", {
-              turtle: turtle(),
-              x: turtx(n1),
-              y: turty(n2),
+              turtle: turtle(virtualCanvas),
+              x: turtx(virtualCanvas, n1),
+              y: turty(virtualCanvas, n2),
               fill: hex(n3),
               border: bool1,
             });
@@ -2413,7 +2431,12 @@ function execute(): void {
           n1 = memory.stack.pop();
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
             s1 = memory.getHeapString(n1);
-            send("print", { turtle: turtle(), string: s1, font: n2, size: n3 });
+            send("print", {
+              turtle: turtle(virtualCanvas),
+              string: s1,
+              font: n2,
+              size: n3,
+            });
           } else {
             throw new MachineError("Stack operation called on empty stack.");
           }
@@ -2494,8 +2517,13 @@ function execute(): void {
       }
     }
   } catch (error) {
-    halt();
-    send("error", error);
+    if (memory.tryStack.length !== 0) {
+      line = memory.tryStack.pop()!;
+      code = 0;
+    } else {
+      halt();
+      send("error", error);
+    }
   }
   // setTimeout (with no delay) instead of direct recursion means the function will return and the
   // canvas will be updated
@@ -2608,14 +2636,30 @@ function putInBuffer(event: KeyboardEvent): void {
 function storeMouseXY(event: MouseEvent | TouchEvent): void {
   switch (event.type) {
     case "mousemove":
-      memory.query[7] = virtx((event as MouseEvent).clientX);
-      memory.query[8] = virty((event as MouseEvent).clientY);
+      memory.query[7] = virtx(
+        canvas,
+        virtualCanvas,
+        (event as MouseEvent).clientX
+      );
+      memory.query[8] = virty(
+        canvas,
+        virtualCanvas,
+        (event as MouseEvent).clientY
+      );
       break;
 
     case "touchmove": // fallthrough
     case "touchstart":
-      memory.query[7] = virtx((event as TouchEvent).touches[0].clientX);
-      memory.query[8] = virty((event as TouchEvent).touches[0].clientY);
+      memory.query[7] = virtx(
+        canvas,
+        virtualCanvas,
+        (event as TouchEvent).touches[0].clientX
+      );
+      memory.query[8] = virty(
+        canvas,
+        virtualCanvas,
+        (event as TouchEvent).touches[0].clientY
+      );
       break;
   }
 }
@@ -2639,8 +2683,16 @@ function storeClickXY(event: MouseEvent | TouchEvent): void {
   memory.query[11] = now; // save to check for next double-click
   switch (event.type) {
     case "mousedown":
-      memory.query[5] = virtx((event as MouseEvent).clientX);
-      memory.query[6] = virty((event as MouseEvent).clientY);
+      memory.query[5] = virtx(
+        canvas,
+        virtualCanvas,
+        (event as MouseEvent).clientX
+      );
+      memory.query[6] = virty(
+        canvas,
+        virtualCanvas,
+        (event as MouseEvent).clientY
+      );
       switch ((event as MouseEvent).button) {
         case 0:
           memory.query[4] += 1;
@@ -2669,8 +2721,16 @@ function storeClickXY(event: MouseEvent | TouchEvent): void {
       break;
 
     case "touchstart":
-      memory.query[5] = virtx((event as TouchEvent).touches[0].clientX);
-      memory.query[6] = virty((event as TouchEvent).touches[0].clientY);
+      memory.query[5] = virtx(
+        canvas,
+        virtualCanvas,
+        (event as TouchEvent).touches[0].clientX
+      );
+      memory.query[6] = virty(
+        canvas,
+        virtualCanvas,
+        (event as TouchEvent).touches[0].clientY
+      );
       memory.query[4] += 1;
       memory.query[1] = memory.query[4];
       memory.query[2] = -1;
@@ -2787,52 +2847,4 @@ function readline(event: KeyboardEvent): void {
     clearTimeout(readlineTimeoutID);
     execute();
   }
-}
-
-/** gets current turtle properties */
-function turtle(): Turtle {
-  return {
-    x: turtx(memory.getTurtX()),
-    y: turty(memory.getTurtY()),
-    d: memory.getTurtD(),
-    a: memory.getTurtA(),
-    p: turtt(memory.getTurtT()),
-    c: hex(memory.getTurtC()),
-  };
-}
-
-/** converts turtx to virtual canvas coordinate */
-function turtx(x: number): number {
-  const exact = ((x - startx) * width) / sizex;
-  return doubled ? Math.round(exact) + 1 : Math.round(exact);
-}
-
-/** converts turty to virtual canvas coordinate */
-function turty(y: number): number {
-  const exact = ((y - starty) * height) / sizey;
-  return doubled ? Math.round(exact) + 1 : Math.round(exact);
-}
-
-/** converts turtt to virtual canvas thickness */
-function turtt(t: number): number {
-  return doubled ? t * 2 : t;
-}
-
-/** maps turtle coordinates to virtual turtle coordinates */
-function vcoords(coords: [number, number]): [number, number] {
-  return [turtx(coords[0]), turty(coords[1])];
-}
-
-/** converts x to virtual canvas coordinate */
-function virtx(x: number): number {
-  const { left, width } = canvas.getBoundingClientRect();
-  const exact = ((x - left) * sizex) / width + startx;
-  return Math.floor(exact);
-}
-
-/** converts y to virtual canvas coordinate */
-function virty(y: number): number {
-  const { height, top } = canvas.getBoundingClientRect();
-  const exact = ((y - top) * sizey) / height + starty;
-  return Math.floor(exact);
 }
