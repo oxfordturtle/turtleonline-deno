@@ -12,10 +12,7 @@ import { Subroutine } from "../parser/definitions/subroutine.ts";
 import { PCode, pcodeArgs } from "../constants/pcodes.ts";
 
 /** generates the pcode for a turtle program */
-export default function program(
-  program: Program,
-  options: Options = defaultOptions
-): number[][] {
+export default function program(program: Program, options: Options = defaultOptions): number[][] {
   // get start code and end code
   const startCode = programStart(program, options);
 
@@ -28,11 +25,7 @@ export default function program(
   // get the pcode for all (any) subroutines
   // N.B. this also saves the start line of each subroutine, required for
   // back-patching BASIC programs below
-  const subroutinesCode = compileSubroutines(
-    program.allSubroutines,
-    subroutinesStartLine,
-    options
-  );
+  const subroutinesCode = compileSubroutines(program.allSubroutines, subroutinesStartLine, options);
 
   // calculate the start line of the main program
   const programStartLine = subroutinesStartLine + subroutinesCode.length;
@@ -41,9 +34,7 @@ export default function program(
   const innerCode = compileInnerCode(program, programStartLine, options);
 
   // stitch the program and subroutines pcode together
-  const jumpLine = [
-    [PCode.jump, startCode.length + subroutinesCode.length + 2],
-  ];
+  const jumpLine = [[PCode.jump, startCode.length + subroutinesCode.length + 2]];
   const pcode =
     subroutinesCode.length > 1
       ? startCode.concat(jumpLine).concat(subroutinesCode).concat(innerCode)
@@ -56,9 +47,7 @@ export default function program(
   if (program.language === "C" || program.language === "Java") {
     // we know the main routine exists at this stage; parser1 for C will have
     // thrown an error if it doesn't
-    const main = program.subroutines.find(
-      (x) => x.name === "main"
-    ) as Subroutine;
+    const main = program.subroutines.find((x) => x.name === "main") as Subroutine;
     pcode.push([PCode.subr, main.startLine]);
   }
 
@@ -94,13 +83,13 @@ function programStart(program: Program, _options: Options): number[][] {
       program.memoryNeeded + program.turtleVariables.length,
       PCode.zptr,
       PCode.ldin,
-      program.turtleAddress +
-        program.memoryNeeded +
-        program.turtleVariables.length,
+      program.turtleAddress + program.memoryNeeded + program.turtleVariables.length,
       PCode.stmt,
     ],
     // line 2: turtle and keybuffer setup
     [
+      PCode.true,
+      program.language === "Pascal" || program.language === "BASIC" ? -1 : 1,
       PCode.home,
       PCode.ldin,
       2,
@@ -192,17 +181,10 @@ function compileSubroutines(
 
     // generate the code for the subroutine
     const startCode = subroutineStartCode(subroutine, options);
-    const innerCode = compileInnerCode(
-      subroutine,
-      startLine + startCode.length,
-      options
-    );
+    const innerCode = compileInnerCode(subroutine, startLine + startCode.length, options);
     const subroutineCode = startCode.concat(innerCode);
 
-    if (
-      subroutine.type === "procedure" ||
-      subroutine.program.language === "Pascal"
-    ) {
+    if (subroutine.type === "procedure" || subroutine.program.language === "Pascal") {
       // all procedures need end code, as do functions in Pascal
       // (functions in other languages include at least one RETURN statement)
       const endCode = subroutineEndCode(subroutine, options);
@@ -235,10 +217,7 @@ function compileInnerCode(
 }
 
 /** creates pcode for the start of a subroutine */
-function subroutineStartCode(
-  subroutine: Subroutine,
-  options: Options
-): number[][] {
+function subroutineStartCode(subroutine: Subroutine, options: Options): number[][] {
   const pcode: number[][] = [];
 
   pcode.push([PCode.pssr, subroutine.index]);
@@ -279,17 +258,9 @@ function subroutineStartCode(
         const lastStartLine = pcode[pcode.length - 1];
         if (parameter.isArray && !parameter.isReferenceParameter) {
           // TODO: copy the array
-        } else if (
-          parameter.type === "string" &&
-          !parameter.isReferenceParameter
-        ) {
+        } else if (parameter.type === "string" && !parameter.isReferenceParameter) {
           // copy the string
-          lastStartLine.push(
-            PCode.ldvv,
-            subroutine.address,
-            parameter.address,
-            PCode.cstr
-          );
+          lastStartLine.push(PCode.ldvv, subroutine.address, parameter.address, PCode.cstr);
         } else {
           // for booleans and integers, or longer reference parameters, just store the value/address
           lastStartLine.push(PCode.stvv, subroutine.address, parameter.address);
@@ -349,19 +320,11 @@ function setupLocalVariable(variable: Variable): number[][] {
 }
 
 /** creates pcode for the end of a subroutine */
-function subroutineEndCode(
-  subroutine: Subroutine,
-  _options: Options
-): number[][] {
+function subroutineEndCode(subroutine: Subroutine, _options: Options): number[][] {
   const pcode: number[] = [];
   if (subroutine.type === "function") {
     // store function result
-    pcode.push(
-      PCode.ldvg,
-      subroutine.address,
-      PCode.stvg,
-      subroutine.program.resultAddress
-    );
+    pcode.push(PCode.ldvg, subroutine.address, PCode.stvg, subroutine.program.resultAddress);
   }
   if (subroutine.variables.length > 0) {
     // release memory
@@ -377,9 +340,7 @@ function backpatchSubroutineCalls(program: Program, pcode: number[][]): void {
   for (let i = 0; i < pcode.length; i += 1) {
     for (let j = 0; j < pcode[i].length; j += 1) {
       if (pcode[i][j - 1] && pcode[i][j - 1] === PCode.subr) {
-        const subroutine = program.allSubroutines.find(
-          (x) => x.index === pcode[i][j]
-        );
+        const subroutine = program.allSubroutines.find((x) => x.index === pcode[i][j]);
         if (subroutine) {
           pcode[i][j] = subroutine.startLine;
         }

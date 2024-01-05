@@ -262,6 +262,7 @@ export function pcodeArgs(pcode: PCode): number {
 
     case PCode.pick: // fallthrough
     case PCode.true: // fallthrough
+    case PCode.try: // fallthrough
     case PCode.lapp: // fallthrough
     case PCode.lcpy: // fallthrough
     case PCode.lext: // fallthrough

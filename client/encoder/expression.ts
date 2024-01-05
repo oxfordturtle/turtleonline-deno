@@ -311,7 +311,7 @@ function variableValue(
 
   // add peek code for pointer variables
   if (exp.variable.isPointer) {
-    merge(pcode, [[PCode.peek]]);
+    merge(pcode, [[PCode.lptr]]);
   }
 
   // return the pcode
@@ -421,11 +421,10 @@ function castExpression(
 function operator(op: Operator, program: Program, _options: Options): number[] {
   switch (op) {
     case "not":
-      if (program.language === "C" || program.language === "Python") {
-        // PCode.not assumes TRUE is -1, but in C and Python TRUE is 1
-        return [PCode.ldin, 0, PCode.eqal];
-      }
-      return [PCode.not];
+      return (program.language === "C" || program.language === "Python" || program.language === "TypeScript")
+        // PCode.not is bitwise negation
+        ? [PCode.ldin, 0, PCode.eqal]
+        : [PCode.not];
 
     default:
       return [PCode[op as any] as any as PCode];

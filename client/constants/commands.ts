@@ -437,7 +437,7 @@ export const commands: Command[] = [
     null,
     2,
     1,
-    "Draws a box of width <code>x</code> and height <code>y</code>, with the top left corner in the Turtle&rsquo;s current location, filled with the specified <code>colour</code>. If <code>border</code> is <code>true</code>, a border is drawn around the box in the Turtle&rsquo;s current colour and and thickness. This is intended to be used with the <code>print</code> command, to provide a box for framing text."
+    "Draws a box of width <code>x</code> and height <code>y</code>, with the top left corner in the Turtle&rsquo;s current location, filled with the specified <code>colour</code>. If <code>border</code> is <code>true</code>, a border is drawn around the box in the Turtle&rsquo;s current colour and and thickness. This is intended to be used with the <code>display</code> command, to provide a box for framing text."
   ),
   // 3. Other Turtle commands
   new Command(
@@ -1391,7 +1391,7 @@ export const commands: Command[] = [
       Python: "display",
       TypeScript: "display",
     },
-    [PCode.prnt],
+    [PCode.disp],
     [
       new Parameter("string", "string", false, 1),
       new Parameter("font", "integer", false, 1),
@@ -2782,7 +2782,7 @@ export const commands: Command[] = [
       Python: "peek",
       TypeScript: "peek",
     },
-    [PCode.peek],
+    [PCode.lptr],
     [new Parameter("address", "integer", false, 1)],
     "integer",
     11,
