@@ -188,10 +188,10 @@ function delimiter(
   const tests = {
     BASIC: /^(\(|\)|,|:)/,
     C: /^(\(|\)|{|}|\[|\]|,|;)/,
-    Java: /^(\(|\)|{|}|\[|\]|,|;)/,
+    Java: /^(\(|\)|{|}|\[|\]|,|;|\.)/,
     Pascal: /^(\(|\)|\[|\]|,|:|;|\.\.|\.)/,
-    Python: /^(\(|\)|\[|\]|,|:|;|->)/,
-    TypeScript: /^(\(|\)|{|}|\[|\]|,|;|:)/,
+    Python: /^(\(|\)|\[|\]|,|:|;|\.|->)/,
+    TypeScript: /^(\(|\)|{|}|\[|\]|,|;|:|\.)/,
   };
   const test = code.match(tests[language]);
   return test ? new Token("delimiter", test[0], line, character) : false;

@@ -1,3 +1,5 @@
+REM DrawPause
+
 REM draw green blot radius 100, then pause
 COLOUR(GREEN)
 BLOT(100)
@@ -6,7 +8,8 @@ REM draw red line length 450 upwards, then pause
 COLOUR(RED)
 FORWARD(450)
 PAUSE(1000)
-REM turn right 90 degrees and change thickness
+REM red circle, right 90 degrees, thickness 9
+CIRCLE(20)
 RIGHT(90)
 THICKNESS(9)
 REM change colour, pause, draw line length 300

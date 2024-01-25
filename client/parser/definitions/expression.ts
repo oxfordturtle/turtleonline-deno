@@ -128,7 +128,8 @@ export class VariableValue {
   readonly expressionType = "variable";
   readonly lexeme: IdentifierLexeme;
   readonly variable: Variable;
-  readonly indexes: Expression[] = []; // for array variables
+  slice?: [Expression, Expression]; // for string/array slices
+  readonly indexes: Expression[] = []; // for elements of array variables
 
   constructor(lexeme: IdentifierLexeme, variable: Variable) {
     this.lexeme = lexeme;

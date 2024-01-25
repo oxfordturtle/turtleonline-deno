@@ -1,6 +1,5 @@
-print('What is your name?  ')
-s = readline()
+s=input('What is your name?  ')
 print('')
-print('Hello, ' + s + ', ...  ')
+print('Hello, '+s+', ...')
 pause(500)
 print('How are you?')

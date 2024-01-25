@@ -5,7 +5,7 @@ import type { Language } from "../constants/languages.ts";
 import type { Mode } from "../constants/modes.ts";
 import type { Property } from "../constants/properties.ts";
 import type { Options as CompilerOptions } from "../encoder/options.ts";
-import type { Options as MachineOptions } from "../machine/options.ts";
+import type { Options as MachineOptions } from "../machine/types.ts";
 import type { Token } from "../lexer/token.ts";
 import type { CommentLexeme, Lexeme } from "../lexer/lexeme.ts";
 import type { UsageCategory } from "../analyser/usage.ts";
@@ -1063,9 +1063,7 @@ export class State {
       send("error", new SystemError(`Unknown example "${exampleId}".`));
     } else {
       const filename = `${example.id}.${extensions[this.language]}`;
-      const path = this.language === "Python"
-        ? `/examples/_new/${this.language}/${example.groupId}/${filename}`
-        :  `/examples/${this.language}/${example.groupId}/${filename}`;
+      const path = `/examples/${this.language}/${example.groupId}/${filename}`;
       fetch(path).then(
         (response) => {
           if (response.ok) {

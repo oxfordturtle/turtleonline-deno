@@ -1,5 +1,0 @@
-s=input('What is your name?  ')
-print('')
-print('Hello, '+s+', ...')
-pause(500)
-print('How are you?')

@@ -352,7 +352,15 @@ function factor(lexemes: Lexemes, routine: Program | Subroutine): Expression {
             // expecting integer expression for the character index
             exp = expression(lexemes, routine);
             exp = typeCheck(routine.language, exp, "integer");
-            variableValue.indexes.push(exp);
+            if (routine.language === "Python" && lexemes.get()?.content === ":") {
+              lexemes.next();
+              // expecting integer expression for the character index
+              let exp2 = expression(lexemes, routine);
+              exp2 = typeCheck(routine.language, exp2, "integer");
+              variableValue.slice = [exp, exp2];
+            } else {
+              variableValue.indexes.push(exp);
+            }
             // expecting closing bracket
             if (!lexemes.get() || lexemes.get()?.content !== close) {
               throw new CompilerError(
@@ -404,7 +412,7 @@ function factor(lexemes: Lexemes, routine: Program | Subroutine): Expression {
     }
 
     // everything else
-    default:
+    default: {
       // type casting in C and Java
       if (
         (routine.language === "C" || routine.language === "Java") &&
@@ -487,5 +495,6 @@ function factor(lexemes: Lexemes, routine: Program | Subroutine): Expression {
       else {
         throw new CompilerError("Expression cannot begin with {lex}.", lexeme);
       }
+    }
   }
 }

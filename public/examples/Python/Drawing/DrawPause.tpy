@@ -6,7 +6,8 @@ pause(1000)
 colour(red)
 forward(450)
 pause(1000)
-# turn right 90 degrees and change thickness
+# red circle, right 90 degrees, thickness 9
+circle(20)
 right(90)
 thickness(9)
 # change colour, pause, draw line length 300

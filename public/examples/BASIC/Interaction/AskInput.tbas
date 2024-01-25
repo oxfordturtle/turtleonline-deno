@@ -1,10 +1,12 @@
+REM AskInput
+
 REM write question to console
-WRITE("What is your name?  ")
+PRINTON("What is your name?  ")
 REM read characters from keybuffer until ENTER key is pressed
-s$ = GETLINE$
+s$=GETLINE$
 REM write a greeting (on a new line)
-WRITELN("")
-WRITE("Hello, " + s$ + ", ...  ")
+PRINT("")
+PRINTON("Hello, "+s$+", ...  ")
 PAUSE(500)
-WRITELN("How are you?")
+PRINT("How are you?")
 END
