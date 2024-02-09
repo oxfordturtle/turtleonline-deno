@@ -1,5 +1,5 @@
 import type { State } from "./types.ts";
-import { PCode } from "../constants/pcodes.ts";
+import PCode from "../constants/pcodes.ts";
 import * as actions from "./actions.ts";
 
 type Action = (state: State) => CodeResult;

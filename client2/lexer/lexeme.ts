@@ -1,7 +1,7 @@
 import type { Language } from "../constants/languages.ts";
 import type { Token } from "../tokenizer/token.ts";
 import type { Keyword } from "./keywords.ts";
-import type { Type } from "./types.ts";
+import type { Type } from "../parser/types.ts";
 import type { Operator } from "./operators.ts";
 import type { Delimiter } from "./delimiters.ts";
 
