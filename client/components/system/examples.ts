@@ -1,4 +1,5 @@
-import { Example, Group, groups } from "../../constants/examples.ts";
+import type { Example } from "../../constants/examples.ts";
+import exampleGroups, { type ExampleGroup } from "../../constants/exampleGroups.ts";
 import { fill, a, span, i, div } from "../../tools/elements.ts";
 import { state } from "../../state/index.ts";
 import { closeMenu, toggleMenu } from "../view.ts";
@@ -7,12 +8,12 @@ import { on } from "../../tools/hub.ts";
 const examplesMenu = document.querySelector('[data-component="examplesMenu"]') as HTMLElement;
 
 const fillExamplesMenu = () => {
-  const groupLinks = groups.slice(1).map(exampleGroupLink);
-  const groupMenus = groups.slice(1).map(exampleGroupMenu);
+  const groupLinks = exampleGroups.slice(1).map(exampleGroupLink);
+  const groupMenus = exampleGroups.slice(1).map(exampleGroupMenu);
   fill(examplesMenu, groupLinks.concat(groupMenus));
 };
 
-const exampleGroupLink = (group: Group): HTMLElement =>
+const exampleGroupLink = (group: ExampleGroup): HTMLElement =>
   a({
     on: [
       "click",
@@ -30,7 +31,7 @@ const exampleGroupLink = (group: Group): HTMLElement =>
     ],
   });
 
-const exampleGroupMenu = (group: Group): HTMLElement =>
+const exampleGroupMenu = (group: ExampleGroup): HTMLElement =>
   div({
     className: "system-sub-menu",
     "data-menu": group.id,

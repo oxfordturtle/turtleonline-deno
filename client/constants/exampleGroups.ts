@@ -1,0 +1,39 @@
+import examples from "./examples.ts";
+
+export type ExampleGroup = ReturnType<typeof exampleGroup>;
+
+export type ExampleGroupId =
+  | "CSAC"
+  | "Drawing"
+  | "Procedures"
+  | "Further"
+  | "Movement"
+  | "Interaction"
+  | "Files"
+  | "Cellular"
+  | "Models"
+  | "Fractals"
+  | "Logic";
+
+const exampleGroup = (index: number, id: ExampleGroupId, title: string) =>
+  ({
+    __: "ExampleGroup",
+    index,
+    id,
+    title,
+    examples: examples.filter((example) => example.groupId === id),
+  } as const);
+
+export default [
+  exampleGroup(0, "CSAC", "computer science across the curriculum"),
+  exampleGroup(1, "Drawing", "drawing and counting loops"),
+  exampleGroup(2, "Procedures", "procedures, functions and recursion"),
+  exampleGroup(3, "Further", "further commands and structures"),
+  exampleGroup(4, "Movement", "smooth movement and bouncing"),
+  // exampleGroup(5, "Files", "file and directory handling"),
+  exampleGroup(5, "Interaction", "user input, interaction and games"),
+  exampleGroup(6, "Cellular", "cellular models"),
+  exampleGroup(7, "Models", "other models"),
+  exampleGroup(8, "Fractals", "self-similarity and chaos"),
+  exampleGroup(9, "Logic", "computer science and logic"),
+] as const;

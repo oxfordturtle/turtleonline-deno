@@ -13,7 +13,8 @@ import type { UsageCategory } from "../analyser/usage.ts";
 // module imports
 import { File, skeletons } from "./file.ts";
 import { load, save } from "./storage.ts";
-import { groups, examples } from "../constants/examples.ts";
+import examples from "../constants/examples.ts";
+import exampleGroups from "../constants/exampleGroups.ts";
 import { languages, extensions } from "../constants/languages.ts";
 import { defaults } from "../constants/properties.ts";
 import { input } from "../tools/elements.ts";
@@ -1084,7 +1085,7 @@ export class State {
   }
 
   openExampleGroup(groupId: string) {
-    const group = groups.find((x) => x.id === groupId);
+    const group = exampleGroups.find((x) => x.id === groupId);
     if (!group) {
       send("error", new SystemError(`Group ID ${groupId} not found.`));
     } else {
