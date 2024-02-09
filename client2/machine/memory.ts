@@ -1,14 +1,12 @@
 import type { Memory, Options } from "./types.ts";
 
-// offsets for turtle properties
-const turtxIndex = 1;
-const turtyIndex = 2;
-const turtdIndex = 3;
-const turtaIndex = 4;
-const turttIndex = 5;
-const turtcIndex = 6;
+const turtleXIndex = 1;
+const turtleYIndex = 2;
+const turtleDIndex = 3;
+const turtleAIndex = 4;
+const turtleTIndex = 5;
+const turtleCIndex = 6;
 
-/** initialises the machine memory */
 export const init = (memory: Memory, options: Options): void => {
   // set up the memory arrays
   memory.main.length = 0x200000;
@@ -32,40 +30,26 @@ export const init = (memory: Memory, options: Options): void => {
   memory.heapMax = memory.heapTemp;
 };
 
-/** returns the value at the given address in main memory */
 export const peek = (memory: Memory, address: number): number => {
   return memory.main[address];
 };
 
-/** writes the given value at the given address in main memory */
 export const poke = (memory: Memory, address: number, value: number): void => {
   memory.main[address] = value;
 };
 
-/** returns the value at the address stored at the given address */
 export const peekAddress = (memory: Memory, address: number): number => {
   return memory.main[memory.main[address]];
 };
 
-/** writes the given value at the address stored at the given address */
-export const pokeAddress = (
-  memory: Memory,
-  address: number,
-  value: number
-): void => {
+export const pokeAddress = (memory: Memory, address: number, value: number): void => {
   memory.main[memory.main[address]] = value;
 };
 
-/** returns the value at the address stored at the given address with offset */
-export const peekAddressOffset = (
-  memory: Memory,
-  address: number,
-  offset: number
-): number => {
+export const peekAddressOffset = (memory: Memory, address: number, offset: number): number => {
   return memory.main[memory.main[address] + offset];
 };
 
-/** writes the given value at the address stored at the given address with offset */
 export const pokeAddressOffset = (
   memory: Memory,
   address: number,
@@ -75,147 +59,113 @@ export const pokeAddressOffset = (
   memory.main[memory.main[address] + offset] = value;
 };
 
-/** returns the value at the given address in the keys array */
 export const peekKeys = (memory: Memory, address: number): number => {
   return memory.keys[address];
 };
 
-/** writes the given value at the given address in the keys array */
-export const pokeKeys = (
-  memory: Memory,
-  address: number,
-  value: number
-): void => {
+export const pokeKeys = (memory: Memory, address: number, value: number): void => {
   memory.keys[address] = value;
 };
 
-/** returns the value at the given address in the query array */
 export const peekQuery = (memory: Memory, address: number): number => {
   return memory.query[address];
 };
 
-/** writes the given value at the given address in the query array */
-export const pokeQuery = (
-  memory: Memory,
-  address: number,
-  value: number
-): void => {
+export const pokeQuery = (memory: Memory, address: number, value: number): void => {
   memory.query[address] = value;
 };
 
-/** gets the turtx value */
-export const getTurtX = (memory: Memory): number => {
-  return peekAddressOffset(memory, 0, turtxIndex);
+export const getTurtleX = (memory: Memory): number => {
+  return peekAddressOffset(memory, 0, turtleXIndex);
 };
 
-/** gets the turty value */
-export const getTurtY = (memory: Memory): number => {
-  return peekAddressOffset(memory, 0, turtyIndex);
+export const getTurtleY = (memory: Memory): number => {
+  return peekAddressOffset(memory, 0, turtleYIndex);
 };
 
-/** gets the turtd value */
-export const getTurtD = (memory: Memory): number => {
-  return peekAddressOffset(memory, 0, turtdIndex);
+export const getTurtleD = (memory: Memory): number => {
+  return peekAddressOffset(memory, 0, turtleDIndex);
 };
 
-/** gets the turta value */
-export const getTurtA = (memory: Memory): number => {
-  return peekAddressOffset(memory, 0, turtaIndex);
+export const getTurtleA = (memory: Memory): number => {
+  return peekAddressOffset(memory, 0, turtleAIndex);
 };
 
-/** gets the turtx value */
-export const getTurtT = (memory: Memory): number => {
-  return peekAddressOffset(memory, 0, turttIndex);
+export const getTurtleT = (memory: Memory): number => {
+  return peekAddressOffset(memory, 0, turtleTIndex);
 };
 
-/** gets the turtc value */
-export const getTurtC = (memory: Memory): number => {
-  return peekAddressOffset(memory, 0, turtcIndex);
+export const getTurtleC = (memory: Memory): number => {
+  return peekAddressOffset(memory, 0, turtleCIndex);
 };
 
-/** sets the turtx value */
-export const setTurtX = (memory: Memory, turtx: number) => {
-  pokeAddressOffset(memory, 0, turtxIndex, turtx);
+export const setTurtleX = (memory: Memory, turtleX: number) => {
+  pokeAddressOffset(memory, 0, turtleXIndex, turtleX);
 };
 
-/** sets the turty value */
-export const setTurtY = (memory: Memory, turty: number) => {
-  pokeAddressOffset(memory, 0, turtyIndex, turty);
+export const setTurtleY = (memory: Memory, turtleY: number) => {
+  pokeAddressOffset(memory, 0, turtleYIndex, turtleY);
 };
 
-/** sets the turtd value */
-export const setTurtD = (memory: Memory, turtd: number) => {
-  pokeAddressOffset(memory, 0, turtdIndex, turtd);
+export const setTurtleD = (memory: Memory, turtleD: number) => {
+  pokeAddressOffset(memory, 0, turtleDIndex, turtleD);
 };
 
-/** sets the turta value */
-export const setTurtA = (memory: Memory, turta: number) => {
-  pokeAddressOffset(memory, 0, turtaIndex, turta);
+export const setTurtleA = (memory: Memory, turtleA: number) => {
+  pokeAddressOffset(memory, 0, turtleAIndex, turtleA);
 };
 
-/** sets the turtx value */
-export const setTurtT = (memory: Memory, turtt: number) => {
-  pokeAddressOffset(memory, 0, turttIndex, turtt);
+export const setTurtleT = (memory: Memory, turtleT: number) => {
+  pokeAddressOffset(memory, 0, turtleTIndex, turtleT);
 };
 
-/** sets the turtc value */
-export const setTurtC = (memory: Memory, turtc: number) => {
-  pokeAddressOffset(memory, 0, turtcIndex, turtc);
+export const setTurtleC = (memory: Memory, turtleC: number) => {
+  pokeAddressOffset(memory, 0, turtleCIndex, turtleC);
 };
 
-/** gets all Turtle properties */
 export const getTurtle = (memory: Memory) => {
   return {
-    x: getTurtX(memory),
-    y: getTurtY(memory),
-    d: getTurtD(memory),
-    a: getTurtA(memory),
-    t: getTurtT(memory),
-    c: getTurtC(memory),
+    x: getTurtleX(memory),
+    y: getTurtleY(memory),
+    d: getTurtleD(memory),
+    a: getTurtleA(memory),
+    t: getTurtleT(memory),
+    c: getTurtleC(memory),
   };
 };
 
-/** gets the heap global */
 export const getHeapGlobal = (memory: Memory): number => {
   return memory.heapGlobal;
 };
 
-/** sets the heap global */
 export const setHeapGlobal = (memory: Memory, value: number): void => {
   memory.heapGlobal = value;
 };
 
-/** gets the heap perm */
 export const getHeapPerm = (memory: Memory): number => {
   return memory.heapPerm;
 };
 
-/** sets the stack top */
 export const setStackTop = (memory: Memory, value: number): void => {
   memory.stackTop = Math.max(value, memory.stackTop);
 };
 
-/** gets the heap temp value */
 export const getHeapTemp = (memory: Memory): number => {
   return memory.heapTemp;
 };
 
-/** sets the heap temp value */
 export const setHeapTemp = (memory: Memory, value: number): void => {
   memory.heapTemp = value;
 };
 
-/** sets the heap max value */
 export const setHeapMax = (memory: Memory, value: number): void => {
   Math.max(value, memory.heapMax);
 };
 
-/** fixes the top of the heap */
 export const heapFix = (memory: Memory): void => {
   memory.heapPerm = memory.heapTemp;
 };
 
-/** clears the heap */
 export const heapClear = (memory: Memory): void => {
   if (memory.stack.length === 0) {
     // to avoid the problem of e.g.
@@ -225,7 +175,6 @@ export const heapClear = (memory: Memory): void => {
   }
 };
 
-/** executes a delayed heap clear (called at the start of each cycle) */
 export const delayedHeapClear = (memory: Memory): void => {
   if (memory.heapClearPending) {
     memory.heapClearPending = false;
@@ -233,7 +182,6 @@ export const delayedHeapClear = (memory: Memory): void => {
   }
 };
 
-/** resets the heap */
 export const heapReset = (memory: Memory): void => {
   if (memory.heapGlobal > -1) {
     memory.heapTemp = memory.heapGlobal;
@@ -241,7 +189,6 @@ export const heapReset = (memory: Memory): void => {
   }
 };
 
-/** makes a string on the heap */
 export const makeHeapString = (memory: Memory, string: string): void => {
   const stringArray = Array.from(string).map((c) => c.charCodeAt(0));
   memory.stack.push(memory.heapTemp + 1);
@@ -254,7 +201,6 @@ export const makeHeapString = (memory: Memory, string: string): void => {
   memory.heapMax = Math.max(memory.heapTemp, memory.heapMax);
 };
 
-/** gets a string from the heap */
 export const getHeapString = (memory: Memory, address: number): string => {
   // TODO: throw error (or something) in case there is no string at the given
   // address on the heap
@@ -268,7 +214,6 @@ export const getHeapString = (memory: Memory, address: number): string => {
   return string;
 };
 
-/** fills a chunk of main memory with zeros */
 export const zero = (memory: Memory, start: number, length: number): void => {
   if (length > 0) {
     memory.main[start] = 0;
@@ -276,23 +221,14 @@ export const zero = (memory: Memory, start: number, length: number): void => {
   }
 };
 
-/** copies one chunk of memory into another */
-export const copy = (
-  memory: Memory,
-  source: number,
-  target: number,
-  length: number
-): void => {
+export const copy = (memory: Memory, source: number, target: number, length: number): void => {
   if (length > 0) {
     memory.main[target] = memory.main[source];
     copy(memory, source + 1, target + 1, length - 1);
   }
 };
 
-/** exports the contents of the main memory (for display) */
-export const dump = (
-  memory: Memory
-): { stack: number[]; heap: number[]; heapBase: number } => {
+export const dump = (memory: Memory): { stack: number[]; heap: number[]; heapBase: number } => {
   const stack = memory.main.slice(0, memory.stackTop + 1);
   const heap = memory.main.slice(memory.heapBase + 1, memory.heapMax + 1);
   return { stack, heap, heapBase: memory.heapBase + 1 };

@@ -5,17 +5,8 @@ import hex from "../tools/hex.ts";
 import * as systemState from "../tools/hub.ts";
 import * as memory from "./memory.ts";
 import { mixBytes } from "./misc.ts";
-import { turtle, turtx, turty, vcoords } from "./turtle.ts";
-
-type ActionResult =
-  | {
-      state: State;
-      drawn: boolean;
-      halted: boolean;
-    }
-  | {
-      error: string;
-    };
+import { turtle, turtleX, turtleY, virtualCoords } from "./turtle.ts";
+import type { ActionResult } from "./types.ts";
 
 export const doNothing = (state: State): ActionResult => ({
   state,
@@ -23,8 +14,9 @@ export const doNothing = (state: State): ActionResult => ({
   halted: false,
 });
 
-export const notImplemented = (): ActionResult => {
+export const notImplemented = (state: State): ActionResult => {
   return {
+    state,
     error:
       "File processing has not yet been implemented in the online Turtle System. We are working on introducing this very soon. In the meantime, please run this program using the downloable system.",
   };
@@ -34,11 +26,12 @@ export const duplicate = (state: State): ActionResult => {
   const n1 = state.memory.stack.pop();
   if (n1 === undefined) {
     return {
+      state,
       error: "Stack operation called on empty stack.",
     };
   }
   state.memory.stack.push(n1, n1);
-  return { state, drawn: false, halted: false };
+  return { state };
 };
 
 export const swap = (state: State): ActionResult => {
@@ -46,11 +39,12 @@ export const swap = (state: State): ActionResult => {
   const n1 = state.memory.stack.pop();
   if (n1 === undefined || n2 === undefined) {
     return {
+      state,
       error: "Stack operation called on empty stack.",
     };
   }
   state.memory.stack.push(n2, n1);
-  return { state, drawn: false, halted: false };
+  return { state };
 };
 
 export const rotate = (state: State): ActionResult => {
@@ -59,311 +53,339 @@ export const rotate = (state: State): ActionResult => {
   const n1 = state.memory.stack.pop();
   if (n1 === undefined || n2 === undefined || n3 === undefined) {
     return {
+      state,
       error: "Stack operation called on empty stack.",
     };
   }
   state.memory.stack.push(n2, n3, n1);
-  return { state, drawn: false, halted: false };
+  return { state };
 };
 
 export const incr = (state: State): ActionResult => {
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined) {
-    state.memory.stack.push(n1 + 1);
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined) {
+    return {
+      state,
+      error: "Stack operation called on empty stack.",
+    };
   }
+  state.memory.stack.push(n1 + 1);
+  return { state };
 };
 
 export const decr = (state: State): ActionResult => {
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined) {
-    state.memory.stack.push(n1 - 1);
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined) {
+    return {
+      state,
+      error: "Stack operation called on empty stack.",
+    };
   }
+  state.memory.stack.push(n1 - 1);
+  return { state };
 };
 
 export const mxin = (state: State): ActionResult => {
   state.memory.stack.push(Math.pow(2, 31) - 1);
+  return { state };
 };
 
 export const rand = (state: State): ActionResult => {
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined) {
-    let n2 = Math.sin(state.seed++) * 10000;
-    n2 = n2 - Math.floor(n2);
-    state.memory.stack.push(Math.floor(n2 * Math.abs(n1)));
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined) {
+    return {
+      state,
+      error: "Stack operation called on empty stack.",
+    };
   }
+  const n2 = Math.sin(state.seed++) * 10000;
+  const n3 = n2 - Math.floor(n2);
+  state.memory.stack.push(Math.floor(n3 * Math.abs(n1)));
+  return { state };
 };
 
 export const hstr = (state: State): ActionResult => {
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined) {
-    const s1 = memory.getHeapString(state.memory, n1);
-    memory.makeHeapString(state.memory, s1);
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined) {
+    return {
+      state,
+      error: "Stack operation called on empty stack.",
+    };
   }
+  const s1 = memory.getHeapString(state.memory, n1);
+  memory.makeHeapString(state.memory, s1);
+  return { state };
 };
 
 export const ctos = (state: State): ActionResult => {
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined) {
-    memory.makeHeapString(state.memory, String.fromCharCode(n1));
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined) {
+    return {
+      state,
+      error: "Stack operation called on empty stack.",
+    };
   }
+  memory.makeHeapString(state.memory, String.fromCharCode(n1));
+  return { state };
 };
 
 export const sasc = (state: State): ActionResult => {
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined) {
-    const s1 = memory.getHeapString(state.memory, n1);
-    if (s1.length === 0) {
-      state.memory.stack.push(0);
-    } else {
-      state.memory.stack.push(s1.charCodeAt(0));
-    }
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined) {
+    return {
+      state,
+      error: "Stack operation called on empty stack.",
+    };
   }
+  const s1 = memory.getHeapString(state.memory, n1);
+  if (s1.length === 0) {
+    state.memory.stack.push(0);
+  } else {
+    state.memory.stack.push(s1.charCodeAt(0));
+  }
+  return { state };
 };
 
 export const itos = (state: State): ActionResult => {
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined) {
-    memory.makeHeapString(state.memory, n1.toString(10));
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined) {
+    return {
+      state,
+      error: "Stack operation called on empty stack.",
+    };
   }
+  memory.makeHeapString(state.memory, n1.toString(10));
+  return { state };
 };
 
 export const hexs = (state: State): ActionResult => {
   const n2 = state.memory.stack.pop();
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined && n2 !== undefined) {
-    let s1 = n1.toString(16).toUpperCase();
-    while (s1.length < n2) {
-      s1 = "0" + s1;
-    }
-    memory.makeHeapString(state.memory, s1);
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined || n2 === undefined) {
+    return {
+      state,
+      error: "Stack operation called on empty stack.",
+    };
   }
+  let s1 = n1.toString(16).toUpperCase();
+  while (s1.length < n2) {
+    s1 = "0" + s1;
+  }
+  memory.makeHeapString(state.memory, s1);
+  return { state };
 };
 
 export const sval = (state: State): ActionResult => {
   const n2 = state.memory.stack.pop();
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined && n2 !== undefined) {
-    const s1 = memory.getHeapString(state.memory, n1);
-    let n3;
-    if (s1[0] === "#") {
-      n3 = isNaN(parseInt(s1.slice(1), 16)) ? n2 : parseInt(s1.slice(1), 16);
-    } else {
-      n3 = isNaN(parseInt(s1, 10)) ? n2 : parseInt(s1, 10);
-    }
-    state.memory.stack.push(n3);
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined || n2 === undefined) {
+    return {
+      state,
+      error: "Stack operation called on empty stack.",
+    };
   }
+  const s1 = memory.getHeapString(state.memory, n1);
+  let n3;
+  if (s1[0] === "#") {
+    n3 = isNaN(parseInt(s1.slice(1), 16)) ? n2 : parseInt(s1.slice(1), 16);
+  } else {
+    n3 = isNaN(parseInt(s1, 10)) ? n2 : parseInt(s1, 10);
+  }
+  state.memory.stack.push(n3);
+  return { state };
 };
 
 export const qtos = (state: State): ActionResult => {
   const n4 = state.memory.stack.pop();
   const n3 = state.memory.stack.pop();
   const n2 = state.memory.stack.pop();
-  if (n2 !== undefined && n3 !== undefined && n4 !== undefined) {
-    const n1 = n2 / n3;
-    memory.makeHeapString(state.memory, n1.toFixed(n4));
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n2 === undefined || n3 === undefined || n4 === undefined) {
+    return {
+      state,
+      error: "Stack operation called on empty stack.",
+    };
   }
+  const n1 = n2 / n3;
+  memory.makeHeapString(state.memory, n1.toFixed(n4));
+  return { state };
 };
 
 export const qval = (state: State): ActionResult => {
   const n3 = state.memory.stack.pop();
   const n2 = state.memory.stack.pop();
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
-    const s1 = memory.getHeapString(state.memory, n1);
-    const n4 = isNaN(parseFloat(s1)) ? n3 : parseFloat(s1);
-    state.memory.stack.push(Math.round(n4 * n2));
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined || n2 === undefined || n3 === undefined) {
+    return { state, error: "Stack operation called on empty stack." };
   }
+  const s1 = memory.getHeapString(state.memory, n1);
+  const n4 = isNaN(parseFloat(s1)) ? n3 : parseFloat(s1);
+  state.memory.stack.push(Math.round(n4 * n2));
+  return { state };
 };
 
 // 0x10s - Boolean operators, integer operators
 export const not = (state: State): ActionResult => {
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined) {
-    state.memory.stack.push(~n1);
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined) {
+    return { state, error: "Stack operation called on empty stack." };
   }
+  state.memory.stack.push(~n1);
+  return { state };
 };
 
 export const and = (state: State): ActionResult => {
   const n2 = state.memory.stack.pop();
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined && n2 !== undefined) {
-    state.memory.stack.push(n1 & n2);
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined || n2 === undefined) {
+    return { state, error: "Stack operation called on empty stack." };
   }
+  state.memory.stack.push(n1 & n2);
+  return { state };
 };
 
 export const or = (state: State): ActionResult => {
   const n2 = state.memory.stack.pop();
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined && n2 !== undefined) {
-    state.memory.stack.push(n1 | n2);
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined || n2 === undefined) {
+    return { state, error: "Stack operation called on empty stack." };
   }
+  state.memory.stack.push(n1 | n2);
+  return { state };
 };
 
 export const xor = (state: State): ActionResult => {
   const n2 = state.memory.stack.pop();
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined && n2 !== undefined) {
-    state.memory.stack.push(n1 ^ n2);
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined || n2 === undefined) {
+    return { state, error: "Stack operation called on empty stack." };
   }
+  state.memory.stack.push(n1 ^ n2);
+  return { state };
 };
 
 export const andl = (state: State): ActionResult => {
   const n2 = state.memory.stack.pop();
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined && n2 !== undefined) {
-    state.memory.stack.push(n1 && n2);
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined || n2 === undefined) {
+    return { state, error: "Stack operation called on empty stack." };
   }
+  state.memory.stack.push(n1 && n2);
+  return { state };
 };
 
 export const orl = (state: State): ActionResult => {
   const n2 = state.memory.stack.pop();
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined && n2 !== undefined) {
-    state.memory.stack.push(n1 || n2);
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined || n2 === undefined) {
+    return { state, error: "Stack operation called on empty stack." };
   }
+  state.memory.stack.push(n1 || n2);
+  return { state };
 };
 
 export const shft = (state: State): ActionResult => {
   const n2 = state.memory.stack.pop();
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined && n2 !== undefined) {
-    if (n2 < 0) {
-      state.memory.stack.push(n1 << -n2);
-    } else {
-      state.memory.stack.push(n1 >> n2);
-    }
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined || n2 === undefined) {
+    return { state, error: "Stack operation called on empty stack." };
   }
+  state.memory.stack.push(n2 < 0 ? n1 << -n2: n1 >> n2);
+  return { state };
 };
 
 export const neg = (state: State): ActionResult => {
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined) {
-    state.memory.stack.push(-n1);
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined) {
+    return { state, error: "Stack operation called on empty stack." };
   }
+  state.memory.stack.push(-n1);
+  return { state };
 };
 
 export const abs = (state: State): ActionResult => {
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined) {
-    state.memory.stack.push(Math.abs(n1));
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined) {
+    return { state, error: "Stack operation called on empty stack." };
   }
+  state.memory.stack.push(Math.abs(n1));
+  return { state };
 };
 
 export const sign = (state: State): ActionResult => {
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined) {
-    state.memory.stack.push(Math.sign(n1));
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined) {
+    return { state, error: "Stack operation called on empty stack." };
   }
+  state.memory.stack.push(Math.sign(n1));
+  return { state };
 };
 
 export const plus = (state: State): ActionResult => {
   const n2 = state.memory.stack.pop();
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined && n2 !== undefined) {
-    state.memory.stack.push(n1 + n2);
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined || n2 === undefined) {
+    return { state, error: "Stack operation called on empty stack." };
   }
+  state.memory.stack.push(n1 + n2);
+  return { state };
 };
 
 export const subt = (state: State): ActionResult => {
   const n2 = state.memory.stack.pop();
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined && n2 !== undefined) {
-    state.memory.stack.push(n1 - n2);
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined || n2 === undefined) {
+    return { state, error: "Stack operation called on empty stack." };
   }
+  state.memory.stack.push(n1 - n2);
+  return { state };
 };
 
 export const mult = (state: State): ActionResult => {
   const n2 = state.memory.stack.pop();
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined && n2 !== undefined) {
-    state.memory.stack.push(n1 * n2);
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined || n2 === undefined) {
+    return { state, error: "Stack operation called on empty stack." };
   }
+  state.memory.stack.push(n1 * n2);
+  return { state };
 };
 
 export const divr = (state: State): ActionResult => {
   const n2 = state.memory.stack.pop();
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined && n2 !== undefined) {
-    if (n2 === 0) {
-      throw new MachineError("Cannot divide by zero.");
-    }
-    const n3 = n1 / n2;
-    state.memory.stack.push(Math.round(n3));
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined || n2 === undefined) {
+    return { state, error: "Stack operation called on empty stack." };
   }
+  if (n2 === 0) {
+    return { state, error: "Cannot divide by zero." };
+  }
+  const n3 = n1 / n2;
+  state.memory.stack.push(Math.round(n3));
+  return { state };
 };
 
 export const div = (state: State): ActionResult => {
   const n2 = state.memory.stack.pop();
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined && n2 !== undefined) {
-    if (n2 === 0) {
-      throw new MachineError("Cannot divide by zero.");
-    }
-    const n3 = n1 / n2;
-    state.memory.stack.push(n3 > 0 ? Math.floor(n3) : Math.ceil(n3));
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined || n2 === undefined) {
+    return { state, error: "Stack operation called on empty stack." };
   }
+  if (n2 === 0) {
+    return { state, error: "Cannot divide by zero." };
+  }
+  const n3 = n1 / n2;
+  state.memory.stack.push(n3 > 0 ? Math.floor(n3) : Math.ceil(n3));
+  return { state };
 };
 
 export const mod = (state: State): ActionResult => {
   const n2 = state.memory.stack.pop();
   const n1 = state.memory.stack.pop();
-  if (n1 !== undefined && n2 !== undefined) {
-    state.memory.stack.push(n1 % n2);
-  } else {
-    throw new MachineError("Stack operation called on empty stack.");
+  if (n1 === undefined || n2 === undefined) {
+    return { state, error: "Stack operation called on empty stack." };
   }
+  state.memory.stack.push(n1 % n2);
+  return { state };
 };
 
 // 0x20s - comparison operators
@@ -373,7 +395,7 @@ export const eqal = (state: State): ActionResult => {
   if (n1 !== undefined && n2 !== undefined) {
     state.memory.stack.push(n1 === n2 ? -1 : 0);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -383,7 +405,7 @@ export const noeq = (state: State): ActionResult => {
   if (n1 !== undefined && n2 !== undefined) {
     state.memory.stack.push(n1 !== n2 ? -1 : 0);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -393,7 +415,7 @@ export const less = (state: State): ActionResult => {
   if (n1 !== undefined && n2 !== undefined) {
     state.memory.stack.push(n1 < n2 ? -1 : 0);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -403,7 +425,7 @@ export const more = (state: State): ActionResult => {
   if (n1 !== undefined && n2 !== undefined) {
     state.memory.stack.push(n1 > n2 ? -1 : 0);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -413,7 +435,7 @@ export const lseq = (state: State): ActionResult => {
   if (n1 !== undefined && n2 !== undefined) {
     state.memory.stack.push(n1 <= n2 ? -1 : 0);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -423,7 +445,7 @@ export const mreq = (state: State): ActionResult => {
   if (n1 !== undefined && n2 !== undefined) {
     state.memory.stack.push(n1 >= n2 ? -1 : 0);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -433,7 +455,7 @@ export const maxi = (state: State): ActionResult => {
   if (n1 !== undefined && n2 !== undefined) {
     state.memory.stack.push(Math.max(n1, n2));
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -443,7 +465,7 @@ export const mini = (state: State): ActionResult => {
   if (n1 !== undefined && n2 !== undefined) {
     state.memory.stack.push(Math.min(n1, n2));
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -455,7 +477,7 @@ export const seql = (state: State): ActionResult => {
     const s1 = memory.getHeapString(state.memory, n1);
     state.memory.stack.push(s1 === s2 ? -1 : 0);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -467,7 +489,7 @@ export const sneq = (state: State): ActionResult => {
     const s1 = memory.getHeapString(state.memory, n1);
     state.memory.stack.push(s1 !== s2 ? -1 : 0);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -479,7 +501,7 @@ export const sles = (state: State): ActionResult => {
     const s1 = memory.getHeapString(state.memory, n2);
     state.memory.stack.push(s1 < s2 ? -1 : 0);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -491,7 +513,7 @@ export const smor = (state: State): ActionResult => {
     const s1 = memory.getHeapString(state.memory, n1);
     state.memory.stack.push(s1 > s2 ? -1 : 0);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -503,7 +525,7 @@ export const sleq = (state: State): ActionResult => {
     const s1 = memory.getHeapString(state.memory, n1);
     state.memory.stack.push(s1 <= s2 ? -1 : 0);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -515,7 +537,7 @@ export const smeq = (state: State): ActionResult => {
     const s1 = memory.getHeapString(state.memory, n1);
     state.memory.stack.push(s1 >= s2 ? -1 : 0);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -527,7 +549,7 @@ export const smax = (state: State): ActionResult => {
     const s1 = memory.getHeapString(state.memory, n1);
     memory.makeHeapString(state.memory, s2 > s1 ? s2 : s1);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -539,7 +561,7 @@ export const smin = (state: State): ActionResult => {
     const s1 = memory.getHeapString(state.memory, n1);
     memory.makeHeapString(state.memory, s2 < s1 ? s2 : s1);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -551,7 +573,7 @@ export const divm = (state: State): ActionResult => {
   if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
     state.memory.stack.push(Math.round((n1 / n2) * n3));
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -561,7 +583,7 @@ export const sqrt = (state: State): ActionResult => {
   if (n1 !== undefined && n2 !== undefined) {
     state.memory.stack.push(Math.round(Math.sqrt(n1) * n2));
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -572,7 +594,7 @@ export const hyp = (state: State): ActionResult => {
   if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
     state.memory.stack.push(Math.round(Math.sqrt(n1 * n1 + n2 * n2) * n3));
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -581,15 +603,10 @@ export const root = (state: State): ActionResult => {
   const n3 = state.memory.stack.pop();
   const n2 = state.memory.stack.pop();
   const n1 = state.memory.stack.pop();
-  if (
-    n1 !== undefined &&
-    n2 !== undefined &&
-    n3 !== undefined &&
-    n4 !== undefined
-  ) {
+  if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
     state.memory.stack.push(Math.round(Math.pow(n1 / n2, 1 / n3) * n4));
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -598,15 +615,10 @@ export const powr = (state: State): ActionResult => {
   const n3 = state.memory.stack.pop();
   const n2 = state.memory.stack.pop();
   const n1 = state.memory.stack.pop();
-  if (
-    n1 !== undefined &&
-    n2 !== undefined &&
-    n3 !== undefined &&
-    n4 !== undefined
-  ) {
+  if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
     state.memory.stack.push(Math.round(Math.pow(n1 / n2, n3) * n4));
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -617,7 +629,7 @@ export const log = (state: State): ActionResult => {
   if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
     state.memory.stack.push(Math.round((Math.log(n1 / n2) / Math.LN10) * n3));
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -628,7 +640,7 @@ export const alog = (state: State): ActionResult => {
   if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
     state.memory.stack.push(Math.round(Math.pow(10, n1 / n2) * n3));
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -639,7 +651,7 @@ export const ln = (state: State): ActionResult => {
   if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
     state.memory.stack.push(Math.round(Math.log(n1 / n2) * n3));
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -650,7 +662,7 @@ export const exp = (state: State): ActionResult => {
   if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
     state.memory.stack.push(Math.round(Math.exp(n1 / n2) * n3));
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -662,7 +674,7 @@ export const sin = (state: State): ActionResult => {
     const n1 = ((n2 / n3) * (2 * Math.PI)) / memory.getTurtA(state.memory);
     state.memory.stack.push(Math.round(Math.sin(n1) * n4));
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -674,7 +686,7 @@ export const cos = (state: State): ActionResult => {
     const n1 = ((n2 / n3) * (2 * Math.PI)) / memory.getTurtA(state.memory);
     state.memory.stack.push(Math.round(Math.cos(n1) * n4));
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -686,7 +698,7 @@ export const tan = (state: State): ActionResult => {
     const n1 = ((n2 / n3) * (2 * Math.PI)) / memory.getTurtA(state.memory);
     state.memory.stack.push(Math.round(Math.tan(n1) * n4));
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -698,7 +710,7 @@ export const asin = (state: State): ActionResult => {
     const n1 = memory.getTurtA(state.memory) / (2 * Math.PI);
     state.memory.stack.push(Math.round(Math.asin(n2 / n3) * n4 * n1));
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -710,7 +722,7 @@ export const acos = (state: State): ActionResult => {
     const n1 = memory.getTurtA(state.memory) / (2 * Math.PI);
     state.memory.stack.push(Math.round(Math.acos(n2 / n3) * n4 * n1));
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -722,7 +734,7 @@ export const atan = (state: State): ActionResult => {
     const n1 = memory.getTurtA(state.memory) / (2 * Math.PI);
     state.memory.stack.push(Math.round(Math.atan2(n2, n3) * n4 * n1));
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -731,7 +743,7 @@ export const pi = (state: State): ActionResult => {
   if (n1 !== undefined) {
     state.memory.stack.push(Math.round(Math.PI * n1));
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -744,7 +756,7 @@ export const scat = (state: State): ActionResult => {
     const s1 = memory.getHeapString(state.memory, n1);
     memory.makeHeapString(state.memory, s1 + s2);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -753,7 +765,7 @@ export const slen = (state: State): ActionResult => {
   if (n1 !== undefined) {
     state.memory.stack.push(state.memory.main[n1]);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -774,10 +786,7 @@ export const stringCase = (state: State): ActionResult => {
       case 3:
         // capitalise first letter
         if (s1.length > 0) {
-          memory.makeHeapString(
-            state.memory,
-            s1[0].toUpperCase() + s1.slice(1)
-          );
+          memory.makeHeapString(state.memory, s1[0].toUpperCase() + s1.slice(1));
         } else {
           memory.makeHeapString(state.memory, s1);
         }
@@ -794,9 +803,7 @@ export const stringCase = (state: State): ActionResult => {
         // swap case
         s1 = s1
           .split("")
-          .map((x) =>
-            x === x.toLowerCase() ? x.toUpperCase() : x.toLowerCase()
-          )
+          .map((x) => (x === x.toLowerCase() ? x.toUpperCase() : x.toLowerCase()))
           .join("");
         memory.makeHeapString(state.memory, s1);
         break;
@@ -806,7 +813,7 @@ export const stringCase = (state: State): ActionResult => {
         break;
     }
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -818,7 +825,7 @@ export const copy = (state: State): ActionResult => {
     const s1 = memory.getHeapString(state.memory, n1);
     memory.makeHeapString(state.memory, s1.substr(n2 - 1, n3));
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -831,7 +838,7 @@ export const dels = (state: State): ActionResult => {
     const s1 = s2.substr(0, n3 - 1) + s2.substr(n3 - 1 + n4);
     memory.makeHeapString(state.memory, s1);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -845,7 +852,7 @@ export const inss = (state: State): ActionResult => {
     const s1 = s3.substr(0, n4 - 1) + s2 + s3.substr(n4 - 1);
     memory.makeHeapString(state.memory, s1);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -857,7 +864,7 @@ export const poss = (state: State): ActionResult => {
     const s1 = memory.getHeapString(state.memory, n1);
     state.memory.stack.push(s2.indexOf(s1) + 1);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -866,12 +873,7 @@ export const repl = (state: State): ActionResult => {
   const n3 = state.memory.stack.pop();
   const n2 = state.memory.stack.pop();
   const n1 = state.memory.stack.pop();
-  if (
-    n1 !== undefined &&
-    n2 !== undefined &&
-    n3 !== undefined &&
-    n4 !== undefined
-  ) {
+  if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
     const s3 = memory.getHeapString(state.memory, n3);
     const s2 = memory.getHeapString(state.memory, n2);
     let s1 = memory.getHeapString(state.memory, n1);
@@ -885,7 +887,7 @@ export const repl = (state: State): ActionResult => {
       memory.makeHeapString(state.memory, s1.replace(new RegExp(s2, "g"), s3));
     }
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -905,7 +907,7 @@ export const spad = (state: State): ActionResult => {
     }
     memory.makeHeapString(state.memory, s1);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -915,7 +917,7 @@ export const trim = (state: State): ActionResult => {
     const s1 = memory.getHeapString(state.memory, n1);
     memory.makeHeapString(state.memory, s1.trim());
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -929,10 +931,7 @@ export const home = (state: State): ActionResult => {
   send("turtxChanged", memory.getTurtX(state.memory));
   send("turtyChanged", memory.getTurtY(state.memory));
   send("turtdChanged", memory.getTurtD(state.memory));
-  state.memory.coords.push([
-    memory.getTurtX(state.memory),
-    memory.getTurtY(state.memory),
-  ]);
+  state.memory.coords.push([memory.getTurtX(state.memory), memory.getTurtY(state.memory)]);
 };
 
 export const setx = (state: State): ActionResult => {
@@ -940,12 +939,9 @@ export const setx = (state: State): ActionResult => {
   if (n1 !== undefined) {
     memory.setTurtX(state.memory, n1);
     send("turtxChanged", n1);
-    state.memory.coords.push([
-      memory.getTurtX(state.memory),
-      memory.getTurtY(state.memory),
-    ]);
+    state.memory.coords.push([memory.getTurtX(state.memory), memory.getTurtY(state.memory)]);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -954,12 +950,9 @@ export const sety = (state: State): ActionResult => {
   if (n1 !== undefined) {
     memory.setTurtY(state.memory, n1);
     send("turtyChanged", n1);
-    state.memory.coords.push([
-      memory.getTurtX(state.memory),
-      memory.getTurtY(state.memory),
-    ]);
+    state.memory.coords.push([memory.getTurtX(state.memory), memory.getTurtY(state.memory)]);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -981,7 +974,7 @@ export const angl = (state: State): ActionResult => {
     }
     if (n1 === 0) {
       // never let angles be set to zero
-      throw new MachineError("Angles cannot be set to zero.");
+      return { state, error: "Angles cannot be set to zero." };
     }
     const n2 = Math.round(
       n1 + (memory.getTurtD(state.memory) * n1) / memory.getTurtA(state.memory)
@@ -991,7 +984,7 @@ export const angl = (state: State): ActionResult => {
     send("turtdChanged", n2 % n1);
     send("turtaChanged", n1);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1010,7 +1003,7 @@ export const thik = (state: State): ActionResult => {
     }
     send("turttChanged", memory.getTurtT(state.memory));
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1020,7 +1013,7 @@ export const colr = (state: State): ActionResult => {
     memory.setTurtC(state.memory, n1);
     send("turtcChanged", hex(n1));
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1033,7 +1026,7 @@ export const pen = (state: State): ActionResult => {
     memory.setTurtT(state.memory, n3);
     send("turttChanged", n3);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1047,7 +1040,7 @@ export const toxy = (state: State): ActionResult => {
     send("turtyChanged", n2);
     state.memory.coords.push([n1, n2]);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1063,7 +1056,7 @@ export const mvxy = (state: State): ActionResult => {
     send("turtyChanged", n2);
     state.memory.coords.push([n1, n2]);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1087,7 +1080,7 @@ export const drxy = (state: State): ActionResult => {
     send("turtyChanged", n2);
     state.memory.coords.push([n1, n2]);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1117,7 +1110,7 @@ export const fwrd = (state: State): ActionResult => {
     send("turtyChanged", n2);
     state.memory.coords.push([n1, n2]);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1147,31 +1140,29 @@ export const back = (state: State): ActionResult => {
     send("turtyChanged", n2);
     state.memory.coords.push([n1, n2]);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
 export const left = (state: State): ActionResult => {
   const n1 = state.memory.stack.pop();
   if (n1 !== undefined) {
-    const n2 =
-      (memory.getTurtD(state.memory) - n1) % memory.getTurtA(state.memory);
+    const n2 = (memory.getTurtD(state.memory) - n1) % memory.getTurtA(state.memory);
     memory.setTurtD(state.memory, n2);
     send("turtdChanged", n2);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
 export const rght = (state: State): ActionResult => {
   const n1 = state.memory.stack.pop();
   if (n1 !== undefined) {
-    const n2 =
-      (memory.getTurtD(state.memory) + n1) % memory.getTurtA(state.memory);
+    const n2 = (memory.getTurtD(state.memory) + n1) % memory.getTurtA(state.memory);
     memory.setTurtD(state.memory, n2);
     send("turtdChanged", n2);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1204,7 +1195,7 @@ export const turn = (state: State): ActionResult => {
     memory.setTurtD(state.memory, n3);
     send("turtdChanged", n1);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1215,7 +1206,7 @@ export const blnk = (state: State): ActionResult => {
     send("blank", hex(n1));
     let drawn = state.update;
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1233,7 +1224,7 @@ export const rcol = (state: State): ActionResult => {
     });
     let drawn = state.update;
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1242,12 +1233,7 @@ export const fill = (state: State): ActionResult => {
   const n3 = state.memory.stack.pop();
   const n2 = state.memory.stack.pop();
   const n1 = state.memory.stack.pop();
-  if (
-    n1 !== undefined &&
-    n2 !== undefined &&
-    n3 !== undefined &&
-    n4 !== undefined
-  ) {
+  if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
     send("flood", {
       x: turtx(state.virtualCanvas, n1),
       y: turty(state.virtualCanvas, n2),
@@ -1257,7 +1243,7 @@ export const fill = (state: State): ActionResult => {
     });
     let drawn = state.update;
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1271,11 +1257,9 @@ export const pixc = (state: State): ActionResult => {
       1,
       1
     );
-    state.memory.stack.push(
-      image.data[0] * 65536 + image.data[1] * 256 + image.data[2]
-    );
+    state.memory.stack.push(image.data[0] * 65536 + image.data[1] * 256 + image.data[2]);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1292,7 +1276,7 @@ export const pixs = (state: State): ActionResult => {
     });
     let drawn = state.update;
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1306,7 +1290,7 @@ export const rgb = (state: State): ActionResult => {
     n1 = colours[n1 - 1].value;
     state.memory.stack.push(n1);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1315,18 +1299,8 @@ export const mixc = (state: State): ActionResult => {
   const n3 = state.memory.stack.pop(); // first proportion
   const n2 = state.memory.stack.pop(); // second colour
   const n1 = state.memory.stack.pop(); // first colour
-  if (
-    n1 !== undefined &&
-    n2 !== undefined &&
-    n3 !== undefined &&
-    n4 !== undefined
-  ) {
-    const r = mixBytes(
-      Math.floor(n1 / 0x10000),
-      Math.floor(n2 / 0x10000),
-      n3,
-      n4
-    ); // red byte
+  if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
+    const r = mixBytes(Math.floor(n1 / 0x10000), Math.floor(n2 / 0x10000), n3, n4); // red byte
     const g = mixBytes(
       Math.floor((n1 & 0xff00) / 0x100),
       Math.floor((n2 & 0xff00) / 0x100),
@@ -1339,10 +1313,7 @@ export const mixc = (state: State): ActionResult => {
 };
 
 export const rmbr = (state: State): ActionResult => {
-  state.memory.coords.push([
-    memory.getTurtX(state.memory),
-    memory.getTurtY(state.memory),
-  ]);
+  state.memory.coords.push([memory.getTurtX(state.memory), memory.getTurtY(state.memory)]);
 };
 
 export const frgt = (state: State): ActionResult => {
@@ -1350,7 +1321,7 @@ export const frgt = (state: State): ActionResult => {
   if (n1 !== undefined) {
     state.memory.coords.length -= n1;
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1368,7 +1339,7 @@ export const poly = (state: State): ActionResult => {
     });
     let drawn = state.update;
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1386,7 +1357,7 @@ export const pfil = (state: State): ActionResult => {
     });
     let drawn = state.update;
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1401,7 +1372,7 @@ export const circ = (state: State): ActionResult => {
     });
     let drawn = state.update;
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1416,7 +1387,7 @@ export const blot = (state: State): ActionResult => {
     });
     let drawn = state.update;
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1432,7 +1403,7 @@ export const elps = (state: State): ActionResult => {
     });
     let drawn = state.update;
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1448,7 +1419,7 @@ export const eblt = (state: State): ActionResult => {
     });
     let drawn = state.update;
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1457,12 +1428,7 @@ export const box = (state: State): ActionResult => {
   const n3 = state.memory.stack.pop();
   let n2 = state.memory.stack.pop();
   let n1 = state.memory.stack.pop();
-  if (
-    n1 !== undefined &&
-    n2 !== undefined &&
-    n3 !== undefined &&
-    n4 !== undefined
-  ) {
+  if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
     const bool1 = n4 !== 0;
     n2 += memory.getTurtY(state.memory);
     n1 += memory.getTurtX(state.memory);
@@ -1475,7 +1441,7 @@ export const box = (state: State): ActionResult => {
     });
     let drawn = state.update;
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1502,9 +1468,7 @@ export const ldvv = (state: State): ActionResult => {
 export const ldvr = (state: State): ActionResult => {
   const n1 = state.pcode[state.line][state.code + 1];
   const n2 = state.pcode[state.line][state.code + 2];
-  state.memory.stack.push(
-    state.memory.main[state.memory.main[state.memory.main[n1] + n2]]
-  );
+  state.memory.stack.push(state.memory.main[state.memory.main[state.memory.main[n1] + n2]]);
   state.code += 2;
 };
 
@@ -1539,7 +1503,7 @@ export const stvg = (state: State): ActionResult => {
     state.memory.main[state.pcode[state.line][state.code + 1]] = n1;
     state.code += 1;
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1551,7 +1515,7 @@ export const stvv = (state: State): ActionResult => {
     state.memory.main[state.memory.main[n1] + n2] = n3;
     state.code += 2;
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1563,7 +1527,7 @@ export const stvr = (state: State): ActionResult => {
     state.memory.main[state.memory.main[state.memory.main[n1] + n2]] = n3;
     state.code += 2;
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1572,7 +1536,7 @@ export const lptr = (state: State): ActionResult => {
   if (n1 !== undefined) {
     state.memory.stack.push(state.memory.main[n1]);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1582,7 +1546,7 @@ export const sptr = (state: State): ActionResult => {
   if (n1 !== undefined && n2 !== undefined) {
     state.memory.main[n2] = n1;
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1592,7 +1556,7 @@ export const zptr = (state: State): ActionResult => {
   if (n1 !== undefined && n2 !== undefined) {
     memory.zero(state.memory, n1, n2);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1603,7 +1567,7 @@ export const cptr = (state: State): ActionResult => {
   if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
     memory.copy(state.memory, n1, n2, n3);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1615,7 +1579,7 @@ export const cstr = (state: State): ActionResult => {
     const n3 = state.memory.main[n1]; // length of source
     memory.copy(state.memory, n1, n2, Math.min(n3, n4) + 1);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1625,9 +1589,7 @@ export const test = (state: State): ActionResult => {
   if (n1 !== undefined && n2 !== undefined) {
     if (n1 < 0 || n1 > state.memory.main[n2]) {
       // TODO: make range check a runtime option
-      throw new MachineError(
-        `Array index out of range (${state.line}, ${state.code}).`
-      );
+      throw new MachineError(`Array index out of range (${state.line}, ${state.code}).`);
     }
   }
 };
@@ -1648,7 +1610,7 @@ export const ifno = (state: State): ActionResult => {
       state.code += 1;
     }
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1671,7 +1633,7 @@ export const retn = (state: State): ActionResult => {
     state.line = n1;
     state.code = -1;
   } else {
-    throw new MachineError("RETN called on empty return stack.");
+    return { state, error: "RETN called on empty return stack." };
   }
 };
 
@@ -1695,7 +1657,7 @@ export const plrj = (state: State): ActionResult => {
     state.line = n1 - 1;
     state.code = -1;
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1709,7 +1671,7 @@ export const stmt = (state: State): ActionResult => {
     state.memory.memoryStack.push(n1);
     memory.setStackTop(state.memory, n1);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1731,7 +1693,7 @@ export const memc = (state: State): ActionResult => {
     memory.setStackTop(state.memory, n3 + n2);
     state.code += 2;
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1745,7 +1707,7 @@ export const memr = (state: State): ActionResult => {
     state.memory.main[n1] = n2;
     state.code += 2;
   } else {
-    throw new MachineError("MEMR called on empty memory stack.");
+    return { state, error: "MEMR called on empty memory stack." };
   }
 };
 
@@ -1767,12 +1729,7 @@ export const canv = (state: State): ActionResult => {
   const n3 = state.memory.stack.pop();
   const n2 = state.memory.stack.pop();
   const n1 = state.memory.stack.pop();
-  if (
-    n1 !== undefined &&
-    n2 !== undefined &&
-    n3 !== undefined &&
-    n4 !== undefined
-  ) {
+  if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
     state.virtualCanvas.sizey = n4;
     state.virtualCanvas.sizex = n3;
     state.virtualCanvas.starty = n2;
@@ -1790,13 +1747,10 @@ export const canv = (state: State): ActionResult => {
     send("turtxChanged", memory.getTurtX(state.memory));
     send("turtyChanged", memory.getTurtY(state.memory));
     send("turtdChanged", memory.getTurtD(state.memory));
-    state.memory.coords.push([
-      memory.getTurtX(state.memory),
-      memory.getTurtY(state.memory),
-    ]);
+    state.memory.coords.push([memory.getTurtX(state.memory), memory.getTurtY(state.memory)]);
     let drawCount = state.options.drawCountMax; // force update
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1817,7 +1771,7 @@ export const reso = (state: State): ActionResult => {
     send("blank", "#FFFFFF");
     let drawCount = state.options.drawCountMax; // force update
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1830,7 +1784,7 @@ export const udat = (state: State): ActionResult => {
       let drawCount = state.options.drawCountMax; // force update
     }
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1844,7 +1798,7 @@ export const seed = (state: State): ActionResult => {
       state.memory.stack.push(n1);
     }
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1872,7 +1826,7 @@ export const peek = (state: State): ActionResult => {
   if (n1 !== undefined) {
     state.memory.stack.push(state.memory.main[n1]);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1882,7 +1836,7 @@ export const poke = (state: State): ActionResult => {
   if (n1 !== undefined && n2 !== undefined) {
     state.memory.main[n1] = n2;
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1901,7 +1855,7 @@ export const stat = (state: State): ActionResult => {
       state.memory.stack.push(0);
     }
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1926,7 +1880,7 @@ export const iclr = (state: State): ActionResult => {
       // for any value outside the range (-11, 256) we don't do anything
     }
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1944,7 +1898,7 @@ export const bufr = (state: State): ActionResult => {
       memory.setHeapMax(state.memory, memory.getHeapTemp(state.memory));
     }
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1974,7 +1928,7 @@ export const read = (state: State): ActionResult => {
     }
     memory.makeHeapString(state.memory, s1);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -1996,7 +1950,7 @@ export const kech = (state: State): ActionResult => {
     const bool1 = n1 !== 0;
     state.keyecho = bool1;
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -2017,7 +1971,7 @@ export const outp = (state: State): ActionResult => {
       systemState.send("selectTab", "canvas");
     }
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -2046,7 +2000,7 @@ export const prnt = (state: State): ActionResult => {
       size: n3,
     });
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -2061,7 +2015,7 @@ export const writ = (state: State): ActionResult => {
       systemState.send("selectTab", "output");
     }
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -2076,7 +2030,7 @@ export const curs = (state: State): ActionResult => {
   if (n1 !== undefined) {
     send("cursor", n1);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -2091,7 +2045,7 @@ export const tset = (state: State): ActionResult => {
   if (n1 !== undefined && n2 !== undefined) {
     state.startTime = n1 - n2;
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
 };
 
@@ -2105,7 +2059,7 @@ export const wait = (state: State): ActionResult => {
     }
     // setTimeout(execute, n1);
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
   return;
 };
@@ -2128,7 +2082,7 @@ export const tdet = (state: State): ActionResult => {
       //   addEventListener("mouseup", handlers.detect.bind(null, state));
     }
   } else {
-    throw new MachineError("Stack operation called on empty stack.");
+    return { state, error: "Stack operation called on empty stack." };
   }
   return;
 };

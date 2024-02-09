@@ -1,64 +1,57 @@
 import type { Memory, Turtle, VirtualCanvas } from "./types.ts";
-import hex from "../tools/hex.ts";
-import { getTurtA, getTurtC, getTurtD, getTurtT, getTurtX, getTurtY } from "./memory.ts";
+import {
+  getTurtleA,
+  getTurtleC,
+  getTurtleD,
+  getTurtleT,
+  getTurtleX,
+  getTurtleY,
+} from "./memory.ts";
 
 export const turtle = (memory: Memory, virtualCanvas: VirtualCanvas): Turtle => ({
-  x: turtx(virtualCanvas, getTurtX(memory)),
-  y: turty(virtualCanvas, getTurtY(memory)),
-  d: getTurtD(memory),
-  a: getTurtA(memory),
-  p: turtt(virtualCanvas, getTurtT(memory)),
-  c: hex(getTurtC(memory)),
+  x: turtleX(virtualCanvas, getTurtleX(memory)),
+  y: turtleY(virtualCanvas, getTurtleY(memory)),
+  d: getTurtleD(memory),
+  a: getTurtleA(memory),
+  p: turtleT(virtualCanvas, getTurtleT(memory)),
+  c: `#${getTurtleC(memory).toString(16).padStart(6, "0")}`,
 });
 
-/** converts turtx to virtual canvas coordinate */
-export const turtx = (virtualCanvas: VirtualCanvas, x: number): number => {
-  const exact =
-    ((x - virtualCanvas.startx) * virtualCanvas.width) / virtualCanvas.sizex;
+export const turtleX = (virtualCanvas: VirtualCanvas, x: number): number => {
+  const exact = ((x - virtualCanvas.startX) * virtualCanvas.width) / virtualCanvas.sizeX;
   return virtualCanvas.doubled ? Math.round(exact) + 1 : Math.round(exact);
 };
 
-/** converts turty to virtual canvas coordinate */
-export const turty = (virtualCanvas: VirtualCanvas, y: number): number => {
-  const exact =
-    ((y - virtualCanvas.starty) * virtualCanvas.height) / virtualCanvas.sizey;
+export const turtleY = (virtualCanvas: VirtualCanvas, y: number): number => {
+  const exact = ((y - virtualCanvas.startY) * virtualCanvas.height) / virtualCanvas.sizeY;
   return virtualCanvas.doubled ? Math.round(exact) + 1 : Math.round(exact);
 };
 
-/** converts turtt to virtual canvas thickness */
-export const turtt = (virtualCanvas: VirtualCanvas, t: number): number => {
+export const turtleT = (virtualCanvas: VirtualCanvas, t: number): number => {
   return virtualCanvas.doubled ? t * 2 : t;
 };
 
-/** maps turtle coordinates to virtual turtle coordinates */
-export const vcoords = (
+export const virtualCoords = (
   virtualCanvas: VirtualCanvas,
   coords: [number, number]
-): [number, number] => [
-  turtx(virtualCanvas, coords[0]),
-  turty(virtualCanvas, coords[1]),
-];
+): [number, number] => [turtleX(virtualCanvas, coords[0]), turtleY(virtualCanvas, coords[1])];
 
-/** converts x to virtual canvas coordinate */
-export const virtx = (
+export const virtualX = (
   canvas: HTMLCanvasElement,
   virtualCanvas: VirtualCanvas,
   x: number
 ): number => {
   const { left, width } = canvas.getBoundingClientRect();
-  const exact =
-    ((x - left) * virtualCanvas.sizex) / width + virtualCanvas.startx;
+  const exact = ((x - left) * virtualCanvas.sizeX) / width + virtualCanvas.startX;
   return Math.floor(exact);
 };
 
-/** converts y to virtual canvas coordinate */
-export const virty = (
+export const virtualY = (
   canvas: HTMLCanvasElement,
   virtualCanvas: VirtualCanvas,
   y: number
 ): number => {
   const { height, top } = canvas.getBoundingClientRect();
-  const exact =
-    ((y - top) * virtualCanvas.sizey) / height + virtualCanvas.starty;
+  const exact = ((y - top) * virtualCanvas.sizeY) / height + virtualCanvas.startY;
   return Math.floor(exact);
 };

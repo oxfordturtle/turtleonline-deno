@@ -1,7 +1,7 @@
 export type State = {
   // fixed state
   readonly options: Options;
-  readonly pcode: number[][];
+  readonly pCode: number[][];
   // runtime state
   running: boolean;
   paused: boolean;
@@ -13,12 +13,12 @@ export type State = {
   context: CanvasRenderingContext2D;
   console: HTMLPreElement;
   output: HTMLPreElement;
-  detectInputcode: number;
+  detectInputCode: number;
   detectTimeoutID: number;
   readlineTimeoutID: number;
   startTime: number;
   update: boolean;
-  keyecho: boolean;
+  keyEcho: boolean;
   seed: number;
 };
 
@@ -31,7 +31,7 @@ export type Options = {
   smallSize: number;
   stackSize: number;
   traceOnRun: boolean;
-  activateHCLR: boolean;
+  activateHeapClear: boolean;
   preventStackCollision: boolean;
   rangeCheckArrays: boolean;
 };
@@ -55,10 +55,10 @@ export type Memory = {
 };
 
 export type VirtualCanvas = {
-  startx: number;
-  starty: number;
-  sizex: number;
-  sizey: number;
+  startX: number;
+  startY: number;
+  sizeX: number;
+  sizeY: number;
   width: number;
   height: number;
   doubled: boolean;

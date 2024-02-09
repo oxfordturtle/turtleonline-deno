@@ -1,12 +1,12 @@
 import type { Options } from "./types.ts";
 import { defaultOptions, initialState, initialVirtualCanvas } from "./defaults.ts";
 import { send } from "./hub.ts";
+import * as canvas from "./canvas.ts";
 import * as memory from "./memory.ts";
 import * as handlers from "./handlers.ts";
 import executeCode from "./execute.ts";
-import { MachineError } from "../tools/error.ts";
 import * as systemState from "../tools/hub.ts";
-import { PCode } from "../constants/pcodes.ts";
+import PCode from "../constants/pcodes.ts";
 
 let state = initialState([], defaultOptions);
 
@@ -14,9 +14,9 @@ export const resetDomElements = () => {
   // reset the virtual canvas
   state.virtualCanvas = initialVirtualCanvas;
   // send reset machine components signals
-  send("resolution", { width: 1000, height: 1000 });
-  send("console", { clear: true, colour: "#FFFFFF" });
-  send("output", { clear: true, colour: "#FFFFFF" });
+  canvas.resolution(state.canvas, 1000, 1000);
+  canvas.console(state.canvas, true, "#FFFFFF");
+  canvas.output(state.canvas, true, "#FFFFFF" );
   send("turtxChanged", 500);
   send("turtyChanged", 500);
   send("turtdChanged", 0);
@@ -106,13 +106,13 @@ const boundHandlers = {
     event.preventDefault();
   },
   storeKey: (event: KeyboardEvent) => {
-    state.memory = handlers.storeKey(state.keyecho, state.memory, event);
+    state.memory = handlers.storeKey(state.keyEcho, state.memory, event);
   },
   releaseKey: (event: KeyboardEvent) => {
     state.memory = handlers.releaseKey(state.memory, event);
   },
   putInBuffer: (event: KeyboardEvent) => {
-    state.memory = handlers.putInBuffer(state.keyecho, state.memory, event);
+    state.memory = handlers.putInBuffer(state.keyEcho, state.memory, event);
   },
   storeMouseXY: (event: MouseEvent | TouchEvent) => {
     state.memory = handlers.storeMouseXY(state.canvas, state.virtualCanvas, state.memory, event);
@@ -124,8 +124,8 @@ const boundHandlers = {
     state.memory = handlers.releaseClickXY(state.memory, event);
   },
   detect: (event: KeyboardEvent | MouseEvent) => {
-    if (handlers.rightThingPressed(state.detectInputcode, event)) {
-      state.memory = handlers.detect(state.detectInputcode, state.memory);
+    if (handlers.rightThingPressed(state.detectInputCode, event)) {
+      state.memory = handlers.detect(state.detectInputCode, state.memory);
       clearTimeout(state.detectTimeoutID);
       execute();
     }
@@ -168,7 +168,7 @@ const execute = (): void => {
       drawCount < state.options.drawCountMax &&
       codeCount <= state.options.codeCountMax
     ) {
-      const code = state.pcode[state.line][state.code] as PCode;
+      const code = state.pCode[state.line][state.code] as PCode;
       const { state: nextState, drawn, halted } = executeCode[code](state);
 
       if (halted) {
@@ -180,12 +180,12 @@ const execute = (): void => {
       codeCount += 1;
       drawCount += drawn ? 1 : 0;
       state.code += 1;
-      if (!state.pcode[state.line]) {
+      if (!state.pCode[state.line]) {
         throw new MachineError(
           "The program has tried to jump to a line that does not exist. This is either a bug in our compiler, or in your assembled code."
         );
       }
-      if (state.code === state.pcode[state.line].length) {
+      if (state.code === state.pCode[state.line].length) {
         // line wrap
         state.line += 1;
         state.code = 0;

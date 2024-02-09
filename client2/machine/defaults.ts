@@ -1,9 +1,9 @@
 import type { Memory, Options, State, VirtualCanvas } from "./types.ts";
 
-export const initialState = (pcode: number[][], options: Options): State => ({
+export const initialState = (pCode: number[][], options: Options): State => ({
   // fixed state
   options,
-  pcode,
+  pCode,
   // runtime state
   running: true,
   paused: false,
@@ -17,12 +17,12 @@ export const initialState = (pcode: number[][], options: Options): State => ({
   ).getContext("2d")!,
   console: document.querySelector('[data-component="console"]')!,
   output: document.querySelector('[data-component="output"]')!,
-  detectInputcode: 0,
+  detectInputCode: 0,
   detectTimeoutID: 0,
   readlineTimeoutID: 0,
   startTime: Date.now(),
   update: true,
-  keyecho: true,
+  keyEcho: true,
   seed: Date.now(),
 });
 
@@ -45,10 +45,10 @@ export const initialMemory = (options: Options): Memory => ({
 });
 
 export const initialVirtualCanvas: Readonly<VirtualCanvas> = {
-  startx: 0,
-  starty: 0,
-  sizex: 1000,
-  sizey: 1000,
+  startX: 0,
+  startY: 0,
+  sizeX: 1000,
+  sizeY: 1000,
   width: 1000,
   height: 1000,
   doubled: false,
@@ -63,7 +63,7 @@ export const defaultOptions: Readonly<Options> = {
   smallSize: 60,
   stackSize: 50000,
   traceOnRun: false,
-  activateHCLR: true,
+  activateHeapClear: true,
   preventStackCollision: true,
   rangeCheckArrays: true,
 };
