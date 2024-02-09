@@ -1,8 +1,8 @@
-// log question to console
-log('What is your name?  ');
+// print question to console
+print('What is your name?  ');
 // read characters from keybuffer until ENTER key is pressed
 var name: string = readLine();
-// log a greeting (on a new line)
-log('Hello, ' + name + ', ...  ');
+// print a greeting (on a new line)
+print('Hello, ' + name + ', ...  ');
 pause(500);
-log('How are you?');
+print('How are you?');

@@ -93,10 +93,10 @@ void main () {
   thickness(20);
   do {
     aim();
-    write('Elevation: ' + itoa(90 - turtd));
+    printon('Elevation: ' + itoa(90 - turtd));
     fire(cos(90 - turtd, 1, 96), sin(90 - turtd, 1, -96), 1, 9950);
-    write('  Distance: ' + itoa(turtx));
-    writeline('  Time: ' + itoa(steps));
+    printon('  Distance: ' + itoa(turtx));
+    print('  Time: ' + itoa(steps));
     plot(90 - turtd, turtx, distancecol);
     plot(90 - turtd, steps * 50, timecol);
   } while (1 == 1);

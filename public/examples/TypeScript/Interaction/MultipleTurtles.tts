@@ -41,12 +41,12 @@ function handleClick (): void {
     // select this turtle
     newTurtle(turtles[thisTurtle]);
     // start logging the change in the console
-    log('Turtle ' + toString(thisTurtle + 1) + ' changing direction,');
-    log('  from ' + toString(turtles[thisTurtle][d]) + '/' + toString(turtles[thisTurtle][a]));
+    print('Turtle ' + toString(thisTurtle + 1) + ' changing direction,');
+    print('  from ' + toString(turtles[thisTurtle][d]) + '/' + toString(turtles[thisTurtle][a]));
     // change angles, which will set direction to the closest possible angle
     angles(randInt(46) + 45);
     // finish logging the change
-    log('  to ' + toString(turtles[thisTurtle][d]) + '/' + toString(turtles[thisTurtle][a]));
+    print('  to ' + toString(turtles[thisTurtle][d]) + '/' + toString(turtles[thisTurtle][a]));
     pause(200);
   }
 }

@@ -41,12 +41,12 @@ void handleClick () {
     // select this turtle
     newturtle(turtles[thisTurtle]);
     // start logging the change in the console
-    write('Turtle ' + itoa(thisTurtle + 1) + ' changing direction,');
-    write('  from ' + itoa(turtles[thisTurtle][d]) + '/' + itoa(turtles[thisTurtle][a]));
+    printon('Turtle ' + itoa(thisTurtle + 1) + ' changing direction,');
+    printon('  from ' + itoa(turtles[thisTurtle][d]) + '/' + itoa(turtles[thisTurtle][a]));
     // change angles, which will set direction to the closest possible angle
     angles(rand(46) + 45);
     // finish logging the change
-    writeline('  to ' + itoa(turtles[thisTurtle][d]) + '/' + itoa(turtles[thisTurtle][a]));
+    print('  to ' + itoa(turtles[thisTurtle][d]) + '/' + itoa(turtles[thisTurtle][a]));
     pause(200);
   }
 }

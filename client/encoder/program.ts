@@ -1,4 +1,5 @@
 // type imports
+import type { Language } from "../constants/languages.ts";
 import type Program from "../parser/definitions/program.ts";
 import type { Options } from "./options.ts";
 
@@ -63,6 +64,15 @@ export default function program(program: Program, options: Options = defaultOpti
 
 /** creates the pcode for the start of a program */
 function programStart(program: Program, _options: Options): number[][] {
+  const trueValue: Record<Language, number> = {
+    BASIC: -1,
+    C: -1,
+    Java: -1,
+    Pascal: -1,
+    Python: 1,
+    TypeScript: 1,
+  };
+
   // initialise start code
   const pcode = [
     // line 1: global memory
@@ -89,7 +99,7 @@ function programStart(program: Program, _options: Options): number[][] {
     // line 2: turtle and keybuffer setup
     [
       PCode.true,
-      program.language === "Pascal" || program.language === "BASIC" ? -1 : 1,
+      trueValue[program.language],
       PCode.home,
       PCode.ldin,
       2,

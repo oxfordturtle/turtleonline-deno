@@ -42,20 +42,20 @@ void drawrocket () {
 }
 
 void report () {
-  writeline('');
-  writeline('TIME = ' + itoa(t));
-  writeline(' Xposition = ' + itoa(x) + ' metres');
-  writeline(' Yposition = ' + itoa(y) + ' metres');
-  writeline(' Height = ' + qitoa(dist - earthradius, 1000, 2) + ' km');
-  writeline(' Direction = ' + qitoa(d, 3600, 1) + ' degrees');
-  writeline(' Thrust = ' + qitoa(thrust, 1000, 1) + ' newtons per kg');
-  writeline('  Xthrust = ' + qitoa(xthrust, 1000, 1) + ' newtons per kg');
-  writeline('  Ythrust = ' + qitoa(ythrust, 1000, 1) + ' newtons per kg');
-  writeline(' Gravity = ' + qitoa(gravity, 1000, 1) + ' newtons per kg');
-  writeline('  Xgravity = ' + qitoa(xgravity, 1000, 1) + ' newtons per kg');
-  writeline('  Ygravity = ' + qitoa(ygravity, 1000, 1) + ' newtons per kg');
-  writeline(' Xvelocity = ' + qitoa(xvel, 1000, 1) + ' metres per s');
-  writeline(' Yvelocity = ' + qitoa(yvel, 1000, 1) + ' metres per s');
+  print('');
+  print('TIME = ' + itoa(t));
+  print(' Xposition = ' + itoa(x) + ' metres');
+  print(' Yposition = ' + itoa(y) + ' metres');
+  print(' Height = ' + qitoa(dist - earthradius, 1000, 2) + ' km');
+  print(' Direction = ' + qitoa(d, 3600, 1) + ' degrees');
+  print(' Thrust = ' + qitoa(thrust, 1000, 1) + ' newtons per kg');
+  print('  Xthrust = ' + qitoa(xthrust, 1000, 1) + ' newtons per kg');
+  print('  Ythrust = ' + qitoa(ythrust, 1000, 1) + ' newtons per kg');
+  print(' Gravity = ' + qitoa(gravity, 1000, 1) + ' newtons per kg');
+  print('  Xgravity = ' + qitoa(xgravity, 1000, 1) + ' newtons per kg');
+  print('  Ygravity = ' + qitoa(ygravity, 1000, 1) + ' newtons per kg');
+  print(' Xvelocity = ' + qitoa(xvel, 1000, 1) + ' metres per s');
+  print(' Yvelocity = ' + qitoa(yvel, 1000, 1) + ' metres per s');
 }
 
 void main () {

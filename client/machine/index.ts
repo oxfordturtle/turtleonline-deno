@@ -364,7 +364,7 @@ function execute(): void {
 
         // true value
         case PCode.true:
-          n1 = pcode[line][code];
+          n1 = pcode[line][code + 1];
           trueValue = n1;
           code += 1;
           break;

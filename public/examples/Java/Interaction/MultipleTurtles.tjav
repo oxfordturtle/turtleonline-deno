@@ -42,12 +42,12 @@ class MultipleTurtles {
       // select this turtle
       newTurtle(turtles[thisTurtle]);
       // start loging the change in the console
-      write('Turtle ' + toString(thisTurtle + 1) + ' changing direction,');
-      write('  from ' + toString(turtles[thisTurtle][d]) + '/' + toString(turtles[thisTurtle][a]));
+      printon('Turtle ' + toString(thisTurtle + 1) + ' changing direction,');
+      printon('  from ' + toString(turtles[thisTurtle][d]) + '/' + toString(turtles[thisTurtle][a]));
       // change angles, which will set direction to the closest possible angle
       angles(randInt(46) + 45);
       // finish logging the change
-      writeLine('  to ' + toString(turtles[thisTurtle][d]) + '/' + toString(turtles[thisTurtle][a]));
+      print('  to ' + toString(turtles[thisTurtle][d]) + '/' + toString(turtles[thisTurtle][a]));
       pause(200);
     }
   }

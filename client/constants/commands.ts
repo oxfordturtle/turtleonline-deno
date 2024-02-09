@@ -828,7 +828,7 @@ export const commands: Command[] = [
   // 7. String/list operations
   new Command(
     "write",
-    { BASIC: "PRINTON", C: "print", Java: "print", Pascal: "write", Python: "print", TypeScript: "print" },
+    { BASIC: "PRINTON", C: "printon", Java: "printon", Pascal: "write", Python: null, TypeScript: "printon" },
     [PCode.writ],
     [new Parameter("string", "string")],
     null,
@@ -838,7 +838,7 @@ export const commands: Command[] = [
   ),
   new Command(
     "writeln",
-    { BASIC: "PRINT", C: null, Java: null, Pascal: "writeln", Python: null, TypeScript: null },
+    { BASIC: "PRINT", C: "print", Java: "print", Pascal: "writeln", Python: "print", TypeScript: "print" },
     [PCode.writ, PCode.newl],
     [new Parameter("string", "string")],
     null,
@@ -861,10 +861,10 @@ export const commands: Command[] = [
     {
       BASIC: "LCASE$",
       C: "strlwr",
-      Java: ".toLowerCase",
+      Java: "toLowerCase",
       Pascal: "lowercase",
       Python: ".lower",
-      TypeScript: ".toLowerCase",
+      TypeScript: "toLowerCase",
     },
     [PCode.ldin, 1, PCode.case],
     [new Parameter("string", "string")],
@@ -878,10 +878,10 @@ export const commands: Command[] = [
     {
       BASIC: "UCASE$",
       C: "strupr",
-      Java: ".toUpperCase",
+      Java: "toUpperCase",
       Pascal: "uppercase",
       Python: ".upper",
-      TypeScript: ".toUpperCase",
+      TypeScript: "toUpperCase",
     },
     [PCode.ldin, 2, PCode.case],
     [new Parameter("string", "string")],
@@ -895,10 +895,10 @@ export const commands: Command[] = [
     {
       BASIC: "CCASE$",
       C: "strcap",
-      Java: ".capitalize",
+      Java: "capitalize",
       Pascal: "initcap",
       Python: ".capitalize",
-      TypeScript: ".capitalize",
+      TypeScript: "capitalize",
     },
     [PCode.ldin, 3, PCode.case],
     [new Parameter("string", "string")],
@@ -912,10 +912,10 @@ export const commands: Command[] = [
     {
       BASIC: "TCASE$",
       C: "strtitle",
-      Java: ".toTitleCase",
+      Java: "toTitleCase",
       Pascal: "titlecase",
       Python: ".title",
-      TypeScript: ".toTitleCase",
+      TypeScript: "toTitleCase",
     },
     [PCode.ldin, 4, PCode.case],
     [new Parameter("string", "string")],
@@ -929,10 +929,10 @@ export const commands: Command[] = [
     {
       BASIC: "SCASE$",
       C: "strswap",
-      Java: ".swapCase",
+      Java: "swapCase",
       Pascal: "swapcase",
       Python: ".swapcase",
-      TypeScript: ".swapCase",
+      TypeScript: "swapCase",
     },
     [PCode.ldin, 5, PCode.case],
     [new Parameter("string", "string")],
@@ -966,10 +966,10 @@ export const commands: Command[] = [
     {
       BASIC: null,
       C: "strdel",
-      Java: ".delete",
+      Java: "delete",
       Pascal: null,
       Python: ".delete",
-      TypeScript: ".delete",
+      TypeScript: "delete",
     },
     [PCode.swap, PCode.incr, PCode.swap, PCode.dels],
     [new Parameter("string", "string"), new Parameter("index", "integer"), new Parameter("length", "integer")],
@@ -990,7 +990,7 @@ export const commands: Command[] = [
   ),
   new Command(
     "copy1",
-    { BASIC: "MID$", C: null, Java: null, Pascal: "copy", Python: null, TypeScript: ".slice" },
+    { BASIC: "MID$", C: null, Java: null, Pascal: "copy", Python: null, TypeScript: null },
     [PCode.copy],
     [new Parameter("string", "string"), new Parameter("index", "integer"), new Parameter("length", "integer")],
     "string",
@@ -1000,7 +1000,7 @@ export const commands: Command[] = [
   ),
   new Command(
     "copy2",
-    { BASIC: null, C: "strcpy", Java: "copy", Pascal: null, Python: null, TypeScript: null },
+    { BASIC: null, C: "strcpy", Java: "copy", Pascal: null, Python: null, TypeScript: "slice" },
     [PCode.swap, PCode.incr, PCode.swap, PCode.copy],
     [new Parameter("string", "string"), new Parameter("index", "integer"), new Parameter("length", "integer")],
     "string",
@@ -1092,9 +1092,9 @@ export const commands: Command[] = [
     {
       BASIC: "REPLACE$",
       C: "strrepl",
-      Java: ".replace",
+      Java: "replace",
       Python: ".replace",
-      TypeScript: ".replace",
+      TypeScript: "replace",
     },
     [PCode.repl],
     [
@@ -1123,10 +1123,10 @@ export const commands: Command[] = [
     {
       BASIC: null,
       C: "strpos",
-      Java: ".indexOf",
+      Java: "indexOf",
       Pascal: null,
       Python: ".index",
-      TypeScript: ".indexOf",
+      TypeScript: "indexOf",
     },
     [PCode.swap, PCode.poss, PCode.decr],
     [new Parameter("string", "string"), new Parameter("substr", "string")],
@@ -1147,7 +1147,7 @@ export const commands: Command[] = [
   ),
   new Command(
     "strip",
-    { Java: ".trim", Python: ".strip", TypeScript: ".trim" },
+    { Java: "trim", Python: ".strip", TypeScript: "trim" },
     [PCode.trim],
     [new Parameter("string", "string")],
     "string",
@@ -1350,7 +1350,7 @@ export const commands: Command[] = [
     0,
     "Makes the Turtle Machine wait <code>m</code> milliseconds before performing the next operation. This is useful for controlling the speed of animations."
   ),
-  new Command("halt", {}, [PCode.halt], [], null, 9, 0, "Halts the program."),
+  new Command("halt", { C: "exit" }, [PCode.halt], [], null, 9, 0, "Halts the program."),
   new Command(
     "readLine",
     { BASIC: "GETLINE$", C: "gets", Pascal: "readln" },

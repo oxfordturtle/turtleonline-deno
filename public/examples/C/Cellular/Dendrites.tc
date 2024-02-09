@@ -62,11 +62,11 @@ void main () {
   setxy(-half, -half);
   box(whole, whole, solution, true);
   randomradius = initrandomradius;
-  writeline('Initial randomradius = ' + itoa(randomradius));
+  print('Initial randomradius = ' + itoa(randomradius));
   pixset(0, 0, crystal);
   numattached = 1;
-  writeline('Counting molecules within growing crystal:');
-  write('1 ');
+  print('Counting molecules within growing crystal:');
+  printon('1 ');
   maxsofar = 1;
   timeset(0);
   do {
@@ -91,15 +91,15 @@ void main () {
       biasedwalk();
     }
     if (numattached % 10 == 0) {
-      writeline(itoa(numattached));
+      print(itoa(numattached));
     } else {
-      write(itoa(numattached) + ' ');
+      printon(itoa(numattached) + ' ');
     }
     if (maxsofar > randomradius) {
       randomradius = maxsofar;
-      writeline('');
-      writeline('randomradius = ' + itoa(randomradius));
+      print('');
+      print('randomradius = ' + itoa(randomradius));
     }
   } while (maxsofar < maxdistance);
-  writeline('Simulation finished (' + qitoa(time(), 1000, 2) + ' seconds)');
+  print('Simulation finished (' + qitoa(time(), 1000, 2) + ' seconds)');
 }
