@@ -13,7 +13,7 @@ export type ExampleGroupId =
   | "Cellular"
   | "Models"
   | "Fractals"
-  | "Logic";
+  | "Logic&CS";
 
 const exampleGroup = (index: number, id: ExampleGroupId, title: string) =>
   ({
@@ -35,5 +35,5 @@ export default [
   exampleGroup(6, "Cellular", "cellular models"),
   exampleGroup(7, "Models", "other models"),
   exampleGroup(8, "Fractals", "self-similarity and chaos"),
-  exampleGroup(9, "Logic", "computer science and logic"),
+  exampleGroup(9, "Logic&CS", "computer science and logic"),
 ] as const;

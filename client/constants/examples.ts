@@ -172,20 +172,21 @@ export default [
   example("Movement", "BouncingShapes", "Multiple bouncing shapes"),
   example("Movement", "GravitySteps", "Movement under gravity"),
   example("Movement", "SolarSystem", "Solar system"),
-  example("Movement", "BirdTree", "Bird and tree - student example", {
-    BASIC: null,
-    C: null,
-    Java: null,
-    Python: null,
-    TypeScript: null,
-  }),
-  example("Movement", "ChickenCoop", "Chicken coop - student example", {
-    BASIC: null,
-    C: null,
-    Java: null,
-    Python: null,
-    TypeScript: null,
-  }),
+  // these two examples aren't working properly :(
+  // example("Movement", "BirdTree", "Bird and tree - student example", {
+  //   BASIC: null,
+  //   C: null,
+  //   Java: null,
+  //   Python: null,
+  //   TypeScript: null,
+  // }),
+  // example("Movement", "ChickenCoop", "Chicken coop - student example", {
+  //   BASIC: null,
+  //   C: null,
+  //   Java: null,
+  //   Python: null,
+  //   TypeScript: null,
+  // }),
   // examples 5 - Interaction
   example("Interaction", "AskInput", "Asking for typed input"),
   example("Interaction", "QuickClick", "Mouse reaction game"),
@@ -299,7 +300,7 @@ export default [
     Java: null,
     TypeScript: null,
   }),
-  example("CSAC", "WaveSuperposer", "Hugh Wallis's wave superposer", {
+  example("Models", "WaveSuperposer", "Hugh Wallis's wave superposer", {
     BASIC: null,
     C: null,
     Java: null,
@@ -380,69 +381,69 @@ export default [
     TypeScript: null,
   }),
   // examples 10 - Logic&CS
-  example("Logic", "Hanoi", "Tower of Hanoi by recursion", {
+  example("Logic&CS", "Hanoi", "Tower of Hanoi by recursion", {
     BASIC: null,
     C: null,
     Java: null,
     TypeScript: null,
   }),
-  example("Logic", "BinarySearch", "Binary search guessing game", {
+  example("Logic&CS", "BinarySearch", "Binary search guessing game", {
     BASIC: null,
     C: null,
     Java: null,
     TypeScript: null,
   }),
-  example("Logic", "IterateRoot", "Square roots by iteration", {
+  example("Logic&CS", "IterateRoot", "Square roots by iteration", {
     BASIC: null,
     C: null,
     Java: null,
     TypeScript: null,
   }),
-  example("Logic", "Fibonaccis", "Fibonacci recursion and iteration (dynamic programming)", {
+  example("Logic&CS", "Fibonaccis", "Fibonacci recursion and iteration (dynamic programming)", {
     C: null,
     Java: null,
     TypeScript: null,
   }),
-  example("Logic", "Sorting", "Comparison of sorting methods", {
+  example("Logic&CS", "Sorting", "Comparison of sorting methods", {
     C: null,
     Java: null,
     TypeScript: null,
   }),
-  example("Logic", "SortingStrings", "Comparison of sorting methods (strings)", {
+  example("Logic&CS", "SortingStrings", "Comparison of sorting methods (strings)", {
     C: null,
     Java: null,
     TypeScript: null,
   }),
-  example("Logic", "NoughtsAndCrosses", "Noughts and crosses", {
+  example("Logic&CS", "NoughtsAndCrosses", "Noughts and crosses", {
     C: null,
     Java: null,
     TypeScript: null,
   }),
-  example("Logic", "NimLearn", "Nim learning program", {
+  example("Logic&CS", "NimLearn", "Nim learning program", {
     BASIC: null,
     C: null,
     Java: null,
     TypeScript: null,
   }),
-  example("Logic", "MultiNim", "Nim with multiple piles", {
+  example("Logic&CS", "MultiNim", "Nim with multiple piles", {
     C: null,
     Java: null,
     Python: null,
     TypeScript: null,
   }),
-  example("Logic", "KnightsTour", "Knight’s Tour program", {
+  example("Logic&CS", "KnightsTour", "Knight’s Tour program", {
     BASIC: null,
     C: null,
     Java: null,
     TypeScript: null,
   }),
-  example("Logic", "TuringMachines", "Turing machine simulator", {
+  example("Logic&CS", "TuringMachines", "Turing machine simulator", {
     BASIC: null,
     C: null,
     Java: null,
     TypeScript: null,
   }),
-  example("Logic", "Syllogisms", "Syllogism testing program", {
+  example("Logic&CS", "Syllogisms", "Syllogism testing program", {
     BASIC: null,
     C: null,
     Java: null,

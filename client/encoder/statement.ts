@@ -10,6 +10,7 @@ import type {
   WhileStatement,
   ReturnStatement,
 } from "../parser/definitions/statement.ts";
+import command from "./command.ts";
 
 // submodule imports
 import { merge, expression } from "./expression.ts";
@@ -244,15 +245,7 @@ function procedureCall(
     merge(pcode, [[PCode.subr, stmt.command.index]]);
   } else {
     // native commands
-    if (stmt.command.code[0] === PCode.oldt) {
-      // this is a special case, because compilation requires knowing the original turtle address
-      merge(pcode, [
-        [PCode.ldin, program.turtleAddress, PCode.ldin, 0, PCode.sptr],
-      ]);
-    } else {
-      // copy the command.code array so it isn't modified subsequently
-      merge(pcode, [stmt.command.code.slice()]);
-    }
+    merge(pcode, [command(stmt.command, program)]);
   }
 
   return pcode;

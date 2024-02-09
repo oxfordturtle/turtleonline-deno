@@ -4,6 +4,7 @@ import type { Type } from "../lexer/lexeme.ts";
 import type { SubroutineType } from "../parser/definitions/subroutine.ts";
 
 export class Command {
+  readonly id: string;
   readonly names: Record<Language, string | null>;
   readonly type: SubroutineType;
   readonly code: number[];
@@ -31,6 +32,7 @@ export class Command {
       Python: name.toLowerCase(),
       TypeScript: name,
     };
+    this.id = name;
     this.names = { ...namesRecord, ...names };
     this.code = code;
     this.parameters = parameters;
@@ -1229,7 +1231,7 @@ export const commands: Command[] = [
   new Command(
     "parseInt",
     { BASIC: "VAL", C: "atoi", Pascal: "val", Python: "int" },
-    [PCode.ldin, 0, PCode.sval],
+    [PCode.sval], // pcoder needs to prefix with PCode.ldin XXX to configure for different languages
     [new Parameter("string", "string")],
     "integer",
     8,
@@ -1239,7 +1241,7 @@ export const commands: Command[] = [
   new Command(
     "parseIntDef",
     { BASIC: "VALDEF", C: "atoidef", Pascal: "valdef", Python: "intdef" },
-    [PCode.sval],
+    [PCode.svdf], // pcoder needs to prefix with PCode.ldin XXX to configure for different languages
     [new Parameter("string", "string"), new Parameter("default", "integer")],
     "integer",
     8,

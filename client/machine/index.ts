@@ -1236,13 +1236,13 @@ function execute(): void {
           }
           break;
 
-        case PCode.sval: // fallthrough for now
+        case PCode.sval:
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
           if (n1 !== undefined && n2 !== undefined) {
             s1 = memory.getHeapString(n1);
             s2 = n2 === 1 ? "$" : n2 === 2 ? "#" : "0x";
-            n3 = s1.startsWith("#")
+            n3 = s1.startsWith(s2)
               ? parseInt(s1.slice(1), 16)
               : parseInt(s1, 10);
             if (isNaN(n3)) {

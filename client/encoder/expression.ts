@@ -11,6 +11,7 @@ import type {
   CastExpression,
   FunctionCall,
 } from "../parser/definitions/expression.ts";
+import command from "./command.ts";
 
 // other module imports
 import { PCode } from "../constants/pcodes.ts";
@@ -342,7 +343,7 @@ function functionValue(
   } else {
     // native functions
     // copy the command.code array so it isn't modified subsequently
-    merge(pcode, [exp.command.code.slice()]);
+    merge(pcode, [command(exp.command, program)]);
   }
 
   // custom functions: load the result variable onto the stack
