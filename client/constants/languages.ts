@@ -1,9 +1,6 @@
-/*
- * Turtle languages.
- */
 export type Language = (typeof languages)[number];
 
-export const languages = [
+const languages = [
   "BASIC",
   "C",
   "Java",
@@ -12,7 +9,9 @@ export const languages = [
   "TypeScript",
 ] as const;
 
-export const extensions = {
+export default languages;
+
+export const extensions: Record<Language, string> = {
   BASIC: "tbas",
   C: "tc",
   Java: "tjav",

@@ -4,7 +4,7 @@
 import { state } from "../state/index.ts";
 import type { Property } from "../constants/properties.ts";
 import type { Language } from "../constants/languages.ts";
-import { languages } from "../constants/languages.ts";
+import languages from "../constants/languages.ts";
 import type { Mode } from "../constants/modes.ts";
 import { option, fill } from "../tools/elements.ts";
 import { commandCategories } from "../constants/categories.ts";

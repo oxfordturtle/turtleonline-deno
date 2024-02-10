@@ -1,11 +1,6 @@
 /// <reference lib="dom" />
-
-// type imports
-import type { Language } from "./constants/languages.ts";
-
-// module imports
 import { type State, state } from "./state/index.ts";
-import { languages } from "./constants/languages.ts";
+import languages, { type Language } from "./constants/languages.ts";
 import { on } from "./tools/hub.ts";
 
 // load general site components

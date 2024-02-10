@@ -15,7 +15,7 @@ import { File, skeletons } from "./file.ts";
 import { load, save } from "./storage.ts";
 import examples from "../constants/examples.ts";
 import exampleGroups from "../constants/exampleGroups.ts";
-import { languages, extensions } from "../constants/languages.ts";
+import languages, { extensions } from "../constants/languages.ts";
 import { defaults } from "../constants/properties.ts";
 import { input } from "../tools/elements.ts";
 import { SystemError } from "../tools/error.ts";
