@@ -401,7 +401,7 @@ function ifStatement(
   // expecting a boolean expression
   if (!lexemes.get()) {
     throw new CompilerError(
-      '"if" must be followed by a Boolean expression.',
+      `"${ifLexeme.content}" must be followed by a Boolean expression.`,
       ifLexeme
     );
   }
@@ -411,7 +411,7 @@ function ifStatement(
   // expecting a colon
   if (!lexemes.get()) {
     throw new CompilerError(
-      '"if <expression>" must be followed by a colon.',
+      `"${ifLexeme.content} <expression>" must be followed by a colon.`,
       condition.lexeme
     );
   }
@@ -420,31 +420,31 @@ function ifStatement(
   // expecting newline
   if (!lexemes.get()) {
     throw new CompilerError(
-      'No statements found after "if <expression>:".',
+      `No statements found after "${ifLexeme.content} <expression>:".`,
       lexemes.get(-1)
     );
   }
   if (lexemes.get()?.type !== "newline") {
     throw new CompilerError(
-      'Statements following "if <expression>:" must be on a new line.',
+      `Statements following "${ifLexeme.content} <expression>:" must be on a new line.`,
       lexemes.get()
     );
   }
   lexemes.next();
 
   // create the if statement
-  const ifStatement = new IfStatement(ifLexeme, condition);
+  const thisIfStatement = new IfStatement(ifLexeme, condition);
 
   // expecting indent
   if (!lexemes.get()) {
     throw new CompilerError(
-      'No statements found after "if <expression>:".',
+      `No statements found after "${ifLexeme.content} <expression>:".`,
       lexemes.get(-1)
     );
   }
   if (lexemes.get()?.type !== "indent") {
     throw new CompilerError(
-      'Statements following "if <expression>:" must be indented.',
+      `Statements following "${ifLexeme.content} <expression>:" must be indented.`,
       lexemes.get()
     );
   }
@@ -453,74 +453,85 @@ function ifStatement(
   // expecting some statements
   if (!lexemes.get()) {
     throw new CompilerError(
-      'No statements found after "if <expression>:".',
+      `No statements found after "${ifLexeme.content} <expression>:".`,
       lexemes.get(-1)
     );
   }
-  ifStatement.ifStatements.push(...block(lexemes, routine));
+  thisIfStatement.ifStatements.push(...block(lexemes, routine));
 
-  // happy with an "else" here (but it's optional)
-  // TODO: support "elif" keyword
-  if (lexemes.get() && lexemes.get()?.content === "else") {
+  // pass over any new lines
+  while (lexemes.get()?.type === "newline") {
     lexemes.next();
+  }
 
-    // expecting a colon
-    if (!lexemes.get()) {
-      throw new CompilerError(
-        '"else" must be followed by a colon.',
-        lexemes.get(-1)
-      );
-    }
-    if (lexemes.get()?.content !== ":") {
-      throw new CompilerError(
-        '"else" must be followed by a colon.',
-        lexemes.get()
-      );
-    }
-    lexemes.next();
+  // happy with an "else" or "elif" here (but it's optional)
+  const nextLexeme = lexemes.get();
+  if (nextLexeme) {
+    if (nextLexeme.content === "elif") {
+      lexemes.next();
+      // expecting an if statement
+      thisIfStatement.elseStatements.push(ifStatement(nextLexeme as KeywordLexeme, lexemes, routine));
+    } else if (nextLexeme.content === "else") {
+      lexemes.next();
 
-    // expecting newline
-    if (!lexemes.get()) {
-      throw new CompilerError(
-        'No statements found after "else:".',
-        lexemes.get(-1)
-      );
-    }
-    if (lexemes.get()?.type !== "newline") {
-      throw new CompilerError(
-        'Statements following "else:" must be on a new line.',
-        lexemes.get()
-      );
-    }
-    lexemes.next();
+      // expecting a colon
+      if (!lexemes.get()) {
+        throw new CompilerError(
+          '"else" must be followed by a colon.',
+          lexemes.get(-1)
+        );
+      }
+      if (lexemes.get()?.content !== ":") {
+        throw new CompilerError(
+          '"else" must be followed by a colon.',
+          lexemes.get()
+        );
+      }
+      lexemes.next();
 
-    // expecting indent
-    if (!lexemes.get()) {
-      throw new CompilerError(
-        'No statements found after "else:".',
-        lexemes.get(-1)
-      );
-    }
-    if (lexemes.get()?.type !== "indent") {
-      throw new CompilerError(
-        'Statements following "else:" must be indented.',
-        lexemes.get()
-      );
-    }
-    lexemes.next();
+      // expecting newline
+      if (!lexemes.get()) {
+        throw new CompilerError(
+          'No statements found after "else:".',
+          lexemes.get(-1)
+        );
+      }
+      if (lexemes.get()?.type !== "newline") {
+        throw new CompilerError(
+          'Statements following "else:" must be on a new line.',
+          lexemes.get()
+        );
+      }
+      lexemes.next();
 
-    // expecting some statements
-    if (!lexemes.get()) {
-      throw new CompilerError(
-        'No statements found after "else:".',
-        lexemes.get(-1)
-      );
+      // expecting indent
+      if (!lexemes.get()) {
+        throw new CompilerError(
+          'No statements found after "else:".',
+          lexemes.get(-1)
+        );
+      }
+      if (lexemes.get()?.type !== "indent") {
+        throw new CompilerError(
+          'Statements following "else:" must be indented.',
+          lexemes.get()
+        );
+      }
+      lexemes.next();
+
+      // expecting some statements
+      if (!lexemes.get()) {
+        throw new CompilerError(
+          'No statements found after "else:".',
+          lexemes.get(-1)
+        );
+      }
+      thisIfStatement.elseStatements.push(...block(lexemes, routine));
     }
-    ifStatement.elseStatements.push(...block(lexemes, routine));
   }
 
   // now we have everything we need
-  return ifStatement;
+  return thisIfStatement;
 }
 
 /** parses lexemes as a FOR statement */
