@@ -1,8 +1,7 @@
 /**
  * Fonts reference table.
  */
-import type { Font } from "../../constants/fonts.ts";
-import { fonts } from "../../constants/fonts.ts";
+import fonts, { type Font } from "../../constants/fonts.ts";
 import { fill, tr, td } from "../../tools/elements.ts";
 import { on } from "../../tools/hub.ts";
 

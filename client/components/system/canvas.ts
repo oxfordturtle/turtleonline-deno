@@ -3,7 +3,7 @@ import { type Turtle } from "../../machine/types.ts";
 
 // module imports
 import cursors from "../../constants/cursors.ts";
-import { fonts } from "../../constants/fonts.ts";
+import fonts from "../../constants/fonts.ts";
 import * as machine from "../../machine/index.ts";
 import { on } from "../../tools/hub.ts";
 
