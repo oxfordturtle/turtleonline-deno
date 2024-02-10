@@ -129,11 +129,11 @@ const TypeScript = [
 ];
 
 /** export a record of all keywords */
-export const keywords: Record<Language, Keyword[]> = {
+export default {
   BASIC,
   C,
   Java,
   Pascal,
   Python,
   TypeScript,
-};
+} as const;

@@ -2,8 +2,7 @@
  * Command and keywords categories (for help tables and usage analysis).
  */
 import commands, { type Command } from "./commands.ts";
-import type { Keyword } from "./keywords.ts";
-import { keywords } from "./keywords.ts";
+import keywords, { type Keyword } from "./keywords.ts";
 import type { Language } from "./languages.ts";
 import { Subroutine } from "../parser/definitions/subroutine.ts";
 
