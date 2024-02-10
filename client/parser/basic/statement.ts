@@ -34,7 +34,7 @@ import {
   IntegerLexeme,
 } from "../../lexer/lexeme.ts";
 import { CompilerError } from "../../tools/error.ts";
-import { Token } from "../../lexer/token.ts";
+import { token } from "../../tokenizer/token.ts";
 
 /** checks for new lines and moves past them */
 export function newLine(lexemes: Lexemes): void {
@@ -519,11 +519,11 @@ function forStatement(
   finalValue = typeCheck(routine.language, finalValue, "integer");
 
   // create some dummy lexemes for the condition and step change
-  const oneToken = new Token("decimal", "1", lexeme.line, -1);
-  const assignmentToken = new Token("operator", "=", lexeme.line, -1);
-  const plusToken = new Token("operator", "+", lexeme.line, -1);
-  const lseqToken = new Token("operator", "<=", lexeme.line, -1);
-  const mreqToken = new Token("operator", ">=", lexeme.line, -1);
+  const oneToken = token("decimal", "1", lexeme.line, -1);
+  const assignmentToken = token("operator", "=", lexeme.line, -1);
+  const plusToken = token("operator", "+", lexeme.line, -1);
+  const lseqToken = token("operator", "<=", lexeme.line, -1);
+  const mreqToken = token("operator", ">=", lexeme.line, -1);
   const oneLexeme = new IntegerLexeme(oneToken, 10);
   const assignmentLexeme = new OperatorLexeme(assignmentToken, "BASIC");
   const plusLexeme = new OperatorLexeme(plusToken, "BASIC");

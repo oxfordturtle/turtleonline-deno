@@ -32,7 +32,7 @@ import {
   PassStatement,
 } from "../definitions/statement.ts";
 import { CompilerError } from "../../tools/error.ts";
-import { Token } from "../../lexer/token.ts";
+import { token } from "../../tokenizer/token.ts";
 
 /** checks for semicolon at the end of a statement */
 export function eosCheck(lexemes: Lexemes): void {
@@ -531,7 +531,7 @@ function doStatement(
   let condition = expression(lexemes, routine);
   condition = typeCheck(routine.language, condition, "boolean");
   // negate the condition
-  const notToken = new Token(
+  const notToken = token(
     "operator",
     "!",
     condition.lexeme.line,

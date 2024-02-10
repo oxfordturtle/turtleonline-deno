@@ -1,5 +1,5 @@
 // type imports
-import type { Token } from "../lexer/token.ts";
+import type { Token } from "../tokenizer/token.ts";
 import type { Lexeme } from "../lexer/lexeme.ts";
 
 /** system error */

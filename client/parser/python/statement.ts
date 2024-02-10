@@ -32,7 +32,7 @@ import {
 import { CompilerError } from "../../tools/error.ts";
 import variable from "./variable.ts";
 import { Constant } from "../definitions/constant.ts";
-import { Token } from "../../lexer/token.ts";
+import { token } from "../../tokenizer/token.ts";
 
 /** checks for semi colon or new line at the end of a statement */
 export function eosCheck(lexemes: Lexemes): void {
@@ -685,18 +685,18 @@ function forStatement(
   let change: VariableAssignment;
 
   // some dummy things we need to create the things we want to know
-  const zeroToken = new Token("decimal", "0", forLexeme.line, -1);
+  const zeroToken = token("decimal", "0", forLexeme.line, -1);
   const zeroLexeme = new IntegerLexeme(zeroToken, 10);
   const zero = new IntegerValue(zeroLexeme);
-  const oneToken = new Token("decimal", "1", forLexeme.line, -1);
+  const oneToken = token("decimal", "1", forLexeme.line, -1);
   const oneLexeme = new IntegerLexeme(oneToken, 10);
   const one = new IntegerValue(oneLexeme);
-  const assignmentToken = new Token("operator", "=", forLexeme.line, -1);
+  const assignmentToken = token("operator", "=", forLexeme.line, -1);
   const assignmentLexeme = new OperatorLexeme(assignmentToken, "Python");
   const left = new VariableValue(variableLexeme, variable);
-  const plusToken = new Token("operator", "+", forLexeme.line, -1);
-  const lessToken = new Token("operator", "<", forLexeme.line, -1);
-  const moreToken = new Token("operator", ">", forLexeme.line, -1);
+  const plusToken = token("operator", "+", forLexeme.line, -1);
+  const lessToken = token("operator", "<", forLexeme.line, -1);
+  const moreToken = token("operator", ">", forLexeme.line, -1);
   const plusLexeme = new OperatorLexeme(plusToken, "Python");
   const lessLexeme = new OperatorLexeme(lessToken, "Python");
   const moreLexeme = new OperatorLexeme(moreToken, "Python");

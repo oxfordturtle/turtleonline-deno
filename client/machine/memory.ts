@@ -1,5 +1,5 @@
 // type imports
-import type { Options } from "./options.ts";
+import type { Options } from "./types.ts";
 
 // the memory arrays
 export const main: number[] = [];

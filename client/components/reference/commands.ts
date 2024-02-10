@@ -7,7 +7,7 @@ import {
   commandCategories,
 } from "../../constants/categories.ts";
 import { fill, tr, td, code } from "../../tools/elements.ts";
-import highlight from "../../lexer/highlight.ts";
+import highlight from "../../tokenizer/highlight.ts";
 import { state } from "../../state/index.ts";
 import { on } from "../../tools/hub.ts";
 

@@ -28,7 +28,7 @@ import {
   OperatorLexeme,
 } from "../../lexer/lexeme.ts";
 import { CompilerError } from "../../tools/error.ts";
-import { Token } from "../../lexer/token.ts";
+import { token } from "../../tokenizer/token.ts";
 
 /** parses semicolons */
 export function semicolon(
@@ -410,9 +410,9 @@ function forStatement(
       initialisation.lexeme
     );
   }
-  const oneToken = new Token("decimal", "1", forLexeme.line, -1);
-  const assignmentToken = new Token("operator", "=", forLexeme.line, -1);
-  const operatorToken = new Token(
+  const oneToken = token("decimal", "1", forLexeme.line, -1);
+  const assignmentToken = token("operator", "=", forLexeme.line, -1);
+  const operatorToken = token(
     "operator",
     toOrDownTo === "to" ? "+" : "-",
     forLexeme.line,
@@ -437,7 +437,7 @@ function forStatement(
   }
   let finalValue = expression(lexemes, routine);
   finalValue = typeCheck(routine.language, finalValue, "integer");
-  const comparisonToken = new Token(
+  const comparisonToken = token(
     "operator",
     toOrDownTo === "to" ? "<=" : ">=",
     forLexeme.line,

@@ -1,18 +1,9 @@
-// type imports
 import type { Language } from "../constants/languages.ts";
+import colours from "../constants/colours.ts";
 import type { Token } from "./token.ts";
-
-// submodule imports
 import tokenize from "./tokenize.ts";
 
-// other module imports
-import colours from "../constants/colours.ts";
-
-/** returns highlighted code */
-export default function highlight(
-  code: string | Token[],
-  language: Language
-): string {
+export default (code: string | Token[], language: Language): string => {
   const tokens = typeof code === "string" ? tokenize(code, language) : code;
   return tokens
     .map((token) => {
@@ -39,9 +30,7 @@ export default function highlight(
           return `<span class="integer">${token.content}</span>`;
 
         case "colour": {
-          const colour = colours.find(
-            (x) => x.names[language] === token.content
-          );
+          const colour = colours.find((x) => x.names[language] === token.content);
           return colour
             ? `<span class="colour" style="border-color:#${colour.hex};">${token.content}</span>`
             : `<span class="colour">${token.content}</span>`;
@@ -52,4 +41,4 @@ export default function highlight(
       }
     })
     .join("");
-}
+};

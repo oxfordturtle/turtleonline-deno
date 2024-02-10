@@ -1,24 +1,5 @@
-/** token class definition */
-export class Token {
-  readonly type: TokenType;
-  readonly content: string;
-  readonly line: number;
-  readonly character: number;
+export type Token = ReturnType<typeof token>;
 
-  constructor(
-    type: TokenType,
-    content: string,
-    line: number,
-    character: number
-  ) {
-    this.type = type;
-    this.content = content;
-    this.line = line;
-    this.character = character;
-  }
-}
-
-/** token types */
 export type TokenType =
   | "spaces"
   | "newline"
@@ -48,3 +29,16 @@ export type TokenType =
   | "colour"
   | "identifier"
   | "illegal";
+
+export const token = (
+  type: TokenType,
+  content: string,
+  line: number,
+  character: number
+) => ({
+  __: "token",
+  type,
+  content,
+  line,
+  character,
+}) as const;

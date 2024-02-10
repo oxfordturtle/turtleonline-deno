@@ -1,6 +1,6 @@
 // type imports
 import type { Language } from "../constants/languages.ts";
-import { Token } from "./token.ts";
+import type { Token } from "../tokenizer/token.ts";
 
 /** lexeme */
 export type Lexeme =

@@ -6,7 +6,7 @@ import type { Mode } from "../constants/modes.ts";
 import type { Property } from "../constants/properties.ts";
 import type { Options as CompilerOptions } from "../encoder/options.ts";
 import type { Options as MachineOptions } from "../machine/types.ts";
-import type { Token } from "../lexer/token.ts";
+import type { Token } from "../tokenizer/token.ts";
 import type { CommentLexeme, Lexeme } from "../lexer/lexeme.ts";
 import type { UsageCategory } from "../analyser/usage.ts";
 
@@ -22,7 +22,7 @@ import { SystemError } from "../tools/error.ts";
 import { send } from "../tools/hub.ts";
 import * as machine from "../machine/index.ts";
 import * as memory from "../machine/memory.ts";
-import tokenize from "../lexer/tokenize.ts";
+import tokenize from "../tokenizer/tokenize.ts";
 import lexify from "../lexer/lexify.ts";
 import parser from "../parser/parser.ts";
 import Program from "../parser/definitions/program.ts";

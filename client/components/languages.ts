@@ -3,7 +3,7 @@
  */
 import type { Language } from "../constants/languages.ts";
 import { state } from "../state/index.ts";
-import highlight from "../lexer/highlight.ts";
+import highlight from "../tokenizer/highlight.ts";
 import { on } from "../tools/hub.ts";
 
 // get relevant elements

@@ -1,9 +1,9 @@
 // type imports
-import type { Token } from "./token.ts";
+import type { Token } from "../tokenizer/token.ts";
 import type { Language } from "../constants/languages.ts";
 
 // module imports
-import tokenize from "./tokenize.ts";
+import tokenize from "../tokenizer/tokenize.ts";
 import {
   Lexeme,
   NewlineLexeme,

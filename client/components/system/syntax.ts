@@ -1,7 +1,7 @@
 /*
  * The program lexemes component.
  */
-import highlight from "../../lexer/highlight.ts";
+import highlight from "../../tokenizer/highlight.ts";
 import { type Lexeme } from "../../lexer/lexeme.ts";
 import { state } from "../../state/index.ts";
 import { fill, tr, td, code } from "../../tools/elements.ts";
