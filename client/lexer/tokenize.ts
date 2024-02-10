@@ -7,7 +7,7 @@ import { Token } from "./token.ts";
 // other modules
 import colours from "../constants/colours.ts";
 import { commands } from "../constants/commands.ts";
-import { inputs } from "../constants/inputs.ts";
+import inputs from "../constants/inputs.ts";
 import { keywords } from "../constants/keywords.ts";
 
 /** generates an array of tokens from a string of code */

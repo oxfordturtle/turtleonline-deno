@@ -1,8 +1,7 @@
 /**
  * Keycodes reference table.
  */
-import type { Input } from "../../constants/inputs.ts";
-import { inputs } from "../../constants/inputs.ts";
+import inputs, { type Input } from "../../constants/inputs.ts";
 import { fill, tr, td, code } from "../../tools/elements.ts";
 import { on } from "../../tools/hub.ts";
 
