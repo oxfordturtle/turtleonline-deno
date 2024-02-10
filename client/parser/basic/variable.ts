@@ -9,18 +9,12 @@ import evaluate from "../evaluate.ts";
 import { CompilerError } from "../../tools/error.ts";
 
 /** parses lexemes as a variable name */
-export function variable(
-  lexemes: Lexemes,
-  routine: Program | Subroutine
-): Variable {
+export function variable(lexemes: Lexemes, routine: Program | Subroutine): Variable {
   const [name, type, stringLength] = variableName(lexemes);
 
   // duplicate check
   if (find.isDuplicate(routine, name)) {
-    throw new CompilerError(
-      "{lex} is already defined in the current scope.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("{lex} is already defined in the current scope.", lexemes.get(-1));
   }
 
   // create the variable
@@ -33,10 +27,7 @@ export function variable(
 }
 
 /** parses lexemes as an array variable declaraion (following "DIM") */
-export function array(
-  lexemes: Lexemes,
-  routine: Program | Subroutine
-): Variable {
+export function array(lexemes: Lexemes, routine: Program | Subroutine): Variable {
   const foo = variable(lexemes, routine);
 
   // expecting open bracket "("
@@ -58,16 +49,10 @@ export function array(
   while (lexemes.get()?.content !== ")") {
     // expecting array dimension size
     if (!lexemes.get()) {
-      throw new CompilerError(
-        "Expected array size specification.",
-        lexemes.get(-1)
-      );
+      throw new CompilerError("Expected array size specification.", lexemes.get(-1));
     }
     if (lexemes.get()?.type === "newline") {
-      throw new CompilerError(
-        "Array declaration must be one a single line.",
-        lexemes.get(-1)
-      );
+      throw new CompilerError("Array declaration must be one a single line.", lexemes.get(-1));
     }
     const exp = expression(lexemes, routine);
     typeCheck(routine.language, exp, "integer");
@@ -86,10 +71,7 @@ export function array(
     if (lexemes.get()?.content === ",") {
       lexemes.next();
       if (lexemes.get()?.content === ")") {
-        throw new CompilerError(
-          "Trailing comma in array size specification.",
-          lexemes.get()
-        );
+        throw new CompilerError("Trailing comma in array size specification.", lexemes.get());
       }
     }
   }
@@ -102,10 +84,7 @@ export function array(
     );
   }
   if (foo.arrayDimensions.length === 0) {
-    throw new CompilerError(
-      "Expected array size specification.",
-      lexemes.get()
-    );
+    throw new CompilerError("Expected array size specification.", lexemes.get());
   }
   lexemes.next();
 
@@ -114,20 +93,14 @@ export function array(
 }
 
 /** parses lexemes as a comma separated list of variables */
-export function variables(
-  lexemes: Lexemes,
-  routine: Program | Subroutine
-): Variable[] {
+export function variables(lexemes: Lexemes, routine: Program | Subroutine): Variable[] {
   const variables: Variable[] = [];
   while (lexemes.get()?.type !== "newline") {
     variables.push(variable(lexemes, routine));
     if (lexemes.get()?.content === ",") {
       lexemes.next();
       if (!lexemes.get() || lexemes.get()?.type === "newline") {
-        throw new CompilerError(
-          "Trailing comma at end of line.",
-          lexemes.get(-1)
-        );
+        throw new CompilerError("Trailing comma at end of line.", lexemes.get(-1));
       }
     }
   }

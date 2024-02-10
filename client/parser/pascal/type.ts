@@ -14,16 +14,10 @@ export default function type(
 ): [Type, number, [number, number][]] {
   // expecting ":"
   if (!lexemes.get()) {
-    throw new CompilerError(
-      'Expected type specification (": <type>").',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('Expected type specification (": <type>").', lexemes.get(-1));
   }
   if (lexemes.get()?.content !== ":") {
-    throw new CompilerError(
-      'Expected type specification (": <type>").',
-      lexemes.get()
-    );
+    throw new CompilerError('Expected type specification (": <type>").', lexemes.get());
   }
   lexemes.next();
 
@@ -37,10 +31,7 @@ export default function type(
         lexemes.next();
         // expecting "of"
         if (!lexemes.get() || lexemes.get()?.content !== "of") {
-          throw new CompilerError(
-            'Keyword "array" must be followed by "of".',
-            lexemes.get(-1)
-          );
+          throw new CompilerError('Keyword "array" must be followed by "of".', lexemes.get(-1));
         }
         lexemes.next();
       }
@@ -77,10 +68,7 @@ export default function type(
         if (lexemes.get()?.content === ",") {
           lexemes.next();
         } else if (lexemes.get()?.content !== "]") {
-          throw new CompilerError(
-            "Comma missing between array dimensions.",
-            lexemes.get(-1)
-          );
+          throw new CompilerError("Comma missing between array dimensions.", lexemes.get(-1));
         }
       }
       // check we came out of the previous loop for the right reason
@@ -93,10 +81,7 @@ export default function type(
       lexemes.next(); // move past the closing bracket
       // expecting "of"
       if (!lexemes.get() || lexemes.get()?.content?.toLowerCase() !== "of") {
-        throw new CompilerError(
-          '"array[...]" must be followed by "of".',
-          lexemes.get(-1)
-        );
+        throw new CompilerError('"array[...]" must be followed by "of".', lexemes.get(-1));
       }
       lexemes.next();
     }

@@ -3,13 +3,7 @@ import { Subroutine } from "./definitions/subroutine.ts";
 import type Lexemes from "./definitions/lexemes.ts";
 import Variable from "./definitions/variable.ts";
 import type { Parameter } from "../constants/commands.ts";
-import type {
-  Lexeme,
-  Type,
-  Operator,
-  OperatorLexeme,
-  TypeLexeme,
-} from "../lexer/lexeme.ts";
+import type { Lexeme, Type, Operator, OperatorLexeme, TypeLexeme } from "../lexer/lexeme.ts";
 
 import { functionCall } from "./call.ts";
 import * as find from "./find.ts";
@@ -73,8 +67,7 @@ export function typeCheck(
   if (
     found instanceof FunctionCall &&
     found.command instanceof Subroutine &&
-    (!found.command.typeIsCertain ||
-      (found.command.result && !found.command.result.typeIsCertain))
+    (!found.command.typeIsCertain || (found.command.result && !found.command.result.typeIsCertain))
   ) {
     const result = found.command.result;
     if (result) {
@@ -118,25 +111,20 @@ export function typeCheck(
   }
 
   // if BOOLINT is expected, either BOOLEAN or INTEGER is ok
-  if (
-    expectedType === "boolint" &&
-    (found.type === "boolean" || found.type === "integer")
-  ) {
+  if (expectedType === "boolint" && (found.type === "boolean" || found.type === "integer")) {
     return found;
   }
 
   // if BOOLINT is found, either BOOLEAN or INTEGER expected is ok
-  if (
-    found.type === "boolint" &&
-    (expectedType === "boolean" || expectedType === "integer")
-  ) {
+  if (found.type === "boolint" && (expectedType === "boolean" || expectedType === "integer")) {
     return found;
   }
 
   // if INTEGER is found and BOOLEAN is expected, that's fine in Python and TypeScript
   if (
     (language === "Python" || language === "TypeScript") &&
-    (expectedType === "boolean" && found.type === "integer")
+    expectedType === "boolean" &&
+    found.type === "integer"
   ) {
     return found;
   }
@@ -149,11 +137,7 @@ export function typeCheck(
 }
 
 /** parses lexemes as an expression */
-export function expression(
-  lexemes: Lexemes,
-  routine: Program | Subroutine,
-  level = 0
-): Expression {
+export function expression(lexemes: Lexemes, routine: Program | Subroutine, level = 0): Expression {
   // break out of recursion at level > 2
   if (level > 2) {
     return factor(lexemes, routine);
@@ -223,18 +207,12 @@ function factor(lexemes: Lexemes, routine: Program | Subroutine): Expression {
 
         case "and": {
           if (routine.language !== "C") {
-            throw new CompilerError(
-              "Expression cannot begin with {lex}.",
-              lexemes.get()
-            );
+            throw new CompilerError("Expression cannot begin with {lex}.", lexemes.get());
           }
           lexemes.next();
           exp = factor(lexemes, routine);
           if (!(exp instanceof VariableValue)) {
-            throw new CompilerError(
-              'Address operator "&" must be followed by a variable.',
-              lexeme
-            );
+            throw new CompilerError('Address operator "&" must be followed by a variable.', lexeme);
           }
           const variableAddress = new VariableAddress(exp.lexeme, exp.variable);
           variableAddress.indexes.push(...exp.indexes);
@@ -242,18 +220,13 @@ function factor(lexemes: Lexemes, routine: Program | Subroutine): Expression {
         }
 
         default:
-          throw new CompilerError(
-            "Expression cannot begin with {lex}.",
-            lexeme
-          );
+          throw new CompilerError("Expression cannot begin with {lex}.", lexeme);
       }
 
     // literal values
     case "literal":
       lexemes.next();
-      return lexeme.subtype === "string"
-        ? new StringValue(lexeme)
-        : new IntegerValue(lexeme);
+      return lexeme.subtype === "string" ? new StringValue(lexeme) : new IntegerValue(lexeme);
 
     // input codes
     case "input": {
@@ -312,10 +285,7 @@ function factor(lexemes: Lexemes, routine: Program | Subroutine): Expression {
               let exp = expression(lexemes, routine);
               exp = typeCheck(routine.language, exp, "integer");
               variableValue.indexes.push(exp);
-              if (
-                routine.language === "BASIC" ||
-                routine.language === "Pascal"
-              ) {
+              if (routine.language === "BASIC" || routine.language === "Pascal") {
                 // maybe move past comma
                 if (lexemes.get()?.content === ",") {
                   lexemes.next();
@@ -329,10 +299,7 @@ function factor(lexemes: Lexemes, routine: Program | Subroutine): Expression {
                 }
               } else {
                 // maybe move past "]["
-                if (
-                  lexemes.get()?.content === close &&
-                  lexemes.get(1)?.content === open
-                ) {
+                if (lexemes.get()?.content === close && lexemes.get(1)?.content === open) {
                   lexemes.next();
                   lexemes.next();
                 }
@@ -370,10 +337,7 @@ function factor(lexemes: Lexemes, routine: Program | Subroutine): Expression {
             }
             lexemes.next();
           } else {
-            throw new CompilerError(
-              "{lex} is not a string or array variable.",
-              lexeme
-            );
+            throw new CompilerError("{lex} is not a string or array variable.", lexeme);
           }
         }
         // check the right number of array variable indexes have been given
@@ -383,10 +347,7 @@ function factor(lexemes: Lexemes, routine: Program | Subroutine): Expression {
               ? variable.arrayDimensions.length + 1 // one more for characters within strings
               : variable.arrayDimensions.length;
           if (variableValue.indexes.length > allowedIndexes) {
-            throw new CompilerError(
-              "Too many indexes for array variable {lex}.",
-              lexeme
-            );
+            throw new CompilerError("Too many indexes for array variable {lex}.", lexeme);
           }
         }
         // return the variable value
@@ -423,10 +384,7 @@ function factor(lexemes: Lexemes, routine: Program | Subroutine): Expression {
         const typeLexeme = lexemes.get() as TypeLexeme;
         const type = typeLexeme.subtype;
         if (type === null) {
-          throw new CompilerError(
-            "Expression cannot be cast as void.",
-            typeLexeme
-          );
+          throw new CompilerError("Expression cannot be cast as void.", typeLexeme);
         }
         lexemes.next();
         if (lexemes.get()?.content !== ")") {
@@ -439,34 +397,19 @@ function factor(lexemes: Lexemes, routine: Program | Subroutine): Expression {
         exp = expression(lexemes, routine);
         if (type !== exp.type) {
           if (type === "boolean" && exp.type === "character") {
-            throw new CompilerError(
-              "Characters cannot be cast as booleans.",
-              typeLexeme
-            );
+            throw new CompilerError("Characters cannot be cast as booleans.", typeLexeme);
           }
           if (type === "boolean" && exp.type === "string") {
-            throw new CompilerError(
-              "Strings cannot be cast as booleans.",
-              typeLexeme
-            );
+            throw new CompilerError("Strings cannot be cast as booleans.", typeLexeme);
           }
           if (type === "string" && exp.type === "boolean") {
-            throw new CompilerError(
-              "Booleans cannot be cast as strings.",
-              typeLexeme
-            );
+            throw new CompilerError("Booleans cannot be cast as strings.", typeLexeme);
           }
           if (type === "character" && exp.type === "boolean") {
-            throw new CompilerError(
-              "Booleans cannot be cast as characters.",
-              typeLexeme
-            );
+            throw new CompilerError("Booleans cannot be cast as characters.", typeLexeme);
           }
           if (type === "character" && exp.type === "string") {
-            throw new CompilerError(
-              "Strings cannot be cast as characters.",
-              typeLexeme
-            );
+            throw new CompilerError("Strings cannot be cast as characters.", typeLexeme);
           }
           exp = new CastExpression(typeLexeme, type, exp);
         }
@@ -484,10 +427,7 @@ function factor(lexemes: Lexemes, routine: Program | Subroutine): Expression {
           lexemes.next();
           return exp;
         } else {
-          throw new CompilerError(
-            "Closing bracket missing after expression.",
-            exp.lexeme
-          );
+          throw new CompilerError("Closing bracket missing after expression.", exp.lexeme);
         }
       }
 

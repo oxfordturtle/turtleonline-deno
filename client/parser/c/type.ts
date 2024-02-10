@@ -29,22 +29,13 @@ export default function type(lexemes: Lexemes): [Type | null, number] {
     // expecting integer
     const integerLexeme = lexemes.get();
     if (!integerLexeme) {
-      throw new CompilerError(
-        "Expecting string size specification.",
-        lexemes.get(-1)
-      );
+      throw new CompilerError("Expecting string size specification.", lexemes.get(-1));
     }
-    if (
-      integerLexeme.type !== "literal" ||
-      integerLexeme.subtype !== "integer"
-    ) {
+    if (integerLexeme.type !== "literal" || integerLexeme.subtype !== "integer") {
       throw new CompilerError("String size must be an integer.", lexemes.get());
     }
     if (integerLexeme.value <= 0) {
-      throw new CompilerError(
-        "String size must be greater than zero.",
-        lexemes.get()
-      );
+      throw new CompilerError("String size must be greater than zero.", lexemes.get());
     }
     stringLength = integerLexeme.value;
     lexemes.next();

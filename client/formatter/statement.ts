@@ -7,25 +7,17 @@ import { Command } from "../constants/commands.ts";
 export default function statement(stmt: Statement, language: Language): string {
   switch (stmt.statementType) {
     case "variableAssignment":
-      return `${stmt.variable.name} ${stmt.lexeme.content} ${expression(
-        stmt.value,
-        language
-      )}`;
+      return `${stmt.variable.name} ${stmt.lexeme.content} ${expression(stmt.value, language)}`;
 
     case "procedureCall": {
       const name =
         stmt.command instanceof Command
           ? (stmt.command.names[language] as string)
           : stmt.command.name;
-      if (
-        (language === "BASIC" || language === "Pascal") &&
-        stmt.arguments.length === 0
-      ) {
+      if ((language === "BASIC" || language === "Pascal") && stmt.arguments.length === 0) {
         return name;
       }
-      return `${name}(${stmt.arguments
-        .map((x) => expression(x, language))
-        .join(", ")})`;
+      return `${name}(${stmt.arguments.map((x) => expression(x, language)).join(", ")})`;
     }
 
     case "returnStatement":

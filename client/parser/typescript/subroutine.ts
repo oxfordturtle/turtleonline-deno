@@ -81,16 +81,10 @@ export default function subroutine(
 function parameters(lexemes: Lexemes, subroutine: Subroutine): Variable[] {
   // expecting opening bracket "("
   if (!lexemes.get()) {
-    throw new CompilerError(
-      'Opening bracket "(" missing after function name.',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('Opening bracket "(" missing after function name.', lexemes.get(-1));
   }
   if (lexemes.get()?.content !== "(") {
-    throw new CompilerError(
-      'Opening bracket "(" missing after function name.',
-      lexemes.get()
-    );
+    throw new CompilerError('Opening bracket "(" missing after function name.', lexemes.get());
   }
   lexemes.next();
 
@@ -107,10 +101,7 @@ function parameters(lexemes: Lexemes, subroutine: Subroutine): Variable[] {
 
   // check for closing bracket
   if (lexemes.get()?.content !== ")") {
-    throw new CompilerError(
-      "Closing bracket missing after function parameters.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("Closing bracket missing after function parameters.", lexemes.get(-1));
   }
   lexemes.next();
 

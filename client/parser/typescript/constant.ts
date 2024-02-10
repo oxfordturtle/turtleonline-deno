@@ -31,16 +31,10 @@ export default function constant(
 
   // expecting "="
   if (!lexemes.get()) {
-    throw new CompilerError(
-      `Constant ${name} must be assigned a value.`,
-      lexemes.get(-1)
-    );
+    throw new CompilerError(`Constant ${name} must be assigned a value.`, lexemes.get(-1));
   }
   if (lexemes.get()?.content !== "=") {
-    throw new CompilerError(
-      `Constant ${name} must be assigned a value.`,
-      lexemes.get()
-    );
+    throw new CompilerError(`Constant ${name} must be assigned a value.`, lexemes.get());
   }
   lexemes.next();
 

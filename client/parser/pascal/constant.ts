@@ -14,10 +14,7 @@ export default function constant(lexemes: Lexemes, routine: Program): Constant {
 
   // expecting '='
   if (!lexemes.get() || lexemes.get()?.content !== "=") {
-    throw new CompilerError(
-      "Constant must be assigned a value.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("Constant must be assigned a value.", lexemes.get(-1));
   }
   lexemes.next();
 

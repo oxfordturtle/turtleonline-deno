@@ -44,9 +44,7 @@ function parseBody(lexemes: Lexemes, routine: Program | Subroutine): void {
       // keywords
       case "keyword":
         if (lexeme.subtype === "def") {
-          routine.subroutines.push(
-            subroutine(lexeme, lexemes, routine, indents)
-          );
+          routine.subroutines.push(subroutine(lexeme, lexemes, routine, indents));
         }
         break;
     }
@@ -55,9 +53,7 @@ function parseBody(lexemes: Lexemes, routine: Program | Subroutine): void {
   // second pass: parse the statements of this routine and any subroutines recursively
   lexemes.index = routine.start;
   while (lexemes.index < routine.end) {
-    routine.statements.push(
-      statement(lexemes.get() as Lexeme, lexemes, routine)
-    );
+    routine.statements.push(statement(lexemes.get() as Lexeme, lexemes, routine));
   }
   for (const sub of routine.subroutines) {
     parseBody(lexemes, sub);
@@ -68,9 +64,7 @@ function parseBody(lexemes: Lexemes, routine: Program | Subroutine): void {
 function checkForUncertainTypes(routine: Program | Subroutine): void {
   const untypedVariable = routine.variables.find((x) => !x.typeIsCertain);
   if (untypedVariable) {
-    throw new CompilerError(
-      `Could not infer the type of variable ${untypedVariable.name}.`
-    );
+    throw new CompilerError(`Could not infer the type of variable ${untypedVariable.name}.`);
   }
 
   routine.subroutines.forEach(checkForUncertainTypes);

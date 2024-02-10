@@ -14,9 +14,7 @@ export default class Program extends Routine {
 
   /** address of the turtle in memory */
   get turtleAddress(): number {
-    const subroutinePointers = this.allSubroutines.some(
-      (x) => x.type === "function"
-    )
+    const subroutinePointers = this.allSubroutines.some((x) => x.type === "function")
       ? this.allSubroutines.length + 1
       : this.allSubroutines.length;
     return subroutinePointers + this.baseGlobals;

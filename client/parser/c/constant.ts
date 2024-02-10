@@ -9,10 +9,7 @@ import evaluate from "../evaluate.ts";
 import { CompilerError } from "../../tools/error.ts";
 
 /** parses lexemes as a constant definition, and returns the constant */
-export default function constant(
-  lexemes: Lexemes,
-  routine: Program | Subroutine
-): Constant {
+export default function constant(lexemes: Lexemes, routine: Program | Subroutine): Constant {
   // expecting type specification
   const [constantType] = type(lexemes);
   if (constantType === null) {
@@ -27,19 +24,13 @@ export default function constant(
 
   // expecting "="
   if (!lexemes.get()) {
-    throw new CompilerError(
-      `Constant ${name} must be assigned a value.`,
-      lexemes.get(-1)
-    );
+    throw new CompilerError(`Constant ${name} must be assigned a value.`, lexemes.get(-1));
   }
   if (lexemes.get()?.content === "[") {
     throw new CompilerError("Constant cannot be an array.", lexemes.get(-1));
   }
   if (lexemes.get()?.content !== "=") {
-    throw new CompilerError(
-      `Constant ${name} must be assigned a value.`,
-      lexemes.get()
-    );
+    throw new CompilerError(`Constant ${name} must be assigned a value.`, lexemes.get());
   }
   lexemes.next();
 

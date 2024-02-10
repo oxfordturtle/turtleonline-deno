@@ -53,9 +53,7 @@ function parseBody(lexemes: Lexemes, routine: Program | Subroutine): void {
   // second pass: parse the statements of this routine and any subroutines recursively
   lexemes.index = routine.start;
   while (lexemes.index < routine.end) {
-    routine.statements.push(
-      statement(lexemes.get() as Lexeme, lexemes, routine)
-    );
+    routine.statements.push(statement(lexemes.get() as Lexeme, lexemes, routine));
   }
   for (const sub of routine.subroutines) {
     parseBody(lexemes, sub);

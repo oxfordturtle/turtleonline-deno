@@ -8,9 +8,7 @@ import { fill, tr, td, code } from "../../tools/elements.ts";
 import { on } from "../../tools/hub.ts";
 
 // the lexemes table body
-const syntaxTableBody = document.querySelector(
-  '[data-component="syntaxTableBody"]'
-) as HTMLElement;
+const syntaxTableBody = document.querySelector('[data-component="syntaxTableBody"]') as HTMLElement;
 
 if (syntaxTableBody) {
   // register to keep in sync with the application state
@@ -29,17 +27,13 @@ function tableBodyRow(lexeme: Lexeme, index: number): HTMLTableRowElement {
         className: "wide",
         content: [
           code({
-            content: lexeme.content
-              ? highlight(lexeme.content, state.language)
-              : "",
+            content: lexeme.content ? highlight(lexeme.content, state.language) : "",
           }),
         ],
       }),
       td({
         className: "wide",
-        content: `${lexeme.type}${
-          "subtype" in lexeme ? ` (${lexeme.subtype})` : ""
-        }`,
+        content: `${lexeme.type}${"subtype" in lexeme ? ` (${lexeme.subtype})` : ""}`,
       }),
     ],
   });

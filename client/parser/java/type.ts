@@ -37,19 +37,13 @@ export default function type(
       // expecting positive integer literal
       const integer = lexemes.get();
       if (!integer) {
-        throw new CompilerError(
-          "Expected string size specification.",
-          lexemes.get(-1)
-        );
+        throw new CompilerError("Expected string size specification.", lexemes.get(-1));
       }
       if (integer.type !== "literal" || integer.subtype !== "integer") {
         throw new CompilerError("String size must be an integer.", integer);
       }
       if (integer.value <= 0) {
-        throw new CompilerError(
-          "String size must be greater than zero.",
-          integer
-        );
+        throw new CompilerError("String size must be greater than zero.", integer);
       }
       stringLength = integer.value;
       lexemes.next();

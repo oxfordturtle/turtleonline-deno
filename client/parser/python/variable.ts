@@ -19,10 +19,7 @@ export default function variable(
     lexemes.next();
 
     // expecting type specification
-    const [isConstant, variableType, stringLength, arrayDimensions] = type(
-      lexemes,
-      routine
-    );
+    const [isConstant, variableType, stringLength, arrayDimensions] = type(lexemes, routine);
 
     if (isConstant) {
       // return the constant with any value; the value will be set later

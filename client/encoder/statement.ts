@@ -86,9 +86,7 @@ function turtleVariableAssignment(
   const pcode = expression(stmt.value, program, options);
 
   // TODO: after NEWTURTLE??
-  merge(pcode, [
-    [PCode.stvg, program.turtleAddress + (stmt.variable.turtle as number)],
-  ]);
+  merge(pcode, [[PCode.stvg, program.turtleAddress + (stmt.variable.turtle as number)]]);
 
   return pcode;
 }
@@ -102,10 +100,7 @@ function globalVariableAssignment(
   const pcode = expression(stmt.value, program, options);
 
   // global array
-  if (
-    stmt.variable.isArray ||
-    (stmt.variable.type === "string" && stmt.indexes.length > 0)
-  ) {
+  if (stmt.variable.isArray || (stmt.variable.type === "string" && stmt.indexes.length > 0)) {
     const exp = new VariableValue(stmt.lexeme as any, stmt.variable);
     exp.indexes.push(...stmt.indexes);
     const element = expression(exp, program, options);
@@ -161,11 +156,7 @@ function referenceVariableAssignment(
   const pcode = expression(stmt.value, program, options);
 
   merge(pcode, [
-    [
-      PCode.stvr,
-      (stmt.variable.routine as Subroutine).address,
-      stmt.variable.address,
-    ],
+    [PCode.stvr, (stmt.variable.routine as Subroutine).address, stmt.variable.address],
   ]);
 
   return pcode;
@@ -180,10 +171,7 @@ function localVariableAssignment(
   const pcode = expression(stmt.value, program, options);
 
   // local array
-  if (
-    stmt.variable.isArray ||
-    (stmt.variable.type === "string" && stmt.indexes.length > 0)
-  ) {
+  if (stmt.variable.isArray || (stmt.variable.type === "string" && stmt.indexes.length > 0)) {
     const exp = new VariableValue(stmt.lexeme as any, stmt.variable);
     exp.indexes.push(...stmt.indexes);
     const element = expression(exp, program, options);
@@ -211,11 +199,7 @@ function localVariableAssignment(
   // local boolean/character/integer
   else {
     merge(pcode, [
-      [
-        PCode.stvv,
-        (stmt.variable.routine as Subroutine).address,
-        stmt.variable.address,
-      ],
+      [PCode.stvv, (stmt.variable.routine as Subroutine).address, stmt.variable.address],
     ]);
   }
 
@@ -223,11 +207,7 @@ function localVariableAssignment(
 }
 
 /** generates the pcode for a procedure call */
-function procedureCall(
-  stmt: ProcedureCall,
-  program: Program,
-  options: Options
-): number[][] {
+function procedureCall(stmt: ProcedureCall, program: Program, options: Options): number[][] {
   const pcode: number[][] = [];
 
   // first: load arguments onto the stack
@@ -270,26 +250,21 @@ function ifStatement(
   // more inner lines: pcode for all ELSE statements
   const elsePcode: number[][] = [];
   for (const subStmt of stmt.elseStatements) {
-    const subStartLine =
-      startLine + ifPcode.length + elsePcode.length + firstLines.length + 1;
+    const subStartLine = startLine + ifPcode.length + elsePcode.length + firstLines.length + 1;
     elsePcode.push(...statement(subStmt, program, subStartLine, options));
   }
 
   // plain IF statement
   if (elsePcode.length === 0) {
     // first lines: evaluate condition; if false, jump past all IF statements
-    merge(firstLines, [
-      [PCode.ifno, startLine + ifPcode.length + firstLines.length],
-    ]);
+    merge(firstLines, [[PCode.ifno, startLine + ifPcode.length + firstLines.length]]);
     ifPcode.unshift(...firstLines);
     return ifPcode;
   }
 
   // IF-ELSE statement
   // first lines: evaluate condition; if false, jump past all IF statements and ELSE jump
-  merge(firstLines, [
-    [PCode.ifno, startLine + ifPcode.length + firstLines.length + 1],
-  ]);
+  merge(firstLines, [[PCode.ifno, startLine + ifPcode.length + firstLines.length + 1]]);
 
   // middle line: jump past ELSE statements (at end of IF statements)
   const middleLine = [
@@ -319,9 +294,7 @@ function forStatement(
 
   // second lines: loop condition
   const condition = expression(stmt.condition, program, options);
-  merge(condition, [
-    [PCode.ifno, startLine + pcode.length + condition.length + 2],
-  ]);
+  merge(condition, [[PCode.ifno, startLine + pcode.length + condition.length + 2]]);
   pcode.unshift(...condition);
 
   // first lines: initialise loop variable
@@ -386,11 +359,7 @@ function whileStatement(
 }
 
 /** generates the pcode for a RETURN statement */
-function returnStatement(
-  stmt: ReturnStatement,
-  program: Program,
-  options: Options
-): number[][] {
+function returnStatement(stmt: ReturnStatement, program: Program, options: Options): number[][] {
   // N.B. stmt.lexeme is a KeywordLexeme, but VariableAssignment constructor
   // requires an IdentifierLexeme; it makes no difference here
   const variableAssignment = new VariableAssignment(

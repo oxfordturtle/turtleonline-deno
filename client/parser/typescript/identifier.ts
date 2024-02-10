@@ -13,10 +13,7 @@ export default function identifier(
   const identifier = lexemes.get();
 
   if (!identifier) {
-    throw new CompilerError(
-      "{lex} must be followed by an identifier.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("{lex} must be followed by an identifier.", lexemes.get(-1));
   }
 
   if (identifier.type !== "identifier") {
@@ -33,10 +30,7 @@ export default function identifier(
   if (duplicateCheck) {
     // this should be bypassed for hoisted variables on the second pass
     if (find.isDuplicate(routine, identifier.value)) {
-      throw new CompilerError(
-        "{lex} is already defined in the current scope.",
-        identifier
-      );
+      throw new CompilerError("{lex} is already defined in the current scope.", identifier);
     }
   }
 

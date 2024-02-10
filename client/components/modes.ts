@@ -10,12 +10,8 @@ on("modeChanged", mode);
 /** updates the page to reflect mode change */
 function mode(): void {
   // get relevant elements
-  const modeElements = document.querySelectorAll(
-    "[data-mode]"
-  ) as NodeListOf<HTMLElement>;
-  const guideToc = document.querySelector(
-    '[data-component="guide-toc"]'
-  ) as HTMLSelectElement;
+  const modeElements = document.querySelectorAll("[data-mode]") as NodeListOf<HTMLElement>;
+  const guideToc = document.querySelector('[data-component="guide-toc"]') as HTMLSelectElement;
 
   // show/hide elements according to mode
   for (const element of Array.from(modeElements)) {
@@ -25,10 +21,7 @@ function mode(): void {
         element.classList.remove("hidden");
       } else {
         element.classList.add("hidden");
-        if (
-          element.classList.contains("system-tab-pane") &&
-          element.classList.contains("active")
-        ) {
+        if (element.classList.contains("system-tab-pane") && element.classList.contains("active")) {
           send("selectTab", "canvas");
         }
       }

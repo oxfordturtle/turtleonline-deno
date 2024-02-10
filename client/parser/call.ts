@@ -30,14 +30,8 @@ export function procedureCall(
 
   const procedureCall = new ProcedureCall(lexeme, command);
   brackets(lexeme, lexemes, routine, procedureCall);
-  if (
-    procedureCall.command instanceof Subroutine &&
-    procedureCall.command !== routine
-  ) {
-    if (
-      routine.language === "BASIC" &&
-      procedureCall.command.statements.length === 0
-    ) {
+  if (procedureCall.command instanceof Subroutine && procedureCall.command !== routine) {
+    if (routine.language === "BASIC" && procedureCall.command.statements.length === 0) {
       const previousLexemeIndex = lexemes.index;
       basicBody(lexemes, procedureCall.command);
       lexemes.index = previousLexemeIndex;
@@ -61,23 +55,14 @@ export function functionCall(
   }
 
   if (command.type === "procedure") {
-    throw new CompilerError(
-      "{lex} is a procedure, not a function.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("{lex} is a procedure, not a function.", lexemes.get(-1));
   }
 
   const functionCall = new FunctionCall(lexeme, command);
   brackets(lexeme, lexemes, routine, functionCall);
 
-  if (
-    functionCall.command instanceof Subroutine &&
-    functionCall.command !== routine
-  ) {
-    if (
-      routine.language === "BASIC" &&
-      functionCall.command.statements.length === 0
-    ) {
+  if (functionCall.command instanceof Subroutine && functionCall.command !== routine) {
+    if (routine.language === "BASIC" && functionCall.command.statements.length === 0) {
       const previousLexemeIndex = lexemes.index;
       basicBody(lexemes, functionCall.command);
       lexemes.index = previousLexemeIndex;
@@ -98,10 +83,7 @@ function brackets(
   if (commandCall.command.parameters.length > 0) {
     // check for opening bracket
     if (!lexemes.get() || lexemes.get()?.content !== "(") {
-      throw new CompilerError(
-        "Opening bracket missing after command {lex}.",
-        lexeme
-      );
+      throw new CompilerError("Opening bracket missing after command {lex}.", lexeme);
     }
 
     // move past the opening bracket
@@ -116,10 +98,7 @@ function brackets(
     // command with no parameters in BASIC or Pascal (brackets not allowed)
     if (routine.language === "BASIC" || routine.language === "Pascal") {
       if (lexemes.get() && lexemes.get()?.content === "(") {
-        throw new CompilerError(
-          "Command {lex} takes no arguments.",
-          lexemes.get(-1)
-        );
+        throw new CompilerError("Command {lex} takes no arguments.", lexemes.get(-1));
       }
     }
 
@@ -129,28 +108,15 @@ function brackets(
       const closeBracket = lexemes.get(1);
       // check for opening bracket
       if (!openBracket || openBracket.content !== "(") {
-        throw new CompilerError(
-          "Opening bracket missing after command {lex}.",
-          lexemes.get(-1)
-        );
+        throw new CompilerError("Opening bracket missing after command {lex}.", lexemes.get(-1));
       }
 
       // check for immediate closing bracket (no arguments)
-      if (
-        !closeBracket ||
-        closeBracket.type === "newline" ||
-        closeBracket.content === ";"
-      ) {
-        throw new CompilerError(
-          "Closing bracket missing after command {lex}.",
-          lexemes.get(-1)
-        );
+      if (!closeBracket || closeBracket.type === "newline" || closeBracket.content === ";") {
+        throw new CompilerError("Closing bracket missing after command {lex}.", lexemes.get(-1));
       }
       if (closeBracket.content !== ")") {
-        throw new CompilerError(
-          "Command {lex} takes no arguments.",
-          lexemes.get(-1)
-        );
+        throw new CompilerError("Command {lex} takes no arguments.", lexemes.get(-1));
       }
 
       // move past the brackets
@@ -186,10 +152,7 @@ function _arguments(
 
         case "length":
           // length command allows string or array arguments
-          if (
-            !(argument instanceof VariableValue) ||
-            !argument.variable.isArray
-          ) {
+          if (!(argument instanceof VariableValue) || !argument.variable.isArray) {
             argument = typeCheck(routine.language, argument, parameter);
           }
           break;
@@ -206,10 +169,7 @@ function _arguments(
     argsGiven += 1;
     if (argsGiven < argsExpected) {
       if (!lexemes.get()) {
-        throw new CompilerError(
-          "Comma needed after parameter.",
-          argument.lexeme
-        );
+        throw new CompilerError("Comma needed after parameter.", argument.lexeme);
       }
       if (lexemes.get()?.content === ")") {
         throw new CompilerError(
@@ -218,10 +178,7 @@ function _arguments(
         );
       }
       if (lexemes.get()?.content !== ",") {
-        throw new CompilerError(
-          "Comma needed after parameter.",
-          argument.lexeme
-        );
+        throw new CompilerError("Comma needed after parameter.", argument.lexeme);
       }
       lexemes.next();
     }
@@ -229,22 +186,13 @@ function _arguments(
 
   // final error checking
   if (argsGiven < argsExpected) {
-    throw new CompilerError(
-      "Too few arguments given for command {lex}.",
-      commandCall.lexeme
-    );
+    throw new CompilerError("Too few arguments given for command {lex}.", commandCall.lexeme);
   }
   if (lexemes.get()?.content === ",") {
-    throw new CompilerError(
-      "Too many arguments given for command {lex}.",
-      commandCall.lexeme
-    );
+    throw new CompilerError("Too many arguments given for command {lex}.", commandCall.lexeme);
   }
   if (lexemes.get()?.content !== ")") {
-    throw new CompilerError(
-      "Closing bracket missing after command {lex}.",
-      commandCall.lexeme
-    );
+    throw new CompilerError("Closing bracket missing after command {lex}.", commandCall.lexeme);
   }
 
   // move past the closing bracket

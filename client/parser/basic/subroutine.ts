@@ -35,10 +35,7 @@ export default function subroutine(
 
   // expecting subroutine statements on a new line
   if (!lexemes.get()) {
-    throw new CompilerError(
-      "No statements found after subroutine declaration.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("No statements found after subroutine declaration.", lexemes.get(-1));
   }
   newLine(lexemes);
 
@@ -56,10 +53,7 @@ export default function subroutine(
   } else {
     // function
     while (lexemes.get() && !finished) {
-      if (
-        lexemes.get()?.content === "=" &&
-        lexemes.get(-1)?.type === "newline"
-      ) {
+      if (lexemes.get()?.content === "=" && lexemes.get(-1)?.type === "newline") {
         finished = true;
         while (lexemes.get() && lexemes.get()?.type !== "newline") {
           lexemes.next(); // move past everything up to the next line break
@@ -71,8 +65,7 @@ export default function subroutine(
   }
 
   // save last inner lexeme index (for the second pass)
-  subroutine.end =
-    subroutine.type === "procedure" ? lexemes.index - 2 : lexemes.index;
+  subroutine.end = subroutine.type === "procedure" ? lexemes.index - 2 : lexemes.index;
 
   // check for subroutine end
   if (!finished) {
@@ -128,10 +121,7 @@ function parameters(lexemes: Lexemes, subroutine: Subroutine): Variable[] {
 
   // check for closing bracket
   if (lexemes.get()?.content !== ")") {
-    throw new CompilerError(
-      "Closing bracket missing after method parameters.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("Closing bracket missing after method parameters.", lexemes.get(-1));
   }
   lexemes.next();
 

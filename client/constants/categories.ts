@@ -23,9 +23,7 @@ export class Category {
     this.expressions =
       expressions[0] && expressions[0] instanceof Subroutine
         ? expressions
-        : expressions.filter(
-            (x) => (x as Command | Keyword).category === index
-          );
+        : expressions.filter((x) => (x as Command | Keyword).category === index);
   }
 }
 

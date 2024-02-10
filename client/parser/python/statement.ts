@@ -23,12 +23,7 @@ import {
   VariableAssignment,
   ReturnStatement,
 } from "../definitions/statement.ts";
-import {
-  IdentifierLexeme,
-  KeywordLexeme,
-  Lexeme,
-  OperatorLexeme,
-} from "../../lexer/lexeme.ts";
+import { IdentifierLexeme, KeywordLexeme, Lexeme, OperatorLexeme } from "../../lexer/lexeme.ts";
 import { CompilerError } from "../../tools/error.ts";
 import variable from "./variable.ts";
 import { Constant } from "../definitions/constant.ts";
@@ -97,10 +92,7 @@ export function statement(
         // def
         case "def": {
           // the subroutine will have been defined in the first pass
-          const sub = find.subroutine(
-            routine,
-            lexemes.get(1)?.content as string
-          ) as Subroutine;
+          const sub = find.subroutine(routine, lexemes.get(1)?.content as string) as Subroutine;
           // so here, just jump past its lexemes
           // N.B. lexemes[sub.end] is the final DEDENT lexeme; here we want to
           // move past it, hence sub.end + 1
@@ -122,9 +114,7 @@ export function statement(
           if (lexemes.get(-1)?.content === "global") {
             routine.globals.push(...identifiers(lexemes, routine, "global"));
           } else {
-            routine.nonlocals.push(
-              ...identifiers(lexemes, routine, "nonlocal")
-            );
+            routine.nonlocals.push(...identifiers(lexemes, routine, "nonlocal"));
           }
           statement = new PassStatement();
           eosCheck(lexemes);
@@ -212,10 +202,7 @@ export function variableAssignment(
       }
       // check we came out of the loop above for the right reason
       if (!lexemes.get()) {
-        throw new CompilerError(
-          'Closing bracket "]" needed after array indexes.',
-          lexemes.get(-1)
-        );
+        throw new CompilerError('Closing bracket "]" needed after array indexes.', lexemes.get(-1));
       }
       // move past the closing bracket
       lexemes.next();
@@ -234,10 +221,7 @@ export function variableAssignment(
       }
       lexemes.next();
     } else {
-      throw new CompilerError(
-        "{lex} is not a string or array variable.",
-        variableLexeme
-      );
+      throw new CompilerError("{lex} is not a string or array variable.", variableLexeme);
     }
   }
 
@@ -248,10 +232,7 @@ export function variableAssignment(
         ? variable.arrayDimensions.length + 1 // one more for characters within strings
         : variable.arrayDimensions.length;
     if (indexes.length > allowedIndexes) {
-      throw new CompilerError(
-        "Too many indexes for array variable {lex}.",
-        variableLexeme
-      );
+      throw new CompilerError("Too many indexes for array variable {lex}.", variableLexeme);
     }
   }
 
@@ -270,25 +251,13 @@ export function variableAssignment(
         lexemes.get(-1)
       );
     }
-    throw new CompilerError(
-      "Type of variable {lex} has already been given.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("Type of variable {lex} has already been given.", lexemes.get(-1));
   }
   if (assignmentLexeme.content === "[") {
-    throw new CompilerError(
-      "{lex} is not a string or list variable.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("{lex} is not a string or list variable.", lexemes.get(-1));
   }
-  if (
-    assignmentLexeme.type !== "operator" ||
-    assignmentLexeme.subtype !== "asgn"
-  ) {
-    throw new CompilerError(
-      'Variable must be followed by assignment operator "=".',
-      lexemes.get()
-    );
+  if (assignmentLexeme.type !== "operator" || assignmentLexeme.subtype !== "asgn") {
+    throw new CompilerError('Variable must be followed by assignment operator "=".', lexemes.get());
   }
   lexemes.next();
 
@@ -323,16 +292,10 @@ export function variableDeclaration(
   if (foo instanceof Constant) {
     // expecting '='
     if (!lexemes.get()) {
-      throw new CompilerError(
-        "Constant must be assigned a value.",
-        lexemes.get(-1)
-      );
+      throw new CompilerError("Constant must be assigned a value.", lexemes.get(-1));
     }
     if (lexemes.get()?.content !== "=") {
-      throw new CompilerError(
-        "Constant must be assigned a value.",
-        lexemes.get()
-      );
+      throw new CompilerError("Constant must be assigned a value.", lexemes.get());
     }
     lexemes.next();
 
@@ -470,31 +433,24 @@ function ifStatement(
     if (nextLexeme.content === "elif") {
       lexemes.next();
       // expecting an if statement
-      thisIfStatement.elseStatements.push(ifStatement(nextLexeme as KeywordLexeme, lexemes, routine));
+      thisIfStatement.elseStatements.push(
+        ifStatement(nextLexeme as KeywordLexeme, lexemes, routine)
+      );
     } else if (nextLexeme.content === "else") {
       lexemes.next();
 
       // expecting a colon
       if (!lexemes.get()) {
-        throw new CompilerError(
-          '"else" must be followed by a colon.',
-          lexemes.get(-1)
-        );
+        throw new CompilerError('"else" must be followed by a colon.', lexemes.get(-1));
       }
       if (lexemes.get()?.content !== ":") {
-        throw new CompilerError(
-          '"else" must be followed by a colon.',
-          lexemes.get()
-        );
+        throw new CompilerError('"else" must be followed by a colon.', lexemes.get());
       }
       lexemes.next();
 
       // expecting newline
       if (!lexemes.get()) {
-        throw new CompilerError(
-          'No statements found after "else:".',
-          lexemes.get(-1)
-        );
+        throw new CompilerError('No statements found after "else:".', lexemes.get(-1));
       }
       if (lexemes.get()?.type !== "newline") {
         throw new CompilerError(
@@ -506,25 +462,16 @@ function ifStatement(
 
       // expecting indent
       if (!lexemes.get()) {
-        throw new CompilerError(
-          'No statements found after "else:".',
-          lexemes.get(-1)
-        );
+        throw new CompilerError('No statements found after "else:".', lexemes.get(-1));
       }
       if (lexemes.get()?.type !== "indent") {
-        throw new CompilerError(
-          'Statements following "else:" must be indented.',
-          lexemes.get()
-        );
+        throw new CompilerError('Statements following "else:" must be indented.', lexemes.get());
       }
       lexemes.next();
 
       // expecting some statements
       if (!lexemes.get()) {
-        throw new CompilerError(
-          'No statements found after "else:".',
-          lexemes.get(-1)
-        );
+        throw new CompilerError('No statements found after "else:".', lexemes.get(-1));
       }
       thisIfStatement.elseStatements.push(...block(lexemes, routine));
     }
@@ -543,16 +490,10 @@ function forStatement(
   // expecting an integer variable
   const variableLexeme = lexemes.get();
   if (!variableLexeme) {
-    throw new CompilerError(
-      '"for" must be followed by an integer variable.',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('"for" must be followed by an integer variable.', lexemes.get(-1));
   }
   if (variableLexeme.type !== "identifier") {
-    throw new CompilerError(
-      "{lex} is not a valid variable name.",
-      lexemes.get()
-    );
+    throw new CompilerError("{lex} is not a valid variable name.", lexemes.get());
   }
   let variable = find.variable(routine, lexemes.get()?.content as string);
   if (!variable) {
@@ -573,16 +514,10 @@ function forStatement(
 
   // expecting 'in'
   if (!lexemes.get()) {
-    throw new CompilerError(
-      '"for <variable>" must be followed by "in".',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('"for <variable>" must be followed by "in".', lexemes.get(-1));
   }
   if (lexemes.get()?.content !== "in") {
-    throw new CompilerError(
-      '"for <variable>" must be followed by "in".',
-      lexemes.get()
-    );
+    throw new CompilerError('"for <variable>" must be followed by "in".', lexemes.get());
   }
   lexemes.next();
 
@@ -603,25 +538,16 @@ function forStatement(
 
   // expecting a left bracket
   if (!lexemes.get()) {
-    throw new CompilerError(
-      '"range" must be followed by an opening bracket.',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('"range" must be followed by an opening bracket.', lexemes.get(-1));
   }
   if (lexemes.get()?.content !== "(") {
-    throw new CompilerError(
-      '"range" must be followed by an opening bracket.',
-      lexemes.get()
-    );
+    throw new CompilerError('"range" must be followed by an opening bracket.', lexemes.get());
   }
   lexemes.next();
 
   // expecting an integer expression
   if (!lexemes.get()) {
-    throw new CompilerError(
-      'Missing first argument to the "range" function.',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('Missing first argument to the "range" function.', lexemes.get(-1));
   }
   const providedValues: [Expression, Expression?, Expression?] = [
     typeCheck(routine.language, expression(lexemes, routine), "integer"),
@@ -629,10 +555,7 @@ function forStatement(
 
   // expecting a comma or closing bracket
   if (!lexemes.get()) {
-    throw new CompilerError(
-      "Argument must be followed by a comma.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("Argument must be followed by a comma.", lexemes.get(-1));
   }
   if (lexemes.get()?.content !== ")" && lexemes.get()?.content !== ",") {
     throw new CompilerError(
@@ -645,20 +568,14 @@ function forStatement(
   if (lexemes.get()?.content === ",") {
     lexemes.next();
     if (!lexemes.get()) {
-      throw new CompilerError(
-        'Too few arguments for "range" function.',
-        lexemes.get(-1)
-      );
+      throw new CompilerError('Too few arguments for "range" function.', lexemes.get(-1));
     }
     providedValues.push(typeCheck(routine.language, expression(lexemes, routine), "integer"));
   }
 
   // expecting a comma or closing bracket
   if (!lexemes.get()) {
-    throw new CompilerError(
-      "Argument must be followed by a comma.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("Argument must be followed by a comma.", lexemes.get(-1));
   }
   if (lexemes.get()?.content !== ")" && lexemes.get()?.content !== ",") {
     throw new CompilerError(
@@ -671,10 +588,7 @@ function forStatement(
   if (lexemes.get()?.content === ",") {
     lexemes.next();
     if (!lexemes.get()) {
-      throw new CompilerError(
-        'Too few arguments for "range" function.',
-        lexemes.get(-1)
-      );
+      throw new CompilerError('Too few arguments for "range" function.', lexemes.get(-1));
     }
     providedValues.push(typeCheck(routine.language, expression(lexemes, routine), "integer"));
   }
@@ -705,12 +619,7 @@ function forStatement(
   switch (providedValues.length) {
     case 1:
       // initial value is zero
-      initialisation = new VariableAssignment(
-        assignmentLexeme,
-        variable,
-        [],
-        zero
-      );
+      initialisation = new VariableAssignment(assignmentLexeme, variable, [], zero);
       // change is +1
       change = new VariableAssignment(
         assignmentLexeme,
@@ -719,21 +628,11 @@ function forStatement(
         new CompoundExpression(plusLexeme, left, one, "plus")
       );
       // termination condition is < providedValues[0]
-      condition = new CompoundExpression(
-        lessLexeme,
-        left,
-        providedValues[0],
-        "less"
-      );
+      condition = new CompoundExpression(lessLexeme, left, providedValues[0], "less");
       break;
     case 2:
       // initial value is providedValues[0]
-      initialisation = new VariableAssignment(
-        assignmentLexeme,
-        variable,
-        [],
-        providedValues[0]
-      );
+      initialisation = new VariableAssignment(assignmentLexeme, variable, [], providedValues[0]);
       // change is +1
       change = new VariableAssignment(
         assignmentLexeme,
@@ -742,27 +641,13 @@ function forStatement(
         new CompoundExpression(plusLexeme, left, one, "plus")
       );
       // termination condition is < providedValues[1]
-      condition = new CompoundExpression(
-        lessLexeme,
-        left,
-        providedValues[1]!,
-        "less"
-      );
+      condition = new CompoundExpression(lessLexeme, left, providedValues[1]!, "less");
       break;
     case 3: {
       // initial value is providedValues[0]
-      initialisation = new VariableAssignment(
-        assignmentLexeme,
-        variable,
-        [],
-        providedValues[0]
-      );
+      initialisation = new VariableAssignment(assignmentLexeme, variable, [], providedValues[0]);
       // change is +/- providedValues[1]
-      const stepValue = evaluate(
-        providedValues[2]!,
-        "Python",
-        "step"
-      ) as number;
+      const stepValue = evaluate(providedValues[2]!, "Python", "step") as number;
       change = new VariableAssignment(
         assignmentLexeme,
         variable,
@@ -773,12 +658,7 @@ function forStatement(
       condition =
         stepValue < 0
           ? new CompoundExpression(moreLexeme, left, providedValues[1]!, "more")
-          : new CompoundExpression(
-              lessLexeme,
-              left,
-              providedValues[1]!,
-              "less"
-            );
+          : new CompoundExpression(lessLexeme, left, providedValues[1]!, "less");
       break;
     }
   }
@@ -791,10 +671,7 @@ function forStatement(
     );
   }
   if (lexemes.get()?.content === ",") {
-    throw new CompilerError(
-      'Too many arguments for "range" function.',
-      lexemes.get()
-    );
+    throw new CompilerError('Too many arguments for "range" function.', lexemes.get());
   }
   if (lexemes.get()?.content !== ")") {
     throw new CompilerError(
@@ -835,12 +712,7 @@ function forStatement(
   lexemes.next();
 
   // create the for statement
-  const forStatement = new ForStatement(
-    forLexeme,
-    initialisation,
-    condition,
-    change
-  );
+  const forStatement = new ForStatement(forLexeme, initialisation, condition, change);
 
   // expecting indent
   if (!lexemes.get()) {
@@ -878,35 +750,23 @@ function whileStatement(
 ): WhileStatement {
   // expecting a boolean expression
   if (!lexemes.get()) {
-    throw new CompilerError(
-      '"while" must be followed by a Boolean expression.',
-      whileLexeme
-    );
+    throw new CompilerError('"while" must be followed by a Boolean expression.', whileLexeme);
   }
   let condition = expression(lexemes, routine);
   condition = typeCheck(routine.language, condition, "boolean");
 
   // expecting a colon
   if (!lexemes.get()) {
-    throw new CompilerError(
-      '"while <expression>" must be followed by a colon.',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('"while <expression>" must be followed by a colon.', lexemes.get(-1));
   }
   if (lexemes.get()?.content !== ":") {
-    throw new CompilerError(
-      '"while <expression>" must be followed by a colon.',
-      lexemes.get()
-    );
+    throw new CompilerError('"while <expression>" must be followed by a colon.', lexemes.get());
   }
   lexemes.next();
 
   // expecting newline
   if (!lexemes.get()) {
-    throw new CompilerError(
-      'No statements found after "while <expression>:".',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('No statements found after "while <expression>:".', lexemes.get(-1));
   }
   if (lexemes.get()?.type !== "newline") {
     throw new CompilerError(
@@ -921,10 +781,7 @@ function whileStatement(
 
   // expecting indent
   if (!lexemes.get()) {
-    throw new CompilerError(
-      'No statements found after "while <expression>:".',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('No statements found after "while <expression>:".', lexemes.get(-1));
   }
   if (lexemes.get()?.type !== "indent") {
     throw new CompilerError(
@@ -936,10 +793,7 @@ function whileStatement(
 
   // expecting a block of statements
   if (!lexemes.get()) {
-    throw new CompilerError(
-      'No statements found after "while <expression>:".',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('No statements found after "while <expression>:".', lexemes.get(-1));
   }
   whileStatement.statements.push(...block(lexemes, routine));
 

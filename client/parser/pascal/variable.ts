@@ -8,10 +8,7 @@ import Variable from "../definitions/variable.ts";
 import { CompilerError } from "../../tools/error.ts";
 
 /** parses lexemes as a declaration of variables (after "var") */
-export function variables(
-  lexemes: Lexemes,
-  routine: Program | Subroutine
-): Variable[] {
+export function variables(lexemes: Lexemes, routine: Program | Subroutine): Variable[] {
   const vars: Variable[] = [];
 
   // expecting comma separated list of variables
@@ -21,19 +18,12 @@ export function variables(
     if (lexemes.get()?.content === ",") {
       lexemes.next();
     } else if (lexemes.get()?.type === "identifier") {
-      throw new CompilerError(
-        "Comma missing between variable names.",
-        lexemes.get()
-      );
+      throw new CompilerError("Comma missing between variable names.", lexemes.get());
     }
   }
 
   // expecting type specification
-  const [variableType, stringLength, arrayDimensions] = type(
-    lexemes,
-    routine,
-    false
-  );
+  const [variableType, stringLength, arrayDimensions] = type(lexemes, routine, false);
   for (const foo of vars) {
     foo.type = variableType;
     foo.stringLength = stringLength;

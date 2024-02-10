@@ -64,9 +64,7 @@ export default function c(lexemes: Lexemes): Program {
     // loop through the lexemes
     lexemes.index = subroutine.start;
     while (lexemes.index < subroutine.end) {
-      subroutine.statements.push(
-        statement(lexemes.get() as Lexeme, lexemes, subroutine)
-      );
+      subroutine.statements.push(statement(lexemes.get() as Lexeme, lexemes, subroutine));
     }
   }
 

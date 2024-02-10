@@ -7,9 +7,7 @@ import { fill, div, li } from "../../tools/elements.ts";
 import { on } from "../../tools/hub.ts";
 
 // the pcode display
-const list = document.querySelector(
-  '[data-component="pcodeList"]'
-) as HTMLElement;
+const list = document.querySelector('[data-component="pcodeList"]') as HTMLElement;
 
 if (list) {
   // register to keep in sync with the application state
@@ -22,10 +20,7 @@ if (list) {
 function pcodeListItem(line: number[]): HTMLLIElement {
   const content = state.assembler
     ? assemble(line, 0)
-    : line.reduce(
-        (sofar, current) => sofar.concat(cell(current)),
-        [] as HTMLDivElement[]
-      );
+    : line.reduce((sofar, current) => sofar.concat(cell(current)), [] as HTMLDivElement[]);
   while (content.length % 10 > 0) {
     content.push(div());
   }

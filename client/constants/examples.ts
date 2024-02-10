@@ -449,5 +449,5 @@ export default [
     Java: null,
     Python: null,
     TypeScript: null,
-  })
+  }),
 ] as const;

@@ -5,9 +5,7 @@ import { fill, li } from "../../tools/elements.ts";
 import { on } from "../../tools/hub.ts";
 
 // get the editor element
-const editor = document.querySelector(
-  '[data-component="editor"]'
-) as HTMLElement;
+const editor = document.querySelector('[data-component="editor"]') as HTMLElement;
 
 // define the update code display function
 function updateCodeDisplay(

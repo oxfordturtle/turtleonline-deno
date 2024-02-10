@@ -157,8 +157,7 @@ export class OperatorLexeme extends LexemeClass {
         this.subtype = "mod";
         break;
       case "=":
-        this.subtype =
-          language === "BASIC" || language === "Pascal" ? "eqal" : "asgn";
+        this.subtype = language === "BASIC" || language === "Pascal" ? "eqal" : "asgn";
         break;
       case "+=": // fallthrough
       case "-=":
@@ -314,9 +313,7 @@ export class InputcodeLexeme extends LexemeClass {
   constructor(token: Token, language: Language) {
     super(token.line, token.character, token.content);
     this.value =
-      language === "Pascal"
-        ? token.content.slice(1).toLowerCase()
-        : token.content.slice(1);
+      language === "Pascal" ? token.content.slice(1).toLowerCase() : token.content.slice(1);
   }
 }
 
@@ -329,9 +326,7 @@ export class QuerycodeLexeme extends LexemeClass {
   constructor(token: Token, language: Language) {
     super(token.line, token.character, token.content);
     this.value =
-      language === "Pascal"
-        ? token.content.slice(1).toLowerCase()
-        : token.content.slice(1);
+      language === "Pascal" ? token.content.slice(1).toLowerCase() : token.content.slice(1);
   }
 }
 
@@ -344,8 +339,7 @@ export class IdentifierLexeme extends LexemeClass {
   constructor(token: Token, language: Language) {
     super(token.line, token.character, token.content);
     this.subtype = token.type === "turtle" ? "turtle" : "identifier";
-    this.value =
-      language === "Pascal" ? token.content.toLowerCase() : token.content;
+    this.value = language === "Pascal" ? token.content.toLowerCase() : token.content;
   }
 }
 
@@ -426,16 +420,4 @@ export type Operator =
   | "smeq";
 
 /** delimiters */
-type Delimiter =
-  | "("
-  | ")"
-  | "{"
-  | "}"
-  | "["
-  | "]"
-  | ","
-  | ":"
-  | ";"
-  | "."
-  | ".."
-  | "->";
+type Delimiter = "(" | ")" | "{" | "}" | "[" | "]" | "," | ":" | ";" | "." | ".." | "->";

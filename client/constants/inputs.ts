@@ -1,10 +1,11 @@
 export type Input = ReturnType<typeof input>;
 
-const input = (name: string, value: number) => ({
-  __: "Input",
-  name,
-  value,
-}) as const;
+const input = (name: string, value: number) =>
+  ({
+    __: "Input",
+    name,
+    value,
+  } as const);
 
 export default [
   input("mousekey", -11),

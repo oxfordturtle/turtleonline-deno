@@ -25,10 +25,7 @@ import {
 import { CompilerError } from "../tools/error.ts";
 
 /** generates an array of lexemes from code string or tokens */
-export default function lexify(
-  code: string | Token[],
-  language: Language
-): Lexeme[] {
+export default function lexify(code: string | Token[], language: Language): Lexeme[] {
   // get the tokens (if first argument was code string)
   const tokens = typeof code === "string" ? tokenize(code, language) : code;
 
@@ -44,11 +41,7 @@ export default function lexify(
 
       case "newline":
         // line breaks are significant in BASIC, Python, and TypeScript
-        if (
-          language === "BASIC" ||
-          language === "Python" ||
-          language === "TypeScript"
-        ) {
+        if (language === "BASIC" || language === "Python" || language === "TypeScript") {
           // push the lexeme, unless this is a blank line at the start of the
           // program or there's a blank line or a comment previously
           if (lexemes[lexemes.length - 1]) {
@@ -77,15 +70,11 @@ export default function lexify(
           } else {
             while (indent < indents[indents.length - 1]) {
               indents.pop();
-              lexemes.push(
-                new DedentLexeme(tokens[index + 1] || tokens[index])
-              );
+              lexemes.push(new DedentLexeme(tokens[index + 1] || tokens[index]));
             }
             if (indent !== indents[indents.length - 1]) {
               throw new CompilerError(
-                `Inconsistent indentation at line ${
-                  (tokens[index + 1] || tokens[index]).line
-                }.`
+                `Inconsistent indentation at line ${(tokens[index + 1] || tokens[index]).line}.`
               );
             }
           }
@@ -120,10 +109,7 @@ export default function lexify(
       case "string": {
         const stringLexeme = new StringLexeme(tokens[index], language);
         const isCharacter = stringLexeme.value.length === 1;
-        if (
-          isCharacter &&
-          (language === "C" || language === "Java" || language === "Pascal")
-        ) {
+        if (isCharacter && (language === "C" || language === "Java" || language === "Pascal")) {
           lexemes.push(new CharacterLexeme(stringLexeme));
         } else {
           lexemes.push(stringLexeme);
@@ -178,10 +164,7 @@ export default function lexify(
         throw new CompilerError("Ill-formed integer literal.", tokens[index]);
 
       case "real":
-        throw new CompilerError(
-          "The Turtle System does not support real numbers.",
-          tokens[index]
-        );
+        throw new CompilerError("The Turtle System does not support real numbers.", tokens[index]);
 
       case "bad-inputcode":
         throw new CompilerError("Unrecognised input code.", tokens[index]);
@@ -190,10 +173,7 @@ export default function lexify(
         throw new CompilerError("Unrecognised input query.", tokens[index]);
 
       case "illegal":
-        throw new CompilerError(
-          "Illegal character in this context.",
-          tokens[index]
-        );
+        throw new CompilerError("Illegal character in this context.", tokens[index]);
     }
 
     index += 1;

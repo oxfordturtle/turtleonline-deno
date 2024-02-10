@@ -47,10 +47,7 @@ let trueValue = 1;
 let pcodeHalt = -1;
 
 /** sets the canvas and context */
-export function setCanvasAndContext(
-  can: HTMLCanvasElement,
-  con: CanvasRenderingContext2D
-): void {
+export function setCanvasAndContext(can: HTMLCanvasElement, con: CanvasRenderingContext2D): void {
   canvas = can;
   context = con;
 }
@@ -211,10 +208,7 @@ function execute(): void {
   let g: number;
   let b: number;
   try {
-    while (
-      drawCount < options.drawCountMax &&
-      codeCount <= options.codeCountMax
-    ) {
+    while (drawCount < options.drawCountMax && codeCount <= options.codeCountMax) {
       switch (pcode[line][code]) {
         // basic stack operations
         case PCode.null:
@@ -576,12 +570,7 @@ function execute(): void {
           n3 = memory.stack.pop();
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
-          if (
-            n1 !== undefined &&
-            n2 !== undefined &&
-            n3 !== undefined &&
-            n4 !== undefined
-          ) {
+          if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
             memory.stack.push(Math.round(Math.pow(n1 / n2, 1 / n3) * n4));
           } else {
             throw new MachineError("Stack operation called on empty stack.");
@@ -593,12 +582,7 @@ function execute(): void {
           n3 = memory.stack.pop();
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
-          if (
-            n1 !== undefined &&
-            n2 !== undefined &&
-            n3 !== undefined &&
-            n4 !== undefined
-          ) {
+          if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
             memory.stack.push(Math.round(Math.pow(n1 / n2, n3) * n4));
           } else {
             throw new MachineError("Stack operation called on empty stack.");
@@ -943,9 +927,7 @@ function execute(): void {
                 // swap case
                 s1 = s1
                   .split("")
-                  .map((x) =>
-                    x === x.toLowerCase() ? x.toUpperCase() : x.toLowerCase()
-                  )
+                  .map((x) => (x === x.toLowerCase() ? x.toUpperCase() : x.toLowerCase()))
                   .join("");
                 memory.makeHeapString(s1);
                 break;
@@ -1015,12 +997,7 @@ function execute(): void {
           n3 = memory.stack.pop();
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
-          if (
-            n1 !== undefined &&
-            n2 !== undefined &&
-            n3 !== undefined &&
-            n4 !== undefined
-          ) {
+          if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
             s3 = memory.getHeapString(n3);
             s2 = memory.getHeapString(n2);
             s1 = memory.getHeapString(n1);
@@ -1135,9 +1112,7 @@ function execute(): void {
           if (n1 !== undefined && n2 !== undefined) {
             if (n1 < 0 || n1 > memory.main[n2]) {
               // TODO: make range check a runtime option
-              throw new MachineError(
-                `Array index out of range (${line}, ${code}).`
-              );
+              throw new MachineError(`Array index out of range (${line}, ${code}).`);
             }
           }
           break;
@@ -1242,9 +1217,7 @@ function execute(): void {
           if (n1 !== undefined && n2 !== undefined) {
             s1 = memory.getHeapString(n1);
             s2 = n2 === 1 ? "$" : n2 === 2 ? "#" : "0x";
-            n3 = s1.startsWith(s2)
-              ? parseInt(s1.slice(1), 16)
-              : parseInt(s1, 10);
+            n3 = s1.startsWith(s2) ? parseInt(s1.slice(1), 16) : parseInt(s1, 10);
             if (isNaN(n3)) {
               throw new MachineError(`Cannot parse ${s1} to integer.`);
             } else {
@@ -1262,9 +1235,7 @@ function execute(): void {
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
             s1 = memory.getHeapString(n1);
             s2 = n3 === 1 ? "$" : n3 === 2 ? "#" : "0x";
-            n4 = s1.startsWith("#")
-              ? parseInt(s1.slice(1), 16)
-              : parseInt(s1, 10);
+            n4 = s1.startsWith("#") ? parseInt(s1.slice(1), 16) : parseInt(s1, 10);
             memory.stack.push(isNaN(n4) ? n2 : n4);
           } else {
             throw new MachineError("Stack operation called on empty stack.");
@@ -1341,23 +1312,14 @@ function execute(): void {
           n3 = memory.stack.pop();
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
-          if (
-            n1 !== undefined &&
-            n2 !== undefined &&
-            n3 !== undefined &&
-            n4 !== undefined
-          ) {
+          if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
             virtualCanvas.sizey = n4;
             virtualCanvas.sizex = n3;
             virtualCanvas.starty = n2;
             virtualCanvas.startx = n1;
             send("canvas", virtualCanvas);
-            memory.setTurtX(
-              Math.round(virtualCanvas.startx + virtualCanvas.sizex / 2)
-            );
-            memory.setTurtY(
-              Math.round(virtualCanvas.starty + virtualCanvas.sizey / 2)
-            );
+            memory.setTurtX(Math.round(virtualCanvas.startx + virtualCanvas.sizex / 2));
+            memory.setTurtY(Math.round(virtualCanvas.starty + virtualCanvas.sizey / 2));
             memory.setTurtD(0);
             send("turtxChanged", memory.getTurtX());
             send("turtyChanged", memory.getTurtY());
@@ -1675,9 +1637,7 @@ function execute(): void {
               }
               n3 /= 2;
             }
-            n3 =
-              Math.round((n3 * memory.getTurtA()) / Math.PI / 2) %
-              memory.getTurtA();
+            n3 = Math.round((n3 * memory.getTurtA()) / Math.PI / 2) % memory.getTurtA();
             memory.setTurtD(n3);
             send("turtdChanged", n1);
           } else {
@@ -1723,12 +1683,7 @@ function execute(): void {
           n3 = memory.stack.pop();
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
-          if (
-            n1 !== undefined &&
-            n2 !== undefined &&
-            n3 !== undefined &&
-            n4 !== undefined
-          ) {
+          if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
             send("flood", {
               x: turtx(virtualCanvas, n1),
               y: turty(virtualCanvas, n2),
@@ -1748,15 +1703,8 @@ function execute(): void {
           n3 = memory.stack.pop();
           n2 = memory.stack.pop();
           if (n2 !== undefined && n3 !== undefined) {
-            image = context.getImageData(
-              turtx(virtualCanvas, n2),
-              turty(virtualCanvas, n3),
-              1,
-              1
-            );
-            memory.stack.push(
-              image.data[0] * 65536 + image.data[1] * 256 + image.data[2]
-            );
+            image = context.getImageData(turtx(virtualCanvas, n2), turty(virtualCanvas, n3), 1, 1);
+            memory.stack.push(image.data[0] * 65536 + image.data[1] * 256 + image.data[2]);
           } else {
             throw new MachineError("Stack operation called on empty stack.");
           }
@@ -1800,19 +1748,12 @@ function execute(): void {
           n3 = memory.stack.pop(); // first proportion
           n2 = memory.stack.pop(); // second colour
           n1 = memory.stack.pop(); // first colour
-          if (
-            n1 !== undefined &&
-            n2 !== undefined &&
-            n3 !== undefined &&
-            n4 !== undefined
-          ) {
+          if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
             r = Math.round(
-              (Math.floor(n1 / 0x10000) * n3 + Math.floor(n2 / 0x10000) * n4) /
-                (n3 + n4)
+              (Math.floor(n1 / 0x10000) * n3 + Math.floor(n2 / 0x10000) * n4) / (n3 + n4)
             );
             g = Math.round(
-              (Math.floor((n1 & 0xff00) / 0x100) * n3 +
-                Math.floor((n2 & 0xff00) / 0x100) * n4) /
+              (Math.floor((n1 & 0xff00) / 0x100) * n3 + Math.floor((n2 & 0xff00) / 0x100) * n4) /
                 (n3 + n4)
             );
             b = Math.round((n1 & (0xff * n3 + n2) & (0xff * n4)) / (n3 + n4));
@@ -1841,9 +1782,7 @@ function execute(): void {
             n1 = n3 > n2 ? 0 : n2 - n3;
             send("poly", {
               turtle: turtle(virtualCanvas),
-              coords: memory.coords
-                .slice(n1, n2)
-                .map(vcoords.bind(null, virtualCanvas)),
+              coords: memory.coords.slice(n1, n2).map(vcoords.bind(null, virtualCanvas)),
               fill: false,
             });
             if (update) {
@@ -1861,9 +1800,7 @@ function execute(): void {
             n1 = n3 > n2 ? 0 : n2 - n3;
             send("poly", {
               turtle: turtle(virtualCanvas),
-              coords: memory.coords
-                .slice(n1, n2)
-                .map(vcoords.bind(null, virtualCanvas)),
+              coords: memory.coords.slice(n1, n2).map(vcoords.bind(null, virtualCanvas)),
               fill: true,
             });
             if (update) {
@@ -1949,12 +1886,7 @@ function execute(): void {
           n3 = memory.stack.pop();
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
-          if (
-            n1 !== undefined &&
-            n2 !== undefined &&
-            n3 !== undefined &&
-            n4 !== undefined
-          ) {
+          if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
             bool1 = n4 !== 0;
             n2 += memory.getTurtY();
             n1 += memory.getTurtX();
@@ -2496,9 +2428,7 @@ function execute(): void {
         default:
           console.log(line);
           console.log(code);
-          throw new MachineError(
-            `Unknown PCode 0x${pcode[line][code].toString(16)}.`
-          );
+          throw new MachineError(`Unknown PCode 0x${pcode[line][code].toString(16)}.`);
       }
       codeCount += 1;
       code += 1;
@@ -2554,11 +2484,7 @@ function storeKey(event: KeyboardEvent): void {
         memory.keys[0] = memory.main[buffer + 2] - memory.main[buffer + 1];
       } else {
         memory.keys[0] =
-          memory.main[buffer + 2] -
-          memory.main[buffer + 1] +
-          memory.main[buffer] -
-          buffer -
-          2;
+          memory.main[buffer + 2] - memory.main[buffer + 1] + memory.main[buffer] - buffer - 2;
       }
     }
   }
@@ -2618,11 +2544,7 @@ function putInBuffer(event: KeyboardEvent): void {
         memory.keys[0] = memory.main[buffer + 2] - memory.main[buffer + 1];
       } else {
         memory.keys[0] =
-          memory.main[buffer + 2] -
-          memory.main[buffer + 1] +
-          memory.main[buffer] -
-          buffer -
-          2;
+          memory.main[buffer + 2] - memory.main[buffer + 1] + memory.main[buffer] - buffer - 2;
       }
       // maybe show in the console
       if (keyecho) {
@@ -2636,30 +2558,14 @@ function putInBuffer(event: KeyboardEvent): void {
 function storeMouseXY(event: MouseEvent | TouchEvent): void {
   switch (event.type) {
     case "mousemove":
-      memory.query[7] = virtx(
-        canvas,
-        virtualCanvas,
-        (event as MouseEvent).clientX
-      );
-      memory.query[8] = virty(
-        canvas,
-        virtualCanvas,
-        (event as MouseEvent).clientY
-      );
+      memory.query[7] = virtx(canvas, virtualCanvas, (event as MouseEvent).clientX);
+      memory.query[8] = virty(canvas, virtualCanvas, (event as MouseEvent).clientY);
       break;
 
     case "touchmove": // fallthrough
     case "touchstart":
-      memory.query[7] = virtx(
-        canvas,
-        virtualCanvas,
-        (event as TouchEvent).touches[0].clientX
-      );
-      memory.query[8] = virty(
-        canvas,
-        virtualCanvas,
-        (event as TouchEvent).touches[0].clientY
-      );
+      memory.query[7] = virtx(canvas, virtualCanvas, (event as TouchEvent).touches[0].clientX);
+      memory.query[8] = virty(canvas, virtualCanvas, (event as TouchEvent).touches[0].clientY);
       break;
   }
 }
@@ -2683,16 +2589,8 @@ function storeClickXY(event: MouseEvent | TouchEvent): void {
   memory.query[11] = now; // save to check for next double-click
   switch (event.type) {
     case "mousedown":
-      memory.query[5] = virtx(
-        canvas,
-        virtualCanvas,
-        (event as MouseEvent).clientX
-      );
-      memory.query[6] = virty(
-        canvas,
-        virtualCanvas,
-        (event as MouseEvent).clientY
-      );
+      memory.query[5] = virtx(canvas, virtualCanvas, (event as MouseEvent).clientX);
+      memory.query[6] = virty(canvas, virtualCanvas, (event as MouseEvent).clientY);
       switch ((event as MouseEvent).button) {
         case 0:
           memory.query[4] += 1;
@@ -2721,16 +2619,8 @@ function storeClickXY(event: MouseEvent | TouchEvent): void {
       break;
 
     case "touchstart":
-      memory.query[5] = virtx(
-        canvas,
-        virtualCanvas,
-        (event as TouchEvent).touches[0].clientX
-      );
-      memory.query[6] = virty(
-        canvas,
-        virtualCanvas,
-        (event as TouchEvent).touches[0].clientY
-      );
+      memory.query[5] = virtx(canvas, virtualCanvas, (event as TouchEvent).touches[0].clientX);
+      memory.query[6] = virty(canvas, virtualCanvas, (event as TouchEvent).touches[0].clientY);
       memory.query[4] += 1;
       memory.query[1] = memory.query[4];
       memory.query[2] = -1;
@@ -2790,23 +2680,17 @@ function detect(event: KeyboardEvent | MouseEvent): void {
   )
     rightThingPressed = true;
   // specific mouse button cases
-  if (detectInputcode === -3 && (event as MouseEvent).button == 1)
-    rightThingPressed = true;
-  if (detectInputcode === -2 && (event as MouseEvent).button == 2)
-    rightThingPressed = true;
-  if (detectInputcode === -1 && (event as MouseEvent).button == 0)
-    rightThingPressed = true;
+  if (detectInputcode === -3 && (event as MouseEvent).button == 1) rightThingPressed = true;
+  if (detectInputcode === -2 && (event as MouseEvent).button == 2) rightThingPressed = true;
+  if (detectInputcode === -1 && (event as MouseEvent).button == 0) rightThingPressed = true;
   // keybuffer
   if (detectInputcode === 0 && (event as KeyboardEvent).keyCode !== undefined)
     rightThingPressed = true;
   // otherwise return if the key pressed matches the detectInputcode
-  if ((event as KeyboardEvent).keyCode === detectInputcode)
-    rightThingPressed = true;
+  if ((event as KeyboardEvent).keyCode === detectInputcode) rightThingPressed = true;
   if (rightThingPressed) {
     const returnValue =
-      detectInputcode < 0
-        ? memory.query[-detectInputcode]
-        : memory.keys[detectInputcode];
+      detectInputcode < 0 ? memory.query[-detectInputcode] : memory.keys[detectInputcode];
     memory.stack.pop();
     // the event listener that negates the input (onkeyup or onmouseup) is called first, so by the
     // time this listener is called it will be negative - but for consistency with the downloadable
@@ -2826,21 +2710,14 @@ function readline(event: KeyboardEvent): void {
     let string = "";
     let readNextAddress = memory.main[bufferAddress + 1];
     const readLastAddress = memory.main[bufferAddress + 2];
-    while (
-      readNextAddress !== readLastAddress &&
-      memory.main[readNextAddress] !== 13
-    ) {
+    while (readNextAddress !== readLastAddress && memory.main[readNextAddress] !== 13) {
       string += String.fromCharCode(memory.main[readNextAddress]);
       readNextAddress =
-        readNextAddress < bufferEndAddress
-          ? readNextAddress + 1
-          : bufferEndAddress + 3; // loop back to the start
+        readNextAddress < bufferEndAddress ? readNextAddress + 1 : bufferEndAddress + 3; // loop back to the start
     }
     // move past the ENTER
     memory.main[bufferAddress + 1] =
-      readNextAddress < bufferEndAddress
-        ? readNextAddress + 1
-        : bufferEndAddress + 3; // loop back to the start
+      readNextAddress < bufferEndAddress ? readNextAddress + 1 : bufferEndAddress + 3; // loop back to the start
     // put the string on the heap
     memory.makeHeapString(string);
     // clear the timeout and resume ordinary pcode execution

@@ -63,9 +63,7 @@ export function fill(
 }
 
 /** creates a document fragment */
-export function fragment(
-  content: (HTMLElement | DocumentFragment)[]
-): DocumentFragment {
+export function fragment(content: (HTMLElement | DocumentFragment)[]): DocumentFragment {
   const fragment = document.createDocumentFragment();
   fill(fragment, content);
   return fragment;

@@ -15,15 +15,8 @@ export default function pascal(lexemes: Lexemes): Program {
 
   // expecting "PROGRAM"
   const programLexeme = lexemes.get();
-  if (
-    !programLexeme ||
-    programLexeme.type !== "keyword" ||
-    programLexeme.subtype !== "program"
-  ) {
-    throw new CompilerError(
-      'Program must begin with keyword "PROGRAM".',
-      lexemes.get()
-    );
+  if (!programLexeme || programLexeme.type !== "keyword" || programLexeme.subtype !== "program") {
+    throw new CompilerError('Program must begin with keyword "PROGRAM".', lexemes.get());
   }
   lexemes.next();
 
@@ -91,10 +84,7 @@ export default function pascal(lexemes: Lexemes): Program {
           case "begin":
             begun = true;
             lexemes.next();
-            while (
-              lexemes.get() &&
-              lexemes.get()?.content?.toLowerCase() !== "end"
-            ) {
+            while (lexemes.get() && lexemes.get()?.content?.toLowerCase() !== "end") {
               const lexeme = lexemes.get() as Lexeme;
               program.statements.push(statement(lexeme, lexemes, program));
             }
@@ -103,25 +93,16 @@ export default function pascal(lexemes: Lexemes): Program {
           // any other keyword is an error
           default:
             if (!begun) {
-              throw new CompilerError(
-                'Keyword "begin" missing for main program.',
-                lexemes.get()
-              );
+              throw new CompilerError('Keyword "begin" missing for main program.', lexemes.get());
             }
-            throw new CompilerError(
-              "{lex} makes no sense here.",
-              lexemes.get()
-            );
+            throw new CompilerError("{lex} makes no sense here.", lexemes.get());
         }
         break;
 
       // anything else is an error
       default:
         if (!begun) {
-          throw new CompilerError(
-            'Keyword "begin" missing for main program.',
-            lexemes.get()
-          );
+          throw new CompilerError('Keyword "begin" missing for main program.', lexemes.get());
         }
         throw new CompilerError("{lex} makes no sense here.", lexemes.get());
     }
@@ -129,29 +110,17 @@ export default function pascal(lexemes: Lexemes): Program {
 
   // final error checking
   if (!begun) {
-    throw new CompilerError(
-      'Keyword "begin" missing for main program.',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('Keyword "begin" missing for main program.', lexemes.get(-1));
   }
   if (!lexemes.get()) {
-    throw new CompilerError(
-      'Keyword "end" missing after main program.',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('Keyword "end" missing after main program.', lexemes.get(-1));
   }
   lexemes.next();
   if (!lexemes.get() || lexemes.get()?.content !== ".") {
-    throw new CompilerError(
-      'Full stop missing after program "end".',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('Full stop missing after program "end".', lexemes.get(-1));
   }
   if (lexemes.get(1)) {
-    throw new CompilerError(
-      'No text can appear after program "end".',
-      lexemes.get(1)
-    );
+    throw new CompilerError('No text can appear after program "end".', lexemes.get(1));
   }
 
   // return the program

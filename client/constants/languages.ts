@@ -1,13 +1,6 @@
 export type Language = (typeof languages)[number];
 
-const languages = [
-  "BASIC",
-  "C",
-  "Java",
-  "Pascal",
-  "Python",
-  "TypeScript",
-] as const;
+const languages = ["BASIC", "C", "Java", "Pascal", "Python", "TypeScript"] as const;
 
 export default languages;
 

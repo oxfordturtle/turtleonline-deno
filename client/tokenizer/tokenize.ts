@@ -40,20 +40,12 @@ export default (code: string, language: Language): Token[] => {
   return tokens;
 };
 
-const spaces = (
-  code: string,
-  line: number,
-  character: number
-): Token | null => {
+const spaces = (code: string, line: number, character: number): Token | null => {
   const test = code.match(/^( +)/);
   return test ? token("spaces", test[0], line, character) : null;
 };
 
-const newline = (
-  code: string,
-  line: number,
-  character: number
-): Token | null => {
+const newline = (code: string, line: number, character: number): Token | null => {
   const test = code[0] === "\n";
   return test ? token("newline", "\n", line, character) : null;
 };
@@ -67,47 +59,31 @@ const comment = (
   switch (language) {
     case "BASIC": {
       const startBASIC = code.match(/^REM/);
-      return startBASIC
-        ? token("comment", code.split("\n")[0], line, character)
-        : null;
+      return startBASIC ? token("comment", code.split("\n")[0], line, character) : null;
     }
 
     case "C": // fallthrough
     case "Java": // fallthrough
     case "TypeScript": {
       const startCorTS = code.match(/^\/\//);
-      return startCorTS
-        ? token("comment", code.split("\n")[0], line, character)
-        : null;
+      return startCorTS ? token("comment", code.split("\n")[0], line, character) : null;
     }
 
     case "Pascal": {
       const start = code[0] === "{";
       const end = code.match(/}/);
       if (start && end) {
-        return token(
-          "comment",
-          code.slice(0, (end.index as number) + 1),
-          line,
-          character
-        );
+        return token("comment", code.slice(0, (end.index as number) + 1), line, character);
       }
       if (start) {
-        return token(
-          "unterminated-comment",
-          code.split("\n")[0],
-          line,
-          character
-        );
+        return token("unterminated-comment", code.split("\n")[0], line, character);
       }
       return null;
     }
 
     case "Python": {
       const startPython = code.match(/^#/);
-      return startPython
-        ? token("comment", code.split("\n")[0], line, character)
-        : null;
+      return startPython ? token("comment", code.split("\n")[0], line, character) : null;
     }
   }
 };
@@ -125,22 +101,19 @@ const operatorOrDelimiter = (
     case "TypeScript":
       // the order doesn't matter
       return (
-        operator(code, line, character, language) ||
-        delimiter(code, line, character, language)
+        operator(code, line, character, language) || delimiter(code, line, character, language)
       );
 
     case "Pascal":
       // check for operator ':=' before delimiter ':'
       return (
-        operator(code, line, character, language) ||
-        delimiter(code, line, character, language)
+        operator(code, line, character, language) || delimiter(code, line, character, language)
       );
 
     case "Python":
       // check for delimiter '->' before operator '-'
       return (
-        delimiter(code, line, character, language) ||
-        operator(code, line, character, language)
+        delimiter(code, line, character, language) || operator(code, line, character, language)
       );
   }
 };
@@ -152,12 +125,10 @@ const operator = (
   language: Language
 ): Token | null => {
   const tests = {
-    BASIC:
-      /^(\+|-|\*|\/|DIV\b|MOD\b|=|<>|<=|>=|<|>|ANDL\b|ORL\b|NOT\b|AND\b|OR\b|EOR\b)/,
+    BASIC: /^(\+|-|\*|\/|DIV\b|MOD\b|=|<>|<=|>=|<|>|ANDL\b|ORL\b|NOT\b|AND\b|OR\b|EOR\b)/,
     C: /^(\+|-|\*|\/|div\b|%|==|!=|<=|>=|<|>|=|!|&&|\|\||~|&|\||\^)/,
     Java: /^(\+|-|\*|\/|div\b|%|==|!=|<=|>=|<|>|=|!|&&|\|\||~|&|\||\^)/,
-    Pascal:
-      /^(\+|-|\*|\/|div\b|mod\b|=|<>|<=|>=|<|>|:=|andl\b|orl\b|not\b|and\b|or\b|xor\b)/i,
+    Pascal: /^(\+|-|\*|\/|div\b|mod\b|=|<>|<=|>=|<|>|:=|andl\b|orl\b|not\b|and\b|or\b|xor\b)/i,
     Python: /^(\+|-|\*|\/\/|\/|%|==|!=|<=|>=|<|>|=|not\b|and\b|or\b|~|&|\||\^)/,
     TypeScript: /^(\+|-|\*|\/|div\b|%|==|!=|<=|>=|<|>|=|!|&&|\|\||~|&|\||\^)/,
   };
@@ -200,12 +171,7 @@ const string = (
         let end = false;
         while (code[length] && !end) {
           if (code[length] === "\n") {
-            return token(
-              "unterminated-string",
-              code.slice(0, length),
-              line,
-              character
-            );
+            return token("unterminated-string", code.slice(0, length), line, character);
           }
           if (code[length] !== quote) {
             length += 1;
@@ -219,12 +185,7 @@ const string = (
           }
         }
         if (!end) {
-          return token(
-            "unterminated-string",
-            code.slice(0, length),
-            line,
-            character
-          );
+          return token("unterminated-string", code.slice(0, length), line, character);
         }
         return token("string", code.slice(0, length), line, character);
       }
@@ -239,36 +200,16 @@ const string = (
       const end1 = code.match(/[^\\](')/);
       const end2 = code.match(/[^\\](")/);
       if (start1 && end1) {
-        return token(
-          "string",
-          code.slice(0, (end1.index as number) + 2),
-          line,
-          character
-        );
+        return token("string", code.slice(0, (end1.index as number) + 2), line, character);
       }
       if (start1) {
-        return token(
-          "unterminated-string",
-          code.split("\n")[0],
-          line,
-          character
-        );
+        return token("unterminated-string", code.split("\n")[0], line, character);
       }
       if (start2 && end2) {
-        return token(
-          "string",
-          code.slice(0, (end2.index as number) + 2),
-          line,
-          character
-        );
+        return token("string", code.slice(0, (end2.index as number) + 2), line, character);
       }
       if (start2) {
-        return token(
-          "unterminated-string",
-          code.split("\n")[0],
-          line,
-          character
-        );
+        return token("unterminated-string", code.split("\n")[0], line, character);
       }
       return null;
     }
@@ -328,12 +269,7 @@ const binary = (
   }
 };
 
-const octal = (
-  code: string,
-  line: number,
-  character: number,
-  language: Language
-): Token | null => {
+const octal = (code: string, line: number, character: number, language: Language): Token | null => {
   // TODO: errors for octal numbers with digits > 7
   switch (language) {
     case "BASIC":
@@ -399,11 +335,7 @@ const hexadecimal = (
   return null;
 };
 
-const decimal = (
-  code: string,
-  line: number,
-  character: number
-): Token | null => {
+const decimal = (code: string, line: number, character: number): Token | null => {
   const good = code.match(/^(\d+)\b/);
   const bad = code.match(/^(\d+\.\d+)/);
   if (bad) {
@@ -424,19 +356,12 @@ const keyword = (
 ): Token | null => {
   const names = keywords[language].map((keyword) => keyword.name).join("|");
   const regex =
-    language === "Pascal"
-      ? new RegExp(`^(${names})\\b`, "i")
-      : new RegExp(`^(${names})\\b`);
+    language === "Pascal" ? new RegExp(`^(${names})\\b`, "i") : new RegExp(`^(${names})\\b`);
   const test = code.match(regex);
   return test ? token("keyword", test[0], line, character) : null;
 };
 
-const type = (
-  code: string,
-  line: number,
-  character: number,
-  language: Language
-): Token | null => {
+const type = (code: string, line: number, character: number, language: Language): Token | null => {
   let test: RegExpMatchArray | null = null;
   switch (language) {
     case "C":
@@ -463,9 +388,7 @@ const inputcode = (
 ): Token | null => {
   const names = inputs.map((x) => `\\\\${x.name}`).join("|");
   const regex =
-    language === "Pascal"
-      ? new RegExp(`^(${names})\\b`, "i")
-      : new RegExp(`^(${names})\\b`);
+    language === "Pascal" ? new RegExp(`^(${names})\\b`, "i") : new RegExp(`^(${names})\\b`);
   const good = code.match(regex);
   const bad = code.match(/^(\\[#a-zA-Z0-9]*)\b/);
   if (good) {
@@ -485,9 +408,7 @@ const querycode = (
 ): Token | null => {
   const names = inputs.map((x) => `\\?${x.name}`).join("|");
   const regex =
-    language === "Pascal"
-      ? new RegExp(`^(${names})\\b`, "i")
-      : new RegExp(`^(${names})\\b`);
+    language === "Pascal" ? new RegExp(`^(${names})\\b`, "i") : new RegExp(`^(${names})\\b`);
   const good = code.match(regex);
   const bad = code.match(/^(\?[#a-zA-Z0-9]*)\b/);
   if (good) {

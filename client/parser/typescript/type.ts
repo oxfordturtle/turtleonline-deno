@@ -13,16 +13,10 @@ export default function type(
 ): [Type | null, number, [number, number][]] {
   // expecting ":"
   if (!lexemes.get()) {
-    throw new CompilerError(
-      'Expected type specification (": <type>").',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('Expected type specification (": <type>").', lexemes.get(-1));
   }
   if (lexemes.get()?.content !== ":") {
-    throw new CompilerError(
-      'Expected type specification (": <type>").',
-      lexemes.get()
-    );
+    throw new CompilerError('Expected type specification (": <type>").', lexemes.get());
   }
   lexemes.next();
 
@@ -51,19 +45,13 @@ export default function type(
       // expecting positive integer literal
       const integer = lexemes.get();
       if (!integer) {
-        throw new CompilerError(
-          "Expected string size specification.",
-          lexemes.get(-1)
-        );
+        throw new CompilerError("Expected string size specification.", lexemes.get(-1));
       }
       if (integer.type !== "literal" || integer.subtype !== "integer") {
         throw new CompilerError("String size must be an integer.", integer);
       }
       if (integer.value <= 0) {
-        throw new CompilerError(
-          "String size must be greater than zero.",
-          lexemes.get()
-        );
+        throw new CompilerError("String size must be greater than zero.", lexemes.get());
       }
       stringLength = integer.value;
       lexemes.next();

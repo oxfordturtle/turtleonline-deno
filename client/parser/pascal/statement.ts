@@ -31,17 +31,10 @@ import { CompilerError } from "../../tools/error.ts";
 import { token } from "../../tokenizer/token.ts";
 
 /** parses semicolons */
-export function semicolon(
-  lexemes: Lexemes,
-  compulsory = false,
-  context = "statement"
-): void {
+export function semicolon(lexemes: Lexemes, compulsory = false, context = "statement"): void {
   // check for semicolon
   if (compulsory && (!lexemes.get() || lexemes.get()?.content !== ";")) {
-    throw new CompilerError(
-      `Semicolon needed after ${context}.`,
-      lexemes.get(-1)
-    );
+    throw new CompilerError(`Semicolon needed after ${context}.`, lexemes.get(-1));
   }
 
   // move past any semicolons
@@ -56,20 +49,9 @@ export function eosCheck(lexemes: Lexemes): void {
   const noSemiBefore = ["else", "end", ";", "until"];
   if (lexemes.get()) {
     if (lexemes.get()?.content !== ";") {
-      if (
-        noSemiAfter.indexOf(
-          lexemes.get(-1)?.content?.toLowerCase() as string
-        ) === -1
-      ) {
-        if (
-          noSemiBefore.indexOf(
-            lexemes.get()?.content?.toLowerCase() as string
-          ) === -1
-        ) {
-          throw new CompilerError(
-            "Semicolon needed after command.",
-            lexemes.get()
-          );
+      if (noSemiAfter.indexOf(lexemes.get(-1)?.content?.toLowerCase() as string) === -1) {
+        if (noSemiBefore.indexOf(lexemes.get()?.content?.toLowerCase() as string) === -1) {
+          throw new CompilerError("Semicolon needed after command.", lexemes.get());
         }
       }
     } else {
@@ -194,19 +176,13 @@ function variableAssignment(
           lexemes.next();
           // check for trailing comma
           if (lexemes.get()?.content === "]") {
-            throw new CompilerError(
-              "Trailing comma at the end of array indexes.",
-              lexemes.get(-1)
-            );
+            throw new CompilerError("Trailing comma at the end of array indexes.", lexemes.get(-1));
           }
         }
       }
       // check we came out of the loop above for the right reason
       if (!lexemes.get()) {
-        throw new CompilerError(
-          'Closing bracket "]" needed after array indexes.',
-          lexemes.get(-1)
-        );
+        throw new CompilerError('Closing bracket "]" needed after array indexes.', lexemes.get(-1));
       }
       // move past the closing bracket
       lexemes.next();
@@ -225,10 +201,7 @@ function variableAssignment(
       }
       lexemes.next();
     } else {
-      throw new CompilerError(
-        "{lex} is not a string or array variable.",
-        variableLexeme
-      );
+      throw new CompilerError("{lex} is not a string or array variable.", variableLexeme);
     }
   }
 
@@ -239,10 +212,7 @@ function variableAssignment(
         ? variable.arrayDimensions.length + 1 // one more for characters within strings
         : variable.arrayDimensions.length;
     if (indexes.length > allowedIndexes) {
-      throw new CompilerError(
-        "Too many indexes for array variable {lex}.",
-        variableLexeme
-      );
+      throw new CompilerError("Too many indexes for array variable {lex}.", variableLexeme);
     }
   }
 
@@ -268,9 +238,7 @@ function variableAssignment(
     );
   }
   const typeToCheck =
-    variable.type === "string" && indexes.length > 0
-      ? "character"
-      : variable.type;
+    variable.type === "string" && indexes.length > 0 ? "character" : variable.type;
   let value = expression(lexemes, routine);
   value = typeCheck(routine.language, value, typeToCheck);
 
@@ -286,10 +254,7 @@ function ifStatement(
 ): IfStatement {
   // expecting a boolean expression
   if (!lexemes.get()) {
-    throw new CompilerError(
-      '"IF" must be followed by a boolean expression.',
-      ifLexeme
-    );
+    throw new CompilerError('"IF" must be followed by a boolean expression.', ifLexeme);
   }
   let condition = expression(lexemes, routine);
   condition = typeCheck(routine.language, condition, "boolean");
@@ -299,20 +264,14 @@ function ifStatement(
 
   // expecting "then"
   if (!lexemes.get() || lexemes.get()?.content?.toLowerCase() !== "then") {
-    throw new CompilerError(
-      '"IF ..." must be followed by "THEN".',
-      condition.lexeme
-    );
+    throw new CompilerError('"IF ..." must be followed by "THEN".', condition.lexeme);
   }
   lexemes.next();
 
   // expecting a command or a block of commands
   const firstSubLexeme = lexemes.get();
   if (!firstSubLexeme) {
-    throw new CompilerError(
-      'No commands found after "IF ... THEN".',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('No commands found after "IF ... THEN".', lexemes.get(-1));
   }
   if (firstSubLexeme.content?.toLowerCase() === "begin") {
     lexemes.next();
@@ -327,18 +286,13 @@ function ifStatement(
     lexemes.next();
     const firstSubLexeme = lexemes.get();
     if (!firstSubLexeme) {
-      throw new CompilerError(
-        'No commands found after "ELSE".',
-        lexemes.get(-1)
-      );
+      throw new CompilerError('No commands found after "ELSE".', lexemes.get(-1));
     }
     if (firstSubLexeme.content?.toLowerCase() === "begin") {
       lexemes.next();
       ifStatement.elseStatements.push(...block(lexemes, routine, "begin"));
     } else {
-      ifStatement.elseStatements.push(
-        statement(firstSubLexeme, lexemes, routine)
-      );
+      ifStatement.elseStatements.push(statement(firstSubLexeme, lexemes, routine));
     }
   }
 
@@ -355,51 +309,28 @@ function forStatement(
   // expecting an integer variable
   const variableLexeme = lexemes.get();
   if (!variableLexeme) {
-    throw new CompilerError(
-      '"FOR" must be followed by an integer variable.',
-      forLexeme
-    );
+    throw new CompilerError('"FOR" must be followed by an integer variable.', forLexeme);
   }
   if (variableLexeme.type !== "identifier") {
-    throw new CompilerError(
-      '"FOR" must be followed by an integer variable.',
-      variableLexeme
-    );
+    throw new CompilerError('"FOR" must be followed by an integer variable.', variableLexeme);
   }
   if (variableLexeme.subtype === "turtle") {
-    throw new CompilerError(
-      'Turtle attribute cannot be used as a "FOR" variable.',
-      variableLexeme
-    );
+    throw new CompilerError('Turtle attribute cannot be used as a "FOR" variable.', variableLexeme);
   }
   const variable = find.variable(routine, variableLexeme.value);
   if (!variable) {
-    throw new CompilerError(
-      "Variable {lex} has not been declared.",
-      variableLexeme
-    );
+    throw new CompilerError("Variable {lex} has not been declared.", variableLexeme);
   }
   if (variable.type !== "integer" && variable.type !== "boolint") {
-    throw new CompilerError(
-      "{lex} is not an integer variable.",
-      variableLexeme
-    );
+    throw new CompilerError("{lex} is not an integer variable.", variableLexeme);
   }
   if (variable.isArray) {
-    throw new CompilerError(
-      "FOR variable cannot be an array or array element.",
-      variableLexeme
-    );
+    throw new CompilerError("FOR variable cannot be an array or array element.", variableLexeme);
   }
   lexemes.next();
 
   // expecting variable assignment
-  const initialisation = variableAssignment(
-    variableLexeme,
-    lexemes,
-    routine,
-    variable
-  );
+  const initialisation = variableAssignment(variableLexeme, lexemes, routine, variable);
 
   // expecting "to" or "downto"
   const toLexeme = lexemes.get();
@@ -412,12 +343,7 @@ function forStatement(
   }
   const oneToken = token("decimal", "1", forLexeme.line, -1);
   const assignmentToken = token("operator", "=", forLexeme.line, -1);
-  const operatorToken = token(
-    "operator",
-    toOrDownTo === "to" ? "+" : "-",
-    forLexeme.line,
-    -1
-  );
+  const operatorToken = token("operator", toOrDownTo === "to" ? "+" : "-", forLexeme.line, -1);
   const oneLexeme = new IntegerLexeme(oneToken, 10);
   const assignmentLexeme = new OperatorLexeme(assignmentToken, "Pascal");
   const plusLexeme = new OperatorLexeme(operatorToken, "Pascal");
@@ -437,46 +363,25 @@ function forStatement(
   }
   let finalValue = expression(lexemes, routine);
   finalValue = typeCheck(routine.language, finalValue, "integer");
-  const comparisonToken = token(
-    "operator",
-    toOrDownTo === "to" ? "<=" : ">=",
-    forLexeme.line,
-    -1
-  );
+  const comparisonToken = token("operator", toOrDownTo === "to" ? "<=" : ">=", forLexeme.line, -1);
   const comparisonLexeme = new OperatorLexeme(comparisonToken, "Pascal");
   const comparisonOperator = toOrDownTo === "to" ? "lseq" : "mreq";
-  const condition = new CompoundExpression(
-    comparisonLexeme,
-    left,
-    finalValue,
-    comparisonOperator
-  );
+  const condition = new CompoundExpression(comparisonLexeme, left, finalValue, comparisonOperator);
 
   // now we can create the FOR statement
-  const forStatement = new ForStatement(
-    forLexeme,
-    initialisation,
-    condition,
-    change
-  );
+  const forStatement = new ForStatement(forLexeme, initialisation, condition, change);
 
   // expecting "do"
   const doLexeme = lexemes.get();
   if (!doLexeme) {
-    throw new CompilerError(
-      '"FOR" loop range must be followed by "DO".',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('"FOR" loop range must be followed by "DO".', lexemes.get(-1));
   }
   lexemes.next();
 
   // expecting a command or block of commands
   const firstSubLexeme = lexemes.get();
   if (!firstSubLexeme) {
-    throw new CompilerError(
-      'No commands found after "FOR" loop initialisation.',
-      doLexeme
-    );
+    throw new CompilerError('No commands found after "FOR" loop initialisation.', doLexeme);
   }
   if (firstSubLexeme.content?.toLowerCase() === "begin") {
     lexemes.next();
@@ -500,10 +405,7 @@ function repeatStatement(
 
   // expecting a boolean expression
   if (!lexemes.get()) {
-    throw new CompilerError(
-      '"UNTIL" must be followed by a boolean expression.',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('"UNTIL" must be followed by a boolean expression.', lexemes.get(-1));
   }
   let condition = expression(lexemes, routine);
   condition = typeCheck(routine.language, condition, "boolean");
@@ -522,10 +424,7 @@ function whileStatement(
 ): WhileStatement {
   // expecting a boolean expression
   if (!lexemes.get()) {
-    throw new CompilerError(
-      '"WHILE" must be followed by a boolean expression.',
-      whileLexeme
-    );
+    throw new CompilerError('"WHILE" must be followed by a boolean expression.', whileLexeme);
   }
   let condition = expression(lexemes, routine);
   condition = typeCheck(routine.language, condition, "boolean");
@@ -535,16 +434,10 @@ function whileStatement(
 
   // expecting "DO"
   if (!lexemes.get()) {
-    throw new CompilerError(
-      '"WHILE ..." must be followed by "DO".',
-      condition.lexeme
-    );
+    throw new CompilerError('"WHILE ..." must be followed by "DO".', condition.lexeme);
   }
   if (lexemes.get()?.content !== "do") {
-    throw new CompilerError(
-      '"WHILE ..." must be followed by "DO".',
-      lexemes.get()
-    );
+    throw new CompilerError('"WHILE ..." must be followed by "DO".', lexemes.get());
   }
   lexemes.next();
 
@@ -578,10 +471,7 @@ function block(
 
   // expecting something
   if (!lexemes.get()) {
-    throw new CompilerError(
-      `No commands found after "${start.toUpperCase()}".`,
-      lexemes.get(-1)
-    );
+    throw new CompilerError(`No commands found after "${start.toUpperCase()}".`, lexemes.get(-1));
   }
 
   // loop through until the end of the block (or we run out of lexemes)
@@ -600,15 +490,9 @@ function block(
   // if we've run out of lexemes without reaching the end, this is an error
   if (!end) {
     if (start === "begin") {
-      throw new CompilerError(
-        '"BEGIN" does not have any matching "END".',
-        lexemes.get(-1)
-      );
+      throw new CompilerError('"BEGIN" does not have any matching "END".', lexemes.get(-1));
     }
-    throw new CompilerError(
-      '"REPEAT" does not have any matching "UNTIL".',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('"REPEAT" does not have any matching "UNTIL".', lexemes.get(-1));
   }
 
   // otherwise all good
@@ -620,19 +504,13 @@ function blockEndCheck(start: "begin" | "repeat", lexeme: Lexeme): boolean {
   switch (lexeme.content.toLowerCase()) {
     case "end":
       if (start !== "begin") {
-        throw new CompilerError(
-          '"END" does not have any matching "BEGIN".',
-          lexeme
-        );
+        throw new CompilerError('"END" does not have any matching "BEGIN".', lexeme);
       }
       return true;
 
     case "until":
       if (start !== "repeat") {
-        throw new CompilerError(
-          '"UNTIL" does not have any matching "REPEAT".',
-          lexeme
-        );
+        throw new CompilerError('"UNTIL" does not have any matching "REPEAT".', lexeme);
       }
       return true;
 

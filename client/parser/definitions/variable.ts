@@ -49,9 +49,7 @@ export default class Variable {
 
   /** internal length of an array variable (i.e. how many elements it contains) */
   get elementCount(): number {
-    return this.isArray
-      ? this.arrayDimensions[0][1] - this.arrayDimensions[0][0] + 1
-      : 0;
+    return this.isArray ? this.arrayDimensions[0][1] - this.arrayDimensions[0][0] + 1 : 0;
   }
 
   /** full length of the variable (i.e. how many "bytes" of memory it requires) */
@@ -95,10 +93,7 @@ export default class Variable {
     const routine = new Routine(this.routine.language);
     routine.variables = this.routine.variables.slice(0, arrayIndex);
     return this.routine instanceof Program
-      ? this.routine.turtleAddress +
-          this.routine.turtleVariables.length +
-          routine.memoryNeeded +
-          1
+      ? this.routine.turtleAddress + this.routine.turtleVariables.length + routine.memoryNeeded + 1
       : routine.memoryNeeded + 1;
   }
 
@@ -137,8 +132,7 @@ class SubVariable extends Variable {
   /** address of the length byte of the variable (for strings and arrays) */
   get lengthByteAddress(): number {
     //const base = this.variable.lengthByteAddress + (this.variable.elementLength * this.variable.elementCount) + 1
-    const base =
-      this.variable.lengthByteAddress + this.variable.elementCount + 1;
+    const base = this.variable.lengthByteAddress + this.variable.elementCount + 1;
     return base + (this.length - 1) * this.index; // length - 1 because we don't want to count the pointer here
   }
 }

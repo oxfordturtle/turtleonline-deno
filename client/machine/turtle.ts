@@ -13,15 +13,13 @@ export const turtle = (virtualCanvas: VirtualCanvas): Turtle => ({
 
 /** converts turtx to virtual canvas coordinate */
 export const turtx = (virtualCanvas: VirtualCanvas, x: number): number => {
-  const exact =
-    ((x - virtualCanvas.startx) * virtualCanvas.width) / virtualCanvas.sizex;
+  const exact = ((x - virtualCanvas.startx) * virtualCanvas.width) / virtualCanvas.sizex;
   return virtualCanvas.doubled ? Math.round(exact) + 1 : Math.round(exact);
 };
 
 /** converts turty to virtual canvas coordinate */
 export const turty = (virtualCanvas: VirtualCanvas, y: number): number => {
-  const exact =
-    ((y - virtualCanvas.starty) * virtualCanvas.height) / virtualCanvas.sizey;
+  const exact = ((y - virtualCanvas.starty) * virtualCanvas.height) / virtualCanvas.sizey;
   return virtualCanvas.doubled ? Math.round(exact) + 1 : Math.round(exact);
 };
 
@@ -34,10 +32,7 @@ export const turtt = (virtualCanvas: VirtualCanvas, t: number): number => {
 export const vcoords = (
   virtualCanvas: VirtualCanvas,
   coords: [number, number]
-): [number, number] => [
-  turtx(virtualCanvas, coords[0]),
-  turty(virtualCanvas, coords[1]),
-];
+): [number, number] => [turtx(virtualCanvas, coords[0]), turty(virtualCanvas, coords[1])];
 
 /** converts x to virtual canvas coordinate */
 export const virtx = (
@@ -46,8 +41,7 @@ export const virtx = (
   x: number
 ): number => {
   const { left, width } = canvas.getBoundingClientRect();
-  const exact =
-    ((x - left) * virtualCanvas.sizex) / width + virtualCanvas.startx;
+  const exact = ((x - left) * virtualCanvas.sizex) / width + virtualCanvas.startx;
   return Math.floor(exact);
 };
 
@@ -58,7 +52,6 @@ export const virty = (
   y: number
 ): number => {
   const { height, top } = canvas.getBoundingClientRect();
-  const exact =
-    ((y - top) * virtualCanvas.sizey) / height + virtualCanvas.starty;
+  const exact = ((y - top) * virtualCanvas.sizey) / height + virtualCanvas.starty;
   return Math.floor(exact);
 };

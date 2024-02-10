@@ -16,11 +16,7 @@ export class Subroutine extends Routine {
   startLine = 0; // first line in PCode (fixed later by the encoder module)
 
   /** constructor */
-  constructor(
-    lexeme: KeywordLexeme | TypeLexeme,
-    parent: Program | Subroutine,
-    name?: string
-  ) {
+  constructor(lexeme: KeywordLexeme | TypeLexeme, parent: Program | Subroutine, name?: string) {
     super(parent.language, name);
     this.lexeme = lexeme;
     this.parent = parent;

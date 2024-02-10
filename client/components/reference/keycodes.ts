@@ -16,10 +16,7 @@ if (keycodesTableBody) {
 
 function updateTable(): void {
   if (keycodesTableBody) {
-    fill(
-      keycodesTableBody,
-      inputs.filter((x) => x.value > 0).map(keycodeTableRow)
-    );
+    fill(keycodesTableBody, inputs.filter((x) => x.value > 0).map(keycodeTableRow));
   }
 }
 

@@ -8,9 +8,7 @@ import { on } from "../../tools/hub.ts";
 import type { UsageCategory, UsageExpression } from "../../analyser/usage.ts";
 
 // the usage table body
-const usageTableBody = document.querySelector(
-  '[data-component="usageTableBody"]'
-) as HTMLElement;
+const usageTableBody = document.querySelector('[data-component="usageTableBody"]') as HTMLElement;
 
 if (usageTableBody) {
   // register to keep in sync with the application state
@@ -43,9 +41,7 @@ function expressionRow(expression: UsageExpression): HTMLTableRowElement {
   return tr({
     content: [
       td({
-        content: [
-          code({ content: highlight(expression.name, state.language) }),
-        ],
+        content: [code({ content: highlight(expression.name, state.language) })],
       }),
       td({ content: expression.level.toString(10) }),
       td({ content: expression.count.toString(10) }),

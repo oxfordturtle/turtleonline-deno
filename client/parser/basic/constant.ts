@@ -8,19 +8,13 @@ import evaluate from "../evaluate.ts";
 import { CompilerError } from "../../tools/error.ts";
 
 /** parses lexemes as a constant definition */
-export default function constant(
-  lexemes: Lexemes,
-  routine: Program | Subroutine
-): Constant {
+export default function constant(lexemes: Lexemes, routine: Program | Subroutine): Constant {
   // expecting constant name (which is just like a variable name)
   const foo = variable(lexemes, routine);
 
   // expecting '='
   if (!lexemes.get() || lexemes.get()?.content !== "=") {
-    throw new CompilerError(
-      "Constant must be assigned a value.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("Constant must be assigned a value.", lexemes.get(-1));
   }
   lexemes.next();
 

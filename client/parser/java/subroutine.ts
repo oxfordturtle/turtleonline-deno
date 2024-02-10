@@ -15,10 +15,7 @@ export default function subroutine(
   program: Program
 ): Subroutine {
   // expecting type specification and subroutine name
-  const [subroutineType, stringLength, arrayDimensions] = type(
-    lexemes,
-    program
-  );
+  const [subroutineType, stringLength, arrayDimensions] = type(lexemes, program);
   const name = identifier(lexemes, program);
 
   // array return values are not allowed
@@ -81,16 +78,10 @@ export default function subroutine(
 function parameters(lexemes: Lexemes, subroutine: Subroutine): Variable[] {
   // expecting opening bracket "("
   if (!lexemes.get()) {
-    throw new CompilerError(
-      "Opening bracket missing after method name.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("Opening bracket missing after method name.", lexemes.get(-1));
   }
   if (lexemes.get()?.content !== "(") {
-    throw new CompilerError(
-      "Opening bracket missing after method name.",
-      lexemes.get()
-    );
+    throw new CompilerError("Opening bracket missing after method name.", lexemes.get());
   }
   lexemes.next();
 
@@ -107,10 +98,7 @@ function parameters(lexemes: Lexemes, subroutine: Subroutine): Variable[] {
 
   // check for closing bracket
   if (lexemes.get()?.content !== ")") {
-    throw new CompilerError(
-      "Closing bracket missing after method parameters.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("Closing bracket missing after method parameters.", lexemes.get(-1));
   }
   lexemes.next();
 

@@ -36,20 +36,7 @@ export function type(operator: Operator): Type {
 
 /** arrays of all operators */
 export const operators: [Operator[], Operator[], Operator[], Operator[]] = [
-  [
-    "eqal",
-    "less",
-    "lseq",
-    "more",
-    "mreq",
-    "noeq",
-    "seql",
-    "sles",
-    "sleq",
-    "smor",
-    "smeq",
-    "sneq",
-  ],
+  ["eqal", "less", "lseq", "more", "mreq", "noeq", "seql", "sles", "sleq", "smor", "smeq", "sneq"],
   ["plus", "scat", "subt", "or", "orl", "xor"],
   ["and", "andl", "div", "divr", "mod", "mult"],
   ["neg", "not"],
@@ -57,9 +44,7 @@ export const operators: [Operator[], Operator[], Operator[], Operator[]] = [
 
 /** gets an operator of the given level from a lexeme */
 export function operator(lexeme: Lexeme, level: number): Operator | undefined {
-  return operators[level].find(
-    (x) => lexeme.type === "operator" && lexeme.subtype === x
-  );
+  return operators[level].find((x) => lexeme.type === "operator" && lexeme.subtype === x);
 }
 
 /** maps boolean or integer operators to their string equivalents */

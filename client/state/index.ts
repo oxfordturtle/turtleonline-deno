@@ -135,9 +135,7 @@ export class State {
     this.#allowCSTR = load("allowCSTR");
     this.#separateReturnStack = load("separateReturnStack");
     this.#separateMemoryControlStack = load("separateMemoryControlStack");
-    this.#separateSubroutineRegisterStack = load(
-      "separateSubroutineRegisterStack"
-    );
+    this.#separateSubroutineRegisterStack = load("separateSubroutineRegisterStack");
   }
 
   // initialise the app (i.e. send all property changed messages)
@@ -723,9 +721,7 @@ export class State {
     send("separateMemoryControlStackChanged");
   }
 
-  set separateSubroutineRegisterStack(
-    separateSubroutineRegisterStack: boolean
-  ) {
+  set separateSubroutineRegisterStack(separateSubroutineRegisterStack: boolean) {
     this.#separateSubroutineRegisterStack = separateSubroutineRegisterStack;
     save("separateSubroutineRegisterStack", separateSubroutineRegisterStack);
     send("separateSubroutineRegisterStackChanged");
@@ -795,18 +791,10 @@ export class State {
       if (response.ok) {
         send("closeMenu", "system");
       } else {
-        send(
-          "error",
-          new SystemError(
-            "Your settings could not be saved. Please try again later."
-          )
-        );
+        send("error", new SystemError("Your settings could not be saved. Please try again later."));
       }
     } else {
-      send(
-        "error",
-        new SystemError("You must be logged in to save your settings.")
-      );
+      send("error", new SystemError("You must be logged in to save your settings."));
     }
   }
 
@@ -822,10 +810,8 @@ export class State {
       this.editorFontSize = user.systemSettings.editorFontSize;
       this.outputFontFamily = user.systemSettings.outputFontFamily;
       this.outputFontSize = user.systemSettings.outputFontSize;
-      this.includeCommentsInExamples =
-        user.systemSettings.includeCommentsInExamples;
-      this.loadCorrespondingExample =
-        user.systemSettings.loadCorrespondingExample;
+      this.includeCommentsInExamples = user.systemSettings.includeCommentsInExamples;
+      this.loadCorrespondingExample = user.systemSettings.loadCorrespondingExample;
       this.assembler = user.systemSettings.assembler;
       this.decimal = user.systemSettings.decimal;
       this.autoCompileOnLoad = user.systemSettings.autoCompileOnLoad;
@@ -847,15 +833,12 @@ export class State {
       // compiler options
       this.canvasStartSize = user.systemSettings.canvasStartSize;
       this.setupDefaultKeyBuffer = user.systemSettings.setupDefaultKeyBuffer;
-      this.turtleAttributesAsGlobals =
-        user.systemSettings.turtleAttributesAsGlobals;
+      this.turtleAttributesAsGlobals = user.systemSettings.turtleAttributesAsGlobals;
       this.initialiseLocals = user.systemSettings.initialiseLocals;
       this.allowCSTR = user.systemSettings.allowCSTR;
       this.separateReturnStack = user.systemSettings.separateReturnStack;
-      this.separateMemoryControlStack =
-        user.systemSettings.separateMemoryControlStack;
-      this.separateSubroutineRegisterStack =
-        user.systemSettings.separateSubroutineRegisterStack;
+      this.separateMemoryControlStack = user.systemSettings.separateMemoryControlStack;
+      this.separateSubroutineRegisterStack = user.systemSettings.separateSubroutineRegisterStack;
     }
   }
 
@@ -896,8 +879,7 @@ export class State {
     this.allowCSTR = defaults.allowCSTR;
     this.separateReturnStack = defaults.separateReturnStack;
     this.separateMemoryControlStack = defaults.separateMemoryControlStack;
-    this.separateSubroutineRegisterStack =
-      defaults.separateSubroutineRegisterStack;
+    this.separateSubroutineRegisterStack = defaults.separateSubroutineRegisterStack;
     // close the system menu
     send("closeMenu", "system");
   }
@@ -1000,13 +982,7 @@ export class State {
       case "tgx": // support old file extension
         try {
           json = JSON.parse(content);
-          if (
-            json.language &&
-            json.name &&
-            json.code &&
-            json.usage &&
-            json.pcode
-          ) {
+          if (json.language && json.name && json.code && json.usage && json.pcode) {
             file.language = json.language;
             file.name = json.name;
             file.code = json.code.trim().replace(/\r\n/g, "\n");
@@ -1065,22 +1041,18 @@ export class State {
     } else {
       const filename = `${example.id}.${extensions[this.language]}`;
       const path = `/examples/${this.language}/${example.groupId}/${filename}`;
-      fetch(path).then(
-        (response) => {
-          if (response.ok) {
-            response.text().then((content) => {
-              this.openFile(filename, content.trim(), exampleId);
-            });
-          } else {
-            send(
-              "error",
-              new SystemError(
-                `Example "${exampleId}" is not available for Turtle ${this.language}.`
-              )
-            );
-          }
+      fetch(path).then((response) => {
+        if (response.ok) {
+          response.text().then((content) => {
+            this.openFile(filename, content.trim(), exampleId);
+          });
+        } else {
+          send(
+            "error",
+            new SystemError(`Example "${exampleId}" is not available for Turtle ${this.language}.`)
+          );
         }
-      );
+      });
     }
   }
 

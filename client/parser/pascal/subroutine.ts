@@ -33,16 +33,9 @@ export default function subroutine(
 
   // for functions, expecting return type
   if (isFunction) {
-    const [returnType, stringLength, arrayDimensions] = type(
-      lexemes,
-      sub,
-      false
-    );
+    const [returnType, stringLength, arrayDimensions] = type(lexemes, sub, false);
     if (arrayDimensions.length > 0) {
-      throw new CompilerError(
-        "Functions cannot return arrays.",
-        lexemes.get(-1)
-      );
+      throw new CompilerError("Functions cannot return arrays.", lexemes.get(-1));
     }
     const foo = new Variable("result", sub);
     foo.type = returnType;
@@ -77,10 +70,7 @@ export default function subroutine(
           case "begin":
             begun = true;
             lexemes.next();
-            while (
-              lexemes.get() &&
-              lexemes.get()?.content?.toLowerCase() !== "end"
-            ) {
+            while (lexemes.get() && lexemes.get()?.content?.toLowerCase() !== "end") {
               const lexeme = lexemes.get() as Lexeme;
               sub.statements.push(statement(lexeme, lexemes, sub));
             }
@@ -94,10 +84,7 @@ export default function subroutine(
                 lexemes.get()
               );
             }
-            throw new CompilerError(
-              "{lex} makes no sense here.",
-              lexemes.get()
-            );
+            throw new CompilerError("{lex} makes no sense here.", lexemes.get());
         }
         break;
 
@@ -121,10 +108,7 @@ export default function subroutine(
     );
   }
   if (!lexemes.get()) {
-    throw new CompilerError(
-      `Keyword "end" missing for ${sub.type} ${sub.name}.`,
-      lexemes.get(-1)
-    );
+    throw new CompilerError(`Keyword "end" missing for ${sub.type} ${sub.name}.`, lexemes.get(-1));
   }
   lexemes.next();
   semicolon(lexemes, true, `${sub.type} end`);
@@ -152,16 +136,10 @@ function parameters(lexemes: Lexemes, subroutine: Subroutine): Variable[] {
       lexemes.next();
       // throw error for trailing semicolons
       if (lexemes.get()?.content === ")") {
-        throw new CompilerError(
-          "Trailing semicolon at end of parameter list.",
-          lexemes.get()
-        );
+        throw new CompilerError("Trailing semicolon at end of parameter list.", lexemes.get());
       }
     } else if (lexemes.get()?.type === "identifier") {
-      throw new CompilerError(
-        "Semicolon missing between parameters.",
-        lexemes.get()
-      );
+      throw new CompilerError("Semicolon missing between parameters.", lexemes.get());
     }
   }
 
@@ -196,19 +174,12 @@ function parameterSet(lexemes: Lexemes, subroutine: Subroutine): Variable[] {
     if (lexemes.get()?.content === ",") {
       lexemes.next();
     } else if (lexemes.get()?.type === "identifier") {
-      throw new CompilerError(
-        "Comma missing between parameter names.",
-        lexemes.get()
-      );
+      throw new CompilerError("Comma missing between parameter names.", lexemes.get());
     }
   }
 
   // expecting type specification
-  const [parameterType, stringLength, arrayDimensions] = type(
-    lexemes,
-    subroutine,
-    true
-  );
+  const [parameterType, stringLength, arrayDimensions] = type(lexemes, subroutine, true);
   for (const foo of parameters) {
     foo.type = parameterType;
     foo.stringLength = stringLength;

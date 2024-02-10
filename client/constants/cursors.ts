@@ -1,11 +1,12 @@
 export type Cursor = ReturnType<typeof cursor>;
 
-const cursor = (index: number, name: string, css: string) => ({
-  __: "Cursor",
-  index,
-  name,
-  css,
-}) as const;
+const cursor = (index: number, name: string, css: string) =>
+  ({
+    __: "Cursor",
+    index,
+    name,
+    css,
+  } as const);
 
 export default [
   cursor(0x0, "None", "none"),

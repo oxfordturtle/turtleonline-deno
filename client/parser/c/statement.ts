@@ -4,11 +4,7 @@ import { procedureCall } from "../call.ts";
 import { expression, typeCheck } from "../expression.ts";
 import * as find from "../find.ts";
 import Lexemes from "../definitions/lexemes.ts";
-import {
-  CompoundExpression,
-  Expression,
-  VariableValue,
-} from "../definitions/expression.ts";
+import { CompoundExpression, Expression, VariableValue } from "../definitions/expression.ts";
 import Program from "../definitions/program.ts";
 import { Subroutine } from "../definitions/subroutine.ts";
 import Variable from "../definitions/variable.ts";
@@ -37,20 +33,13 @@ import { token } from "../../tokenizer/token.ts";
 /** checks for semicolon at the end of a statement */
 export function eosCheck(lexemes: Lexemes): void {
   if (!lexemes.get() || lexemes.get()?.content !== ";") {
-    throw new CompilerError(
-      "Statement must be followed by a semicolon.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("Statement must be followed by a semicolon.", lexemes.get(-1));
   }
   lexemes.next();
 }
 
 /** parses lexemes as a statement */
-export function statement(
-  lexeme: Lexeme,
-  lexemes: Lexemes,
-  routine: Subroutine
-): Statement {
+export function statement(lexeme: Lexeme, lexemes: Lexemes, routine: Subroutine): Statement {
   let statement: Statement;
 
   switch (lexeme.type) {
@@ -189,10 +178,7 @@ function variableAssignment(
       }
       // check we came out of the loop above for the right reason
       if (!lexemes.get()) {
-        throw new CompilerError(
-          'Closing bracket "]" needed after array indexes.',
-          lexemes.get(-1)
-        );
+        throw new CompilerError('Closing bracket "]" needed after array indexes.', lexemes.get(-1));
       }
       // move past the closing bracket
       lexemes.next();
@@ -211,10 +197,7 @@ function variableAssignment(
       }
       lexemes.next();
     } else {
-      throw new CompilerError(
-        "{lex} is not a string or array variable.",
-        variableLexeme
-      );
+      throw new CompilerError("{lex} is not a string or array variable.", variableLexeme);
     }
   }
 
@@ -225,10 +208,7 @@ function variableAssignment(
         ? variable.arrayDimensions.length + 1 // one more for characters within strings
         : variable.arrayDimensions.length;
     if (indexes.length > allowedIndexes) {
-      throw new CompilerError(
-        "Too many indexes for array variable {lex}.",
-        variableLexeme
-      );
+      throw new CompilerError("Too many indexes for array variable {lex}.", variableLexeme);
     }
   }
 
@@ -240,10 +220,7 @@ function variableAssignment(
       lexemes.get(-1)
     );
   }
-  if (
-    assignmentLexeme.type !== "operator" ||
-    assignmentLexeme.content !== "="
-  ) {
+  if (assignmentLexeme.type !== "operator" || assignmentLexeme.content !== "=") {
     throw new CompilerError(
       'Variable must be followed by assignment operator "=".',
       assignmentLexeme
@@ -292,26 +269,16 @@ function returnStatement(
 }
 
 /** parses lexemes as an IF statement */
-function ifStatement(
-  ifLexeme: KeywordLexeme,
-  lexemes: Lexemes,
-  routine: Subroutine
-): IfStatement {
+function ifStatement(ifLexeme: KeywordLexeme, lexemes: Lexemes, routine: Subroutine): IfStatement {
   // expecting an opening bracket
   if (!lexemes.get() || lexemes.get()?.content !== "(") {
-    throw new CompilerError(
-      '"if" must be followed by an opening bracket "(".',
-      ifLexeme
-    );
+    throw new CompilerError('"if" must be followed by an opening bracket "(".', ifLexeme);
   }
   lexemes.next();
 
   // expecting a boolean expression
   if (!lexemes.get()) {
-    throw new CompilerError(
-      '"if (" must be followed by a Boolean expression.',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('"if (" must be followed by a Boolean expression.', lexemes.get(-1));
   }
   let condition = expression(lexemes, routine);
   condition = typeCheck(routine.language, condition, "boolean");
@@ -369,10 +336,7 @@ function forStatement(
 ): ForStatement {
   // expecting opening bracket
   if (!lexemes.get() || lexemes.get()?.content !== "(") {
-    throw new CompilerError(
-      '"for" must be followed by an opening bracket "(".',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('"for" must be followed by an opening bracket "(".', lexemes.get(-1));
   }
   lexemes.next();
 
@@ -393,11 +357,7 @@ function forStatement(
       lexemes.get()
     );
   }
-  const initialisation = simpleStatement(
-    firstInitialisationLexeme,
-    lexemes,
-    routine
-  );
+  const initialisation = simpleStatement(firstInitialisationLexeme, lexemes, routine);
   if (!(initialisation instanceof VariableAssignment)) {
     throw new CompilerError(
       '"for" conditions must begin with a variable assignment.',
@@ -411,10 +371,7 @@ function forStatement(
 
   // expecting boolean expression
   if (!lexemes.get()) {
-    throw new CompilerError(
-      '"for (...;" must be followed by a loop condition.',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('"for (...;" must be followed by a loop condition.', lexemes.get(-1));
   }
   let condition = expression(lexemes, routine);
   condition = typeCheck(routine.language, condition, "boolean");
@@ -428,10 +385,7 @@ function forStatement(
       lexemes.get(-1)
     );
   }
-  if (
-    firstChangeLexeme.type !== "identifier" &&
-    firstChangeLexeme.type !== "type"
-  ) {
+  if (firstChangeLexeme.type !== "identifier" && firstChangeLexeme.type !== "type") {
     throw new CompilerError(
       '"for" conditions must begin with a variable assignment.',
       firstChangeLexeme
@@ -439,10 +393,7 @@ function forStatement(
   }
   const change = simpleStatement(firstChangeLexeme, lexemes, routine);
   if (!(change instanceof VariableAssignment)) {
-    throw new CompilerError(
-      '"for" loop variable must be changed on each loop.',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('"for" loop variable must be changed on each loop.', lexemes.get(-1));
   }
   if (change.variable !== initialisation.variable) {
     throw new CompilerError(
@@ -461,12 +412,7 @@ function forStatement(
   lexemes.next();
 
   // create the for statement
-  const forStatement = new ForStatement(
-    forLexeme,
-    initialisation,
-    condition,
-    change
-  );
+  const forStatement = new ForStatement(forLexeme, initialisation, condition, change);
 
   // expecting an opening curly bracket
   if (!lexemes.get() || lexemes.get()?.content !== "{") {
@@ -492,10 +438,7 @@ function doStatement(
 ): RepeatStatement {
   // expecting an opening bracket
   if (!lexemes.get() || lexemes.get()?.content !== "{") {
-    throw new CompilerError(
-      '"do" must be followed by an opening bracket "{".',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('"do" must be followed by an opening bracket "{".', lexemes.get(-1));
   }
   lexemes.next();
 
@@ -504,38 +447,24 @@ function doStatement(
 
   // expecting "while"
   if (!lexemes.get() || lexemes.get()?.content !== "while") {
-    throw new CompilerError(
-      '"do { ... }" must be followed by "while".',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('"do { ... }" must be followed by "while".', lexemes.get(-1));
   }
   lexemes.next();
 
   // expecting an opening bracket
   if (!lexemes.get() || lexemes.get()?.content !== "(") {
-    throw new CompilerError(
-      '"while" must be followed by an opening bracket "(".',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('"while" must be followed by an opening bracket "(".', lexemes.get(-1));
   }
   lexemes.next();
 
   // expecting a boolean expression
   if (!lexemes.get()) {
-    throw new CompilerError(
-      '"while (" must be followed by a boolean expression.',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('"while (" must be followed by a boolean expression.', lexemes.get(-1));
   }
   let condition = expression(lexemes, routine);
   condition = typeCheck(routine.language, condition, "boolean");
   // negate the condition
-  const notToken = token(
-    "operator",
-    "!",
-    condition.lexeme.line,
-    condition.lexeme.character
-  );
+  const notToken = token("operator", "!", condition.lexeme.line, condition.lexeme.character);
   const notLexeme = new OperatorLexeme(notToken, "C");
   condition = new CompoundExpression(notLexeme, null, condition, "not");
 
@@ -565,19 +494,13 @@ function whileStatement(
 ): WhileStatement {
   // expecting an opening bracket
   if (!lexemes.get() || lexemes.get()?.content !== "(") {
-    throw new CompilerError(
-      '"while" must be followed by an opening bracket "(".',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('"while" must be followed by an opening bracket "(".', lexemes.get(-1));
   }
   lexemes.next();
 
   // expecting a boolean expression
   if (!lexemes.get()) {
-    throw new CompilerError(
-      '"while (" must be followed by a Boolean expression.',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('"while (" must be followed by a Boolean expression.', lexemes.get(-1));
   }
   let condition = expression(lexemes, routine);
   condition = typeCheck(routine.language, condition, "boolean");
@@ -623,10 +546,7 @@ function block(lexemes: Lexemes, routine: Subroutine): Statement[] {
   if (lexemes.get()?.content === "}") {
     lexemes.next();
   } else {
-    throw new CompilerError(
-      'Closing bracket "}" missing after statement block.',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('Closing bracket "}" missing after statement block.', lexemes.get(-1));
   }
 
   return statements;

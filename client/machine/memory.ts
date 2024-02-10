@@ -82,11 +82,7 @@ export function peekAddressOffset(address: number, offset: number): number {
 }
 
 /** writes the given value at the address stored at the given address with offset */
-export function pokeAddressOffset(
-  address: number,
-  offset: number,
-  value: number
-): void {
+export function pokeAddressOffset(address: number, offset: number, value: number): void {
   main[main[address] + offset] = value;
 }
 

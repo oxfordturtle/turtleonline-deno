@@ -35,19 +35,13 @@ export default function type(
         // expecting positive integer literal
         const integer = lexemes.get();
         if (!integer) {
-          throw new CompilerError(
-            "Expected string size specification.",
-            lexemes.get(-1)
-          );
+          throw new CompilerError("Expected string size specification.", lexemes.get(-1));
         }
         if (integer.type !== "literal" || integer.subtype !== "integer") {
           throw new CompilerError("String size must be an integer.", integer);
         }
         if (integer.value <= 0) {
-          throw new CompilerError(
-            "String size must be greater than zero.",
-            integer
-          );
+          throw new CompilerError("String size must be greater than zero.", integer);
         }
         stringLength = integer.value;
         lexemes.next();
@@ -69,30 +63,21 @@ export default function type(
       return [false, "string", stringLength, []];
 
     case "final":
-      throw new CompilerError(
-        '"Final" must be written with a capital "F".',
-        lexeme
-      );
+      throw new CompilerError('"Final" must be written with a capital "F".', lexeme);
 
     case "Final":
       lexemes.next();
       return [true, "boolint", stringLength, []];
 
     case "list":
-      throw new CompilerError(
-        '"List" must be written with a capital "L".',
-        lexeme
-      );
+      throw new CompilerError('"List" must be written with a capital "L".', lexeme);
 
     case "List": {
       lexemes.next();
 
       // expecting opening square bracket
       if (!lexemes.get()) {
-        throw new CompilerError(
-          '"List" must be followed by a type in square brackets.',
-          lexeme
-        );
+        throw new CompilerError('"List" must be followed by a type in square brackets.', lexeme);
       }
       if (lexemes.get()?.content !== "[") {
         throw new CompilerError(

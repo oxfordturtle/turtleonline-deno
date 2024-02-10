@@ -7,10 +7,7 @@ import Variable from "../definitions/variable.ts";
 import { CompilerError } from "../../tools/error.ts";
 
 /** parses lexemes as a variable declaration */
-export default function variable(
-  lexemes: Lexemes,
-  routine: Program | Subroutine
-): Variable {
+export default function variable(lexemes: Lexemes, routine: Program | Subroutine): Variable {
   // expecting type specification
   const [variableType, stringLength, arrayDimensions] = type(lexemes, routine);
 

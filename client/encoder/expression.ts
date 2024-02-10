@@ -17,11 +17,7 @@ import command from "./command.ts";
 import PCode from "../constants/pcodes.ts";
 import Program from "../parser/definitions/program.ts";
 import { Subroutine } from "../parser/definitions/subroutine.ts";
-import {
-  IntegerValue,
-  StringValue,
-  VariableValue,
-} from "../parser/definitions/expression.ts";
+import { IntegerValue, StringValue, VariableValue } from "../parser/definitions/expression.ts";
 
 /** merges pcode2 into pcode1 */
 export function merge(pcode1: number[][], pcode2: number[][]): void {
@@ -66,10 +62,7 @@ export function expression(
 
     case "variable":
       if (reference) {
-        if (
-          exp.variable.isArray &&
-          exp.indexes.length < exp.variable.arrayDimensions.length
-        ) {
+        if (exp.variable.isArray && exp.indexes.length < exp.variable.arrayDimensions.length) {
           // in this case the value is the address
           return variableValue(exp, program, options);
         } else if (exp.variable.type === "string" && exp.indexes.length === 0) {
@@ -99,9 +92,7 @@ function literalIntegerValue(exp: IntegerValue, _options: Options): number[] {
 
 /** generate the pcode for loading a literal string onto the stack */
 function literalStringValue(exp: StringValue, _options: Options): number[] {
-  return [PCode.lstr, exp.value.length].concat(
-    Array.from(exp.value).map((x) => x.charCodeAt(0))
-  );
+  return [PCode.lstr, exp.value.length].concat(Array.from(exp.value).map((x) => x.charCodeAt(0)));
 }
 
 /** generates the pcode for loading an input value onto the stack */
@@ -117,30 +108,20 @@ function colourValue(exp: ColourValue, _options: Options): number[] {
 }
 
 /** generates the pcode for loading a constant value onto the stack */
-function constantValue(
-  exp: ConstantValue,
-  program: Program,
-  options: Options
-): number[][] {
+function constantValue(exp: ConstantValue, program: Program, options: Options): number[][] {
   const pcode: number[][] = [];
 
   // string constant
   if (exp.constant.type === "string") {
     const value = exp.constant.value as string;
-    pcode.push(
-      [PCode.lstr, value.length].concat(
-        Array.from(value).map((x) => x.charCodeAt(0))
-      )
-    );
+    pcode.push([PCode.lstr, value.length].concat(Array.from(value).map((x) => x.charCodeAt(0))));
     if (exp.indexes.length > 0) {
       const indexExp = expression(exp.indexes[0], program, options);
       merge(pcode, indexExp);
       if (program.language === "Pascal") {
         merge(pcode, [[PCode.decr]]); // Pascal indexes strings from 1 instead of 0
       }
-      merge(pcode, [
-        [PCode.swap, PCode.test, PCode.plus, PCode.incr, PCode.lptr],
-      ]);
+      merge(pcode, [[PCode.swap, PCode.test, PCode.plus, PCode.incr, PCode.lptr]]);
     }
 
     // integer or boolean constant
@@ -168,14 +149,9 @@ function variableAddress(
       const index = exp.indexes[i];
       const indexExp = expression(index, program, options);
       merge(pcode, indexExp);
-      if (
-        exp.variable.arrayDimensions[i] &&
-        exp.variable.arrayDimensions[i][0] !== 0
-      ) {
+      if (exp.variable.arrayDimensions[i] && exp.variable.arrayDimensions[i][0] !== 0) {
         // substract the start index if not indexed from 0
-        merge(pcode, [
-          [PCode.ldin, exp.variable.arrayDimensions[i][0], PCode.subt],
-        ]);
+        merge(pcode, [[PCode.ldin, exp.variable.arrayDimensions[i][0], PCode.subt]]);
       } else if (exp.variable.arrayDimensions[i] === undefined) {
         // this means the final index expression is to a character within an array of strings
         if (program.language === "Pascal") {
@@ -210,11 +186,7 @@ function variableAddress(
 
   // local variable
   else {
-    pcode.push([
-      PCode.ldav,
-      exp.variable.routine.address,
-      exp.variable.address,
-    ]);
+    pcode.push([PCode.ldav, exp.variable.routine.address, exp.variable.address]);
   }
 
   // return the pcode
@@ -222,11 +194,7 @@ function variableAddress(
 }
 
 /** generates the pcode for loading a variable value onto the stack */
-function variableValue(
-  exp: VariableValue,
-  program: Program,
-  options: Options
-): number[][] {
+function variableValue(exp: VariableValue, program: Program, options: Options): number[][] {
   const pcode: number[][] = [];
 
   // array element
@@ -237,14 +205,9 @@ function variableValue(
       const index = exp.indexes[i];
       const indexExp = expression(index, program, options);
       merge(pcode, indexExp);
-      if (
-        exp.variable.arrayDimensions[i] &&
-        exp.variable.arrayDimensions[i][0] !== 0
-      ) {
+      if (exp.variable.arrayDimensions[i] && exp.variable.arrayDimensions[i][0] !== 0) {
         // substract the start index if not indexed from 0
-        merge(pcode, [
-          [PCode.ldin, exp.variable.arrayDimensions[i][0], PCode.subt],
-        ]);
+        merge(pcode, [[PCode.ldin, exp.variable.arrayDimensions[i][0], PCode.subt]]);
       } else if (exp.variable.arrayDimensions[i] === undefined) {
         // this means the final index expression is to a character within an array of strings
         if (program.language === "Pascal") {
@@ -252,9 +215,7 @@ function variableValue(
           merge(pcode, [[PCode.decr]]);
         }
       }
-      merge(pcode, [
-        [PCode.swap, PCode.test, PCode.plus, PCode.incr, PCode.lptr],
-      ]);
+      merge(pcode, [[PCode.swap, PCode.test, PCode.plus, PCode.incr, PCode.lptr]]);
     }
   }
 
@@ -294,20 +255,12 @@ function variableValue(
     !exp.variable.isArray &&
     exp.variable.type !== "string"
   ) {
-    pcode.push([
-      PCode.ldvr,
-      exp.variable.routine.address,
-      exp.variable.address,
-    ]);
+    pcode.push([PCode.ldvr, exp.variable.routine.address, exp.variable.address]);
   }
 
   // local value variable (and arrays and strings passed by reference)
   else {
-    pcode.push([
-      PCode.ldvv,
-      exp.variable.routine.address,
-      exp.variable.address,
-    ]);
+    pcode.push([PCode.ldvv, exp.variable.routine.address, exp.variable.address]);
   }
 
   // add peek code for pointer variables
@@ -320,11 +273,7 @@ function variableValue(
 }
 
 /** generates the pcode for loading the result of a function onto the stack */
-function functionValue(
-  exp: FunctionCall,
-  program: Program,
-  options: Options
-): number[][] {
+function functionValue(exp: FunctionCall, program: Program, options: Options): number[][] {
   const pcode: number[][] = [];
 
   // first: load arguments onto stack
@@ -395,11 +344,7 @@ function compoundExpression(
 }
 
 /** generates the pcode for loading the value of a cast expression onto the stack */
-function castExpression(
-  exp: CastExpression,
-  program: Program,
-  options: Options
-): number[][] {
+function castExpression(exp: CastExpression, program: Program, options: Options): number[][] {
   // generate the code for the underlying expression
   const pcode = expression(exp.expression, program, options);
 
@@ -422,9 +367,11 @@ function castExpression(
 function operator(op: Operator, program: Program, _options: Options): number[] {
   switch (op) {
     case "not":
-      return (program.language === "C" || program.language === "Python" || program.language === "TypeScript")
-        // PCode.not is bitwise negation
-        ? [PCode.ldin, 0, PCode.eqal]
+      return program.language === "C" ||
+        program.language === "Python" ||
+        program.language === "TypeScript"
+        ? // PCode.not is bitwise negation
+          [PCode.ldin, 0, PCode.eqal]
         : [PCode.not];
 
     default:

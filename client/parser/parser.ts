@@ -16,10 +16,7 @@ import Lexemes from "./definitions/lexemes.ts";
 import lexify from "../lexer/lexify.ts";
 
 /** parses codes string or lexemes and returns a program object */
-export default function parser(
-  code: string | Lexeme[],
-  language: Language
-): Program {
+export default function parser(code: string | Lexeme[], language: Language): Program {
   const rawLexemes = typeof code === "string" ? lexify(code, language) : code;
   const lexemes = new Lexemes(rawLexemes);
 

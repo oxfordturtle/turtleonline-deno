@@ -8,10 +8,7 @@ export function identifier(lexemes: Lexemes): string {
   const identifier = lexemes.get();
 
   if (!identifier) {
-    throw new CompilerError(
-      "{lex} must be followed by an identifier.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("{lex} must be followed by an identifier.", lexemes.get(-1));
   }
 
   if (identifier.type !== "identifier") {
@@ -31,9 +28,7 @@ export function identifier(lexemes: Lexemes): string {
 }
 
 /** parses a lexeme as a subroutine name */
-export function subroutineName(
-  lexemes: Lexemes
-): [string, SubroutineType, Type, number] {
+export function subroutineName(lexemes: Lexemes): [string, SubroutineType, Type, number] {
   const name = identifier(lexemes);
 
   let subroutineType: SubroutineType;

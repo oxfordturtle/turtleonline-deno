@@ -24,9 +24,7 @@ export default function basic(lexemes: Lexemes): Program {
       lexemes.next();
     } else if (lexemes.get()?.content === "DEF") {
       lexemes.next();
-      program.subroutines.push(
-        subroutine(lexemes.get(-1) as KeywordLexeme, lexemes, program)
-      );
+      program.subroutines.push(subroutine(lexemes.get(-1) as KeywordLexeme, lexemes, program));
     } else {
       throw new CompilerError(
         'Only subroutine definitions are permissible after program "END".',

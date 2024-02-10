@@ -16,10 +16,7 @@ export default function evaluate(
     case "address":
     case "variable":
       if (context === "constant") {
-        throw new CompilerError(
-          "Constant value cannot refer to any variables.",
-          expression.lexeme
-        );
+        throw new CompilerError("Constant value cannot refer to any variables.", expression.lexeme);
       } else if (context === "string") {
         throw new CompilerError(
           "String size specification cannot refer to any variables.",
@@ -40,10 +37,7 @@ export default function evaluate(
     // function calls are not allowed
     case "function":
       if (context === "constant") {
-        throw new CompilerError(
-          "Constant value cannot invoke any functions.",
-          expression.lexeme
-        );
+        throw new CompilerError("Constant value cannot invoke any functions.", expression.lexeme);
       } else if (context === "string") {
         throw new CompilerError(
           "String size specification cannot invoke any functions.",
@@ -84,9 +78,7 @@ export default function evaluate(
 
     // compound expressions
     case "compound": {
-      const left = expression.left
-        ? evaluate(expression.left, language, context)
-        : null;
+      const left = expression.left ? evaluate(expression.left, language, context) : null;
       const right = evaluate(expression.right, language, context);
       switch (expression.operator) {
         case "eqal":
@@ -120,9 +112,7 @@ export default function evaluate(
           return (left as string) + (right as string);
 
         case "subt":
-          return left
-            ? (left as number) - (right as number)
-            : -(right as number);
+          return left ? (left as number) - (right as number) : -(right as number);
 
         case "neg":
           return -(right as number);

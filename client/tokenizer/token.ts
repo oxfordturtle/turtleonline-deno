@@ -30,15 +30,11 @@ export type TokenType =
   | "identifier"
   | "illegal";
 
-export const token = (
-  type: TokenType,
-  content: string,
-  line: number,
-  character: number
-) => ({
-  __: "token",
-  type,
-  content,
-  line,
-  character,
-}) as const;
+export const token = (type: TokenType, content: string, line: number, character: number) =>
+  ({
+    __: "token",
+    type,
+    content,
+    line,
+    character,
+  } as const);

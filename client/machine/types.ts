@@ -74,9 +74,9 @@ export type Turtle = {
 };
 
 export type ActionResult = {
-  state: State,
-  drawn?: boolean,
-  updated?: boolean,
-  halted?: boolean,
-  error?: string,
+  state: State;
+  drawn?: boolean;
+  updated?: boolean;
+  halted?: boolean;
+  error?: string;
 };

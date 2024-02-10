@@ -13,10 +13,7 @@ export default function identifier(
   const identifier = lexemes.get();
 
   if (!identifier) {
-    throw new CompilerError(
-      "{lex} must be followed by an identifier.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("{lex} must be followed by an identifier.", lexemes.get(-1));
   }
 
   if (identifier.type !== "identifier") {
@@ -25,10 +22,7 @@ export default function identifier(
 
   if (duplicateCheck) {
     if (identifier.subtype === "turtle") {
-      throw new CompilerError(
-        "{lex} is already the name of a Turtle attribute.",
-        identifier
-      );
+      throw new CompilerError("{lex} is already the name of a Turtle attribute.", identifier);
     }
     if (find.isDuplicate(routine, identifier.value)) {
       throw new CompilerError(

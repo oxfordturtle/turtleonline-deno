@@ -17,47 +17,27 @@ import type { Subroutine } from "../parser/definitions/subroutine.ts";
 
 /** analyses program lexemes to produce usage data */
 export default function (lexemes: Lexeme[], program: Program): UsageCategory[] {
-  const categories = commandCategories.concat(
-    keywordCategories[program.language]
-  );
+  const categories = commandCategories.concat(keywordCategories[program.language]);
   const usageCategories = categories.map(
     usageCategory.bind(null, program.language, lexemes)
   ) as UsageCategory[];
-  const subroutineCategory = new Category(
-    30,
-    "Subroutine calls",
-    program.allSubroutines.slice(1)
-  );
+  const subroutineCategory = new Category(30, "Subroutine calls", program.allSubroutines.slice(1));
   //const subLexemes = program.allSubroutines.map(x => x.lexemes).flat()
   //subLexemes.unshift(...program.lexemes)
   //const subroutineUsageCategory = usageCategory(program.language, subLexemes, subroutineCategory)
   // TODO: don't count subroutine definitions as subroutine calls
-  const subroutineUsageCategory = usageCategory(
-    program.language,
-    lexemes,
-    subroutineCategory
-  );
+  const subroutineUsageCategory = usageCategory(program.language, lexemes, subroutineCategory);
   return usageCategories
     .concat(subroutineUsageCategory)
     .filter((category) => category.expressions.length > 0);
 }
 
 /** generates usage data */
-function usageCategory(
-  language: Language,
-  lexemes: Lexeme[],
-  category: Category
-): UsageCategory {
-  const filtered = category.expressions.filter(
-    isUsed.bind(null, language, lexemes)
-  );
-  const mapped = filtered.map(
-    usageExpression.bind(null, language, lexemes)
-  ) as UsageExpression[];
+function usageCategory(language: Language, lexemes: Lexeme[], category: Category): UsageCategory {
+  const filtered = category.expressions.filter(isUsed.bind(null, language, lexemes));
+  const mapped = filtered.map(usageExpression.bind(null, language, lexemes)) as UsageExpression[];
   mapped.sort((a, b) => {
-    return a.level === b.level
-      ? a.name.localeCompare(b.name)
-      : a.level - b.level;
+    return a.level === b.level ? a.name.localeCompare(b.name) : a.level - b.level;
   });
   return {
     category: category.title,
@@ -78,9 +58,7 @@ function isUsed(language: Language, lexemes: Lexeme[], expression: Expression) {
   const uses =
     language === "Pascal"
       ? lexemes.filter(
-          (lexeme) =>
-            lexeme.content &&
-            lexeme.content.toLowerCase() === name.toLowerCase()
+          (lexeme) => lexeme.content && lexeme.content.toLowerCase() === name.toLowerCase()
         )
       : lexemes.filter((lexeme) => lexeme.content === name);
   return uses.length > 0;
@@ -99,9 +77,7 @@ function usageExpression(
   const uses =
     language === "Pascal"
       ? lexemes.filter(
-          (lexeme) =>
-            lexeme.content &&
-            lexeme.content.toLowerCase() === name.toLowerCase()
+          (lexeme) => lexeme.content && lexeme.content.toLowerCase() === name.toLowerCase()
         )
       : lexemes.filter((lexeme) => lexeme.content === name);
   uses.sort((a, b) => a.line - b.line);
