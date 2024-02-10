@@ -1,8 +1,8 @@
 // type imports
-import { type Turtle } from "../../machine/turtle.ts";
+import { type Turtle } from "../../machine/types.ts";
 
 // module imports
-import { cursors } from "../../constants/cursors.ts";
+import cursors from "../../constants/cursors.ts";
 import { fonts } from "../../constants/fonts.ts";
 import * as machine from "../../machine/index.ts";
 import { on } from "../../tools/hub.ts";
