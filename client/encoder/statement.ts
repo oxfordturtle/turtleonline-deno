@@ -16,7 +16,7 @@ import command from "./command.ts";
 import { merge, expression } from "./expression.ts";
 
 // other module imports
-import { PCode } from "../constants/pcodes.ts";
+import PCode from "../constants/pcodes.ts";
 import { Subroutine } from "../parser/definitions/subroutine.ts";
 import { VariableValue } from "../parser/definitions/expression.ts";
 import { VariableAssignment } from "../parser/definitions/statement.ts";

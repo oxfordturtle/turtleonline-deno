@@ -1,5 +1,5 @@
 import type { Language } from "./languages.ts";
-import { PCode } from "./pcodes.ts";
+import PCode from "./pcodes.ts";
 import type { Type } from "../lexer/lexeme.ts";
 import type { SubroutineType } from "../parser/definitions/subroutine.ts";
 

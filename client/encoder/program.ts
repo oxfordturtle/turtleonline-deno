@@ -10,7 +10,7 @@ import statement from "./statement.ts";
 // other module imports
 import Variable from "../parser/definitions/variable.ts";
 import { Subroutine } from "../parser/definitions/subroutine.ts";
-import { PCode, pcodeArgs } from "../constants/pcodes.ts";
+import PCode, { pcodeArgs } from "../constants/pcodes.ts";
 
 /** generates the pcode for a turtle program */
 export default function program(program: Program, options: Options = defaultOptions): number[][] {

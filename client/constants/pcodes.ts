@@ -1,9 +1,4 @@
-/*
- * Machine PCodes.
- */
-
-/** record of PCodes */
-export enum PCode {
+enum PCode {
   // basic stack operations
   null = 0x00,
   drop = 0x01,
@@ -254,8 +249,9 @@ export enum PCode {
   wrln = 0xfb,
 }
 
-/** returns the number of code arguments of the given PCode (used by the assembler) */
-export function pcodeArgs(pcode: PCode): number {
+export default PCode;
+
+export const pcodeArgs = (pcode: PCode): number => {
   switch (pcode) {
     case PCode.lstr:
       return -1; // varies; the next code specifies how many
@@ -296,4 +292,4 @@ export function pcodeArgs(pcode: PCode): number {
     default:
       return 0;
   }
-}
+};

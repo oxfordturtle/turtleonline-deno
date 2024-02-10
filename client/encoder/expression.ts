@@ -14,7 +14,7 @@ import type {
 import command from "./command.ts";
 
 // other module imports
-import { PCode } from "../constants/pcodes.ts";
+import PCode from "../constants/pcodes.ts";
 import Program from "../parser/definitions/program.ts";
 import { Subroutine } from "../parser/definitions/subroutine.ts";
 import {

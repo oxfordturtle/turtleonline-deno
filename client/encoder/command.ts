@@ -1,7 +1,6 @@
-import { ldin } from "../../client2/machine/actions.ts";
 import type { Command } from "../constants/commands.ts";
 import type { Language } from "../constants/languages.ts";
-import { PCode } from "../constants/pcodes.ts";
+import PCode from "../constants/pcodes.ts";
 import Program from "../parser/definitions/program.ts";
 
 const command = (command: Command, program: Program): number[] => {
