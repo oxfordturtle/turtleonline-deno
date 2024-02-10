@@ -6,7 +6,7 @@ import type { Colour } from "../constants/colours.ts";
 import type { Command } from "../constants/commands.ts";
 import type { Input } from "../constants/inputs.ts";
 import colours from "../constants/colours.ts";
-import { commands } from "../constants/commands.ts";
+import commands from "../constants/commands.ts";
 import inputs from "../constants/inputs.ts";
 
 /** looks for a constant visible to the given routine */

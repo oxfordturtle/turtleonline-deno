@@ -1,6 +1,6 @@
 import type { Language } from "../constants/languages.ts";
 import colours from "../constants/colours.ts";
-import { commands } from "../constants/commands.ts";
+import commands from "../constants/commands.ts";
 import inputs from "../constants/inputs.ts";
 import { keywords } from "../constants/keywords.ts";
 import { token, type Token } from "./token.ts";

@@ -59,7 +59,7 @@ export class Parameter {
 }
 
 /** array of commands */
-export const commands: Command[] = [
+export default [
   // 0. Turtle: relative movement
   new Command(
     "forward",
@@ -1927,4 +1927,4 @@ export const commands: Command[] = [
     2,
     "Halts program execution after the given <code>pcodeLine</code>."
   ),
-];
+] as const;

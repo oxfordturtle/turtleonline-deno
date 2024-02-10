@@ -1,8 +1,7 @@
 /**
  * Command and keywords categories (for help tables and usage analysis).
  */
-import type { Command } from "./commands.ts";
-import { commands } from "./commands.ts";
+import commands, { type Command } from "./commands.ts";
 import type { Keyword } from "./keywords.ts";
 import { keywords } from "./keywords.ts";
 import type { Language } from "./languages.ts";
@@ -15,9 +14,9 @@ export type Expression = Command | Keyword | Subroutine;
 export class Category {
   readonly index: number;
   readonly title: string;
-  readonly expressions: Expression[];
+  readonly expressions: ReadonlyArray<Expression>;
 
-  constructor(index: number, title: string, expressions: Expression[]) {
+  constructor(index: number, title: string, expressions: ReadonlyArray<Expression>) {
     this.index = index;
     this.title = title;
     this.expressions =
