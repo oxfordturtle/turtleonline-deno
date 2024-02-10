@@ -5,7 +5,7 @@ import type Variable from "./definitions/variable.ts";
 import type { Colour } from "../constants/colours.ts";
 import type { Command } from "../constants/commands.ts";
 import type { Input } from "../constants/inputs.ts";
-import { colours } from "../constants/colours.ts";
+import colours from "../constants/colours.ts";
 import { commands } from "../constants/commands.ts";
 import { inputs } from "../constants/inputs.ts";
 

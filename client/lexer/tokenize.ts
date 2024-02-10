@@ -5,7 +5,7 @@ import type { Language } from "../constants/languages.ts";
 import { Token } from "./token.ts";
 
 // other modules
-import { colours } from "../constants/colours.ts";
+import colours from "../constants/colours.ts";
 import { commands } from "../constants/commands.ts";
 import { inputs } from "../constants/inputs.ts";
 import { keywords } from "../constants/keywords.ts";

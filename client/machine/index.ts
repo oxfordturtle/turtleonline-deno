@@ -6,7 +6,7 @@ import type { Options, VirtualCanvas } from "./types.ts";
 // module imports
 import * as memory from "./memory.ts";
 import { defaultOptions } from "./options.ts";
-import { colours } from "../constants/colours.ts";
+import colours from "../constants/colours.ts";
 import { PCode } from "../constants/pcodes.ts";
 import { MachineError } from "../tools/error.ts";
 import { send } from "../tools/hub.ts";

@@ -6,7 +6,7 @@ import type { Token } from "./token.ts";
 import tokenize from "./tokenize.ts";
 
 // other module imports
-import { colours } from "../constants/colours.ts";
+import colours from "../constants/colours.ts";
 
 /** returns highlighted code */
 export default function highlight(
