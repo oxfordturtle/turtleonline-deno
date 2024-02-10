@@ -1,13 +1,9 @@
-import type { Expression } from "./expression.ts";
+import { CompoundExpression, VariableValue, type Expression } from "./expression.ts";
 import type { Subroutine } from "./subroutine.ts";
 import type { Constant } from "./constant.ts";
 import type Variable from "./variable.ts";
 import type { Command } from "../../constants/commands.ts";
-import type {
-  IdentifierLexeme,
-  KeywordLexeme,
-  OperatorLexeme,
-} from "../../lexer/lexeme.ts";
+import type { IdentifierLexeme, KeywordLexeme, OperatorLexeme } from "../../lexer/lexeme.ts";
 
 /** statement */
 export type Statement =
@@ -38,7 +34,27 @@ export class VariableAssignment {
     this.lexeme = lexeme;
     this.variable = variable;
     this.indexes = indexes;
-    this.value = value;
+    switch (lexeme.content) {
+      case "+=":
+        this.value = new CompoundExpression(
+          lexeme,
+          new VariableValue(lexeme as any, variable),
+          value,
+          "plus"
+        );
+        break;
+      case "-=":
+        this.value = new CompoundExpression(
+          lexeme,
+          new VariableValue(lexeme as any, variable),
+          value,
+          "subt"
+        );
+        break;
+      default:
+        this.value = value;
+        break;
+    }
   }
 }
 
@@ -132,11 +148,7 @@ export class ReturnStatement {
   readonly routine: Subroutine;
   readonly value: Expression;
 
-  constructor(
-    lexeme: KeywordLexeme | OperatorLexeme,
-    routine: Subroutine,
-    value: Expression
-  ) {
+  constructor(lexeme: KeywordLexeme | OperatorLexeme, routine: Subroutine, value: Expression) {
     this.lexeme = lexeme;
     this.routine = routine;
     this.value = value;

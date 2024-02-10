@@ -255,7 +255,7 @@ export function variableAssignment(
     }
   }
 
-  // expecting "="
+  // expecting "=", "+=", or "-="
   const assignmentLexeme = lexemes.get();
   if (!assignmentLexeme) {
     throw new CompilerError(

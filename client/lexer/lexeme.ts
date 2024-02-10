@@ -160,6 +160,10 @@ export class OperatorLexeme extends LexemeClass {
         this.subtype =
           language === "BASIC" || language === "Pascal" ? "eqal" : "asgn";
         break;
+      case "+=": // fallthrough
+      case "-=":
+        this.subtype = "asgn";
+        break;
       case "==":
         this.subtype = "eqal";
         break;
