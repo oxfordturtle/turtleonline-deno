@@ -67,6 +67,7 @@ DEF PROCinit
   comptotal%(i%)=0
   swaptotal%(i%)=0
  NEXT
+ swaps%=0
 ENDPROC
 
 DEF FNlessthan(x$,y$)

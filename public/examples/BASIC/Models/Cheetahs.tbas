@@ -33,9 +33,9 @@ DIM gage%(MAXANIMALS%)
 DIM cfood%(MAXANIMALS%)
 DIM cspeednum%(MAXSPEED%)
 DIM gspeednum%(MAXSPEED%)
+gen%=0
 PROCsetup
 PROCgraph
-gen%=0
 REPEAT
  INC(gen%)
  PROCgeneration

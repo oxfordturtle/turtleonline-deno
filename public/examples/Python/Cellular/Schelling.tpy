@@ -36,8 +36,10 @@ for i in range(width):
 pause(2000)
 while ?key!=\escape:
     noupdate()
-    this=empty
     # Find an unhappy cell
+    tryi=randrange(width)
+    tryj=randrange(height)
+    this=pixcol(tryi,tryj)
     while (this==empty) or (happy(tryi,tryj,this)):
         tryi=randrange(width)
         tryj=randrange(height)

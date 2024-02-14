@@ -1,4 +1,5 @@
 output(True,white,False)
+s=''
 while str(intdef(s,0))!=s:
     console(True,cream)
     print('CALCULATION OF APPROXIMATE SQUARE ROOTS, BY ITERATION')
