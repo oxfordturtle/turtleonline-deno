@@ -1,9 +1,10 @@
+import type { Language } from "../../constants/languages.ts";
 import Routine from "./routine.ts";
 import Variable from "./variable.ts";
-import type { Language } from "../../constants/languages.ts";
 
 /** program */
 export default class Program extends Routine {
+  readonly __ = "program";
   readonly baseGlobals: number = 12; // turtle, keybuffer, and 10 file handles
   readonly baseOffset: number = 11; // baseGlobals - 1
 

@@ -1,23 +1,22 @@
-// type imports
-import type { Options } from "./options.ts";
+import PCode from "../constants/pcodes.ts";
 import type { Operator } from "../lexer/lexeme.ts";
 import type {
-  Expression,
-  InputValue,
-  ColourValue,
-  ConstantValue,
-  VariableAddress,
-  CompoundExpression,
   CastExpression,
+  ColourValue,
+  CompoundExpression,
+  ConstantValue,
+  Expression,
   FunctionCall,
+  InputValue,
+  VariableAddress,
 } from "../parser/definitions/expression.ts";
-import command from "./command.ts";
-
-// other module imports
-import PCode from "../constants/pcodes.ts";
-import Program from "../parser/definitions/program.ts";
-import { Subroutine } from "../parser/definitions/subroutine.ts";
-import { IntegerValue, StringValue, VariableValue } from "../parser/definitions/expression.ts";
+import {
+  VariableValue,
+  type IntegerValue,
+  type StringValue,
+} from "../parser/definitions/expression.ts";
+import type Program from "../parser/definitions/program.ts";
+import type { Options } from "./options.ts";
 
 /** merges pcode2 into pcode1 */
 export function merge(pcode1: number[][], pcode2: number[][]): void {
@@ -180,7 +179,7 @@ function variableAddress(
   }
 
   // global variable
-  else if (exp.variable.routine instanceof Program) {
+  else if (exp.variable.routine.__ === "program") {
     pcode.push([PCode.ldag, exp.variable.address]);
   }
 
@@ -245,7 +244,7 @@ function variableValue(exp: VariableValue, program: Program, options: Options): 
   }
 
   // global variable
-  else if (exp.variable.routine instanceof Program) {
+  else if (exp.variable.routine.__ === "program") {
     pcode.push([PCode.ldvg, exp.variable.address]);
   }
 
@@ -284,7 +283,7 @@ function functionValue(exp: FunctionCall, program: Program, options: Options): n
   }
 
   // next: code for the function
-  if (exp.command instanceof Subroutine) {
+  if (exp.command.__ === "subroutine") {
     // custom functions
     // N.B. use command index as placeholder for now; this will be backpatched
     // when compilation is otherwise complete
@@ -292,11 +291,11 @@ function functionValue(exp: FunctionCall, program: Program, options: Options): n
   } else {
     // native functions
     // copy the command.code array so it isn't modified subsequently
-    merge(pcode, [command(exp.command, program)]);
+    merge(pcode, [exp.command.code(program.turtleAddress)]);
   }
 
   // custom functions: load the result variable onto the stack
-  if (exp.command instanceof Subroutine) {
+  if (exp.command.__ === "subroutine") {
     // push, don't merge; anything after the subroutine call must be on a new line
     pcode.push([PCode.ldvv, program.resultAddress, 1]);
     if (exp.command.returns === "string") {

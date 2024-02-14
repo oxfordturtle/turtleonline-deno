@@ -1,6 +1,6 @@
 import type { Language } from "../constants/languages.ts";
 import { CompilerError } from "../tools/error.ts";
-import { Expression } from "./definitions/expression.ts";
+import type { Expression } from "./definitions/expression.ts";
 
 /** evaluates an expression */
 export default function evaluate(

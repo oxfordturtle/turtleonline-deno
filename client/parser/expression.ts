@@ -1,28 +1,26 @@
-import type Program from "./definitions/program.ts";
-import { Subroutine } from "./definitions/subroutine.ts";
-import type Lexemes from "./definitions/lexemes.ts";
-import Variable from "./definitions/variable.ts";
 import type { Parameter } from "../constants/commands.ts";
-import type { Lexeme, Type, Operator, OperatorLexeme, TypeLexeme } from "../lexer/lexeme.ts";
-
-import { functionCall } from "./call.ts";
-import * as find from "./find.ts";
+import type { Language } from "../constants/languages.ts";
+import type { Lexeme, Operator, OperatorLexeme, Type, TypeLexeme } from "../lexer/lexeme.ts";
+import { CompilerError } from "../tools/error.ts";
+import { functionCall, methodFunctionCall } from "./call.ts";
 import {
-  Expression,
+  CastExpression,
+  ColourValue,
   CompoundExpression,
+  ConstantValue,
+  InputValue,
   IntegerValue,
   StringValue,
-  InputValue,
-  ColourValue,
-  ConstantValue,
-  FunctionCall,
   VariableAddress,
   VariableValue,
-  CastExpression,
+  type Expression,
 } from "./definitions/expression.ts";
+import type Lexemes from "./definitions/lexemes.ts";
 import { operator, stringOperator } from "./definitions/operators.ts";
-import { CompilerError } from "../tools/error.ts";
-import { Language } from "../constants/languages.ts";
+import type Program from "./definitions/program.ts";
+import { Subroutine } from "./definitions/subroutine.ts";
+import Variable from "./definitions/variable.ts";
+import * as find from "./find.ts";
 
 /** checks types match (throws an error if not) */
 export function typeCheck(
@@ -33,40 +31,21 @@ export function typeCheck(
   const expectedType = typeof expected === "string" ? expected : expected.type;
 
   // if expected type isn't yet certain, infer it
-  if (expected instanceof Variable && !expected.typeIsCertain) {
+  if (typeof expected !== "string" && expected.__ === "variable" && !expected.typeIsCertain) {
     expected.type = found.type;
     expected.typeIsCertain = true;
     return found;
   }
-  if (
-    expected instanceof FunctionCall &&
-    expected.command instanceof Subroutine &&
-    (!expected.command.typeIsCertain ||
-      (expected.command.result && !expected.command.result.typeIsCertain))
-  ) {
-    const result = expected.command.result;
-    if (result) {
-      result.type = found.type;
-      result.typeIsCertain = true;
-    } else {
-      const result = new Variable("!result", expected.command);
-      result.type = found.type;
-      result.typeIsCertain = true;
-      expected.command.variables.unshift(result);
-    }
-    expected.command.typeIsCertain = true;
-    return found;
-  }
 
   // if found type isn't yet certain, infer it
-  if (found instanceof VariableValue && !found.variable.typeIsCertain) {
+  if (found.expressionType === "variable" && !found.variable.typeIsCertain) {
     found.variable.type = expectedType;
     found.variable.typeIsCertain = true;
     return found;
   }
   if (
-    found instanceof FunctionCall &&
-    found.command instanceof Subroutine &&
+    found.expressionType === "function" &&
+    found.command.__ === "subroutine" &&
     (!found.command.typeIsCertain || (found.command.result && !found.command.result.typeIsCertain))
   ) {
     const result = found.command.result;
@@ -211,7 +190,7 @@ function factor(lexemes: Lexemes, routine: Program | Subroutine): Expression {
           }
           lexemes.next();
           exp = factor(lexemes, routine);
-          if (!(exp instanceof VariableValue)) {
+          if (exp.expressionType !== "variable") {
             throw new CompilerError('Address operator "&" must be followed by a variable.', lexeme);
           }
           const variableAddress = new VariableAddress(exp.lexeme, exp.variable);
@@ -349,6 +328,20 @@ function factor(lexemes: Lexemes, routine: Program | Subroutine): Expression {
           if (variableValue.indexes.length > allowedIndexes) {
             throw new CompilerError("Too many indexes for array variable {lex}.", lexeme);
           }
+        }
+        // check for method call "." afterwards
+        if (lexemes.get()?.content === ".") {
+          lexemes.next();
+          const methodLexeme = lexemes.get();
+          if (methodLexeme?.type !== "identifier") {
+            throw new CompilerError("Method name missing after '.'.", lexemes.get());
+          }
+          const method = find.nativeCommand(routine, `.${methodLexeme.value}`);
+          if (!method) {
+            throw new CompilerError(`Method "${methodLexeme.value}" is not defined.`, methodLexeme);
+          }
+          lexemes.next();
+          return methodFunctionCall(methodLexeme, lexemes, routine, method, variableValue);
         }
         // return the variable value
         return variableValue;

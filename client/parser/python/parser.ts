@@ -1,10 +1,10 @@
-import subroutine from "./subroutine.ts";
-import { statement } from "./statement.ts";
-import Lexemes from "../definitions/lexemes.ts";
-import Program from "../definitions/program.ts";
-import { Subroutine } from "../definitions/subroutine.ts";
-import { Lexeme } from "../../lexer/lexeme.ts";
+import type { Lexeme } from "../../lexer/lexeme.ts";
 import { CompilerError } from "../../tools/error.ts";
+import type Lexemes from "../definitions/lexemes.ts";
+import Program from "../definitions/program.ts";
+import type { Subroutine } from "../definitions/subroutine.ts";
+import { statement } from "./statement.ts";
+import subroutine from "./subroutine.ts";
 
 /** parses lexemes as a Python program */
 export default function python(lexemes: Lexemes): Program {

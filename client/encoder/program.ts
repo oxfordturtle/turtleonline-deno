@@ -1,16 +1,11 @@
-// type imports
 import type { Language } from "../constants/languages.ts";
+import PCode, { pcodeArgs } from "../constants/pcodes.ts";
 import type Program from "../parser/definitions/program.ts";
+import type { Subroutine } from "../parser/definitions/subroutine.ts";
+import type Variable from "../parser/definitions/variable.ts";
 import type { Options } from "./options.ts";
-
-// submodule imports
 import { defaultOptions } from "./options.ts";
 import statement from "./statement.ts";
-
-// other module imports
-import Variable from "../parser/definitions/variable.ts";
-import { Subroutine } from "../parser/definitions/subroutine.ts";
-import PCode, { pcodeArgs } from "../constants/pcodes.ts";
 
 /** generates the pcode for a turtle program */
 export default function program(program: Program, options: Options = defaultOptions): number[][] {
@@ -218,7 +213,7 @@ function compileInnerCode(
   startLine: number,
   options: Options
 ): number[][] {
-  const program = routine instanceof Subroutine ? routine.program : routine;
+  const program = routine.__ === "subroutine" ? routine.program : routine;
   const pcode: number[][] = [];
   for (const stmt of routine.statements) {
     pcode.push(...statement(stmt, program, startLine + pcode.length, options));

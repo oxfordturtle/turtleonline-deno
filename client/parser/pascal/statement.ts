@@ -1,25 +1,3 @@
-import { expression, typeCheck } from "../expression.ts";
-import { procedureCall } from "../call.ts";
-import type Lexemes from "../definitions/lexemes.ts";
-import {
-  CompoundExpression,
-  VariableValue,
-  IntegerValue,
-  Expression,
-} from "../definitions/expression.ts";
-import type Program from "../definitions/program.ts";
-import type { Subroutine } from "../definitions/subroutine.ts";
-import type Variable from "../definitions/variable.ts";
-import {
-  Statement,
-  IfStatement,
-  ForStatement,
-  RepeatStatement,
-  WhileStatement,
-  VariableAssignment,
-  ProcedureCall,
-} from "../definitions/statement.ts";
-import * as find from "../find.ts";
 import {
   IdentifierLexeme,
   IntegerLexeme,
@@ -27,8 +5,30 @@ import {
   Lexeme,
   OperatorLexeme,
 } from "../../lexer/lexeme.ts";
-import { CompilerError } from "../../tools/error.ts";
 import { token } from "../../tokenizer/token.ts";
+import { CompilerError } from "../../tools/error.ts";
+import { procedureCall } from "../call.ts";
+import {
+  CompoundExpression,
+  IntegerValue,
+  VariableValue,
+  type Expression,
+} from "../definitions/expression.ts";
+import type Lexemes from "../definitions/lexemes.ts";
+import type Program from "../definitions/program.ts";
+import {
+  ForStatement,
+  IfStatement,
+  ProcedureCall,
+  RepeatStatement,
+  VariableAssignment,
+  WhileStatement,
+  type Statement,
+} from "../definitions/statement.ts";
+import type { Subroutine } from "../definitions/subroutine.ts";
+import type Variable from "../definitions/variable.ts";
+import { expression, typeCheck } from "../expression.ts";
+import * as find from "../find.ts";
 
 /** parses semicolons */
 export function semicolon(lexemes: Lexemes, compulsory = false, context = "statement"): void {

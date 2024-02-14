@@ -1,12 +1,12 @@
-import type from "./type.ts";
-import identifier from "./identifier.ts";
-import variable from "./variable.ts";
-import Lexemes from "../definitions/lexemes.ts";
-import Program from "../definitions/program.ts";
+import type { TypeLexeme } from "../../lexer/lexeme.ts";
+import { CompilerError } from "../../tools/error.ts";
+import type Lexemes from "../definitions/lexemes.ts";
+import type Program from "../definitions/program.ts";
 import { Subroutine } from "../definitions/subroutine.ts";
 import Variable from "../definitions/variable.ts";
-import { CompilerError } from "../../tools/error.ts";
-import { TypeLexeme } from "../../lexer/lexeme.ts";
+import identifier from "./identifier.ts";
+import type from "./type.ts";
+import variable from "./variable.ts";
 
 /** parses lexemes at subroutine definition, and returns the subroutine */
 export default function subroutine(

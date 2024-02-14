@@ -3,6 +3,7 @@ import type { Type } from "../../lexer/lexeme.ts";
 
 /** constant */
 export class Constant {
+  readonly __ = "constant";
   readonly name: string;
   readonly language: Language;
   value: number | string;

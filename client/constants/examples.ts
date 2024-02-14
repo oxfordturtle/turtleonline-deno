@@ -1,5 +1,5 @@
-import type { Language } from "./languages.ts";
 import type { ExampleGroupId } from "./exampleGroups.ts";
+import type { Language } from "./languages.ts";
 
 export type Example = ReturnType<typeof example>;
 

@@ -1,8 +1,8 @@
-import type { Language } from "../constants/languages.ts";
 import colours from "../constants/colours.ts";
 import commands from "../constants/commands.ts";
 import inputs from "../constants/inputs.ts";
 import keywords from "../constants/keywords.ts";
+import type { Language } from "../constants/languages.ts";
 import { token, type Token } from "./token.ts";
 
 export default (code: string, language: Language): Token[] => {
@@ -129,7 +129,7 @@ const operator = (
     C: /^(\+|-|\*|\/|div\b|%|==|!=|<=|>=|<|>|=|!|&&|\|\||~|&|\||\^)/,
     Java: /^(\+|-|\*|\/|div\b|%|==|!=|<=|>=|<|>|=|!|&&|\|\||~|&|\||\^)/,
     Pascal: /^(\+|-|\*|\/|div\b|mod\b|=|<>|<=|>=|<|>|:=|andl\b|orl\b|not\b|and\b|or\b|xor\b)/i,
-    Python: /^(\+|-|\*|\/\/|\/|%|==|!=|<=|>=|<|>|=|not\b|and\b|or\b|~|&|\||\^)/,
+    Python: /^(\+=|-=|\+|-|\*|\/\/|\/|%|==|!=|<=|>=|<|>|=|not\b|and\b|or\b|~|&|\||\^)/,
     TypeScript: /^(\+|-|\*|\/|div\b|%|==|!=|<=|>=|<|>|=|!|&&|\|\||~|&|\||\^)/,
   };
   const test = code.match(tests[language]);
@@ -147,7 +147,7 @@ const delimiter = (
     C: /^(\(|\)|{|}|\[|\]|,|;)/,
     Java: /^(\(|\)|{|}|\[|\]|,|;)/,
     Pascal: /^(\(|\)|\[|\]|,|:|;|\.\.|\.)/,
-    Python: /^(\(|\)|\[|\]|,|:|;|->)/,
+    Python: /^(\(|\)|\[|\]|,|:|;|\.|->)/,
     TypeScript: /^(\(|\)|{|}|\[|\]|,|;|:)/,
   };
   const test = code.match(tests[language]);

@@ -1,12 +1,12 @@
-import identifier from "./identifier.ts";
-import constant from "./constant.ts";
-import subroutine from "./subroutine.ts";
-import { variables } from "./variable.ts";
-import { semicolon, statement } from "./statement.ts";
+import type { Lexeme } from "../../lexer/lexeme.ts";
+import { CompilerError } from "../../tools/error.ts";
 import type Lexemes from "../definitions/lexemes.ts";
 import Program from "../definitions/program.ts";
-import { CompilerError } from "../../tools/error.ts";
-import type { Lexeme } from "../../lexer/lexeme.ts";
+import constant from "./constant.ts";
+import identifier from "./identifier.ts";
+import { semicolon, statement } from "./statement.ts";
+import subroutine from "./subroutine.ts";
+import { variables } from "./variable.ts";
 
 /** parses lexemes as a Pascal program */
 export default function pascal(lexemes: Lexemes): Program {

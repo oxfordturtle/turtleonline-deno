@@ -1,33 +1,33 @@
-import constant from "./constant.ts";
-import variable from "./variable.ts";
-import { procedureCall } from "../call.ts";
-import { expression, typeCheck } from "../expression.ts";
-import * as find from "../find.ts";
-import Lexemes from "../definitions/lexemes.ts";
-import { CompoundExpression, Expression, VariableValue } from "../definitions/expression.ts";
-import Program from "../definitions/program.ts";
-import { Subroutine } from "../definitions/subroutine.ts";
-import Variable from "../definitions/variable.ts";
 import {
-  IdentifierLexeme,
-  KeywordLexeme,
-  Lexeme,
   OperatorLexeme,
-  Type,
+  type IdentifierLexeme,
+  type KeywordLexeme,
+  type Lexeme,
+  type Type,
 } from "../../lexer/lexeme.ts";
+import { token } from "../../tokenizer/token.ts";
+import { CompilerError } from "../../tools/error.ts";
+import { procedureCall } from "../call.ts";
+import { CompoundExpression, VariableValue, type Expression } from "../definitions/expression.ts";
+import type Lexemes from "../definitions/lexemes.ts";
+import type Program from "../definitions/program.ts";
 import {
-  Statement,
-  IfStatement,
   ForStatement,
+  IfStatement,
+  PassStatement,
+  ProcedureCall,
   RepeatStatement,
   ReturnStatement,
-  WhileStatement,
-  PassStatement,
   VariableAssignment,
-  ProcedureCall,
+  WhileStatement,
+  type Statement,
 } from "../definitions/statement.ts";
-import { CompilerError } from "../../tools/error.ts";
-import { token } from "../../tokenizer/token.ts";
+import type { Subroutine } from "../definitions/subroutine.ts";
+import type Variable from "../definitions/variable.ts";
+import { expression, typeCheck } from "../expression.ts";
+import * as find from "../find.ts";
+import constant from "./constant.ts";
+import variable from "./variable.ts";
 
 /** checks for semicolon or new line at the end of a statement */
 export function eosCheck(lexemes: Lexemes): void {
@@ -307,7 +307,7 @@ function returnStatement(
   routine: Program | Subroutine
 ): ReturnStatement {
   // check a return statement is allowed
-  if (routine instanceof Program) {
+  if (routine.__ === "program") {
     throw new CompilerError(
       '"RETURN" statements are only valid within the body of a function.',
       lexemes.get()
@@ -423,7 +423,7 @@ function forStatement(
     );
   }
   const initialisation = simpleStatement(firstInitialisationLexeme, lexemes, routine);
-  if (!(initialisation instanceof VariableAssignment)) {
+  if (initialisation.statementType !== "variableAssignment") {
     throw new CompilerError(
       '"for" conditions must begin with a variable assignment.',
       lexemes.get(-1)
@@ -470,7 +470,7 @@ function forStatement(
     );
   }
   const change = simpleStatement(firstChangeLexeme, lexemes, routine);
-  if (!(change instanceof VariableAssignment)) {
+  if (change.statementType !== "variableAssignment") {
     throw new CompilerError(
       '"for (...;" must be followed by a loop variable reassignment.',
       lexemes.get(-1)

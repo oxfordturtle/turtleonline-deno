@@ -1,25 +1,19 @@
-// type imports
-import type { Options } from "./options.ts";
+import PCode from "../constants/pcodes.ts";
+import { VariableValue } from "../parser/definitions/expression.ts";
 import type Program from "../parser/definitions/program.ts";
 import type {
-  Statement,
-  ProcedureCall,
-  IfStatement,
   ForStatement,
+  IfStatement,
+  ProcedureCall,
   RepeatStatement,
-  WhileStatement,
   ReturnStatement,
+  Statement,
+  WhileStatement,
 } from "../parser/definitions/statement.ts";
-import command from "./command.ts";
-
-// submodule imports
-import { merge, expression } from "./expression.ts";
-
-// other module imports
-import PCode from "../constants/pcodes.ts";
-import { Subroutine } from "../parser/definitions/subroutine.ts";
-import { VariableValue } from "../parser/definitions/expression.ts";
 import { VariableAssignment } from "../parser/definitions/statement.ts";
+import type { Subroutine } from "../parser/definitions/subroutine.ts";
+import { expression, merge } from "./expression.ts";
+import type { Options } from "./options.ts";
 
 /** generates the pcode for a statement of any kind */
 export default function statement(
@@ -218,14 +212,14 @@ function procedureCall(stmt: ProcedureCall, program: Program, options: Options):
   }
 
   // next: code for the command
-  if (stmt.command instanceof Subroutine) {
+  if (stmt.command.__ === "subroutine") {
     // custom commands
     // N.B. use command index as placeholder for now; this will be backpatched
     // when compilation is otherwise complete
     merge(pcode, [[PCode.subr, stmt.command.index]]);
   } else {
     // native commands
-    merge(pcode, [command(stmt.command, program)]);
+    merge(pcode, [stmt.command.code(program.turtleAddress)]);
   }
 
   return pcode;

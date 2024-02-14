@@ -1,7 +1,6 @@
 import type { Expression } from "../parser/definitions/expression.ts";
 import type { Language } from "../constants/languages.ts";
 import type from "./type.ts";
-import { Command } from "../constants/commands.ts";
 
 /** formats an expression as a code string */
 export default function expression(exp: Expression, language: Language): string {
@@ -36,7 +35,7 @@ export default function expression(exp: Expression, language: Language): string 
 
     case "function": {
       const name =
-        exp.command instanceof Command ? (exp.command.names[language] as string) : exp.command.name;
+        exp.command.__ === "command" ? (exp.command.names[language] as string) : exp.command.name;
       if ((language === "BASIC" || language === "Pascal") && exp.arguments.length === 0) {
         return name;
       }

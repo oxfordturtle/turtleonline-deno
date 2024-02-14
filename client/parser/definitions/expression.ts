@@ -1,22 +1,23 @@
-import type { Subroutine } from "./subroutine.ts";
-import type Variable from "./variable.ts";
-import type { Constant } from "./constant.ts";
-import type { Type, Operator } from "../../lexer/lexeme.ts";
+import type { Colour } from "../../constants/colours.ts";
 import type { Command } from "../../constants/commands.ts";
 import type { Input } from "../../constants/inputs.ts";
-import type { Colour } from "../../constants/colours.ts";
 import type {
-  Lexeme,
   BooleanLexeme,
   CharacterLexeme,
   IdentifierLexeme,
-  IntegerLexeme,
   InputcodeLexeme,
+  IntegerLexeme,
+  Lexeme,
+  Operator,
   OperatorLexeme,
   QuerycodeLexeme,
   StringLexeme,
+  Type,
 } from "../../lexer/lexeme.ts";
+import type { Constant } from "./constant.ts";
 import { type } from "./operators.ts";
+import type { Subroutine } from "./subroutine.ts";
+import type Variable from "./variable.ts";
 
 /** expression */
 export type Expression =
@@ -33,6 +34,7 @@ export type Expression =
 
 /** integer value (including booleans and characters) */
 export class IntegerValue {
+  readonly __ = "expression";
   readonly expressionType = "integer";
   readonly lexeme: BooleanLexeme | CharacterLexeme | IntegerLexeme;
   readonly value: number;
@@ -49,6 +51,7 @@ export class IntegerValue {
 
 /** string value */
 export class StringValue {
+  readonly __ = "expression";
   readonly expressionType = "string";
   readonly lexeme: StringLexeme;
   readonly value: string;
@@ -62,6 +65,7 @@ export class StringValue {
 
 /** input value */
 export class InputValue {
+  readonly __ = "expression";
   readonly expressionType = "input";
   readonly lexeme: InputcodeLexeme | QuerycodeLexeme;
   readonly input: Input;
@@ -75,6 +79,7 @@ export class InputValue {
 
 /** colour value */
 export class ColourValue {
+  readonly __ = "expression";
   readonly expressionType = "colour";
   readonly lexeme: IdentifierLexeme;
   readonly colour: Colour;
@@ -88,6 +93,7 @@ export class ColourValue {
 
 /** constant value */
 export class ConstantValue {
+  readonly __ = "expression";
   readonly expressionType = "constant";
   readonly lexeme: IdentifierLexeme;
   readonly constant: Constant;
@@ -111,6 +117,7 @@ export class ConstantValue {
 
 /** variable address */
 export class VariableAddress {
+  readonly __ = "expression";
   readonly expressionType = "address";
   readonly lexeme: IdentifierLexeme;
   readonly variable: Variable;
@@ -125,6 +132,7 @@ export class VariableAddress {
 
 /** variable value */
 export class VariableValue {
+  readonly __ = "expression";
   readonly expressionType = "variable";
   readonly lexeme: IdentifierLexeme;
   readonly variable: Variable;
@@ -137,23 +145,19 @@ export class VariableValue {
   }
 
   get type(): Type {
-    // type is not known in advance, as it depends on this.indexes.length
-    switch (this.variable.routine.language) {
-      case "C":
-      case "Java":
-      case "Pascal":
-        return this.variable.type === "string" &&
-          this.indexes.length > this.variable.arrayDimensions.length
-          ? "character"
-          : this.variable.type;
-      default:
-        return this.variable.type;
-    }
+    const languagesWithCharacterType = ["C", "Java", "Pascal"];
+    return languagesWithCharacterType.includes(this.variable.routine.language)
+      ? this.variable.type === "string" &&
+        this.indexes.length > this.variable.arrayDimensions.length
+        ? "character"
+        : this.variable.type
+      : this.variable.type;
   }
 }
 
 /** function call */
 export class FunctionCall {
+  readonly __ = "expression";
   readonly expressionType = "function";
   readonly lexeme: IdentifierLexeme;
   readonly command: Subroutine | Command;
@@ -172,6 +176,7 @@ export class FunctionCall {
 
 /** compound expression */
 export class CompoundExpression {
+  readonly __ = "expression";
   readonly expressionType = "compound";
   readonly lexeme: OperatorLexeme;
   readonly left: Expression | null; // left hand side optional (for unary operators 'not' and 'minus')
@@ -195,6 +200,7 @@ export class CompoundExpression {
 
 /** cast expression */
 export class CastExpression {
+  readonly __ = "expression";
   readonly expressionType = "cast";
   readonly lexeme: Lexeme;
   readonly type: Type;

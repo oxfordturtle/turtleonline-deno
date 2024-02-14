@@ -1,7 +1,6 @@
-import expression from "./expression.ts";
 import { Language } from "../constants/languages.ts";
 import { Statement } from "../parser/definitions/statement.ts";
-import { Command } from "../constants/commands.ts";
+import expression from "./expression.ts";
 
 /** formats a statement as a code string */
 export default function statement(stmt: Statement, language: Language): string {
@@ -11,7 +10,7 @@ export default function statement(stmt: Statement, language: Language): string {
 
     case "procedureCall": {
       const name =
-        stmt.command instanceof Command
+        stmt.command.__ === "command"
           ? (stmt.command.names[language] as string)
           : stmt.command.name;
       if ((language === "BASIC" || language === "Pascal") && stmt.arguments.length === 0) {

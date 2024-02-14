@@ -1,33 +1,37 @@
-import identifiers from "./identifiers.ts";
+import {
+  IntegerLexeme,
+  OperatorLexeme,
+  type IdentifierLexeme,
+  type KeywordLexeme,
+  type Lexeme,
+} from "../../lexer/lexeme.ts";
+import { token } from "../../tokenizer/token.ts";
+import { CompilerError } from "../../tools/error.ts";
 import { procedureCall } from "../call.ts";
-import { expression, typeCheck } from "../expression.ts";
-import evaluate from "../evaluate.ts";
-import * as find from "../find.ts";
-import { IntegerLexeme } from "../../lexer/lexeme.ts";
-import Lexemes from "../definitions/lexemes.ts";
 import {
   CompoundExpression,
-  VariableValue,
-  Expression,
   IntegerValue,
+  VariableValue,
+  type Expression,
 } from "../definitions/expression.ts";
+import type Lexemes from "../definitions/lexemes.ts";
 import Program from "../definitions/program.ts";
+import {
+  ForStatement,
+  IfStatement,
+  PassStatement,
+  ReturnStatement,
+  VariableAssignment,
+  WhileStatement,
+  type Statement,
+} from "../definitions/statement.ts";
 import { Subroutine } from "../definitions/subroutine.ts";
 import Variable from "../definitions/variable.ts";
-import {
-  Statement,
-  IfStatement,
-  ForStatement,
-  WhileStatement,
-  PassStatement,
-  VariableAssignment,
-  ReturnStatement,
-} from "../definitions/statement.ts";
-import { IdentifierLexeme, KeywordLexeme, Lexeme, OperatorLexeme } from "../../lexer/lexeme.ts";
-import { CompilerError } from "../../tools/error.ts";
+import evaluate from "../evaluate.ts";
+import { expression, typeCheck } from "../expression.ts";
+import * as find from "../find.ts";
+import identifiers from "./identifiers.ts";
 import variable from "./variable.ts";
-import { Constant } from "../definitions/constant.ts";
-import { token } from "../../tokenizer/token.ts";
 
 /** checks for semi colon or new line at the end of a statement */
 export function eosCheck(lexemes: Lexemes): void {
@@ -105,7 +109,7 @@ export function statement(
         case "global":
         case "nonlocal":
           lexemes.next();
-          if (routine instanceof Program) {
+          if (routine.__ === "program") {
             throw new CompilerError(
               "{lex} statements can only occur inside a subroutine.",
               lexemes.get(-1)
@@ -289,7 +293,7 @@ export function variableDeclaration(
   const foo = variable(lexemes, routine);
 
   // constants
-  if (foo instanceof Constant) {
+  if (foo.__ === "constant") {
     // expecting '='
     if (!lexemes.get()) {
       throw new CompilerError("Constant must be assigned a value.", lexemes.get(-1));
@@ -329,7 +333,7 @@ function returnStatement(
   routine: Program | Subroutine
 ): ReturnStatement {
   // check a return statement is allowed
-  if (routine instanceof Program) {
+  if (routine.__ === "program") {
     throw new CompilerError("Programs cannot return a value.", lexemes.get());
   }
 

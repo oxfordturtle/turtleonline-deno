@@ -1,8 +1,8 @@
-import identifier from "./identifier.ts";
-import Lexemes from "../definitions/lexemes.ts";
-import Program from "../definitions/program.ts";
-import { Subroutine } from "../definitions/subroutine.ts";
 import { CompilerError } from "../../tools/error.ts";
+import type Lexemes from "../definitions/lexemes.ts";
+import type Program from "../definitions/program.ts";
+import type { Subroutine } from "../definitions/subroutine.ts";
+import identifier from "./identifier.ts";
 
 /** parses lexemes as a comma-separated list of identifiers, and returns the names */
 export default function identifiers(

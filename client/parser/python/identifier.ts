@@ -1,8 +1,8 @@
-import * as find from "../find.ts";
-import Lexemes from "../definitions/lexemes.ts";
-import Program from "../definitions/program.ts";
-import { Subroutine } from "../definitions/subroutine.ts";
 import { CompilerError } from "../../tools/error.ts";
+import type Lexemes from "../definitions/lexemes.ts";
+import type Program from "../definitions/program.ts";
+import type { Subroutine } from "../definitions/subroutine.ts";
+import * as find from "../find.ts";
 
 /** parses lexeme as an identifier, and returns the name */
 export default function identifier(

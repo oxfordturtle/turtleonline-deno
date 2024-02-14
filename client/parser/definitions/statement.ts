@@ -1,9 +1,9 @@
-import { CompoundExpression, VariableValue, type Expression } from "./expression.ts";
-import type { Subroutine } from "./subroutine.ts";
-import type { Constant } from "./constant.ts";
-import type Variable from "./variable.ts";
 import type { Command } from "../../constants/commands.ts";
 import type { IdentifierLexeme, KeywordLexeme, OperatorLexeme } from "../../lexer/lexeme.ts";
+import type { Constant } from "./constant.ts";
+import { CompoundExpression, VariableValue, type Expression } from "./expression.ts";
+import type { Subroutine } from "./subroutine.ts";
+import type Variable from "./variable.ts";
 
 /** statement */
 export type Statement =
@@ -18,6 +18,7 @@ export type Statement =
 
 /** variable assignment */
 export class VariableAssignment {
+  readonly __ = "statement";
   readonly statementType = "variableAssignment";
   readonly lexeme: OperatorLexeme;
   readonly variable: Variable;
@@ -60,6 +61,7 @@ export class VariableAssignment {
 
 /** procedure call */
 export class ProcedureCall {
+  readonly __ = "statement";
   readonly statementType = "procedureCall";
   readonly lexeme: IdentifierLexeme;
   readonly command: Subroutine | Command;
@@ -73,6 +75,7 @@ export class ProcedureCall {
 
 /** if statement */
 export class IfStatement {
+  readonly __ = "statement";
   readonly statementType = "ifStatement";
   readonly lexeme: KeywordLexeme;
   readonly condition: Expression;
@@ -89,6 +92,7 @@ export class IfStatement {
 
 /** for statement */
 export class ForStatement {
+  readonly __ = "statement";
   readonly statementType = "forStatement";
   readonly lexeme: KeywordLexeme;
   readonly initialisation: VariableAssignment;
@@ -113,6 +117,7 @@ export class ForStatement {
 
 /** repeat statement */
 export class RepeatStatement {
+  readonly __ = "statement";
   readonly statementType = "repeatStatement";
   readonly lexeme: KeywordLexeme;
   readonly condition: Expression;
@@ -128,6 +133,7 @@ export class RepeatStatement {
 
 /** while statement */
 export class WhileStatement {
+  readonly __ = "statement";
   readonly statementType = "whileStatement";
   readonly lexeme: KeywordLexeme;
   readonly condition: Expression;
@@ -143,6 +149,7 @@ export class WhileStatement {
 
 /** return statement */
 export class ReturnStatement {
+  readonly __ = "statement";
   readonly statementType = "returnStatement";
   readonly lexeme: KeywordLexeme | OperatorLexeme; // "=" operator in BASIC, "return" keyword in other languages
   readonly routine: Subroutine;
@@ -157,5 +164,6 @@ export class ReturnStatement {
 
 /** pass statement */
 export class PassStatement {
+  readonly __ = "statement";
   readonly statementType = "passStatement";
 }

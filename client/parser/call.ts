@@ -1,14 +1,14 @@
-import { expression, typeCheck } from "./expression.ts";
-import basicBody from "./basic/body.ts";
-import type Program from "./definitions/program.ts";
-import { Subroutine } from "./definitions/subroutine.ts";
-import { ProcedureCall } from "./definitions/statement.ts";
-import { FunctionCall, VariableValue } from "./definitions/expression.ts";
-import Variable from "./definitions/variable.ts";
-import { Command } from "../constants/commands.ts";
-import { CompilerError } from "../tools/error.ts";
-import type Lexemes from "./definitions/lexemes.ts";
+import type { Command } from "../constants/commands.ts";
 import type { IdentifierLexeme } from "../lexer/lexeme.ts";
+import { CompilerError } from "../tools/error.ts";
+import basicBody from "./basic/body.ts";
+import { FunctionCall, type VariableValue } from "./definitions/expression.ts";
+import type Lexemes from "./definitions/lexemes.ts";
+import type Program from "./definitions/program.ts";
+import { ProcedureCall } from "./definitions/statement.ts";
+import type { Subroutine } from "./definitions/subroutine.ts";
+import Variable from "./definitions/variable.ts";
+import { expression, typeCheck } from "./expression.ts";
 
 /** parses lexemes as a procedure call */
 export function procedureCall(
@@ -24,13 +24,13 @@ export function procedureCall(
 
   // for Python, establish that it's definitely not a function
   // (so subsequent attempts to call it as such will throw an error)
-  if (command instanceof Subroutine) {
+  if (command.__ === "subroutine") {
     command.typeIsCertain = true;
   }
 
   const procedureCall = new ProcedureCall(lexeme, command);
   brackets(lexeme, lexemes, routine, procedureCall);
-  if (procedureCall.command instanceof Subroutine && procedureCall.command !== routine) {
+  if (procedureCall.command.__ === "subroutine" && procedureCall.command !== routine) {
     if (routine.language === "BASIC" && procedureCall.command.statements.length === 0) {
       const previousLexemeIndex = lexemes.index;
       basicBody(lexemes, procedureCall.command);
@@ -49,7 +49,7 @@ export function functionCall(
   command: Command | Subroutine
 ): FunctionCall {
   // infer type
-  if (command instanceof Subroutine && !command.typeIsCertain) {
+  if (command.__ === "subroutine" && !command.typeIsCertain) {
     command.typeIsCertain = true;
     command.variables.unshift(new Variable("!result", command));
   }
@@ -61,13 +61,36 @@ export function functionCall(
   const functionCall = new FunctionCall(lexeme, command);
   brackets(lexeme, lexemes, routine, functionCall);
 
-  if (functionCall.command instanceof Subroutine && functionCall.command !== routine) {
+  if (functionCall.command.__ === "subroutine" && functionCall.command !== routine) {
     if (routine.language === "BASIC" && functionCall.command.statements.length === 0) {
       const previousLexemeIndex = lexemes.index;
       basicBody(lexemes, functionCall.command);
       lexemes.index = previousLexemeIndex;
     }
   }
+
+  return functionCall;
+}
+
+export function methodFunctionCall(
+  lexeme: IdentifierLexeme,
+  lexemes: Lexemes,
+  routine: Program | Subroutine,
+  method: Command,
+  variableValue: VariableValue
+): FunctionCall {
+  if (method.parameters[0].type !== variableValue.variable.type) {
+    throw new CompilerError(
+      `Method "${method.names[routine.language]}" is not defined for type "${
+        variableValue.variable.type
+      }".`,
+      lexeme
+    );
+  }
+
+  const functionCall = new FunctionCall(lexeme, method);
+  functionCall.arguments.push(variableValue);
+  brackets(lexeme, lexemes, routine, functionCall);
 
   return functionCall;
 }
@@ -79,8 +102,15 @@ function brackets(
   routine: Program | Subroutine,
   commandCall: ProcedureCall | FunctionCall
 ): void {
+  const isMethod =
+    commandCall.command.__ === "command" &&
+    commandCall.command.names[routine.language]?.startsWith(".");
+  const parameters = isMethod
+    ? commandCall.command.parameters.slice(1)
+    : commandCall.command.parameters;
+
   // with parameters
-  if (commandCall.command.parameters.length > 0) {
+  if (parameters.length > 0) {
     // check for opening bracket
     if (!lexemes.get() || lexemes.get()?.content !== "(") {
       throw new CompilerError("Opening bracket missing after command {lex}.", lexeme);
@@ -133,17 +163,18 @@ function _arguments(
   commandCall: ProcedureCall | FunctionCall
 ): void {
   const commandName =
-    commandCall.command instanceof Command
+    commandCall.command.__ === "command"
       ? commandCall.command.names[routine.language]
       : commandCall.command.name;
 
   // handle the arguments
-  const argsExpected = commandCall.command.parameters.length;
-  let argsGiven = 0;
-  while (argsGiven < argsExpected && lexemes.get()?.content !== ")") {
-    const parameter = commandCall.command.parameters[argsGiven];
+  while (
+    commandCall.arguments.length < commandCall.command.parameters.length &&
+    lexemes.get()?.content !== ")"
+  ) {
+    const parameter = commandCall.command.parameters[commandCall.arguments.length];
     let argument = expression(lexemes, routine);
-    if (commandCall.command instanceof Command) {
+    if (commandCall.command.__ === "command") {
       switch (commandCall.command.names[routine.language]?.toLowerCase()) {
         case "address":
           // variable passed (by reference) to built-in address function can be of any type
@@ -152,7 +183,7 @@ function _arguments(
 
         case "length":
           // length command allows string or array arguments
-          if (!(argument instanceof VariableValue) || !argument.variable.isArray) {
+          if (!(argument.expressionType === "variable") || !argument.variable.isArray) {
             argument = typeCheck(routine.language, argument, parameter);
           }
           break;
@@ -166,8 +197,7 @@ function _arguments(
       argument = typeCheck(routine.language, argument, parameter);
     }
     commandCall.arguments.push(argument);
-    argsGiven += 1;
-    if (argsGiven < argsExpected) {
+    if (commandCall.arguments.length < commandCall.command.parameters.length) {
       if (!lexemes.get()) {
         throw new CompilerError("Comma needed after parameter.", argument.lexeme);
       }
@@ -185,7 +215,7 @@ function _arguments(
   }
 
   // final error checking
-  if (argsGiven < argsExpected) {
+  if (commandCall.arguments.length < commandCall.command.parameters.length) {
     throw new CompilerError("Too few arguments given for command {lex}.", commandCall.lexeme);
   }
   if (lexemes.get()?.content === ",") {

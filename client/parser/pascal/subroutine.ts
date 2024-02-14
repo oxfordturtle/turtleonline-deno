@@ -1,13 +1,13 @@
-import identifier from "./identifier.ts";
-import type from "./type.ts";
-import { semicolon, statement } from "./statement.ts";
-import { variables } from "./variable.ts";
+import type { KeywordLexeme, Lexeme } from "../../lexer/lexeme.ts";
+import { CompilerError } from "../../tools/error.ts";
 import type Lexemes from "../definitions/lexemes.ts";
-import Program from "../definitions/program.ts";
+import type Program from "../definitions/program.ts";
 import { Subroutine } from "../definitions/subroutine.ts";
 import Variable from "../definitions/variable.ts";
-import { CompilerError } from "../../tools/error.ts";
-import type { KeywordLexeme, Lexeme } from "../../lexer/lexeme.ts";
+import identifier from "./identifier.ts";
+import { semicolon, statement } from "./statement.ts";
+import type from "./type.ts";
+import { variables } from "./variable.ts";
 
 /** parses lexemes as a subroutine definition */
 export default function subroutine(
@@ -119,7 +119,7 @@ export default function subroutine(
 
 /** calculates the index of a subroutine (before it and its parents have been added to the program) */
 function subroutineIndex(subroutine: Subroutine): number {
-  return subroutine.parent instanceof Program
+  return subroutine.parent.__ === "program"
     ? subroutine.parent.allSubroutines.length + 1
     : subroutineIndex(subroutine.parent) + subroutine.allSubroutines.length + 1;
 }

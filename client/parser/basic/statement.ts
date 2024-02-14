@@ -1,40 +1,40 @@
-import { array, variable, variables } from "./variable.ts";
-import type Lexemes from "../definitions/lexemes.ts";
-import constant from "./constant.ts";
-import Program from "../definitions/program.ts";
-import type { Subroutine } from "../definitions/subroutine.ts";
-import type Variable from "../definitions/variable.ts";
 import {
-  Statement,
-  IfStatement,
-  ForStatement,
-  RepeatStatement,
-  ReturnStatement,
-  WhileStatement,
-  VariableAssignment,
-  ProcedureCall,
-  PassStatement,
-} from "../definitions/statement.ts";
+  IntegerLexeme,
+  OperatorLexeme,
+  type IdentifierLexeme,
+  type KeywordLexeme,
+  type Lexeme,
+  type Type,
+} from "../../lexer/lexeme.ts";
+import { token } from "../../tokenizer/token.ts";
+import { CompilerError } from "../../tools/error.ts";
+import { procedureCall } from "../call.ts";
 import {
+  CompoundExpression,
   IntegerValue,
   VariableValue,
-  CompoundExpression,
-  Expression,
+  type Expression,
 } from "../definitions/expression.ts";
-import { typeCheck, expression } from "../expression.ts";
-import evaluate from "../evaluate.ts";
-import { procedureCall } from "../call.ts";
-import * as find from "../find.ts";
+import type Lexemes from "../definitions/lexemes.ts";
+import type Program from "../definitions/program.ts";
 import {
-  Type,
-  Lexeme,
-  IdentifierLexeme,
-  OperatorLexeme,
-  KeywordLexeme,
-  IntegerLexeme,
-} from "../../lexer/lexeme.ts";
-import { CompilerError } from "../../tools/error.ts";
-import { token } from "../../tokenizer/token.ts";
+  ForStatement,
+  IfStatement,
+  PassStatement,
+  ProcedureCall,
+  RepeatStatement,
+  ReturnStatement,
+  VariableAssignment,
+  WhileStatement,
+  type Statement,
+} from "../definitions/statement.ts";
+import type { Subroutine } from "../definitions/subroutine.ts";
+import type Variable from "../definitions/variable.ts";
+import evaluate from "../evaluate.ts";
+import { expression, typeCheck } from "../expression.ts";
+import * as find from "../find.ts";
+import constant from "./constant.ts";
+import { array, variable, variables } from "./variable.ts";
 
 /** checks for new lines and moves past them */
 export function newLine(lexemes: Lexemes): void {
@@ -100,7 +100,7 @@ export function statement(
 
         // LOCAL statement
         case "local":
-          if (routine instanceof Program) {
+          if (routine.__ === "program") {
             throw new CompilerError(
               "Main program cannot declare any LOCAL variables.",
               lexemes.get()
@@ -113,7 +113,7 @@ export function statement(
 
         // PRIVATE statement
         case "private": {
-          if (routine instanceof Program) {
+          if (routine.__ === "program") {
             throw new CompilerError(
               "Main program cannot declare any PRIVATE variables.",
               lexemes.get()
@@ -154,7 +154,7 @@ export function statement(
           break;
 
         case "def":
-          if (routine instanceof Program) {
+          if (routine.__ === "program") {
             throw new CompilerError('Subroutines must be defined after program "END".', lexeme);
           }
           throw new CompilerError(
@@ -212,7 +212,7 @@ function simpleStatement(
   }
 
   // otherwise create the variable as a global
-  const program = routine instanceof Program ? routine : routine.program;
+  const program = routine.__ === "program" ? routine : routine.program;
   const baz = variable(lexemes, program);
   program.variables.push(baz);
   return variableAssignment(lexeme, lexemes, routine, baz);
@@ -303,7 +303,7 @@ function returnStatement(
   routine: Program | Subroutine
 ): ReturnStatement {
   // check a return statement is allowed
-  if (routine instanceof Program) {
+  if (routine.__ === "program") {
     throw new CompilerError("Statement in the main program cannot begin with {lex}.", lexeme);
   }
   if (routine.type !== "function") {
@@ -416,7 +416,7 @@ function forStatement(
   const existing = find.variable(routine, variableLexeme.content);
   if (!existing) {
     // create the variable as a global
-    const program = routine instanceof Program ? routine : routine.program;
+    const program = routine.__ === "program" ? routine : routine.program;
     foo = variable(lexemes, program);
     program.variables.push(foo);
   } else {

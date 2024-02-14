@@ -1,10 +1,11 @@
-import Routine from "./routine.ts";
-import Program from "./program.ts";
-import type { Subroutine } from "./subroutine.ts";
 import type { Type } from "../../lexer/lexeme.ts";
+import type Program from "./program.ts";
+import Routine from "./routine.ts";
+import type { Subroutine } from "./subroutine.ts";
 
 /** variable */
 export default class Variable {
+  readonly __ = "variable";
   readonly name: string;
   readonly routine: Program | Subroutine;
   isParameter = false;
@@ -32,7 +33,7 @@ export default class Variable {
 
   /** whether the variable is a global */
   get isGlobal(): boolean {
-    return this.routine instanceof Program;
+    return this.routine.__ === "program";
   }
 
   /** length of each of the variable's ultimate elements */
@@ -92,7 +93,7 @@ export default class Variable {
     const arrayIndex = this.routine.variables.indexOf(this);
     const routine = new Routine(this.routine.language);
     routine.variables = this.routine.variables.slice(0, arrayIndex);
-    return this.routine instanceof Program
+    return this.routine.__ === "program"
       ? this.routine.turtleAddress + this.routine.turtleVariables.length + routine.memoryNeeded + 1
       : routine.memoryNeeded + 1;
   }

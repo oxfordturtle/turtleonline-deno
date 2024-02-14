@@ -1,10 +1,10 @@
+import { Constant } from "../definitions/constant.ts";
+import type Lexemes from "../definitions/lexemes.ts";
+import type Program from "../definitions/program.ts";
+import type { Subroutine } from "../definitions/subroutine.ts";
+import Variable from "../definitions/variable.ts";
 import identifier from "./identifier.ts";
 import type from "./type.ts";
-import Lexemes from "../definitions/lexemes.ts";
-import Program from "../definitions/program.ts";
-import { Subroutine } from "../definitions/subroutine.ts";
-import { Constant } from "../definitions/constant.ts";
-import Variable from "../definitions/variable.ts";
 
 /** parses lexemes as a variable/parameter declaration */
 export default function variable(

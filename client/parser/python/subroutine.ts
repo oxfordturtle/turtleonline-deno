@@ -1,13 +1,12 @@
+import type { KeywordLexeme } from "../../lexer/lexeme.ts";
+import { CompilerError } from "../../tools/error.ts";
+import type Lexemes from "../definitions/lexemes.ts";
+import type Program from "../definitions/program.ts";
+import { Subroutine } from "../definitions/subroutine.ts";
+import Variable from "../definitions/variable.ts";
 import identifier from "./identifier.ts";
 import type from "./type.ts";
 import variable from "./variable.ts";
-import Lexemes from "../definitions/lexemes.ts";
-import Program from "../definitions/program.ts";
-import { Subroutine } from "../definitions/subroutine.ts";
-import { Constant } from "../definitions/constant.ts";
-import Variable from "../definitions/variable.ts";
-import { CompilerError } from "../../tools/error.ts";
-import { KeywordLexeme } from "../../lexer/lexeme.ts";
 
 /** parses lexemes as a subroutine definition (without parsing the subroutine's statements) */
 export default function subroutine(
@@ -20,7 +19,7 @@ export default function subroutine(
   const name = identifier(lexemes, parent, true);
 
   // define the subroutine
-  const program = parent instanceof Program ? parent : parent.program;
+  const program = parent.__ === "program" ? parent : parent.program;
   const subroutine = new Subroutine(lexeme, parent, name);
   subroutine.index = program.allSubroutines.length + 1;
 
@@ -124,7 +123,7 @@ function parameters(lexemes: Lexemes, routine: Subroutine): Variable[] {
   const parameters: Variable[] = [];
   while (lexemes.get()?.content !== ")") {
     const parameter = variable(lexemes, routine);
-    if (parameter instanceof Constant) {
+    if (parameter.__ === "constant") {
       throw new CompilerError("Subroutine parameters cannot be constants.", lexemes.get(-1));
     }
     parameter.isParameter = true;

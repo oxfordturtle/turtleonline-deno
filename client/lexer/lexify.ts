@@ -1,28 +1,25 @@
-// type imports
-import type { Token } from "../tokenizer/token.ts";
 import type { Language } from "../constants/languages.ts";
-
-// module imports
+import type { Token } from "../tokenizer/token.ts";
 import tokenize from "../tokenizer/tokenize.ts";
+import { CompilerError } from "../tools/error.ts";
 import {
+  BooleanLexeme,
+  CharacterLexeme,
+  CommentLexeme,
+  DedentLexeme,
+  DelimiterLexeme,
+  IdentifierLexeme,
+  IndentLexeme,
+  InputcodeLexeme,
+  IntegerLexeme,
+  KeywordLexeme,
   Lexeme,
   NewlineLexeme,
-  IndentLexeme,
-  DedentLexeme,
-  CommentLexeme,
-  KeywordLexeme,
-  TypeLexeme,
   OperatorLexeme,
-  DelimiterLexeme,
-  BooleanLexeme,
-  IntegerLexeme,
-  CharacterLexeme,
-  StringLexeme,
-  InputcodeLexeme,
   QuerycodeLexeme,
-  IdentifierLexeme,
+  StringLexeme,
+  TypeLexeme,
 } from "./lexeme.ts";
-import { CompilerError } from "../tools/error.ts";
 
 /** generates an array of lexemes from code string or tokens */
 export default function lexify(code: string | Token[], language: Language): Lexeme[] {

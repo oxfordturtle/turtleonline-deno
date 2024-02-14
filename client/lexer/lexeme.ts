@@ -1,4 +1,3 @@
-// type imports
 import type { Language } from "../constants/languages.ts";
 import type { Token } from "../tokenizer/token.ts";
 
@@ -47,7 +46,7 @@ export class IndentLexeme extends LexemeClass {
   readonly type = "indent";
 
   constructor(token: Token) {
-    super(token.line, token.character, "[dedent]");
+    super(token.line, token.character, "[indent]");
   }
 }
 

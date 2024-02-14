@@ -5,7 +5,8 @@ import highlight from "../../tokenizer/highlight.ts";
 import { state } from "../../state/index.ts";
 import { fill, fragment, tr, th, td, code } from "../../tools/elements.ts";
 import { on } from "../../tools/hub.ts";
-import type { UsageCategory, UsageExpression } from "../../analyser/usage.ts";
+import type { UsageCategory } from "../../analyser/usageCategory.ts";
+import type { UsageExpression } from "../../analyser/usageExpression.ts";
 
 // the usage table body
 const usageTableBody = document.querySelector('[data-component="usageTableBody"]') as HTMLElement;

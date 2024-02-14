@@ -1,10 +1,11 @@
-import type Variable from "./variable.ts";
 import type { KeywordLexeme, Type, TypeLexeme } from "../../lexer/lexeme.ts";
+import type Program from "./program.ts";
 import Routine from "./routine.ts";
-import Program from "./program.ts";
+import type Variable from "./variable.ts";
 
 /** subroutine */
 export class Subroutine extends Routine {
+  readonly __ = "subroutine";
   readonly lexeme: KeywordLexeme | TypeLexeme; // the routine's initial (defining) lexeme
   readonly parent: Program | Subroutine;
   readonly level: -1 = -1; // needed for the usage data table
@@ -25,7 +26,7 @@ export class Subroutine extends Routine {
 
   /** gets the program this subroutine belongs to */
   get program(): Program {
-    return this.parent instanceof Program ? this.parent : this.parent.program;
+    return this.parent.__ === "program" ? this.parent : this.parent.program;
   }
 
   /** gets the routines result variable (if any) */

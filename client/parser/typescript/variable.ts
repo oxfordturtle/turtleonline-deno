@@ -1,10 +1,10 @@
+import { CompilerError } from "../../tools/error.ts";
+import type Lexemes from "../definitions/lexemes.ts";
+import type Program from "../definitions/program.ts";
+import type { Subroutine } from "../definitions/subroutine.ts";
+import Variable from "../definitions/variable.ts";
 import identifier from "./identifier.ts";
 import type from "./type.ts";
-import Lexemes from "../definitions/lexemes.ts";
-import Program from "../definitions/program.ts";
-import { Subroutine } from "../definitions/subroutine.ts";
-import Variable from "../definitions/variable.ts";
-import { CompilerError } from "../../tools/error.ts";
 
 /** parses lexemes as a variable declaration */
 export default function variable(

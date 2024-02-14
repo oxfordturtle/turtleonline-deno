@@ -1,9 +1,9 @@
-import type Lexemes from "../definitions/lexemes.ts";
 import type { KeywordLexeme } from "../../lexer/lexeme.ts";
-import subroutine from "./subroutine.ts";
-import body from "./body.ts";
-import Program from "../definitions/program.ts";
 import { CompilerError } from "../../tools/error.ts";
+import type Lexemes from "../definitions/lexemes.ts";
+import Program from "../definitions/program.ts";
+import body from "./body.ts";
+import subroutine from "./subroutine.ts";
 
 /** parses lexemes as a BASIC program */
 export default function basic(lexemes: Lexemes): Program {
