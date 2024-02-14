@@ -8,7 +8,7 @@ import type { Options as CompilerOptions } from "../encoder/options.ts";
 import type { Options as MachineOptions } from "../machine/types.ts";
 import type { Token } from "../tokenizer/token.ts";
 import type { CommentLexeme, Lexeme } from "../lexer/lexeme.ts";
-import type { UsageCategory } from "../analyser/usage.ts";
+import type { UsageCategory } from "../analyser/usageCategory.ts";
 
 // module imports
 import { File, skeletons } from "./file.ts";
@@ -27,7 +27,7 @@ import lexify from "../lexer/lexify.ts";
 import parser from "../parser/parser.ts";
 import Program from "../parser/definitions/program.ts";
 import analyse from "../analyser/analyse.ts";
-import encoder from "../encoder/program.ts";
+import encoder from "../encoder/encode.ts";
 
 /** system state */
 export class State {

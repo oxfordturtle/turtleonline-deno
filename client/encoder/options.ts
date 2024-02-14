@@ -1,6 +1,5 @@
 import { defaults } from "../constants/properties.ts";
 
-/** compiler options */
 export type Options = {
   canvasStartSize: number;
   setupDefaultKeyBuffer: boolean;
@@ -12,7 +11,6 @@ export type Options = {
   separateSubroutineRegisterStack: boolean;
 };
 
-/** default compiler options */
 export const defaultOptions: Options = {
   canvasStartSize: defaults.canvasStartSize,
   setupDefaultKeyBuffer: defaults.setupDefaultKeyBuffer,
