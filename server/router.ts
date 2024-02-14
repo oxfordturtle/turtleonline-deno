@@ -1,4 +1,4 @@
-import { Status } from "http";
+import { STATUS_CODE } from "http";
 import type { Imp } from "./types.ts";
 import { asafely } from "./utils/tools.ts";
 import parseRequest from "./router/parseRequest.ts";
@@ -10,7 +10,7 @@ export default async (request: Request, imp: Imp): Promise<Response> => {
   const result = await asafely(() => response(requestParams, imp));
   if (result[0] === "left") {
     console.log(result[1]);
-    return error(requestParams, Status.InternalServerError);
+    return error(requestParams, STATUS_CODE.InternalServerError);
   }
   return result[1];
 };

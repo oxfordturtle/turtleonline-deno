@@ -1,15 +1,15 @@
 import React from "react";
-import { Status } from "http";
+import { STATUS_CODE } from "http";
 import type { RequestParams } from "../types.ts";
 import page from "./_layout/page.tsx";
 import { htmlResponse } from "../utils/response.ts";
 
 export type ErrorCode =
-  | Status.NotFound
-  | Status.MethodNotAllowed
-  | Status.BadRequest
-  | Status.InternalServerError
-  | Status.Forbidden;
+  | typeof STATUS_CODE.NotFound
+  | typeof STATUS_CODE.MethodNotAllowed
+  | typeof STATUS_CODE.BadRequest
+  | typeof STATUS_CODE.InternalServerError
+  | typeof STATUS_CODE.Forbidden;
 
 export default (
   requestParams: RequestParams,
@@ -60,9 +60,9 @@ const internalServerError = (requestParams: RequestParams): string =>
 
 const errorPages: Record<ErrorCode, (requestParams: RequestParams) => string> =
   {
-    [Status.NotFound]: notFound,
-    [Status.MethodNotAllowed]: methodNotAllowed,
-    [Status.BadRequest]: badRequest,
-    [Status.Forbidden]: forbidden,
-    [Status.InternalServerError]: internalServerError,
+    [STATUS_CODE.NotFound]: notFound,
+    [STATUS_CODE.MethodNotAllowed]: methodNotAllowed,
+    [STATUS_CODE.BadRequest]: badRequest,
+    [STATUS_CODE.Forbidden]: forbidden,
+    [STATUS_CODE.InternalServerError]: internalServerError,
   };

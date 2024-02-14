@@ -1,5 +1,4 @@
-import { Status } from "http";
-import { extname } from "path";
+import { STATUS_CODE } from "http";
 import type { Imp, RequestParams } from "../types.ts";
 import { fileResponse } from "../utils/response.ts";
 import about from "../pages/about.tsx";
@@ -35,7 +34,7 @@ const asset = async (
   const path = `./public/${requestParams.sections.join("/")}`;
   const fileInfo = await imp.readFile(path);
   return fileInfo === undefined
-    ? error(requestParams, Status.NotFound)
+    ? error(requestParams, STATUS_CODE.NotFound)
     : fileResponse(fileInfo, path);
 };
 
@@ -45,7 +44,7 @@ const page = async (
 ): Promise<Response> =>
   handler[requestParams.sections[0]]
     ? await handler[requestParams.sections[0]](requestParams, imp)
-    : error(requestParams, Status.NotFound);
+    : error(requestParams, STATUS_CODE.NotFound);
 
 const handler: Record<
   string,

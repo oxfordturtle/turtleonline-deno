@@ -1,5 +1,5 @@
 import React from "react";
-import { Status } from "http";
+import { STATUS_CODE } from "http";
 import * as bcrypt from "bcrypt";
 import type { Imp, User, RequestParams } from "../types.ts";
 import page from "./_layout/page.tsx";
@@ -14,7 +14,7 @@ export default (requestParams: RequestParams, imp: Imp): Promise<Response> =>
     ? registerResponse(requestParams)
     : requestParams.method === "POST"
     ? handleForm(requestParams, imp)
-    : error(requestParams, Status.MethodNotAllowed);
+    : error(requestParams, STATUS_CODE.MethodNotAllowed);
 
 const registerResponse = (
   requestParams: RequestParams,

@@ -1,5 +1,5 @@
 import React from "react";
-import { Status } from "http";
+import { STATUS_CODE } from "http";
 import type { Imp, RequestParams, User } from "../../types.ts";
 import page from "../_layout/page.tsx";
 import Feedback, { FeedbackProps } from "../_layout/feedback.tsx";
@@ -16,7 +16,7 @@ export default (
     ? deleteResponse(requestParams, user)
     : requestParams.method === "POST"
     ? handleForm(requestParams, user, imp)
-    : error(requestParams, Status.MethodNotAllowed);
+    : error(requestParams, STATUS_CODE.MethodNotAllowed);
 
 const deleteResponse = (
   requestParams: RequestParams,
@@ -37,7 +37,7 @@ const handleForm = async (
           <h1>Account Deleted</h1>,
           <p>Your account has been deleted.</p>
         ),
-        Status.OK,
+        STATUS_CODE.OK,
         null
       )
     : deleteResponse(requestParams, user, {

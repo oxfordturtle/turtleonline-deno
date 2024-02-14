@@ -1,5 +1,5 @@
 import React from "react";
-import { Status } from "http";
+import { STATUS_CODE } from "http";
 import type { Imp, RequestParams, User } from "../../types.ts";
 import page from "../_layout/page.tsx";
 import { FormInput, FormSelect, FormOption } from "../_layout/form.tsx";
@@ -18,7 +18,7 @@ export default (
     ? emailResponse(requestParams, user)
     : requestParams.method === "POST"
     ? handleForm(requestParams, user, imp)
-    : error(requestParams, Status.MethodNotAllowed);
+    : error(requestParams, STATUS_CODE.MethodNotAllowed);
 
 const emailResponse = (
   requestParams: RequestParams,

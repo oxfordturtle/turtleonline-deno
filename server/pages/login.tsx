@@ -1,5 +1,5 @@
 import React from "react";
-import { Status } from "http";
+import { STATUS_CODE } from "http";
 import * as bcrypt from "bcrypt";
 import type { Imp, RequestParams } from "../types.ts";
 import page from "./_layout/page.tsx";
@@ -17,7 +17,7 @@ export default async (
     ? loginResponse(requestParams)
     : requestParams.method === "POST"
     ? await handleForm(requestParams, imp)
-    : error(requestParams, Status.MethodNotAllowed);
+    : error(requestParams, STATUS_CODE.MethodNotAllowed);
 
 const loginResponse = (
   requestParams: RequestParams,

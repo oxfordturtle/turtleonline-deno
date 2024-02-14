@@ -1,24 +1,20 @@
-import { Status, deleteCookie, setCookie } from "http";
+import { type StatusCode, STATUS_CODE, deleteCookie, setCookie } from "http";
 import { contentType } from "media_types";
 import { basename, extname } from "path";
 import * as bcrypt from "bcrypt";
 
 export const htmlResponse = async (
   html: string,
-  status: Status = Status.OK,
+  status: StatusCode = STATUS_CODE.OK,
   username?: string | null
-): Promise<Response> =>
-  new Response(html, await responseInit("text/html", status, username));
+): Promise<Response> => new Response(html, await responseInit("text/html", status, username));
 
 export const jsonResponse = async (
   object: Record<string, unknown>,
-  status: Status = Status.OK,
+  status: StatusCode = STATUS_CODE.OK,
   username?: string | null
 ): Promise<Response> =>
-  new Response(
-    JSON.stringify(object),
-    await responseInit("application/json", status, username)
-  );
+  new Response(JSON.stringify(object), await responseInit("application/json", status, username));
 
 export const fileResponse = async (
   file: Uint8Array,
@@ -29,16 +25,13 @@ export const fileResponse = async (
     file,
     await responseInit(
       contentType(extname(path)) ?? "application/octet-stream",
-      Status.OK,
+      STATUS_CODE.OK,
       username,
       basename(path)
     )
   );
 
-export const redirectResponse = async (
-  path: string,
-  username?: string | null
-): Promise<Response> =>
+export const redirectResponse = async (path: string, username?: string | null): Promise<Response> =>
   new Response(null, await redirectResponseInit(path, username));
 
 const responseInit = async (
@@ -62,7 +55,7 @@ const redirectResponseInit = async (
   const headers = new Headers();
   headers.append("location", url);
   await fixCookies(headers, username);
-  return { headers, status: Status.Found };
+  return { headers, status: STATUS_CODE.Found };
 };
 
 const headersInit = (contentType: string): HeadersInit => ({
@@ -70,10 +63,7 @@ const headersInit = (contentType: string): HeadersInit => ({
   date: new Date().toUTCString(),
 });
 
-const fixCookies = async (
-  headers: Headers,
-  username?: string | null
-): Promise<void> => {
+const fixCookies = async (headers: Headers, username?: string | null): Promise<void> => {
   if (username !== undefined) {
     if (username === null) {
       deleteCookie(headers, "username");

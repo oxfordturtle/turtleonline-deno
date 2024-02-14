@@ -1,5 +1,5 @@
 import React from "react";
-import { Status } from "http";
+import { STATUS_CODE } from "http";
 import type { Imp, RequestParams } from "../types.ts";
 import page from "./_layout/page.tsx";
 import { htmlResponse } from "../utils/response.ts";
@@ -13,7 +13,7 @@ export default (requestParams: RequestParams, imp: Imp): Promise<Response> =>
     ? forgotResponse(requestParams)
     : requestParams.method === "POST"
     ? handleForm(requestParams, imp)
-    : error(requestParams, Status.MethodNotAllowed);
+    : error(requestParams, STATUS_CODE.MethodNotAllowed);
 
 const forgotResponse = (
   requestParams: RequestParams,

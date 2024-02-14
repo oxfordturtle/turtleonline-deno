@@ -1,5 +1,5 @@
 import React from "react";
-import { Status } from "http";
+import { STATUS_CODE } from "http";
 import * as bcrypt from "bcrypt";
 import type { Imp, RequestParams } from "../types.ts";
 import page from "./_layout/page.tsx";
@@ -22,8 +22,8 @@ export default async (
       ? resetResponse(requestParams)
       : requestParams.method === "POST"
       ? handleForm(requestParams, requestParams.sections[1], imp)
-      : error(requestParams, Status.MethodNotAllowed)
-    : error(requestParams, Status.NotFound);
+      : error(requestParams, STATUS_CODE.MethodNotAllowed)
+    : error(requestParams, STATUS_CODE.NotFound);
 
 // TODO: this function is duplicated in verify.tsx
 const isValidUserToken = async (

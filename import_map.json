@@ -1,14 +1,14 @@
 {
   "imports": {
-    "http": "https://deno.land/std@0.192.0/http/mod.ts",
-    "media_types": "https://deno.land/std@0.192.0/media_types/mod.ts",
-    "path": "https://deno.land/std@0.192.0/path/mod.ts",
-    "dotenv": "https://deno.land/std@0.192.0/dotenv/mod.ts",
-    "testing": "https://deno.land/std@0.192.0/testing/asserts.ts",
-    "esbuild": "https://deno.land/x/esbuild@v0.15.12/mod.js",
+    "http": "https://deno.land/std@0.215.0/http/mod.ts",
+    "media_types": "https://deno.land/std@0.215.0/media_types/mod.ts",
+    "path": "https://deno.land/std@0.215.0/path/mod.ts",
+    "dotenv": "https://deno.land/std@0.215.0/dotenv/mod.ts",
+    "testing": "https://deno.land/std@0.215.0/testing/asserts.ts",
+    "esbuild": "https://deno.land/x/esbuild@v0.20.0/mod.js",
     "bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
     "sendgrid": "https://deno.land/x/sendgrid@0.0.3/mod.ts",
-    "denosass": "https://deno.land/x/denosass@1.0.4/mod.ts",
+    "denosass": "https://deno.land/x/denosass@1.0.6/mod.ts",
     "react": "https://esm.sh/react@18.2.0",
     "react_dom_server": "https://esm.sh/react-dom@18.2.0/server"
   }
