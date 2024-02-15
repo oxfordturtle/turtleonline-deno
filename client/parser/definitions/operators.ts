@@ -1,4 +1,5 @@
-import type { Lexeme, Operator, Type } from "../../lexer/lexeme.ts";
+import type { Lexeme } from "../../lexer/lexeme.ts";
+import type { Operator, Type } from "../../lexer/types.ts";
 
 /** gets the type of an expression with the given operator */
 export function type(operator: Operator): Type {

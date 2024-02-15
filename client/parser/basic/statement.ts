@@ -1,11 +1,12 @@
 import {
-  IntegerLexeme,
-  OperatorLexeme,
+  integerLexeme,
+  operatorLexeme,
   type IdentifierLexeme,
   type KeywordLexeme,
   type Lexeme,
-  type Type,
+  type OperatorLexeme,
 } from "../../lexer/lexeme.ts";
+import type { Type } from "../../lexer/types.ts";
 import { token } from "../../tokenizer/token.ts";
 import { CompilerError } from "../../tools/error.ts";
 import { procedureCall } from "../call.ts";
@@ -68,7 +69,6 @@ export function statement(
     // '=' (at the end of a function)
     case "operator":
       if (lexeme.subtype === "eqal") {
-        lexeme.subtype = "asgn";
         lexemes.next();
         statement = returnStatement(lexeme, lexemes, routine);
       } else {
@@ -455,11 +455,11 @@ function forStatement(
   const plusToken = token("operator", "+", lexeme.line, -1);
   const lseqToken = token("operator", "<=", lexeme.line, -1);
   const mreqToken = token("operator", ">=", lexeme.line, -1);
-  const oneLexeme = new IntegerLexeme(oneToken, 10);
-  const assignmentLexeme = new OperatorLexeme(assignmentToken, "BASIC");
-  const plusLexeme = new OperatorLexeme(plusToken, "BASIC");
-  const lseqLexeme = new OperatorLexeme(lseqToken, "BASIC");
-  const mreqLexeme = new OperatorLexeme(mreqToken, "BASIC");
+  const oneLexeme = integerLexeme(oneToken, 10);
+  const assignmentLexeme = operatorLexeme(assignmentToken, "BASIC");
+  const plusLexeme = operatorLexeme(plusToken, "BASIC");
+  const lseqLexeme = operatorLexeme(lseqToken, "BASIC");
+  const mreqLexeme = operatorLexeme(mreqToken, "BASIC");
 
   // define default condition and step change
   const left = new VariableValue(variableLexeme, foo);

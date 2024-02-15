@@ -1,4 +1,4 @@
-import type { Type } from "../../lexer/lexeme.ts";
+import type { Type } from "../../lexer/types.ts";
 import type Program from "./program.ts";
 import Routine from "./routine.ts";
 import type { Subroutine } from "./subroutine.ts";

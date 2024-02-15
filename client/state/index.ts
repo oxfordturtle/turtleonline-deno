@@ -15,7 +15,7 @@ import { File, skeletons } from "./file.ts";
 import { load, save } from "./storage.ts";
 import examples from "../constants/examples.ts";
 import exampleGroups from "../constants/exampleGroups.ts";
-import languages, { extensions } from "../constants/languages.ts";
+import languages, { extension } from "../constants/languages.ts";
 import { defaults } from "../constants/properties.ts";
 import { input } from "../tools/elements.ts";
 import { SystemError } from "../tools/error.ts";
@@ -1039,7 +1039,7 @@ export class State {
     if (!example) {
       send("error", new SystemError(`Unknown example "${exampleId}".`));
     } else {
-      const filename = `${example.id}.${extensions[this.language]}`;
+      const filename = `${example.id}.${extension[this.language]}`;
       const path = `/examples/${this.language}/${example.groupId}/${filename}`;
       fetch(path).then((response) => {
         if (response.ok) {
@@ -1102,8 +1102,8 @@ export class State {
   async outputAllExamples(): Promise<void> {
     let allExamplesText = "";
     for (const example of examples) {
-      const filename = `${example.id}.${extensions[this.language]}`;
-      const response = await window.fetch(
+      const filename = `${example.id}.${extension[this.language]}`;
+      const response = await fetch(
         `/examples/${this.language}/${example.groupId}/${filename}`
       );
       const content = await response.text();
@@ -1111,7 +1111,7 @@ export class State {
       allExamplesText += `${content}\n\n\n`;
     }
     const a = document.createElement("a");
-    const blob = new window.Blob([allExamplesText], {
+    const blob = new Blob([allExamplesText], {
       type: "text/plain;charset=utf-8",
     });
     a.setAttribute("href", URL.createObjectURL(blob));

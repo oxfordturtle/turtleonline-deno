@@ -1,4 +1,4 @@
-import type { Type } from "../../lexer/lexeme.ts";
+import type { Type } from "../../lexer/types.ts";
 import { CompilerError } from "../../tools/error.ts";
 import type Lexemes from "../definitions/lexemes.ts";
 

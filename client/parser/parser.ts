@@ -1,6 +1,5 @@
 import type { Language } from "../constants/languages.ts";
 import type { Lexeme } from "../lexer/lexeme.ts";
-import lexify from "../lexer/lexify.ts";
 import basicParser from "./basic/parser.ts";
 import cParser from "./c/parser.ts";
 import Lexemes from "./definitions/lexemes.ts";
@@ -11,8 +10,7 @@ import pythonParser from "./python/parser.ts";
 import typeScriptParser from "./typescript/parser.ts";
 
 /** parses codes string or lexemes and returns a program object */
-export default function parser(code: string | Lexeme[], language: Language): Program {
-  const rawLexemes = typeof code === "string" ? lexify(code, language) : code;
+export default function parser(rawLexemes: Lexeme[], language: Language): Program {
   const lexemes = new Lexemes(rawLexemes);
 
   switch (language) {

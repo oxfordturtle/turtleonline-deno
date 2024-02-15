@@ -1,6 +1,7 @@
 import type { Parameter } from "../constants/commands.ts";
 import type { Language } from "../constants/languages.ts";
-import type { Lexeme, Operator, OperatorLexeme, Type, TypeLexeme } from "../lexer/lexeme.ts";
+import type { Lexeme, OperatorLexeme, TypeLexeme } from "../lexer/lexeme.ts";
+import type { Operator, Type } from "../lexer/types.ts";
 import { CompilerError } from "../tools/error.ts";
 import { functionCall, methodFunctionCall } from "./call.ts";
 import {

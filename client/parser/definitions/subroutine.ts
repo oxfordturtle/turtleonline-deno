@@ -1,4 +1,5 @@
-import type { KeywordLexeme, Type, TypeLexeme } from "../../lexer/lexeme.ts";
+import type { KeywordLexeme, TypeLexeme } from "../../lexer/lexeme.ts";
+import type { Type } from "../../lexer/types.ts";
 import type Program from "./program.ts";
 import Routine from "./routine.ts";
 import type Variable from "./variable.ts";

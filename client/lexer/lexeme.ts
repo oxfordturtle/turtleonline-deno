@@ -1,7 +1,7 @@
-import type { Language } from "../constants/languages.ts";
+import { trueValue, type Language } from "../constants/languages.ts";
 import type { Token } from "../tokenizer/token.ts";
+import type { Delimiter, Keyword, Operator, Type } from "./types.ts";
 
-/** lexeme */
 export type Lexeme =
   | NewlineLexeme
   | IndentLexeme
@@ -15,408 +15,229 @@ export type Lexeme =
   | IntegerLexeme
   | CharacterLexeme
   | StringLexeme
-  | InputcodeLexeme
-  | QuerycodeLexeme
+  | InputCodeLexeme
+  | QueryCodeLexeme
   | IdentifierLexeme;
 
-/** base lexeme class (extended by particular lexeme classes) */
-class LexemeClass {
-  readonly line: number;
-  readonly character: number;
-  readonly content: string;
+const lexeme = (line: number, character: number, content: string) =>
+  ({
+    __: "lexeme",
+    line,
+    character,
+    content,
+  } as const);
 
-  constructor(line: number, character: number, content: string) {
-    this.line = line;
-    this.character = character;
-    this.content = content;
-  }
-}
+export type NewlineLexeme = ReturnType<typeof newlineLexeme>;
 
-/** new line lexeme */
-export class NewlineLexeme extends LexemeClass {
-  readonly type = "newline";
+export const newlineLexeme = (token: Token) =>
+  ({
+    ...lexeme(token.line, token.character, "[newline]"),
+    type: "newline",
+  } as const);
 
-  constructor(token: Token) {
-    super(token.line, token.character, "[newline]");
-  }
-}
+export type IndentLexeme = ReturnType<typeof indentLexeme>;
 
-/** indent lexeme */
-export class IndentLexeme extends LexemeClass {
-  readonly type = "indent";
+export const indentLexeme = (token: Token) =>
+  ({
+    ...lexeme(token.line, token.character, "[indent]"),
+    type: "indent",
+  } as const);
 
-  constructor(token: Token) {
-    super(token.line, token.character, "[indent]");
-  }
-}
+export type DedentLexeme = ReturnType<typeof dedentLexeme>;
 
-/** dedent lexeme */
-export class DedentLexeme extends LexemeClass {
-  readonly type = "dedent";
+export const dedentLexeme = (token: Token) =>
+  ({
+    ...lexeme(token.line, token.character, "[dedent]"),
+    type: "dedent",
+  } as const);
 
-  constructor(token: Token) {
-    super(token.line, token.character, "[dedent]");
-  }
-}
+export type CommentLexeme = ReturnType<typeof commentLexeme>;
 
-/** comment lexeme */
-export class CommentLexeme extends LexemeClass {
-  readonly type = "comment";
-  readonly subtype = null;
-  readonly value: string;
+export const commentLexeme = (token: Token, language: Language) => {
+  const values = {
+    BASIC: token.content.slice(3).trim(),
+    C: token.content.slice(2).trim(),
+    Java: token.content.slice(2).trim(),
+    Pascal: token.content.slice(1, -1).trim(),
+    Python: token.content.slice(1).trim(),
+    TypeScript: token.content.slice(2).trim(),
+  };
 
-  constructor(token: Token, language: Language) {
-    super(token.line, token.character, token.content);
-    switch (language) {
-      case "BASIC":
-        this.value = token.content.slice(3).trim();
-        break;
-      case "C": // fallthrough
-      case "Java": //fallthrough
-      case "TypeScript":
-        this.value = token.content.slice(2).trim();
-        break;
-      case "Pascal":
-        this.value = token.content.slice(1, -1).trim();
-        break;
-      case "Python":
-        this.value = token.content.slice(1).trim();
-        break;
-    }
-  }
-}
+  return {
+    ...lexeme(token.line, token.character, token.content),
+    type: "comment",
+    value: values[language],
+  } as const;
+};
 
-/** keyword lexeme */
-export class KeywordLexeme extends LexemeClass {
-  readonly type = "keyword";
-  readonly subtype: Keyword;
+export type KeywordLexeme = ReturnType<typeof keywordLexeme>;
 
-  constructor(token: Token) {
-    super(token.line, token.character, token.content);
-    this.subtype = token.content.toLowerCase() as Keyword;
-  }
-}
+export const keywordLexeme = (token: Token) =>
+  ({
+    ...lexeme(token.line, token.character, token.content),
+    type: "keyword",
+    subtype: token.content.toLowerCase() as Keyword,
+  } as const);
 
-/** type lexeme */
-export class TypeLexeme extends LexemeClass {
-  readonly type = "type";
-  readonly subtype: Type | null = null;
+export type TypeLexeme = ReturnType<typeof typeLexeme>;
 
-  constructor(token: Token) {
-    super(token.line, token.character, token.content);
-    switch (token.content) {
-      case "bool": // fallthrough
-      case "boolean":
-        this.subtype = "boolean";
-        break;
-      case "char":
-        this.subtype = "character";
-        break;
-      case "int": // fallthrough
-      case "integer": // fallthrough
-      case "number":
-        this.subtype = "integer";
-        break;
-      case "string": // fallthrough
-      case "String":
-        this.subtype = "string";
-        break;
-    }
-  }
-}
+export const typeLexeme = (token: Token) => {
+  const subtypes: Record<string, Type> = {
+    bool: "boolean",
+    boolean: "boolean",
+    char: "character",
+    int: "integer",
+    integer: "integer",
+    number: "integer",
+    string: "string",
+  };
 
-/** operator lexeme */
-export class OperatorLexeme extends LexemeClass {
-  readonly type = "operator";
-  subtype: Operator | "asgn" = "asgn";
+  return {
+    ...lexeme(token.line, token.character, token.content),
+    type: "type",
+    subtype: subtypes[token.content.toLowerCase()],
+  } as const;
+};
 
-  constructor(token: Token, language: Language) {
-    super(token.line, token.character, token.content);
-    // N.B. some operator lexemes are ambiguous; for those that are, the parser
-    // will disambiguate later
-    switch (token.content.toLowerCase()) {
-      case "+":
-        this.subtype = "plus";
-        break;
-      case "-":
-        this.subtype = "subt";
-        break;
-      case "*":
-        this.subtype = "mult";
-        break;
-      case "/":
-        this.subtype = "divr";
-        break;
-      case "div": // fallthrough
-      case "//":
-        this.subtype = "div";
-        break;
-      case "mod": // fallthrough
-      case "%":
-        this.subtype = "mod";
-        break;
-      case "=":
-        this.subtype = language === "BASIC" || language === "Pascal" ? "eqal" : "asgn";
-        break;
-      case "+=": // fallthrough
-      case "-=":
-        this.subtype = "asgn";
-        break;
-      case "==":
-        this.subtype = "eqal";
-        break;
-      case "<>": // fallthrough
-      case "!=":
-        this.subtype = "noeq";
-        break;
-      case "<=":
-        this.subtype = "lseq";
-        break;
-      case ">=":
-        this.subtype = "mreq";
-        break;
-      case "<":
-        this.subtype = "less";
-        break;
-      case ">":
-        this.subtype = "more";
-        break;
-      case "not": // fallthrough
-      case "~": // fallthrough
-      case "!":
-        this.subtype = "not";
-        break;
-      case "and": // BASIC, Pascal, and Python
-        this.subtype = language === "Python" ? "andl" : "and";
-        break;
-      case "or": // BASIC, Pascal, and Python
-        this.subtype = language === "Python" ? "orl" : "or";
-        break;
-      case "andl": // fallthrough
-      case "&&":
-        this.subtype = "andl";
-        break;
-      case "&":
-        this.subtype = "and";
-        break;
-      case "orl": // fallthrough
-      case "||":
-        this.subtype = "orl";
-        break;
-      case "|":
-        this.subtype = "or";
-        break;
-      case "eor": // BASIC
-      case "xor": // Pascal
-      case "^": // everything else
-        this.subtype = "xor";
-        break;
-    }
-  }
-}
+export type OperatorLexeme = ReturnType<typeof operatorLexeme>;
 
-/** delimiter lexeme */
-export class DelimiterLexeme extends LexemeClass {
-  readonly type = "delimiter";
-  readonly subtype: Delimiter;
+export const operatorLexeme = (token: Token, language: Language) => {
+  const subtypes: Record<string, Operator | "asgn"> = {
+    "+": "plus",
+    "-": "subt",
+    "*": "mult",
+    "/": "divr",
+    div: "div",
+    "//": "div",
+    mod: "mod",
+    "%": "mod",
+    "=": language === "BASIC" || language === "Pascal" ? "eqal" : "asgn",
+    "+=": "asgn",
+    "-=": "asgn",
+    "==": "eqal",
+    "<>": "noeq",
+    "!=": "noeq",
+    "<=": "lseq",
+    ">=": "mreq",
+    "<": "less",
+    ">": "more",
+    not: "not",
+    "~": "not",
+    "!": "not",
+    and: language === "Python" ? "andl" : "and",
+    or: language === "Python" ? "orl" : "or",
+    andl: "andl",
+    "&&": "andl",
+    "&": "and",
+    orl: "orl",
+    "||": "orl",
+    "|": "or",
+    eor: "xor",
+    xor: "xor",
+    "^": "xor",
+  };
 
-  constructor(token: Token) {
-    super(token.line, token.character, token.content);
-    this.subtype = token.content as Delimiter;
-  }
-}
+  return {
+    ...lexeme(token.line, token.character, token.content),
+    type: "operator",
+    subtype: subtypes[token.content.toLowerCase()],
+  } as const;
+};
 
-/** boolean lexeme */
-export class BooleanLexeme extends LexemeClass {
-  readonly type = "literal";
-  readonly subtype = "boolean";
-  readonly value: number;
+export type DelimiterLexeme = ReturnType<typeof delimiterLexeme>;
 
-  constructor(token: Token, language: Language) {
-    super(token.line, token.character, token.content);
-    if (language === "C" || language === "Python") {
-      this.value = token.content.toLowerCase() === "true" ? 1 : 0;
-    } else {
-      this.value = token.content.toLowerCase() === "true" ? -1 : 0;
-    }
-  }
-}
+export const delimiterLexeme = (token: Token) =>
+  ({
+    ...lexeme(token.line, token.character, token.content),
+    type: "delimiter",
+    subtype: token.content as Delimiter,
+  } as const);
 
-/** integer lexeme */
-export class IntegerLexeme extends LexemeClass {
-  readonly type = "literal";
-  readonly subtype = "integer";
-  readonly value: number;
-  readonly radix: number;
+export type BooleanLexeme = ReturnType<typeof booleanLexeme>;
 
-  constructor(token: Token, radix: number) {
-    super(token.line, token.character, token.content);
-    const firstNonInteger = token.content.match(/[^0-9]/);
-    const trimmedContent = firstNonInteger
-      ? token.content.slice((firstNonInteger.index || 0) + 1)
-      : token.content;
-    this.value = parseInt(trimmedContent, radix);
-    this.radix = radix;
-  }
-}
+export const booleanLexeme = (token: Token, language: Language) =>
+  ({
+    ...lexeme(token.line, token.character, token.content),
+    type: "literal",
+    subtype: "boolean",
+    value: token.content.toLowerCase() === "true" ? trueValue[language] : 0,
+  } as const);
 
-/** character lexeme */
-export class CharacterLexeme extends LexemeClass {
-  readonly type = "literal";
-  readonly subtype = "character";
-  readonly value: number;
+export type IntegerLexeme = ReturnType<typeof integerLexeme>;
 
-  constructor(lexeme: StringLexeme) {
-    super(lexeme.line, lexeme.character, lexeme.content);
-    this.value = lexeme.value.charCodeAt(0);
-  }
-}
+export const integerLexeme = (token: Token, radix: number) => {
+  const firstNonInteger = token.content.match(/[^0-9]/);
+  const trimmedContent = firstNonInteger
+    ? token.content.slice((firstNonInteger.index ?? 0) + 1)
+    : token.content;
 
-/** string lexeme */
-export class StringLexeme extends LexemeClass {
-  readonly type = "literal";
-  readonly subtype = "string";
-  readonly value: string;
+  return {
+    ...lexeme(token.line, token.character, token.content),
+    type: "literal",
+    subtype: "integer",
+    value: parseInt(trimmedContent, radix),
+    radix,
+  } as const;
+};
 
-  constructor(token: Token, language: Language) {
-    super(token.line, token.character, token.content);
-    switch (language) {
-      case "BASIC":
-        this.value = token.content.slice(1, -1).replace(/""/g, '"');
-        break;
-      case "Pascal":
-        if (token.content[0] === "'") {
-          this.value = token.content.slice(1, -1).replace(/''/g, "'");
-        } else {
-          this.value = token.content.slice(1, -1).replace(/""/g, '"');
-        }
-        break;
-      case "C": // fallthrough
-      case "Java":
-        this.value = token.content.slice(1, -1).replace(/\\('|")/g, "$1");
-        break;
-      case "Python": // fallthrough
-      case "TypeScript":
-        this.value = token.content.slice(1, -1).replace(/\\('|")/g, "$1");
-        break;
-    }
-  }
-}
+export type CharacterLexeme = ReturnType<typeof characterLexeme>;
 
-/** inputcode lexeme */
-export class InputcodeLexeme extends LexemeClass {
-  readonly type = "input";
-  readonly subtype = "inputcode";
-  readonly value: string;
+export const characterLexeme = (token: Token, language: Language) =>
+  ({
+    ...stringLexeme(token, language),
+    subtype: "character",
+    value: token.content.charCodeAt(0),
+  } as const);
 
-  constructor(token: Token, language: Language) {
-    super(token.line, token.character, token.content);
-    this.value =
-      language === "Pascal" ? token.content.slice(1).toLowerCase() : token.content.slice(1);
-  }
-}
+export type StringLexeme = ReturnType<typeof stringLexeme>;
 
-/** query lexeme */
-export class QuerycodeLexeme extends LexemeClass {
-  readonly type = "input";
-  readonly subtype = "querycode";
-  readonly value: string;
+export const stringLexeme = (token: Token, language: Language) => {
+  const values = {
+    BASIC: token.content.slice(1, -1).replace(/""/g, '"'),
+    C: token.content.slice(1, -1).replace(/\\('|")/g, "$1"),
+    Java: token.content.slice(1, -1).replace(/\\('|")/g, "$1"),
+    Pascal:
+      token.content[0] === "'"
+        ? token.content.slice(1, -1).replace(/''/g, "'")
+        : token.content.slice(1, -1).replace(/""/g, '"'),
+    Python: token.content.slice(1, -1).replace(/\\('|")/g, "$1"),
+    TypeScript: token.content.slice(1, -1).replace(/\\('|")/g, "$1"),
+  };
 
-  constructor(token: Token, language: Language) {
-    super(token.line, token.character, token.content);
-    this.value =
-      language === "Pascal" ? token.content.slice(1).toLowerCase() : token.content.slice(1);
-  }
-}
+  return {
+    ...lexeme(token.line, token.character, token.content),
+    type: "literal",
+    subtype: "string",
+    value: values[language],
+  } as const;
+};
 
-/** identifier lexeme */
-export class IdentifierLexeme extends LexemeClass {
-  readonly type = "identifier";
-  readonly subtype: "turtle" | "identifier";
-  readonly value: string;
+export type InputCodeLexeme = ReturnType<typeof inputCodeLexeme>;
 
-  constructor(token: Token, language: Language) {
-    super(token.line, token.character, token.content);
-    this.subtype = token.type === "turtle" ? "turtle" : "identifier";
-    this.value = language === "Pascal" ? token.content.toLowerCase() : token.content;
-  }
-}
+export const inputCodeLexeme = (token: Token, language: Language) =>
+  ({
+    ...lexeme(token.line, token.character, token.content),
+    type: "input",
+    subtype: "inputCode",
+    value: language === "Pascal" ? token.content.slice(1).toLowerCase() : token.content.slice(1),
+  } as const);
 
-/** keywords */
-export type Keyword =
-  | "program"
-  | "procedure"
-  | "function"
-  | "class"
-  | "def"
-  | "begin"
-  | "end"
-  | "endproc"
-  | "if"
-  | "then"
-  | "else"
-  | "elif"
-  | "endif"
-  | "for"
-  | "to"
-  | "downto"
-  | "step"
-  | "in"
-  | "next"
-  | "while"
-  | "endwhile"
-  | "do"
-  | "repeat"
-  | "until"
-  | "pass"
-  | "return"
-  | "const"
-  | "final"
-  | "var"
-  | "dim"
-  | "local"
-  | "private"
-  | "global"
-  | "nonlocal"
-  | "array"
-  | "of"
-  | "void"
-  | "boolean"
-  | "character"
-  | "integer"
-  | "string";
+export type QueryCodeLexeme = ReturnType<typeof queryCodeLexeme>;
 
-/** types */
-export type Type = "boolint" | "boolean" | "integer" | "character" | "string";
+export const queryCodeLexeme = (token: Token, language: Language) =>
+  ({
+    ...lexeme(token.line, token.character, token.content),
+    type: "input",
+    subtype: "queryCode",
+    value: language === "Pascal" ? token.content.slice(1).toLowerCase() : token.content.slice(1),
+  } as const);
 
-/** operators */
-export type Operator =
-  | "neg"
-  | "not"
-  | "plus"
-  | "subt"
-  | "mult"
-  | "divr"
-  | "div"
-  | "mod"
-  | "and"
-  | "or"
-  | "xor"
-  | "andl"
-  | "orl"
-  | "scat"
-  | "eqal"
-  | "noeq"
-  | "less"
-  | "more"
-  | "lseq"
-  | "mreq"
-  | "seql"
-  | "sneq"
-  | "sles"
-  | "smor"
-  | "sleq"
-  | "smeq";
+export type IdentifierLexeme = ReturnType<typeof identifierLexeme>;
 
-/** delimiters */
-type Delimiter = "(" | ")" | "{" | "}" | "[" | "]" | "," | ":" | ";" | "." | ".." | "->";
+export const identifierLexeme = (token: Token, language: Language) =>
+  ({
+    ...lexeme(token.line, token.character, token.content),
+    type: "identifier",
+    subtype: token.type === "turtle" ? "turtle" : "identifier",
+    value: language === "Pascal" ? token.content.toLowerCase() : token.content,
+  } as const);

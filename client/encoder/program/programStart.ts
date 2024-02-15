@@ -1,19 +1,10 @@
-import type { Language } from "../../constants/languages.ts";
+import { trueValue } from "../../constants/languages.ts";
 import PCode from "../../constants/pcodes.ts";
 import type Program from "../../parser/definitions/program.ts";
 import type Variable from "../../parser/definitions/variable.ts";
 import type { Options } from "../options.ts";
 
 export default (program: Program, _options: Options): number[][] => {
-  const trueValue: Record<Language, number> = {
-    BASIC: -1,
-    C: -1,
-    Java: -1,
-    Pascal: -1,
-    Python: 1,
-    TypeScript: 1,
-  };
-
   // initialise start code
   const pcode = [
     // line 1: global memory

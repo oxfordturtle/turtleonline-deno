@@ -23,8 +23,8 @@ export default (code: string, language: Language): Token[] => {
       decimal(code, line, character) ||
       keyword(code, line, character, language) ||
       type(code, line, character, language) ||
-      inputcode(code, line, character, language) ||
-      querycode(code, line, character, language) ||
+      inputCode(code, line, character, language) ||
+      queryCode(code, line, character, language) ||
       turtle(code, line, character, language) ||
       identifier(code, line, character, language) ||
       token("illegal", code.split(/\s/)[0], line, character);
@@ -76,7 +76,7 @@ const comment = (
         return token("comment", code.slice(0, (end.index as number) + 1), line, character);
       }
       if (start) {
-        return token("unterminated-comment", code.split("\n")[0], line, character);
+        return token("unterminatedComment", code.split("\n")[0], line, character);
       }
       return null;
     }
@@ -171,7 +171,7 @@ const string = (
         let end = false;
         while (code[length] && !end) {
           if (code[length] === "\n") {
-            return token("unterminated-string", code.slice(0, length), line, character);
+            return token("unterminatedString", code.slice(0, length), line, character);
           }
           if (code[length] !== quote) {
             length += 1;
@@ -185,7 +185,7 @@ const string = (
           }
         }
         if (!end) {
-          return token("unterminated-string", code.slice(0, length), line, character);
+          return token("unterminatedString", code.slice(0, length), line, character);
         }
         return token("string", code.slice(0, length), line, character);
       }
@@ -203,13 +203,13 @@ const string = (
         return token("string", code.slice(0, (end1.index as number) + 2), line, character);
       }
       if (start1) {
-        return token("unterminated-string", code.split("\n")[0], line, character);
+        return token("unterminatedString", code.split("\n")[0], line, character);
       }
       if (start2 && end2) {
         return token("string", code.slice(0, (end2.index as number) + 2), line, character);
       }
       if (start2) {
-        return token("unterminated-string", code.split("\n")[0], line, character);
+        return token("unterminatedString", code.split("\n")[0], line, character);
       }
       return null;
     }
@@ -250,7 +250,7 @@ const binary = (
         return token("binary", good[0], line, character);
       }
       if (bad) {
-        return token("bad-binary", bad[0], line, character);
+        return token("badBinary", bad[0], line, character);
       }
       return null;
     }
@@ -283,7 +283,7 @@ const octal = (code: string, line: number, character: number, language: Language
         return token("octal", goodPascal[0], line, character);
       }
       if (badPascal) {
-        return token("bad-octal", badPascal[0], line, character);
+        return token("badOctal", badPascal[0], line, character);
       }
       return null;
     }
@@ -327,7 +327,7 @@ const hexadecimal = (
   const bad = code.match(bads[language]);
   const good = code.match(goods[language]);
   if (bad) {
-    return token("bad-hexadecimal", bad[0], line, character);
+    return token("badHexadecimal", bad[0], line, character);
   }
   if (good) {
     return token("hexadecimal", good[0], line, character);
@@ -380,7 +380,7 @@ const type = (code: string, line: number, character: number, language: Language)
   return test ? token("type", test[0], line, character) : null;
 };
 
-const inputcode = (
+const inputCode = (
   code: string,
   line: number,
   character: number,
@@ -392,15 +392,15 @@ const inputcode = (
   const good = code.match(regex);
   const bad = code.match(/^(\\[#a-zA-Z0-9]*)\b/);
   if (good) {
-    return token("inputcode", good[0], line, character);
+    return token("inputCode", good[0], line, character);
   }
   if (bad) {
-    return token("bad-inputcode", bad[0], line, character);
+    return token("badInputCode", bad[0], line, character);
   }
   return null;
 };
 
-const querycode = (
+const queryCode = (
   code: string,
   line: number,
   character: number,
@@ -412,10 +412,10 @@ const querycode = (
   const good = code.match(regex);
   const bad = code.match(/^(\?[#a-zA-Z0-9]*)\b/);
   if (good) {
-    return token("querycode", good[0], line, character);
+    return token("queryCode", good[0], line, character);
   }
   if (bad) {
-    return token("bad-querycode", bad[0], line, character);
+    return token("badQueryCode", bad[0], line, character);
   }
   return null;
 };

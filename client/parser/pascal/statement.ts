@@ -1,9 +1,9 @@
 import {
-  IdentifierLexeme,
-  IntegerLexeme,
-  KeywordLexeme,
-  Lexeme,
-  OperatorLexeme,
+  integerLexeme,
+  operatorLexeme,
+  type IdentifierLexeme,
+  type KeywordLexeme,
+  type Lexeme,
 } from "../../lexer/lexeme.ts";
 import { token } from "../../tokenizer/token.ts";
 import { CompilerError } from "../../tools/error.ts";
@@ -344,9 +344,9 @@ function forStatement(
   const oneToken = token("decimal", "1", forLexeme.line, -1);
   const assignmentToken = token("operator", "=", forLexeme.line, -1);
   const operatorToken = token("operator", toOrDownTo === "to" ? "+" : "-", forLexeme.line, -1);
-  const oneLexeme = new IntegerLexeme(oneToken, 10);
-  const assignmentLexeme = new OperatorLexeme(assignmentToken, "Pascal");
-  const plusLexeme = new OperatorLexeme(operatorToken, "Pascal");
+  const oneLexeme = integerLexeme(oneToken, 10);
+  const assignmentLexeme = operatorLexeme(assignmentToken, "Pascal");
+  const plusLexeme = operatorLexeme(operatorToken, "Pascal");
   const left = new VariableValue(variableLexeme, variable);
   const right = new IntegerValue(oneLexeme);
   const changeOperator = toOrDownTo === "to" ? "plus" : "subt";
@@ -364,7 +364,7 @@ function forStatement(
   let finalValue = expression(lexemes, routine);
   finalValue = typeCheck(routine.language, finalValue, "integer");
   const comparisonToken = token("operator", toOrDownTo === "to" ? "<=" : ">=", forLexeme.line, -1);
-  const comparisonLexeme = new OperatorLexeme(comparisonToken, "Pascal");
+  const comparisonLexeme = operatorLexeme(comparisonToken, "Pascal");
   const comparisonOperator = toOrDownTo === "to" ? "lseq" : "mreq";
   const condition = new CompoundExpression(comparisonLexeme, left, finalValue, comparisonOperator);
 

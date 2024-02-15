@@ -1,6 +1,6 @@
 import {
-  IntegerLexeme,
-  OperatorLexeme,
+  integerLexeme,
+  operatorLexeme,
   type IdentifierLexeme,
   type KeywordLexeme,
   type Lexeme,
@@ -604,20 +604,20 @@ function forStatement(
 
   // some dummy things we need to create the things we want to know
   const zeroToken = token("decimal", "0", forLexeme.line, -1);
-  const zeroLexeme = new IntegerLexeme(zeroToken, 10);
+  const zeroLexeme = integerLexeme(zeroToken, 10);
   const zero = new IntegerValue(zeroLexeme);
   const oneToken = token("decimal", "1", forLexeme.line, -1);
-  const oneLexeme = new IntegerLexeme(oneToken, 10);
+  const oneLexeme = integerLexeme(oneToken, 10);
   const one = new IntegerValue(oneLexeme);
   const assignmentToken = token("operator", "=", forLexeme.line, -1);
-  const assignmentLexeme = new OperatorLexeme(assignmentToken, "Python");
+  const assignmentLexeme = operatorLexeme(assignmentToken, "Python");
   const left = new VariableValue(variableLexeme, variable);
   const plusToken = token("operator", "+", forLexeme.line, -1);
   const lessToken = token("operator", "<", forLexeme.line, -1);
   const moreToken = token("operator", ">", forLexeme.line, -1);
-  const plusLexeme = new OperatorLexeme(plusToken, "Python");
-  const lessLexeme = new OperatorLexeme(lessToken, "Python");
-  const moreLexeme = new OperatorLexeme(moreToken, "Python");
+  const plusLexeme = operatorLexeme(plusToken, "Python");
+  const lessLexeme = operatorLexeme(lessToken, "Python");
+  const moreLexeme = operatorLexeme(moreToken, "Python");
 
   // the values of the things we need to know depend on how many arguments were provided
   switch (providedValues.length) {

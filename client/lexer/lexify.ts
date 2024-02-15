@@ -1,31 +1,26 @@
 import type { Language } from "../constants/languages.ts";
 import type { Token } from "../tokenizer/token.ts";
-import tokenize from "../tokenizer/tokenize.ts";
 import { CompilerError } from "../tools/error.ts";
 import {
-  BooleanLexeme,
-  CharacterLexeme,
-  CommentLexeme,
-  DedentLexeme,
-  DelimiterLexeme,
-  IdentifierLexeme,
-  IndentLexeme,
-  InputcodeLexeme,
-  IntegerLexeme,
-  KeywordLexeme,
-  Lexeme,
-  NewlineLexeme,
-  OperatorLexeme,
-  QuerycodeLexeme,
-  StringLexeme,
-  TypeLexeme,
+  booleanLexeme,
+  characterLexeme,
+  commentLexeme,
+  dedentLexeme,
+  delimiterLexeme,
+  identifierLexeme,
+  indentLexeme,
+  inputCodeLexeme,
+  integerLexeme,
+  keywordLexeme,
+  newlineLexeme,
+  operatorLexeme,
+  queryCodeLexeme,
+  stringLexeme,
+  typeLexeme,
+  type Lexeme,
 } from "./lexeme.ts";
 
-/** generates an array of lexemes from code string or tokens */
-export default function lexify(code: string | Token[], language: Language): Lexeme[] {
-  // get the tokens (if first argument was code string)
-  const tokens = typeof code === "string" ? tokenize(code, language) : code;
-
+export default (tokens: Token[], language: Language): Lexeme[] => {
   // loop through the tokens, pushing lexemes into the lexemes array (or throwing an error)
   const lexemes: Lexeme[] = [];
   const indents = [0];
@@ -46,7 +41,7 @@ export default function lexify(code: string | Token[], language: Language): Lexe
               lexemes[lexemes.length - 1].type !== "newline" &&
               lexemes[lexemes.length - 1].type !== "comment"
             ) {
-              lexemes.push(new NewlineLexeme(tokens[index]));
+              lexemes.push(newlineLexeme(tokens[index]));
             }
           }
           // move past any additional line breaks
@@ -63,11 +58,11 @@ export default function lexify(code: string | Token[], language: Language): Lexe
               : 0;
           if (indent > indents[indents.length - 1]) {
             indents.push(indent);
-            lexemes.push(new IndentLexeme(tokens[index + 1]));
+            lexemes.push(indentLexeme(tokens[index + 1]));
           } else {
             while (indent < indents[indents.length - 1]) {
               indents.pop();
-              lexemes.push(new DedentLexeme(tokens[index + 1] || tokens[index]));
+              lexemes.push(dedentLexeme(tokens[index + 1] || tokens[index]));
             }
             if (indent !== indents[indents.length - 1]) {
               throw new CompilerError(
@@ -79,94 +74,94 @@ export default function lexify(code: string | Token[], language: Language): Lexe
         break;
 
       case "comment":
-        lexemes.push(new CommentLexeme(tokens[index], language));
+        lexemes.push(commentLexeme(tokens[index], language));
         // in Python and BASIC, line breaks are significant, and comments are terminated
         // with a line break; so we need to add a newline lexeme after each comment
         if (language === "BASIC" || language === "Python") {
-          lexemes.push(new NewlineLexeme(tokens[index + 1] || tokens[index]));
+          lexemes.push(newlineLexeme(tokens[index + 1] || tokens[index]));
         }
         break;
 
       case "keyword":
-        lexemes.push(new KeywordLexeme(tokens[index]));
+        lexemes.push(keywordLexeme(tokens[index]));
         break;
 
       case "type":
-        lexemes.push(new TypeLexeme(tokens[index]));
+        lexemes.push(typeLexeme(tokens[index]));
         break;
 
       case "operator":
-        lexemes.push(new OperatorLexeme(tokens[index], language));
+        lexemes.push(operatorLexeme(tokens[index], language));
         break;
 
       case "delimiter":
-        lexemes.push(new DelimiterLexeme(tokens[index]));
+        lexemes.push(delimiterLexeme(tokens[index]));
         break;
 
       case "string": {
-        const stringLexeme = new StringLexeme(tokens[index], language);
-        const isCharacter = stringLexeme.value.length === 1;
+        const lexeme = stringLexeme(tokens[index], language);
+        const isCharacter = lexeme.value.length === 1;
         if (isCharacter && (language === "C" || language === "Java" || language === "Pascal")) {
-          lexemes.push(new CharacterLexeme(stringLexeme));
+          lexemes.push(characterLexeme(tokens[index], language));
         } else {
-          lexemes.push(stringLexeme);
+          lexemes.push(lexeme);
         }
         break;
       }
 
       case "boolean":
-        lexemes.push(new BooleanLexeme(tokens[index], language));
+        lexemes.push(booleanLexeme(tokens[index], language));
         break;
 
       case "binary":
-        lexemes.push(new IntegerLexeme(tokens[index], 2));
+        lexemes.push(integerLexeme(tokens[index], 2));
         break;
 
       case "octal":
-        lexemes.push(new IntegerLexeme(tokens[index], 8));
+        lexemes.push(integerLexeme(tokens[index], 8));
         break;
 
       case "hexadecimal":
-        lexemes.push(new IntegerLexeme(tokens[index], 16));
+        lexemes.push(integerLexeme(tokens[index], 16));
         break;
 
       case "decimal":
-        lexemes.push(new IntegerLexeme(tokens[index], 10));
+        lexemes.push(integerLexeme(tokens[index], 10));
         break;
 
-      case "inputcode":
-        lexemes.push(new InputcodeLexeme(tokens[index], language));
+      case "inputCode":
+        lexemes.push(inputCodeLexeme(tokens[index], language));
         break;
 
-      case "querycode":
-        lexemes.push(new QuerycodeLexeme(tokens[index], language));
+      case "queryCode":
+        lexemes.push(queryCodeLexeme(tokens[index], language));
         break;
 
       case "command":
       case "turtle":
       case "colour":
       case "identifier":
-        lexemes.push(new IdentifierLexeme(tokens[index], language));
+        lexemes.push(identifierLexeme(tokens[index], language));
         break;
 
-      case "unterminated-comment":
+      case "unterminatedComment":
         throw new CompilerError("Unterminated comment.", tokens[index]);
 
-      case "unterminated-string":
+      case "unterminatedString":
         throw new CompilerError("Unterminated string.", tokens[index]);
 
-      case "bad-binary":
-      case "bad-octal":
-      case "bad-hexadecimal":
+      case "badBinary":
+      case "badOctal":
+      case "badHexadecimal":
         throw new CompilerError("Ill-formed integer literal.", tokens[index]);
 
       case "real":
         throw new CompilerError("The Turtle System does not support real numbers.", tokens[index]);
 
-      case "bad-inputcode":
+      case "badInputCode":
         throw new CompilerError("Unrecognised input code.", tokens[index]);
 
-      case "bad-querycode":
+      case "badQueryCode":
         throw new CompilerError("Unrecognised input query.", tokens[index]);
 
       case "illegal":
@@ -178,4 +173,4 @@ export default function lexify(code: string | Token[], language: Language): Lexe
 
   // return the array of lexemes
   return lexemes;
-}
+};

@@ -5,15 +5,14 @@ import type {
   BooleanLexeme,
   CharacterLexeme,
   IdentifierLexeme,
-  InputcodeLexeme,
+  InputCodeLexeme,
   IntegerLexeme,
   Lexeme,
-  Operator,
   OperatorLexeme,
-  QuerycodeLexeme,
+  QueryCodeLexeme,
   StringLexeme,
-  Type,
 } from "../../lexer/lexeme.ts";
+import type { Operator, Type } from "../../lexer/types.ts";
 import type { Constant } from "./constant.ts";
 import { type } from "./operators.ts";
 import type { Subroutine } from "./subroutine.ts";
@@ -67,11 +66,11 @@ export class StringValue {
 export class InputValue {
   readonly __ = "expression";
   readonly expressionType = "input";
-  readonly lexeme: InputcodeLexeme | QuerycodeLexeme;
+  readonly lexeme: InputCodeLexeme | QueryCodeLexeme;
   readonly input: Input;
   readonly type: Type = "integer";
 
-  constructor(lexeme: InputcodeLexeme | QuerycodeLexeme, input: Input) {
+  constructor(lexeme: InputCodeLexeme | QueryCodeLexeme, input: Input) {
     this.lexeme = lexeme;
     this.input = input;
   }

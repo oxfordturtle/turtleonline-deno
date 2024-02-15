@@ -1,11 +1,11 @@
 import {
-  OperatorLexeme,
+  operatorLexeme,
   type IdentifierLexeme,
   type KeywordLexeme,
   type Lexeme,
-  type Type,
   type TypeLexeme,
 } from "../../lexer/lexeme.ts";
+import type { Type } from "../../lexer/types.ts";
 import { token } from "../../tokenizer/token.ts";
 import { CompilerError } from "../../tools/error.ts";
 import { procedureCall } from "../call.ts";
@@ -465,7 +465,7 @@ function doStatement(
   condition = typeCheck(routine.language, condition, "boolean");
   // negate the condition
   const notToken = token("operator", "!", condition.lexeme.line, condition.lexeme.character);
-  const notLexeme = new OperatorLexeme(notToken, "C");
+  const notLexeme = operatorLexeme(notToken, "C");
   condition = new CompoundExpression(notLexeme, null, condition, "not");
 
   // expecting a closing bracket

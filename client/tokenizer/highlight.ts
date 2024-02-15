@@ -12,14 +12,14 @@ export default (code: string | Token[], language: Language): string => {
         case "newline":
           return token.content;
 
-        case "unterminated-comment":
-        case "unterminated-string":
-        case "bad-binary":
-        case "bad-octal":
-        case "bad-hexadecimal":
+        case "unterminatedComment":
+        case "unterminatedString":
+        case "badBinary":
+        case "badOctal":
+        case "badHexadecimal":
         case "real":
-        case "bad-inputcode":
-        case "bad-querycode":
+        case "badInputCode":
+        case "badQueryCode":
         case "illegal":
           return `<span class="error">${token.content}</span>`;
 

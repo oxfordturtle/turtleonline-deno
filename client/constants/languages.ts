@@ -4,11 +4,20 @@ const languages = ["BASIC", "C", "Java", "Pascal", "Python", "TypeScript"] as co
 
 export default languages;
 
-export const extensions: Record<Language, string> = {
+export const extension: Record<Language, string> = {
   BASIC: "tbas",
   C: "tc",
   Java: "tjav",
   Pascal: "tpas",
   Python: "tpy",
   TypeScript: "tts",
+};
+
+export const trueValue: Record<Language, number> = {
+  BASIC: -1,
+  C: -1,
+  Java: -1,
+  Pascal: -1,
+  Python: 1,
+  TypeScript: 1,
 };
