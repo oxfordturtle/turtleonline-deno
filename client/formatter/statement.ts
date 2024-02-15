@@ -2,8 +2,7 @@ import { Language } from "../constants/languages.ts";
 import { Statement } from "../parser/definitions/statement.ts";
 import expression from "./expression.ts";
 
-/** formats a statement as a code string */
-export default function statement(stmt: Statement, language: Language): string {
+export default (stmt: Statement, language: Language): string => {
   switch (stmt.statementType) {
     case "variableAssignment":
       return `${stmt.variable.name} ${stmt.lexeme.content} ${expression(stmt.value, language)}`;

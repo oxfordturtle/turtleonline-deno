@@ -2,8 +2,7 @@ import type { Expression } from "../parser/definitions/expression.ts";
 import type { Language } from "../constants/languages.ts";
 import type from "./type.ts";
 
-/** formats an expression as a code string */
-export default function expression(exp: Expression, language: Language): string {
+const expression = (exp: Expression, language: Language): string => {
   switch (exp.expressionType) {
     case "colour":
     case "constant":
@@ -62,3 +61,5 @@ export default function expression(exp: Expression, language: Language): string 
       return exp.lexeme.content;
   }
 }
+
+export default expression;
