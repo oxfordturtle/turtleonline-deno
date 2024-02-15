@@ -1,7 +1,7 @@
 import PCode from "../../constants/pcodes.ts";
 import { VariableValue } from "../../parser/definitions/expression.ts";
 import type Program from "../../parser/definitions/program.ts";
-import { VariableAssignment } from "../../parser/definitions/statement.ts";
+import type { VariableAssignment } from "../../parser/definitions/statement.ts";
 import type { Subroutine } from "../../parser/definitions/subroutine.ts";
 import { subroutineAddress, turtleAddress, variableAddress } from "../addresses.ts";
 import expression from "../expression.ts";

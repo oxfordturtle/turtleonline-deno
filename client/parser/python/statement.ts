@@ -18,12 +18,20 @@ import {
 import type Lexemes from "../definitions/lexemes.ts";
 import Program from "../definitions/program.ts";
 import {
-  ForStatement,
-  IfStatement,
-  PassStatement,
-  ReturnStatement,
-  VariableAssignment,
-  WhileStatement,
+  forStatement as _forStatement,
+  ifStatement as _ifStatement,
+  passStatement as _passStatement,
+  procedureCall as _procedureCall,
+  repeatStatement as _repeatStatement,
+  returnStatement as _returnStatement,
+  variableAssignment as _variableAssignment,
+  whileStatement as _whileStatement,
+  type ForStatement,
+  type IfStatement,
+  type PassStatement,
+  type ReturnStatement,
+  type VariableAssignment,
+  type WhileStatement,
   type Statement,
 } from "../definitions/statement.ts";
 import { Subroutine } from "../definitions/subroutine.ts";
@@ -71,7 +79,7 @@ export function statement(
       // of the program or the start of a block, if there's a comment on the
       // first line
       lexemes.next();
-      statement = new PassStatement();
+      statement = _passStatement();
       break;
 
     // identifiers (variable declaration, variable assignment, or procedure call)
@@ -102,7 +110,7 @@ export function statement(
           // N.B. lexemes[sub.end] is the final DEDENT lexeme; here we want to
           // move past it, hence sub.end + 1
           lexemes.index = sub.end + 1;
-          statement = new PassStatement();
+          statement = _passStatement();
           break;
         }
 
@@ -121,7 +129,7 @@ export function statement(
           } else {
             routine.nonlocals.push(...identifiers(lexemes, routine, "nonlocal"));
           }
-          statement = new PassStatement();
+          statement = _passStatement();
           eosCheck(lexemes);
           break;
 
@@ -160,7 +168,7 @@ export function statement(
         case "pass":
           lexemes.next();
           eosCheck(lexemes);
-          statement = new PassStatement();
+          statement = _passStatement();
           break;
 
         // any other keyword is an error
@@ -281,7 +289,7 @@ export function variableAssignment(
   value = typeCheck(routine.language, value, variable);
 
   // create and return the variable assignment statement
-  return new VariableAssignment(assignmentLexeme, variable, indexes, value);
+  return _variableAssignment(assignmentLexeme, variable, indexes, value);
 }
 
 /** parses lexemes as a variable declaration (with or without initial assignment) */
@@ -313,7 +321,7 @@ export function variableDeclaration(
     routine.constants.push(bar);
 
     // return a pass statement
-    return new PassStatement();
+    return _passStatement();
   }
 
   // otherwise it's a variable
@@ -325,7 +333,7 @@ export function variableDeclaration(
   }
 
   // otherwise pass
-  return new PassStatement();
+  return _passStatement();
 }
 
 /** parses lexemes as a RETURN statement */
@@ -358,7 +366,7 @@ function returnStatement(
   routine.hasReturnStatement = true;
 
   // create and return the return statement
-  return new ReturnStatement(returnLexeme, routine, value);
+  return _returnStatement(returnLexeme, routine, value);
 }
 
 /** parses lexemes as an IF statement */
@@ -402,7 +410,7 @@ function ifStatement(
   lexemes.next();
 
   // create the if statement
-  const thisIfStatement = new IfStatement(ifLexeme, condition);
+  const thisIfStatement = _ifStatement(ifLexeme, condition);
 
   // expecting indent
   if (!lexemes.get()) {
@@ -625,9 +633,9 @@ function forStatement(
   switch (providedValues.length) {
     case 1:
       // initial value is zero
-      initialisation = new VariableAssignment(assignmentLexeme, variable, [], zero);
+      initialisation = _variableAssignment(assignmentLexeme, variable, [], zero);
       // change is +1
-      change = new VariableAssignment(
+      change = _variableAssignment(
         assignmentLexeme,
         variable,
         [],
@@ -638,9 +646,9 @@ function forStatement(
       break;
     case 2:
       // initial value is providedValues[0]
-      initialisation = new VariableAssignment(assignmentLexeme, variable, [], providedValues[0]);
+      initialisation = _variableAssignment(assignmentLexeme, variable, [], providedValues[0]);
       // change is +1
-      change = new VariableAssignment(
+      change = _variableAssignment(
         assignmentLexeme,
         variable,
         [],
@@ -651,10 +659,10 @@ function forStatement(
       break;
     case 3: {
       // initial value is providedValues[0]
-      initialisation = new VariableAssignment(assignmentLexeme, variable, [], providedValues[0]);
+      initialisation = _variableAssignment(assignmentLexeme, variable, [], providedValues[0]);
       // change is +/- providedValues[1]
       const stepValue = evaluate(providedValues[2]!, "Python", "step") as number;
-      change = new VariableAssignment(
+      change = _variableAssignment(
         assignmentLexeme,
         variable,
         [],
@@ -718,7 +726,7 @@ function forStatement(
   lexemes.next();
 
   // create the for statement
-  const forStatement = new ForStatement(forLexeme, initialisation, condition, change);
+  const forStatement = _forStatement(forLexeme, initialisation, condition, change);
 
   // expecting indent
   if (!lexemes.get()) {
@@ -783,7 +791,7 @@ function whileStatement(
   lexemes.next();
 
   // create the while statement
-  const whileStatement = new WhileStatement(whileLexeme, condition);
+  const whileStatement = _whileStatement(whileLexeme, condition);
 
   // expecting indent
   if (!lexemes.get()) {

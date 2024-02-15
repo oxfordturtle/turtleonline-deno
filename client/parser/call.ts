@@ -5,18 +5,17 @@ import basicBody from "./basic/body.ts";
 import { FunctionCall, type VariableValue } from "./definitions/expression.ts";
 import type Lexemes from "./definitions/lexemes.ts";
 import type Program from "./definitions/program.ts";
-import { ProcedureCall } from "./definitions/statement.ts";
+import { procedureCall as _procedureCall, type ProcedureCall } from "./definitions/statement.ts";
 import type { Subroutine } from "./definitions/subroutine.ts";
 import { Variable } from "./definitions/variable.ts";
 import { expression, typeCheck } from "./expression.ts";
 
-/** parses lexemes as a procedure call */
-export function procedureCall(
+export const procedureCall = (
   lexeme: IdentifierLexeme,
   lexemes: Lexemes,
   routine: Program | Subroutine,
   command: Command | Subroutine
-): ProcedureCall {
+): ProcedureCall => {
   // check it's not a function
   if (command.type === "function") {
     throw new CompilerError("{lex} is a function, not a procedure.", lexeme);
@@ -28,7 +27,7 @@ export function procedureCall(
     command.typeIsCertain = true;
   }
 
-  const procedureCall = new ProcedureCall(lexeme, command);
+  const procedureCall = _procedureCall(lexeme, command);
   brackets(lexeme, lexemes, routine, procedureCall);
   if (procedureCall.command.__ === "subroutine" && procedureCall.command !== routine) {
     if (routine.language === "BASIC" && procedureCall.command.statements.length === 0) {
@@ -41,13 +40,12 @@ export function procedureCall(
   return procedureCall;
 }
 
-/** parses lexemes as a function call */
-export function functionCall(
+export const functionCall = (
   lexeme: IdentifierLexeme,
   lexemes: Lexemes,
   routine: Program | Subroutine,
   command: Command | Subroutine
-): FunctionCall {
+): FunctionCall => {
   // infer type
   if (command.__ === "subroutine" && !command.typeIsCertain) {
     command.typeIsCertain = true;
@@ -72,13 +70,13 @@ export function functionCall(
   return functionCall;
 }
 
-export function methodFunctionCall(
+export const methodFunctionCall = (
   lexeme: IdentifierLexeme,
   lexemes: Lexemes,
   routine: Program | Subroutine,
   method: Command,
   variableValue: VariableValue
-): FunctionCall {
+): FunctionCall => {
   if (method.parameters[0].type !== variableValue.variable.type) {
     throw new CompilerError(
       `Method "${method.names[routine.language]}" is not defined for type "${
@@ -95,13 +93,12 @@ export function methodFunctionCall(
   return functionCall;
 }
 
-/** parses lexemes as (possible) brackets following a command call */
-function brackets(
+const brackets = (
   lexeme: IdentifierLexeme,
   lexemes: Lexemes,
   routine: Program | Subroutine,
   commandCall: ProcedureCall | FunctionCall
-): void {
+): void => {
   const isMethod =
     commandCall.command.__ === "command" &&
     commandCall.command.names[routine.language]?.startsWith(".");
@@ -156,12 +153,11 @@ function brackets(
   }
 }
 
-/** parses arguments for a command call */
-function _arguments(
+const _arguments = (
   lexemes: Lexemes,
   routine: Program | Subroutine,
   commandCall: ProcedureCall | FunctionCall
-): void {
+): void => {
   const commandName =
     commandCall.command.__ === "command"
       ? commandCall.command.names[routine.language]

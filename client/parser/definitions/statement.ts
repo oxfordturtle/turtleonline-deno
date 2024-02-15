@@ -5,7 +5,6 @@ import { CompoundExpression, VariableValue, type Expression } from "./expression
 import type { Subroutine } from "./subroutine.ts";
 import type { Variable } from "./variable.ts";
 
-/** statement */
 export type Statement =
   | VariableAssignment
   | ProcedureCall
@@ -16,154 +15,181 @@ export type Statement =
   | ReturnStatement
   | PassStatement;
 
-/** variable assignment */
-export class VariableAssignment {
-  readonly __ = "statement";
-  readonly statementType = "variableAssignment";
-  readonly lexeme: OperatorLexeme;
-  readonly variable: Variable;
-  readonly indexes: Expression[];
-  readonly value: Expression;
+// variable assignment
+export type VariableAssignment = Readonly<{
+  __: "statement";
+  statementType: "variableAssignment";
+  lexeme: OperatorLexeme;
+  variable: Variable;
+  indexes: Expression[];
+  value: Expression;
+}>;
 
-  /** constructor */
-  constructor(
-    lexeme: OperatorLexeme,
-    variable: Variable,
-    indexes: Expression[],
-    value: Expression
-  ) {
-    this.lexeme = lexeme;
-    this.variable = variable;
-    this.indexes = indexes;
-    switch (lexeme.content) {
-      case "+=":
-        this.value = new CompoundExpression(
-          lexeme,
-          new VariableValue(lexeme as any, variable),
-          value,
-          "plus"
-        );
-        break;
-      case "-=":
-        this.value = new CompoundExpression(
-          lexeme,
-          new VariableValue(lexeme as any, variable),
-          value,
-          "subt"
-        );
-        break;
-      default:
-        this.value = value;
-        break;
-    }
-  }
-}
+export const variableAssignment = (
+  lexeme: OperatorLexeme,
+  variable: Variable,
+  indexes: Expression[],
+  value: Expression
+): VariableAssignment => {
+  const variableAssignmentValue: Record<string, Expression> = {
+    "+=": new CompoundExpression(lexeme, new VariableValue(lexeme as any, variable), value, "plus"),
+    "-=": new CompoundExpression(lexeme, new VariableValue(lexeme as any, variable), value, "subt"),
+  };
 
-/** procedure call */
-export class ProcedureCall {
-  readonly __ = "statement";
-  readonly statementType = "procedureCall";
-  readonly lexeme: IdentifierLexeme;
-  readonly command: Subroutine | Command;
-  readonly arguments: Expression[] = [];
+  return {
+    __: "statement",
+    statementType: "variableAssignment",
+    lexeme,
+    variable,
+    indexes,
+    value: variableAssignmentValue[lexeme.content] ?? value,
+  };
+};
 
-  constructor(lexeme: IdentifierLexeme, command: Subroutine | Command) {
-    this.lexeme = lexeme;
-    this.command = command;
-  }
-}
+// procedure call
+export type ProcedureCall = Readonly<{
+  __: "statement";
+  statementType: "procedureCall";
+  lexeme: IdentifierLexeme;
+  command: Subroutine | Command;
+  arguments: Expression[];
+}>;
 
-/** if statement */
-export class IfStatement {
-  readonly __ = "statement";
-  readonly statementType = "ifStatement";
-  readonly lexeme: KeywordLexeme;
-  readonly condition: Expression;
-  readonly ifStatements: Statement[] = [];
-  readonly elseStatements: Statement[] = [];
-  readonly variables: Variable[] = [];
-  readonly constants: Constant[] = [];
+export const procedureCall = (
+  lexeme: IdentifierLexeme,
+  command: Subroutine | Command
+): ProcedureCall =>
+  ({
+    __: "statement",
+    statementType: "procedureCall",
+    lexeme,
+    command,
+    arguments: [] as Expression[],
+  } as const);
 
-  constructor(lexeme: KeywordLexeme, condition: Expression) {
-    this.lexeme = lexeme;
-    this.condition = condition;
-  }
-}
+// if statement
+export type IfStatement = Readonly<{
+  __: "statement";
+  statementType: "ifStatement";
+  lexeme: KeywordLexeme;
+  condition: Expression;
+  ifStatements: Statement[];
+  elseStatements: Statement[];
+  variables: Variable[];
+  constants: Constant[];
+}>;
 
-/** for statement */
-export class ForStatement {
-  readonly __ = "statement";
-  readonly statementType = "forStatement";
-  readonly lexeme: KeywordLexeme;
-  readonly initialisation: VariableAssignment;
-  readonly condition: Expression;
-  readonly change: VariableAssignment;
-  readonly statements: Statement[] = [];
-  readonly variables: Variable[] = [];
-  readonly constants: Constant[] = [];
+export const ifStatement = (lexeme: KeywordLexeme, condition: Expression): IfStatement => ({
+  __: "statement",
+  statementType: "ifStatement",
+  lexeme,
+  condition,
+  ifStatements: [],
+  elseStatements: [],
+  variables: [],
+  constants: [],
+});
 
-  constructor(
-    lexeme: KeywordLexeme,
-    initialisation: VariableAssignment,
-    condition: Expression,
-    change: VariableAssignment
-  ) {
-    this.lexeme = lexeme;
-    this.initialisation = initialisation;
-    this.condition = condition;
-    this.change = change;
-  }
-}
+// for statement
+export type ForStatement = Readonly<{
+  __: "statement";
+  statementType: "forStatement";
+  lexeme: KeywordLexeme;
+  initialisation: VariableAssignment;
+  condition: Expression;
+  change: VariableAssignment;
+  statements: Statement[];
+  variables: Variable[];
+  constants: Constant[];
+}>;
 
-/** repeat statement */
-export class RepeatStatement {
-  readonly __ = "statement";
-  readonly statementType = "repeatStatement";
-  readonly lexeme: KeywordLexeme;
-  readonly condition: Expression;
-  readonly statements: Statement[] = [];
-  readonly variables: Variable[] = [];
-  readonly constants: Constant[] = [];
+export const forStatement = (
+  lexeme: KeywordLexeme,
+  initialisation: VariableAssignment,
+  condition: Expression,
+  change: VariableAssignment
+): ForStatement => ({
+  __: "statement",
+  statementType: "forStatement",
+  lexeme,
+  initialisation,
+  condition,
+  change,
+  statements: [],
+  variables: [],
+  constants: [],
+});
 
-  constructor(lexeme: KeywordLexeme, condition: Expression) {
-    this.lexeme = lexeme;
-    this.condition = condition;
-  }
-}
+// repeat statement
+export type RepeatStatement = Readonly<{
+  __: "statement";
+  statementType: "repeatStatement";
+  lexeme: KeywordLexeme;
+  condition: Expression;
+  statements: Statement[];
+  variables: Variable[];
+  constants: Constant[];
+}>;
 
-/** while statement */
-export class WhileStatement {
-  readonly __ = "statement";
-  readonly statementType = "whileStatement";
-  readonly lexeme: KeywordLexeme;
-  readonly condition: Expression;
-  readonly statements: Statement[] = [];
-  readonly variables: Variable[] = [];
-  readonly constants: Constant[] = [];
+export const repeatStatement = (lexeme: KeywordLexeme, condition: Expression): RepeatStatement => ({
+  __: "statement",
+  statementType: "repeatStatement",
+  lexeme,
+  condition,
+  statements: [],
+  variables: [],
+  constants: [],
+});
 
-  constructor(lexeme: KeywordLexeme, condition: Expression) {
-    this.lexeme = lexeme;
-    this.condition = condition;
-  }
-}
+// while statement
+export type WhileStatement = Readonly<{
+  __: "statement";
+  statementType: "whileStatement";
+  lexeme: KeywordLexeme;
+  condition: Expression;
+  statements: Statement[];
+  variables: Variable[];
+  constants: Constant[];
+}>;
 
-/** return statement */
-export class ReturnStatement {
-  readonly __ = "statement";
-  readonly statementType = "returnStatement";
-  readonly lexeme: KeywordLexeme | OperatorLexeme; // "=" operator in BASIC, "return" keyword in other languages
-  readonly routine: Subroutine;
-  readonly value: Expression;
+export const whileStatement = (lexeme: KeywordLexeme, condition: Expression): WhileStatement => ({
+  __: "statement",
+  statementType: "whileStatement",
+  lexeme,
+  condition,
+  statements: [],
+  variables: [],
+  constants: [],
+});
 
-  constructor(lexeme: KeywordLexeme | OperatorLexeme, routine: Subroutine, value: Expression) {
-    this.lexeme = lexeme;
-    this.routine = routine;
-    this.value = value;
-  }
-}
+// return statement
+export type ReturnStatement = Readonly<{
+  __: "statement";
+  statementType: "returnStatement";
+  lexeme: KeywordLexeme | OperatorLexeme;
+  routine: Subroutine;
+  value: Expression;
+}>;
 
-/** pass statement */
-export class PassStatement {
-  readonly __ = "statement";
-  readonly statementType = "passStatement";
-}
+export const returnStatement = (
+  lexeme: KeywordLexeme | OperatorLexeme,
+  routine: Subroutine,
+  value: Expression
+): ReturnStatement => ({
+  __: "statement",
+  statementType: "returnStatement",
+  lexeme,
+  routine,
+  value,
+});
+
+// pass statement
+export type PassStatement = Readonly<{
+  __: "statement";
+  statementType: "passStatement";
+}>;
+
+export const passStatement = (): PassStatement => ({
+  __: "statement",
+  statementType: "passStatement",
+});

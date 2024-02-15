@@ -13,14 +13,22 @@ import { CompoundExpression, VariableValue, type Expression } from "../definitio
 import type Lexemes from "../definitions/lexemes.ts";
 import type Program from "../definitions/program.ts";
 import {
-  ForStatement,
-  IfStatement,
-  PassStatement,
-  ProcedureCall,
-  RepeatStatement,
-  ReturnStatement,
-  VariableAssignment,
-  WhileStatement,
+  forStatement as _forStatement,
+  ifStatement as _ifStatement,
+  passStatement as _passStatement,
+  procedureCall as _procedureCall,
+  repeatStatement as _repeatStatement,
+  returnStatement as _returnStatement,
+  variableAssignment as _variableAssignment,
+  whileStatement as _whileStatement,
+  type ForStatement,
+  type IfStatement,
+  type PassStatement,
+  type ProcedureCall,
+  type RepeatStatement,
+  type ReturnStatement,
+  type VariableAssignment,
+  type WhileStatement,
   type Statement,
 } from "../definitions/statement.ts";
 import type { Subroutine } from "../definitions/subroutine.ts";
@@ -121,7 +129,7 @@ export function simpleStatement(
     case "keyword":
       lexemes.next();
       routine.constants.push(constant(lexemes, routine));
-      return new PassStatement();
+      return _passStatement();
 
     // type specification means a variable declaration
     case "type": {
@@ -131,7 +139,7 @@ export function simpleStatement(
       if (lexemes.get()?.content === "=") {
         return variableAssignment(variableLexeme, lexemes, routine, foo);
       } else {
-        return new PassStatement();
+        return _passStatement();
       }
     }
 
@@ -243,7 +251,7 @@ function variableAssignment(
   value = typeCheck(routine.language, value, variableValue.type);
 
   // create and return the variable assignment statement
-  return new VariableAssignment(assignmentLexeme, variable, indexes, value);
+  return _variableAssignment(assignmentLexeme, variable, indexes, value);
 }
 
 /** parses lexemes as a RETURN statement */
@@ -265,7 +273,7 @@ function returnStatement(
   routine.hasReturnStatement = true;
 
   // create and return the return statement
-  return new ReturnStatement(returnLexeme, routine, value);
+  return _returnStatement(returnLexeme, routine, value);
 }
 
 /** parses lexemes as an IF statement */
@@ -293,7 +301,7 @@ function ifStatement(ifLexeme: KeywordLexeme, lexemes: Lexemes, routine: Subrout
   lexemes.next();
 
   // create the if statement
-  const ifStatement = new IfStatement(ifLexeme, condition);
+  const ifStatement = _ifStatement(ifLexeme, condition);
 
   // expecting an opening curly bracket
   if (!lexemes.get() || lexemes.get()?.content !== "{") {
@@ -412,7 +420,7 @@ function forStatement(
   lexemes.next();
 
   // create the for statement
-  const forStatement = new ForStatement(forLexeme, initialisation, condition, change);
+  const forStatement = _forStatement(forLexeme, initialisation, condition, change);
 
   // expecting an opening curly bracket
   if (!lexemes.get() || lexemes.get()?.content !== "{") {
@@ -481,7 +489,7 @@ function doStatement(
   eosCheck(lexemes);
 
   // create and return the repeat statement
-  const repeatStatement = new RepeatStatement(doLexeme, condition);
+  const repeatStatement = _repeatStatement(doLexeme, condition);
   repeatStatement.statements.push(...repeatStatements);
   return repeatStatement;
 }
@@ -515,7 +523,7 @@ function whileStatement(
   lexemes.next();
 
   // create the while statement
-  const whileStatement = new WhileStatement(whileLexeme, condition);
+  const whileStatement = _whileStatement(whileLexeme, condition);
 
   // expecting an opening curly bracket
   if (!lexemes.get() || lexemes.get()?.content !== "{") {

@@ -1,9 +1,15 @@
 import type { Language } from "../../constants/languages.ts";
 import type { Type } from "../../lexer/types.ts";
 
-export type Constant = ReturnType<typeof constant>;
+export type Constant = Readonly<{
+  __: "constant";
+  name: string;
+  language: Language;
+  value: number | string;
+  type: Type;
+}>;
 
-const constant = (language: Language, name: string, value: number | string) =>
+export default (language: Language, name: string, value: number | string): Constant =>
   ({
     __: "constant",
     name,
@@ -11,8 +17,6 @@ const constant = (language: Language, name: string, value: number | string) =>
     value,
     type: typeof value === "number" ? "boolint" : "string" satisfies Type,
   } as const);
-
-export default constant;
 
 /** constant */
 // export class Constant {

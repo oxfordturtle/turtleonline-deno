@@ -2,12 +2,11 @@ import type { Language } from "../constants/languages.ts";
 import { CompilerError } from "../tools/error.ts";
 import type { Expression } from "./definitions/expression.ts";
 
-/** evaluates an expression */
-export default function evaluate(
+const evaluate = (
   expression: Expression,
   language: Language,
   context: "constant" | "string" | "array" | "step"
-): number | string {
+): number | string => {
   const True = language === "BASIC" || language === "Pascal" ? -1 : 1;
   const False = 0;
 
@@ -149,4 +148,6 @@ export default function evaluate(
       }
     }
   }
-}
+};
+
+export default evaluate;

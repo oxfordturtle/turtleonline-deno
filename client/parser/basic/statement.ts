@@ -19,15 +19,22 @@ import {
 import type Lexemes from "../definitions/lexemes.ts";
 import type Program from "../definitions/program.ts";
 import {
-  ForStatement,
-  IfStatement,
-  PassStatement,
-  ProcedureCall,
-  RepeatStatement,
-  ReturnStatement,
-  VariableAssignment,
-  WhileStatement,
+  forStatement as _forStatement,
+  ifStatement as _ifStatement,
+  passStatement as _passStatement,
+  procedureCall as _procedureCall,
+  repeatStatement as _repeatStatement,
+  returnStatement as _returnStatement,
+  variableAssignment as _variableAssignment,
+  whileStatement as _whileStatement,
+  type ForStatement,
+  type IfStatement,
+  type ProcedureCall,
+  type RepeatStatement,
+  type ReturnStatement,
   type Statement,
+  type VariableAssignment,
+  type WhileStatement,
 } from "../definitions/statement.ts";
 import type { Subroutine } from "../definitions/subroutine.ts";
 import type { Variable } from "../definitions/variable.ts";
@@ -63,7 +70,7 @@ export function statement(
       // the end of the previous statement), but it can happen at the start of
       // of the program or the start of a block, if there's a comment on the
       // first line (which is necessarily followed by a line break)
-      statement = new PassStatement();
+      statement = _passStatement();
       break;
 
     // '=' (at the end of a function)
@@ -88,14 +95,14 @@ export function statement(
         case "const":
           lexemes.next();
           routine.constants.push(constant(lexemes, routine));
-          statement = new PassStatement();
+          statement = _passStatement();
           break;
 
         // DIM statement
         case "dim":
           lexemes.next();
           routine.variables.push(array(lexemes, routine));
-          statement = new PassStatement();
+          statement = _passStatement();
           break;
 
         // LOCAL statement
@@ -108,7 +115,7 @@ export function statement(
           }
           lexemes.next();
           routine.variables.push(...variables(lexemes, routine));
-          statement = new PassStatement();
+          statement = _passStatement();
           break;
 
         // PRIVATE statement
@@ -125,7 +132,7 @@ export function statement(
             privateVariable.private = routine;
           }
           routine.program.variables.push(...privateVariables);
-          statement = new PassStatement();
+          statement = _passStatement();
           break;
         }
 
@@ -293,7 +300,7 @@ function variableAssignment(
   value = typeCheck(routine.language, value, variable.type);
 
   // create and return the variable assignment statement
-  return new VariableAssignment(assignmentLexeme, variable, indexes, value);
+  return _variableAssignment(assignmentLexeme, variable, indexes, value);
 }
 
 /** parses lexemes as a RETURN statement */
@@ -315,7 +322,7 @@ function returnStatement(
   value = typeCheck(routine.language, value, routine.returns as Type);
 
   // create and return the statement
-  return new ReturnStatement(lexeme, routine, value);
+  return _returnStatement(lexeme, routine, value);
 }
 
 /** parses lexemes as an IF statement */
@@ -343,7 +350,7 @@ function ifStatement(
   lexemes.next();
 
   // ok, create the IF statement
-  const ifStatement = new IfStatement(lexeme, condition);
+  const ifStatement = _ifStatement(lexeme, condition);
 
   // expecting a statement on the same line or a block of statements on a new line
   const firstInnerLexeme = lexemes.get();
@@ -464,7 +471,7 @@ function forStatement(
   // define default condition and step change
   const left = new VariableValue(variableLexeme, foo);
   const right = new IntegerValue(oneLexeme);
-  let change = new VariableAssignment(
+  let change = _variableAssignment(
     assignmentLexeme,
     foo,
     [],
@@ -486,7 +493,7 @@ function forStatement(
     if (evaluatedStepValue === 0) {
       throw new CompilerError("Step value cannot be zero.", stepValue.lexeme);
     }
-    change = new VariableAssignment(
+    change = _variableAssignment(
       assignmentLexeme,
       foo,
       [],
@@ -500,7 +507,7 @@ function forStatement(
   }
 
   // now we can create the FOR statement
-  const forStatement = new ForStatement(lexeme, initialisation, condition, change);
+  const forStatement = _forStatement(lexeme, initialisation, condition, change);
 
   // expecting a statement on the same line or a block of statements on a new line
   const firstInnerLexeme = lexemes.get();
@@ -550,7 +557,7 @@ function repeatStatement(
   condition = typeCheck(routine.language, condition, "boolean");
 
   // now we have everything we need
-  const repeatStatement = new RepeatStatement(lexeme, condition);
+  const repeatStatement = _repeatStatement(lexeme, condition);
   repeatStatement.statements.push(...repeatStatements);
   return repeatStatement;
 }
@@ -569,7 +576,7 @@ function whileStatement(
   condition = typeCheck(routine.language, condition, "boolean");
 
   // create the statement
-  const whileStatement = new WhileStatement(lexeme, condition);
+  const whileStatement = _whileStatement(lexeme, condition);
 
   // expecting a statement on the same line or a block of statements on a new line
   const firstInnerLexeme = lexemes.get();

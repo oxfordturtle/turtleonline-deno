@@ -12,14 +12,22 @@ import { CompoundExpression, VariableValue, type Expression } from "../definitio
 import type Lexemes from "../definitions/lexemes.ts";
 import type Program from "../definitions/program.ts";
 import {
-  ForStatement,
-  IfStatement,
-  PassStatement,
-  ProcedureCall,
-  RepeatStatement,
-  ReturnStatement,
-  VariableAssignment,
-  WhileStatement,
+  forStatement as _forStatement,
+  ifStatement as _ifStatement,
+  passStatement as _passStatement,
+  procedureCall as _procedureCall,
+  repeatStatement as _repeatStatement,
+  returnStatement as _returnStatement,
+  variableAssignment as _variableAssignment,
+  whileStatement as _whileStatement,
+  type ForStatement,
+  type IfStatement,
+  type PassStatement,
+  type ProcedureCall,
+  type RepeatStatement,
+  type ReturnStatement,
+  type VariableAssignment,
+  type WhileStatement,
   type Statement,
 } from "../definitions/statement.ts";
 import type { Subroutine } from "../definitions/subroutine.ts";
@@ -60,7 +68,7 @@ export function statement(
       // of the program or the start of a block, if there's a comment on the
       // first line
       lexemes.next();
-      statement = new PassStatement();
+      statement = _passStatement();
       break;
 
     // identifiers (variable assignment or procedure call)
@@ -80,7 +88,7 @@ export function statement(
           // N.B. lexemes[sub.end] is the final "}" lexeme; here we want to move
           // past it, hence sub.end + 1
           lexemes.index = sub.end + 1;
-          statement = new PassStatement();
+          statement = _passStatement();
           break;
         }
 
@@ -157,7 +165,7 @@ export function simpleStatement(
           lexemes.next();
           // bypass duplicate check on the second pass (and forget about the result)
           constant(lexemes, routine, false);
-          return new PassStatement();
+          return _passStatement();
 
         // "var" means a variable declaration
         case "var": {
@@ -171,7 +179,7 @@ export function simpleStatement(
           if (lexemes.get()?.content === "=") {
             return variableAssignment(variableLexeme, lexemes, routine, foo);
           } else {
-            return new PassStatement();
+            return _passStatement();
           }
         }
 
@@ -188,7 +196,7 @@ export function simpleStatement(
       const bar = find.variable(routine, lexeme.value);
       const baz = find.command(routine, lexeme.value);
       if (foo) {
-        throw new CompilerError("{lex} is a constant and cannot be assined a new value.", lexeme);
+        throw new CompilerError("{lex} is a constant and cannot be assigned a new value.", lexeme);
       } else if (bar) {
         lexemes.next();
         return variableAssignment(lexeme, lexemes, routine, bar);
@@ -297,7 +305,7 @@ function variableAssignment(
   value = typeCheck(routine.language, value, variableValue.type);
 
   // create and return the variable assignment statement
-  return new VariableAssignment(assignmentOperator, variable, indexes, value);
+  return _variableAssignment(assignmentOperator, variable, indexes, value);
 }
 
 /** parses a RETURN statement */
@@ -326,7 +334,7 @@ function returnStatement(
   routine.hasReturnStatement = true;
 
   // create and return the return statement
-  return new ReturnStatement(returnLexeme, routine, value);
+  return _returnStatement(returnLexeme, routine, value);
 }
 
 /** parses an IF statement */
@@ -358,7 +366,7 @@ function ifStatement(
   lexemes.next();
 
   // create the if statement
-  const ifStatement = new IfStatement(ifLexeme, condition);
+  const ifStatement = _ifStatement(ifLexeme, condition);
 
   // expecting an opening curly bracket
   if (!lexemes.get() || lexemes.get()?.content !== "{") {
@@ -502,7 +510,7 @@ function forStatement(
   lexemes.next();
 
   // create the for statement
-  const forStatement = new ForStatement(forLexeme, initialisation, condition, change);
+  const forStatement = _forStatement(forLexeme, initialisation, condition, change);
 
   // expecting a block of statements
   forStatement.statements.push(...block(lexemes, routine));
@@ -562,7 +570,7 @@ function doStatement(
   eosCheck(lexemes);
 
   // create and return the repeat statement
-  const repeatStatement = new RepeatStatement(doLexeme, condition);
+  const repeatStatement = _repeatStatement(doLexeme, condition);
   repeatStatement.statements.push(...repeatStatements);
   return repeatStatement;
 }
@@ -596,7 +604,7 @@ function whileStatement(
   lexemes.next();
 
   // create the while statement
-  const whileStatement = new WhileStatement(whileLexeme, condition);
+  const whileStatement = _whileStatement(whileLexeme, condition);
 
   // expecting an opening curly bracket
   if (!lexemes.get() || lexemes.get()?.content !== "{") {

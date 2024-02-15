@@ -17,12 +17,20 @@ import {
 import type Lexemes from "../definitions/lexemes.ts";
 import type Program from "../definitions/program.ts";
 import {
-  ForStatement,
-  IfStatement,
-  ProcedureCall,
-  RepeatStatement,
-  VariableAssignment,
-  WhileStatement,
+  forStatement as _forStatement,
+  ifStatement as _ifStatement,
+  passStatement as _passStatement,
+  procedureCall as _procedureCall,
+  repeatStatement as _repeatStatement,
+  returnStatement as _returnStatement,
+  variableAssignment as _variableAssignment,
+  whileStatement as _whileStatement,
+  type ForStatement,
+  type IfStatement,
+  type ProcedureCall,
+  type RepeatStatement,
+  type VariableAssignment,
+  type WhileStatement,
   type Statement,
 } from "../definitions/statement.ts";
 import type { Subroutine } from "../definitions/subroutine.ts";
@@ -243,7 +251,7 @@ function variableAssignment(
   value = typeCheck(routine.language, value, typeToCheck);
 
   // create and return the variable assignment
-  return new VariableAssignment(assignmentLexeme, variable, indexes, value);
+  return _variableAssignment(assignmentLexeme, variable, indexes, value);
 }
 
 /** parses lexemes as an IF statement */
@@ -260,7 +268,7 @@ function ifStatement(
   condition = typeCheck(routine.language, condition, "boolean");
 
   // now we can create the statement
-  const ifStatement = new IfStatement(ifLexeme, condition);
+  const ifStatement = _ifStatement(ifLexeme, condition);
 
   // expecting "then"
   if (!lexemes.get() || lexemes.get()?.content?.toLowerCase() !== "then") {
@@ -351,7 +359,7 @@ function forStatement(
   const right = new IntegerValue(oneLexeme);
   const changeOperator = toOrDownTo === "to" ? "plus" : "subt";
   const value = new CompoundExpression(plusLexeme, left, right, changeOperator);
-  const change = new VariableAssignment(assignmentLexeme, variable, [], value);
+  const change = _variableAssignment(assignmentLexeme, variable, [], value);
   lexemes.next();
 
   // expecting integer expression (for the final value)
@@ -369,7 +377,7 @@ function forStatement(
   const condition = new CompoundExpression(comparisonLexeme, left, finalValue, comparisonOperator);
 
   // now we can create the FOR statement
-  const forStatement = new ForStatement(forLexeme, initialisation, condition, change);
+  const forStatement = _forStatement(forLexeme, initialisation, condition, change);
 
   // expecting "do"
   const doLexeme = lexemes.get();
@@ -411,7 +419,7 @@ function repeatStatement(
   condition = typeCheck(routine.language, condition, "boolean");
 
   // now we have everything we need
-  const repeatStatement = new RepeatStatement(repeatLexeme, condition);
+  const repeatStatement = _repeatStatement(repeatLexeme, condition);
   repeatStatement.statements.push(...repeatStatements);
   return repeatStatement;
 }
@@ -430,7 +438,7 @@ function whileStatement(
   condition = typeCheck(routine.language, condition, "boolean");
 
   // now we can create the statement
-  const whileStatement = new WhileStatement(whileLexeme, condition);
+  const whileStatement = _whileStatement(whileLexeme, condition);
 
   // expecting "DO"
   if (!lexemes.get()) {
