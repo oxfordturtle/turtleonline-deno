@@ -2,7 +2,11 @@ import type { Command } from "../constants/commands.ts";
 import type { IdentifierLexeme } from "../lexer/lexeme.ts";
 import { CompilerError } from "../tools/error.ts";
 import basicBody from "./basic/body.ts";
-import { FunctionCall, type VariableValue } from "./definitions/expression.ts";
+import {
+  functionCall as _functionCall,
+  type FunctionCall,
+  type VariableValue,
+} from "./definitions/expression.ts";
 import type Lexemes from "./definitions/lexemes.ts";
 import type Program from "./definitions/program.ts";
 import { procedureCall as _procedureCall, type ProcedureCall } from "./definitions/statement.ts";
@@ -38,7 +42,7 @@ export const procedureCall = (
   }
 
   return procedureCall;
-}
+};
 
 export const functionCall = (
   lexeme: IdentifierLexeme,
@@ -56,7 +60,7 @@ export const functionCall = (
     throw new CompilerError("{lex} is a procedure, not a function.", lexemes.get(-1));
   }
 
-  const functionCall = new FunctionCall(lexeme, command);
+  const functionCall = _functionCall(lexeme, command);
   brackets(lexeme, lexemes, routine, functionCall);
 
   if (functionCall.command.__ === "subroutine" && functionCall.command !== routine) {
@@ -68,7 +72,7 @@ export const functionCall = (
   }
 
   return functionCall;
-}
+};
 
 export const methodFunctionCall = (
   lexeme: IdentifierLexeme,
@@ -86,12 +90,12 @@ export const methodFunctionCall = (
     );
   }
 
-  const functionCall = new FunctionCall(lexeme, method);
+  const functionCall = _functionCall(lexeme, method);
   functionCall.arguments.push(variableValue);
   brackets(lexeme, lexemes, routine, functionCall);
 
   return functionCall;
-}
+};
 
 const brackets = (
   lexeme: IdentifierLexeme,
@@ -151,7 +155,7 @@ const brackets = (
       lexemes.next();
     }
   }
-}
+};
 
 const _arguments = (
   lexemes: Lexemes,
@@ -223,4 +227,4 @@ const _arguments = (
 
   // move past the closing bracket
   lexemes.next();
-}
+};

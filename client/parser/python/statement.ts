@@ -10,9 +10,10 @@ import { CompilerError } from "../../tools/error.ts";
 import { procedureCall } from "../call.ts";
 import constant from "../definitions/constant.ts";
 import {
-  CompoundExpression,
-  IntegerValue,
-  VariableValue,
+  variableValue as _variableValue,
+  compoundExpression,
+  getType,
+  integerValue,
   type Expression,
 } from "../definitions/expression.ts";
 import type Lexemes from "../definitions/lexemes.ts";
@@ -30,9 +31,9 @@ import {
   type IfStatement,
   type PassStatement,
   type ReturnStatement,
+  type Statement,
   type VariableAssignment,
   type WhileStatement,
-  type Statement,
 } from "../definitions/statement.ts";
 import { Subroutine } from "../definitions/subroutine.ts";
 import { Variable } from "../definitions/variable.ts";
@@ -282,7 +283,7 @@ export function variableAssignment(
     );
   }
   let value = expression(lexemes, routine);
-  const variableValue = new VariableValue(variableLexeme, variable);
+  const variableValue = _variableValue(variableLexeme, variable);
   variableValue.indexes.push(...indexes);
 
   // type checking
@@ -355,7 +356,7 @@ function returnStatement(
   } else {
     // otherwise create a return variable
     const result = new Variable("!result", routine);
-    result.type = value.type;
+    result.type = getType(value);
     result.typeIsCertain = true;
     routine.typeIsCertain = true;
     routine.variables.unshift(result);
@@ -615,13 +616,13 @@ function forStatement(
   // some dummy things we need to create the things we want to know
   const zeroToken = token("decimal", "0", forLexeme.line, -1);
   const zeroLexeme = integerLexeme(zeroToken, 10);
-  const zero = new IntegerValue(zeroLexeme);
+  const zero = integerValue(zeroLexeme);
   const oneToken = token("decimal", "1", forLexeme.line, -1);
   const oneLexeme = integerLexeme(oneToken, 10);
-  const one = new IntegerValue(oneLexeme);
+  const one = integerValue(oneLexeme);
   const assignmentToken = token("operator", "=", forLexeme.line, -1);
   const assignmentLexeme = operatorLexeme(assignmentToken, "Python");
-  const left = new VariableValue(variableLexeme, variable);
+  const left = _variableValue(variableLexeme, variable);
   const plusToken = token("operator", "+", forLexeme.line, -1);
   const lessToken = token("operator", "<", forLexeme.line, -1);
   const moreToken = token("operator", ">", forLexeme.line, -1);
@@ -639,10 +640,10 @@ function forStatement(
         assignmentLexeme,
         variable,
         [],
-        new CompoundExpression(plusLexeme, left, one, "plus")
+        compoundExpression(plusLexeme, left, one, "plus")
       );
       // termination condition is < providedValues[0]
-      condition = new CompoundExpression(lessLexeme, left, providedValues[0], "less");
+      condition = compoundExpression(lessLexeme, left, providedValues[0], "less");
       break;
     case 2:
       // initial value is providedValues[0]
@@ -652,10 +653,10 @@ function forStatement(
         assignmentLexeme,
         variable,
         [],
-        new CompoundExpression(plusLexeme, left, one, "plus")
+        compoundExpression(plusLexeme, left, one, "plus")
       );
       // termination condition is < providedValues[1]
-      condition = new CompoundExpression(lessLexeme, left, providedValues[1]!, "less");
+      condition = compoundExpression(lessLexeme, left, providedValues[1]!, "less");
       break;
     case 3: {
       // initial value is providedValues[0]
@@ -666,13 +667,13 @@ function forStatement(
         assignmentLexeme,
         variable,
         [],
-        new CompoundExpression(plusLexeme, left, providedValues[2]!, "plus")
+        compoundExpression(plusLexeme, left, providedValues[2]!, "plus")
       );
       // termination condition is >/< providedValues[2]
       condition =
         stepValue < 0
-          ? new CompoundExpression(moreLexeme, left, providedValues[1]!, "more")
-          : new CompoundExpression(lessLexeme, left, providedValues[1]!, "less");
+          ? compoundExpression(moreLexeme, left, providedValues[1]!, "more")
+          : compoundExpression(lessLexeme, left, providedValues[1]!, "less");
       break;
     }
   }

@@ -1,5 +1,5 @@
 import PCode from "../../constants/pcodes.ts";
-import { VariableValue } from "../../parser/definitions/expression.ts";
+import { variableValue, type VariableValue } from "../../parser/definitions/expression.ts";
 import type Program from "../../parser/definitions/program.ts";
 import { subroutineAddress, turtleAddress, variableAddress } from "../addresses.ts";
 import expression from "../expression.ts";
@@ -11,7 +11,7 @@ export default (exp: VariableValue, program: Program, options: Options): number[
 
   // array element
   if (exp.variable.isArray && exp.indexes.length > 0) {
-    const baseVariableExp = new VariableValue(exp.lexeme, exp.variable); // same variable, no indexes
+    const baseVariableExp = variableValue(exp.lexeme, exp.variable); // same variable, no indexes
     pcode.push(...expression(baseVariableExp, program, options));
     for (let i = 0; i < exp.indexes.length; i += 1) {
       const index = exp.indexes[i];
@@ -38,7 +38,7 @@ export default (exp: VariableValue, program: Program, options: Options): number[
       // Pascal string indexes start from 1 instead of 0
       merge(pcode, [[PCode.decr]]);
     }
-    const baseVariableExp = new VariableValue(exp.lexeme, exp.variable); // same variable, no indexes
+    const baseVariableExp = variableValue(exp.lexeme, exp.variable); // same variable, no indexes
     merge(pcode, expression(baseVariableExp, program, options));
     merge(pcode, [[PCode.test, PCode.plus, PCode.incr, PCode.lptr]]);
     if (program.language === "Python" || program.language === "TypeScript") {

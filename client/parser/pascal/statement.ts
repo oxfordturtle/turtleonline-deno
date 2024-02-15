@@ -9,9 +9,9 @@ import { token } from "../../tokenizer/token.ts";
 import { CompilerError } from "../../tools/error.ts";
 import { procedureCall } from "../call.ts";
 import {
-  CompoundExpression,
-  IntegerValue,
-  VariableValue,
+  compoundExpression,
+  integerValue,
+  variableValue,
   type Expression,
 } from "../definitions/expression.ts";
 import type Lexemes from "../definitions/lexemes.ts";
@@ -355,10 +355,10 @@ function forStatement(
   const oneLexeme = integerLexeme(oneToken, 10);
   const assignmentLexeme = operatorLexeme(assignmentToken, "Pascal");
   const plusLexeme = operatorLexeme(operatorToken, "Pascal");
-  const left = new VariableValue(variableLexeme, variable);
-  const right = new IntegerValue(oneLexeme);
+  const left = variableValue(variableLexeme, variable);
+  const right = integerValue(oneLexeme);
   const changeOperator = toOrDownTo === "to" ? "plus" : "subt";
-  const value = new CompoundExpression(plusLexeme, left, right, changeOperator);
+  const value = compoundExpression(plusLexeme, left, right, changeOperator);
   const change = _variableAssignment(assignmentLexeme, variable, [], value);
   lexemes.next();
 
@@ -374,7 +374,7 @@ function forStatement(
   const comparisonToken = token("operator", toOrDownTo === "to" ? "<=" : ">=", forLexeme.line, -1);
   const comparisonLexeme = operatorLexeme(comparisonToken, "Pascal");
   const comparisonOperator = toOrDownTo === "to" ? "lseq" : "mreq";
-  const condition = new CompoundExpression(comparisonLexeme, left, finalValue, comparisonOperator);
+  const condition = compoundExpression(comparisonLexeme, left, finalValue, comparisonOperator);
 
   // now we can create the FOR statement
   const forStatement = _forStatement(forLexeme, initialisation, condition, change);

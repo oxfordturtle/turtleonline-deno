@@ -26,7 +26,7 @@ export function variable(lexemes: Lexemes, routine: Program | Subroutine): Varia
   return variable;
 }
 
-/** parses lexemes as an array variable declaraion (following "DIM") */
+/** parses lexemes as an array variable declaration (following "DIM") */
 export function array(lexemes: Lexemes, routine: Program | Subroutine): Variable {
   const foo = variable(lexemes, routine);
 

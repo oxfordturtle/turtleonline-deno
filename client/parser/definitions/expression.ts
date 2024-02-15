@@ -18,7 +18,6 @@ import { operatorType } from "./operators.ts";
 import type { Subroutine } from "./subroutine.ts";
 import type { Variable } from "./variable.ts";
 
-/** expression */
 export type Expression =
   | IntegerValue
   | StringValue
@@ -31,183 +30,221 @@ export type Expression =
   | CompoundExpression
   | CastExpression;
 
-/** integer value (including booleans and characters) */
-export class IntegerValue {
-  readonly __ = "expression";
-  readonly expressionType = "integer";
-  readonly lexeme: BooleanLexeme | CharacterLexeme | IntegerLexeme;
-  readonly value: number;
-
-  constructor(lexeme: BooleanLexeme | CharacterLexeme | IntegerLexeme) {
-    this.lexeme = lexeme;
-    this.value = lexeme.value;
+export const getType = (expression: Expression): Type => {
+  const languagesWithCharacterType = ["C", "Java", "Pascal"];
+  switch (expression.expressionType) {
+    case "constant":
+      // type is not known in advance, as it depends on expression.indexes.length
+      if (languagesWithCharacterType.includes(expression.constant.language)) {
+        return expression.constant.type === "string" && expression.indexes.length > 0
+          ? "character"
+          : expression.constant.type;
+      }
+      return expression.constant.type;
+    case "variable":
+      // type is not known in advance, as it depends on expression.indexes.length
+      return languagesWithCharacterType.includes(expression.variable.routine.language)
+        ? expression.variable.type === "string" &&
+          expression.indexes.length > expression.variable.arrayDimensions.length
+          ? "character"
+          : expression.variable.type
+        : expression.variable.type;
+    default:
+      return expression.type;
   }
+};
 
-  get type(): Type {
-    return this.lexeme.subtype;
-  }
-}
+export type IntegerValue = Readonly<{
+  __: "expression";
+  expressionType: "integer";
+  lexeme: BooleanLexeme | CharacterLexeme | IntegerLexeme;
+  type: "boolean" | "character" | "integer";
+  value: number;
+}>;
 
-/** string value */
-export class StringValue {
-  readonly __ = "expression";
-  readonly expressionType = "string";
-  readonly lexeme: StringLexeme;
-  readonly value: string;
-  readonly type: Type = "string";
+export const integerValue = (
+  lexeme: BooleanLexeme | CharacterLexeme | IntegerLexeme
+): IntegerValue => ({
+  __: "expression",
+  expressionType: "integer",
+  lexeme,
+  type: lexeme.subtype,
+  value: lexeme.value,
+});
 
-  constructor(lexeme: StringLexeme) {
-    this.lexeme = lexeme;
-    this.value = lexeme.value;
-  }
-}
+export type StringValue = Readonly<{
+  __: "expression";
+  expressionType: "string";
+  lexeme: StringLexeme;
+  type: "string";
+  value: string;
+}>;
 
-/** input value */
-export class InputValue {
-  readonly __ = "expression";
-  readonly expressionType = "input";
-  readonly lexeme: InputCodeLexeme | QueryCodeLexeme;
-  readonly input: Input;
-  readonly type: Type = "integer";
+export const stringValue = (lexeme: StringLexeme): StringValue => ({
+  __: "expression",
+  expressionType: "string",
+  lexeme,
+  type: "string",
+  value: lexeme.value,
+});
 
-  constructor(lexeme: InputCodeLexeme | QueryCodeLexeme, input: Input) {
-    this.lexeme = lexeme;
-    this.input = input;
-  }
-}
+export type InputValue = Readonly<{
+  __: "expression";
+  expressionType: "input";
+  lexeme: InputCodeLexeme | QueryCodeLexeme;
+  type: "integer";
+  input: Input;
+}>;
 
-/** colour value */
-export class ColourValue {
-  readonly __ = "expression";
-  readonly expressionType = "colour";
-  readonly lexeme: IdentifierLexeme;
-  readonly colour: Colour;
-  readonly type: Type = "integer";
+export const inputValue = (
+  lexeme: InputCodeLexeme | QueryCodeLexeme,
+  input: Input
+): InputValue => ({
+  __: "expression",
+  expressionType: "input",
+  lexeme,
+  type: "integer",
+  input,
+});
 
-  constructor(lexeme: IdentifierLexeme, colour: Colour) {
-    this.lexeme = lexeme;
-    this.colour = colour;
-  }
-}
+export type ColourValue = Readonly<{
+  __: "expression";
+  expressionType: "colour";
+  lexeme: IdentifierLexeme;
+  type: "integer";
+  colour: Colour;
+}>;
 
-/** constant value */
-export class ConstantValue {
-  readonly __ = "expression";
-  readonly expressionType = "constant";
-  readonly lexeme: IdentifierLexeme;
-  readonly constant: Constant;
-  readonly indexes: Expression[] = []; // for indexing characters in string constants
+export const colourValue = (lexeme: IdentifierLexeme, colour: Colour): ColourValue => ({
+  __: "expression",
+  expressionType: "colour",
+  lexeme,
+  type: "integer",
+  colour,
+});
 
-  constructor(lexeme: IdentifierLexeme, constant: Constant) {
-    this.lexeme = lexeme;
-    this.constant = constant;
-  }
+export type ConstantValue = Readonly<{
+  __: "expression";
+  expressionType: "constant";
+  lexeme: IdentifierLexeme;
+  constant: Constant;
+  indexes: Expression[];
+}>;
 
-  get type(): Type {
-    // type is not known in advance, as it depends on this.indexes.length
-    if (["C", "Java", "Pascal"].includes(this.constant.language)) {
-      return this.constant.type === "string" && this.indexes.length > 0
-        ? "character"
-        : this.constant.type;
-    }
-    return this.constant.type;
-  }
-}
+export const constantValue = (lexeme: IdentifierLexeme, constant: Constant): ConstantValue => ({
+  __: "expression",
+  expressionType: "constant",
+  lexeme,
+  constant,
+  indexes: [],
+});
 
-/** variable address */
-export class VariableAddress {
-  readonly __ = "expression";
-  readonly expressionType = "address";
-  readonly lexeme: IdentifierLexeme;
+export type VariableAddress = Readonly<{
+  __: "expression";
+  expressionType: "address";
+  lexeme: IdentifierLexeme | OperatorLexeme;
+  variable: Variable;
+  indexes: Expression[];
+  type: "integer";
+}>;
+
+export const variableAddress = (
+  lexeme: IdentifierLexeme | OperatorLexeme,
+  variable: Variable
+): VariableAddress => ({
+  __: "expression",
+  expressionType: "address",
+  lexeme,
+  variable,
+  indexes: [],
+  type: "integer",
+});
+
+export type VariableValue = {
+  readonly __: "expression";
+  readonly expressionType: "variable";
+  readonly lexeme: IdentifierLexeme | OperatorLexeme; // can be "+=" or "-=" operators in a variable assignment
   readonly variable: Variable;
-  readonly indexes: Expression[] = []; // for array variables
-  readonly type: Type = "integer";
-
-  constructor(lexeme: IdentifierLexeme, variable: Variable) {
-    this.lexeme = lexeme;
-    this.variable = variable;
-  }
-}
-
-/** variable value */
-export class VariableValue {
-  readonly __ = "expression";
-  readonly expressionType = "variable";
-  readonly lexeme: IdentifierLexeme;
-  readonly variable: Variable;
-  slice?: [Expression, Expression]; // for string/array slices
-  readonly indexes: Expression[] = []; // for elements of array variables
-
-  constructor(lexeme: IdentifierLexeme, variable: Variable) {
-    this.lexeme = lexeme;
-    this.variable = variable;
-  }
-
-  get type(): Type {
-    const languagesWithCharacterType = ["C", "Java", "Pascal"];
-    return languagesWithCharacterType.includes(this.variable.routine.language)
-      ? this.variable.type === "string" &&
-        this.indexes.length > this.variable.arrayDimensions.length
-        ? "character"
-        : this.variable.type
-      : this.variable.type;
-  }
-}
-
-/** function call */
-export class FunctionCall {
-  readonly __ = "expression";
-  readonly expressionType = "function";
-  readonly lexeme: IdentifierLexeme;
-  readonly command: Subroutine | Command;
+  slice: [Expression, Expression] | null; // for string/array slices, TODO: make readonly
+  readonly indexes: Expression[]; // for elements of array variables
   readonly type: Type;
-  readonly arguments: Expression[] = [];
+};
 
-  constructor(lexeme: IdentifierLexeme, command: Subroutine | Command) {
-    this.lexeme = lexeme;
-    this.command = command;
-    // give 'boolint' type by default to satisfy the compiler; but function
-    // calls should only ever be created with functions (that have a non-null
-    // 'returns' property)
-    this.type = command.returns || "boolint";
-  }
-}
+export const variableValue = (
+  lexeme: IdentifierLexeme | OperatorLexeme,
+  variable: Variable
+): VariableValue => ({
+  __: "expression",
+  expressionType: "variable",
+  lexeme,
+  variable,
+  slice: null,
+  indexes: [],
+  type: variable.type,
+});
 
-/** compound expression */
-export class CompoundExpression {
-  readonly __ = "expression";
-  readonly expressionType = "compound";
-  readonly lexeme: OperatorLexeme;
-  readonly left: Expression | null; // left hand side optional (for unary operators 'not' and 'minus')
-  readonly right: Expression;
-  readonly operator: Operator;
-  readonly type: Type;
+export type FunctionCall = Readonly<{
+  __: "expression";
+  expressionType: "function";
+  lexeme: IdentifierLexeme;
+  command: Subroutine | Command;
+  type: Type;
+  arguments: Expression[];
+}>;
 
-  constructor(
-    lexeme: OperatorLexeme,
-    left: Expression | null,
-    right: Expression,
-    operator: Operator
-  ) {
-    this.lexeme = lexeme;
-    this.left = left;
-    this.right = right;
-    this.operator = operator;
-    this.type = operatorType[operator];
-  }
-}
+export const functionCall = (
+  lexeme: IdentifierLexeme,
+  command: Subroutine | Command
+): FunctionCall => ({
+  __: "expression",
+  expressionType: "function",
+  lexeme,
+  command,
+  type: command.returns!, // function calls should only ever be created with functions
+  arguments: [],
+});
 
-/** cast expression */
-export class CastExpression {
-  readonly __ = "expression";
-  readonly expressionType = "cast";
-  readonly lexeme: Lexeme;
-  readonly type: Type;
-  readonly expression: Expression;
+export type CompoundExpression = Readonly<{
+  __: "expression";
+  expressionType: "compound";
+  lexeme: OperatorLexeme;
+  left: Expression | null; // left hand side optional (for unary operators 'not' and 'minus')
+  right: Expression;
+  operator: Operator;
+  type: Type;
+}>;
 
-  constructor(lexeme: Lexeme, type: Type, expression: Expression) {
-    this.lexeme = lexeme;
-    this.type = type;
-    this.expression = expression;
-  }
-}
+export const compoundExpression = (
+  lexeme: OperatorLexeme,
+  left: Expression | null,
+  right: Expression,
+  operator: Operator
+): CompoundExpression => ({
+  __: "expression",
+  expressionType: "compound",
+  lexeme,
+  left,
+  right,
+  operator,
+  type: operatorType[operator],
+});
+
+export type CastExpression = Readonly<{
+  __: "expression";
+  expressionType: "cast";
+  lexeme: Lexeme;
+  type: Type;
+  expression: Expression;
+}>;
+
+export const castExpression = (
+  lexeme: Lexeme,
+  type: Type,
+  expression: Expression
+): CastExpression => ({
+  __: "expression",
+  expressionType: "cast",
+  lexeme,
+  type,
+  expression,
+});

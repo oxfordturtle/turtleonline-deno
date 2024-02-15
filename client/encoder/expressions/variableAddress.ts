@@ -1,6 +1,6 @@
 import PCode from "../../constants/pcodes.ts";
 import type { VariableAddress } from "../../parser/definitions/expression.ts";
-import { VariableValue } from "../../parser/definitions/expression.ts";
+import { variableValue, type VariableValue } from "../../parser/definitions/expression.ts";
 import type Program from "../../parser/definitions/program.ts";
 import { subroutineAddress, turtleAddress, variableAddress } from "../addresses.ts";
 import expression from "../expression.ts";
@@ -16,14 +16,14 @@ export default (
 
   // array element
   if (exp.variable.isArray && exp.indexes.length > 0) {
-    const baseVariableExp = new VariableValue(exp.lexeme, exp.variable); // same variable, no indexes
+    const baseVariableExp = variableValue(exp.lexeme, exp.variable); // same variable, no indexes
     pcode.push(...expression(baseVariableExp, program, options));
     for (let i = 0; i < exp.indexes.length; i += 1) {
       const index = exp.indexes[i];
       const indexExp = expression(index, program, options);
       merge(pcode, indexExp);
       if (exp.variable.arrayDimensions[i] && exp.variable.arrayDimensions[i][0] !== 0) {
-        // substract the start index if not indexed from 0
+        // subtract the start index if not indexed from 0
         merge(pcode, [[PCode.ldin, exp.variable.arrayDimensions[i][0], PCode.subt]]);
       } else if (exp.variable.arrayDimensions[i] === undefined) {
         // this means the final index expression is to a character within an array of strings
@@ -42,7 +42,7 @@ export default (
       // Pascal string indexes start from 1 instead of 0
       merge(pcode, [[PCode.decr]]);
     }
-    const baseVariableExp = new VariableValue(exp.lexeme, exp.variable); // same variable, no indexes
+    const baseVariableExp = variableValue(exp.lexeme, exp.variable); // same variable, no indexes
     merge(pcode, expression(baseVariableExp, program, options));
     merge(pcode, [[PCode.test, PCode.plus, PCode.incr]]);
   }

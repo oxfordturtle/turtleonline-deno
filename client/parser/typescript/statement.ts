@@ -8,7 +8,11 @@ import type { Type } from "../../lexer/types.ts";
 import { token } from "../../tokenizer/token.ts";
 import { CompilerError } from "../../tools/error.ts";
 import { procedureCall } from "../call.ts";
-import { CompoundExpression, VariableValue, type Expression } from "../definitions/expression.ts";
+import {
+  variableValue as _variableValue,
+  compoundExpression,
+  type Expression,
+} from "../definitions/expression.ts";
 import type Lexemes from "../definitions/lexemes.ts";
 import type Program from "../definitions/program.ts";
 import {
@@ -26,9 +30,9 @@ import {
   type ProcedureCall,
   type RepeatStatement,
   type ReturnStatement,
+  type Statement,
   type VariableAssignment,
   type WhileStatement,
-  type Statement,
 } from "../definitions/statement.ts";
 import type { Subroutine } from "../definitions/subroutine.ts";
 import type { Variable } from "../definitions/variable.ts";
@@ -300,7 +304,7 @@ function variableAssignment(
     );
   }
   let value = expression(lexemes, routine);
-  const variableValue = new VariableValue(variableLexeme, variable);
+  const variableValue = _variableValue(variableLexeme, variable);
   variableValue.indexes.push(...indexes);
   value = typeCheck(routine.language, value, variableValue.type);
 
@@ -555,7 +559,7 @@ function doStatement(
   // negate the condition
   const notToken = token("operator", "!", condition.lexeme.line, condition.lexeme.character);
   const notLexeme = operatorLexeme(notToken, "TypeScript");
-  condition = new CompoundExpression(notLexeme, null, condition, "not");
+  condition = compoundExpression(notLexeme, null, condition, "not");
 
   // expecting a closing bracket
   if (!lexemes.get() || lexemes.get()?.content !== ")") {

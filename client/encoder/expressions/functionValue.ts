@@ -19,7 +19,7 @@ export default (exp: FunctionCall, program: Program, options: Options): number[]
   // next: code for the function
   if (exp.command.__ === "subroutine") {
     // custom functions
-    // N.B. use command index as placeholder for now; this will be backpatched
+    // N.B. use command index as placeholder for now; this will be back-patched
     // when compilation is otherwise complete
     merge(pcode, [[PCode.subr, exp.command.index]]);
   } else {

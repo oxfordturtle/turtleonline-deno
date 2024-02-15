@@ -1,7 +1,7 @@
 import type { Command } from "../../constants/commands.ts";
 import type { IdentifierLexeme, KeywordLexeme, OperatorLexeme } from "../../lexer/lexeme.ts";
 import type { Constant } from "./constant.ts";
-import { CompoundExpression, VariableValue, type Expression } from "./expression.ts";
+import { compoundExpression, variableValue, type Expression } from "./expression.ts";
 import type { Subroutine } from "./subroutine.ts";
 import type { Variable } from "./variable.ts";
 
@@ -32,8 +32,8 @@ export const variableAssignment = (
   value: Expression
 ): VariableAssignment => {
   const variableAssignmentValue: Record<string, Expression> = {
-    "+=": new CompoundExpression(lexeme, new VariableValue(lexeme as any, variable), value, "plus"),
-    "-=": new CompoundExpression(lexeme, new VariableValue(lexeme as any, variable), value, "subt"),
+    "+=": compoundExpression(lexeme, variableValue(lexeme, variable), value, "plus"),
+    "-=": compoundExpression(lexeme, variableValue(lexeme, variable), value, "subt"),
   };
 
   return {

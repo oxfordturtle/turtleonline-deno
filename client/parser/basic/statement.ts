@@ -11,9 +11,9 @@ import { token } from "../../tokenizer/token.ts";
 import { CompilerError } from "../../tools/error.ts";
 import { procedureCall } from "../call.ts";
 import {
-  CompoundExpression,
-  IntegerValue,
-  VariableValue,
+  compoundExpression,
+  integerValue,
+  variableValue,
   type Expression,
 } from "../definitions/expression.ts";
 import type Lexemes from "../definitions/lexemes.ts";
@@ -469,15 +469,15 @@ function forStatement(
   const mreqLexeme = operatorLexeme(mreqToken, "BASIC");
 
   // define default condition and step change
-  const left = new VariableValue(variableLexeme, foo);
-  const right = new IntegerValue(oneLexeme);
+  const left = variableValue(variableLexeme, foo);
+  const right = integerValue(oneLexeme);
   let change = _variableAssignment(
     assignmentLexeme,
     foo,
     [],
-    new CompoundExpression(plusLexeme, left, right, "plus")
+    compoundExpression(plusLexeme, left, right, "plus")
   );
-  let condition = new CompoundExpression(lseqLexeme, left, finalValue, "lseq");
+  let condition = compoundExpression(lseqLexeme, left, finalValue, "lseq");
 
   // "STEP" permissible here
   if (lexemes.get() && lexemes.get()?.content === "STEP") {
@@ -497,12 +497,12 @@ function forStatement(
       assignmentLexeme,
       foo,
       [],
-      new CompoundExpression(plusLexeme, left, stepValue, "plus")
+      compoundExpression(plusLexeme, left, stepValue, "plus")
     );
     if (evaluatedStepValue < 0) {
-      condition = new CompoundExpression(mreqLexeme, left, finalValue, "mreq");
+      condition = compoundExpression(mreqLexeme, left, finalValue, "mreq");
     } else {
-      condition = new CompoundExpression(lseqLexeme, left, finalValue, "lseq");
+      condition = compoundExpression(lseqLexeme, left, finalValue, "lseq");
     }
   }
 

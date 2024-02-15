@@ -1,5 +1,5 @@
 import PCode from "../../constants/pcodes.ts";
-import { VariableValue } from "../../parser/definitions/expression.ts";
+import { variableValue as _variableValue } from "../../parser/definitions/expression.ts";
 import type Program from "../../parser/definitions/program.ts";
 import type { VariableAssignment } from "../../parser/definitions/statement.ts";
 import type { Subroutine } from "../../parser/definitions/subroutine.ts";
@@ -59,7 +59,7 @@ const globalVariableAssignment = (
 
   // global array
   if (stmt.variable.isArray || (stmt.variable.type === "string" && stmt.indexes.length > 0)) {
-    const exp = new VariableValue(stmt.lexeme as any, stmt.variable);
+    const exp = _variableValue(stmt.lexeme, stmt.variable);
     exp.indexes.push(...stmt.indexes);
     const element = expression(exp, program, options);
     const lastLine = element[element.length - 1];
@@ -89,7 +89,7 @@ const pointerVariableAssignment = (
   program: Program,
   options: Options
 ): number[][] => {
-  const variableValue = new VariableValue(stmt.lexeme as any, stmt.variable);
+  const variableValue = _variableValue(stmt.lexeme, stmt.variable);
   const pcode = expression(variableValue, program, options);
   pcode[pcode.length - 1].pop(); // pop off PCode.peek
 
@@ -127,7 +127,7 @@ const localVariableAssignment = (
 
   // local array
   if (stmt.variable.isArray || (stmt.variable.type === "string" && stmt.indexes.length > 0)) {
-    const exp = new VariableValue(stmt.lexeme as any, stmt.variable);
+    const exp = _variableValue(stmt.lexeme, stmt.variable);
     exp.indexes.push(...stmt.indexes);
     const element = expression(exp, program, options);
     const lastLine = element[element.length - 1];

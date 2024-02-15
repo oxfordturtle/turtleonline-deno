@@ -9,7 +9,11 @@ import type { Type } from "../../lexer/types.ts";
 import { token } from "../../tokenizer/token.ts";
 import { CompilerError } from "../../tools/error.ts";
 import { procedureCall } from "../call.ts";
-import { CompoundExpression, VariableValue, type Expression } from "../definitions/expression.ts";
+import {
+  compoundExpression,
+  variableValue as _variableValue,
+  type Expression,
+} from "../definitions/expression.ts";
 import type Lexemes from "../definitions/lexemes.ts";
 import type Program from "../definitions/program.ts";
 import {
@@ -244,7 +248,7 @@ function variableAssignment(
     );
   }
   let value = expression(lexemes, routine);
-  const variableValue = new VariableValue(variableLexeme, variable);
+  const variableValue = _variableValue(variableLexeme, variable);
   variableValue.indexes.push(...indexes);
   // check against variableValue.type rather than variableAssignment.variable.type
   // in case string has indexes and should be a character
@@ -474,7 +478,7 @@ function doStatement(
   // negate the condition
   const notToken = token("operator", "!", condition.lexeme.line, condition.lexeme.character);
   const notLexeme = operatorLexeme(notToken, "C");
-  condition = new CompoundExpression(notLexeme, null, condition, "not");
+  condition = compoundExpression(notLexeme, null, condition, "not");
 
   // expecting a closing bracket
   if (!lexemes.get() || lexemes.get()?.content !== ")") {
