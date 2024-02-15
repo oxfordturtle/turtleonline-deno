@@ -1,5 +1,5 @@
 import PCode from "../../constants/pcodes.ts";
-import type Program from "../../parser/definitions/program.ts";
+import { getParameters, type Program } from "../../parser/definitions/routine.ts";
 import type { ProcedureCall } from "../../parser/definitions/statement.ts";
 import { turtleAddress } from "../addresses.ts";
 import expression from "../expression.ts";
@@ -15,9 +15,10 @@ export default (
   const pcode: number[][] = [];
 
   // first: load arguments onto the stack
-  for (let index = 0; index < stmt.command.parameters.length; index += 1) {
+  const parameters = stmt.command.__ === "command" ? stmt.command.parameters : getParameters(stmt.command);
+  for (let index = 0; index < parameters.length; index += 1) {
     const arg = stmt.arguments[index];
-    const param = stmt.command.parameters[index];
+    const param = parameters[index];
     merge(pcode, expression(arg, program, options, param.isReferenceParameter));
   }
 

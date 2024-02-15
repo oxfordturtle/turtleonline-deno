@@ -13,7 +13,7 @@ export const extension: Record<Language, string> = {
   TypeScript: "tts",
 };
 
-export const trueValue: Record<Language, number> = {
+export const trueValue: Record<Language, 1 | -1> = {
   BASIC: -1,
   C: -1,
   Java: -1,

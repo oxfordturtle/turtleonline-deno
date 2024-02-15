@@ -1,7 +1,7 @@
 import type { Lexeme } from "../../lexer/lexeme.ts";
 import { CompilerError } from "../../tools/error.ts";
 import type Lexemes from "../definitions/lexemes.ts";
-import Program from "../definitions/program.ts";
+import { program as _program, getAllSubroutines, type Program } from "../definitions/routine.ts";
 import constant from "./constant.ts";
 import identifier from "./identifier.ts";
 import { eosCheck, simpleStatement, statement } from "./statement.ts";
@@ -11,7 +11,7 @@ import type from "./type.ts";
 /** parses lexemes as a C program */
 export default function c(lexemes: Lexemes): Program {
   // create the program
-  const program = new Program("C");
+  const program = _program("C");
 
   // first pass: hoist all constants, variables, and methods
   while (lexemes.get()) {
@@ -60,7 +60,7 @@ export default function c(lexemes: Lexemes): Program {
   }
 
   // second pass: parse the statements of each subroutine
-  for (const subroutine of program.allSubroutines) {
+  for (const subroutine of getAllSubroutines(program)) {
     // loop through the lexemes
     lexemes.index = subroutine.start;
     while (lexemes.index < subroutine.end) {

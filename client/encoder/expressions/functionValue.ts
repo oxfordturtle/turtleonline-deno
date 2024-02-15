@@ -1,6 +1,6 @@
 import PCode from "../../constants/pcodes.ts";
 import type { FunctionCall } from "../../parser/definitions/expression.ts";
-import type Program from "../../parser/definitions/program.ts";
+import { getParameters, getResultType, type Program } from "../../parser/definitions/routine.ts";
 import { resultAddress, turtleAddress } from "../addresses.ts";
 import expression from "../expression.ts";
 import merge from "../merge.ts";
@@ -10,9 +10,10 @@ export default (exp: FunctionCall, program: Program, options: Options): number[]
   const pcode: number[][] = [];
 
   // first: load arguments onto stack
-  for (let index = 0; index < exp.command.parameters.length; index += 1) {
+  const parameters = exp.command.__ === "command" ? exp.command.parameters : getParameters(exp.command);
+  for (let index = 0; index < parameters.length; index += 1) {
     const arg = exp.arguments[index];
-    const param = exp.command.parameters[index];
+    const param = parameters[index];
     merge(pcode, expression(arg, program, options, param.isReferenceParameter));
   }
 
@@ -32,7 +33,7 @@ export default (exp: FunctionCall, program: Program, options: Options): number[]
   if (exp.command.__ === "subroutine") {
     // push, don't merge; anything after the subroutine call must be on a new line
     pcode.push([PCode.ldvv, resultAddress(program), 1]);
-    if (exp.command.returns === "string") {
+    if (getResultType(exp.command) === "string") {
       merge(pcode, [[PCode.hstr]]);
     }
   }

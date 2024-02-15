@@ -1,8 +1,8 @@
 import PCode from "../../constants/pcodes.ts";
 import { variableValue as _variableValue } from "../../parser/definitions/expression.ts";
-import type Program from "../../parser/definitions/program.ts";
+import type { Program, Subroutine } from "../../parser/definitions/routine.ts";
 import type { VariableAssignment } from "../../parser/definitions/statement.ts";
-import type { Subroutine } from "../../parser/definitions/subroutine.ts";
+import { isArray } from "../../parser/definitions/variable.ts";
 import { subroutineAddress, turtleAddress, variableAddress } from "../addresses.ts";
 import expression from "../expression.ts";
 import merge from "../merge.ts";
@@ -28,7 +28,7 @@ export default (
 
   if (
     stmt.variable.isReferenceParameter &&
-    !stmt.variable.isArray &&
+    !isArray(stmt.variable) &&
     stmt.variable.type !== "string"
   ) {
     return referenceVariableAssignment(stmt, program, options);
@@ -58,12 +58,12 @@ const globalVariableAssignment = (
   const pcode = expression(stmt.value, program, options);
 
   // global array
-  if (stmt.variable.isArray || (stmt.variable.type === "string" && stmt.indexes.length > 0)) {
+  if (isArray(stmt.variable) || (stmt.variable.type === "string" && stmt.indexes.length > 0)) {
     const exp = _variableValue(stmt.lexeme, stmt.variable);
     exp.indexes.push(...stmt.indexes);
     const element = expression(exp, program, options);
     const lastLine = element[element.length - 1];
-    if (stmt.variable.isArray && stmt.variable.type === "string") {
+    if (isArray(stmt.variable) && stmt.variable.type === "string") {
       lastLine.push(PCode.cstr);
     } else {
       lastLine[lastLine.length - 1] = PCode.sptr; // change LPTR to SPTR
@@ -126,12 +126,12 @@ const localVariableAssignment = (
   const pcode = expression(stmt.value, program, options);
 
   // local array
-  if (stmt.variable.isArray || (stmt.variable.type === "string" && stmt.indexes.length > 0)) {
+  if (isArray(stmt.variable) || (stmt.variable.type === "string" && stmt.indexes.length > 0)) {
     const exp = _variableValue(stmt.lexeme, stmt.variable);
     exp.indexes.push(...stmt.indexes);
     const element = expression(exp, program, options);
     const lastLine = element[element.length - 1];
-    if (stmt.variable.isArray && stmt.variable.type === "string") {
+    if (isArray(stmt.variable) && stmt.variable.type === "string") {
       lastLine.push(PCode.cstr);
     } else {
       lastLine[lastLine.length - 1] = PCode.sptr; // change LPTR to SPTR

@@ -1,7 +1,8 @@
 import PCode from "../../constants/pcodes.ts";
 import type { VariableAddress } from "../../parser/definitions/expression.ts";
 import { variableValue, type VariableValue } from "../../parser/definitions/expression.ts";
-import type Program from "../../parser/definitions/program.ts";
+import type { Program } from "../../parser/definitions/routine.ts";
+import { isArray } from "../../parser/definitions/variable.ts";
 import { subroutineAddress, turtleAddress, variableAddress } from "../addresses.ts";
 import expression from "../expression.ts";
 import merge from "../merge.ts";
@@ -15,7 +16,7 @@ export default (
   const pcode: number[][] = [];
 
   // array element
-  if (exp.variable.isArray && exp.indexes.length > 0) {
+  if (isArray(exp.variable) && exp.indexes.length > 0) {
     const baseVariableExp = variableValue(exp.lexeme, exp.variable); // same variable, no indexes
     pcode.push(...expression(baseVariableExp, program, options));
     for (let i = 0; i < exp.indexes.length; i += 1) {

@@ -1,7 +1,7 @@
 import type { Type } from "../../lexer/types.ts";
 import { CompilerError } from "../../tools/error.ts";
 import type Lexemes from "../definitions/lexemes.ts";
-import type { SubroutineType } from "../definitions/subroutine.ts";
+import type { SubroutineType } from "../definitions/routine.ts";
 
 /** parses a lexeme as an identifier */
 export function identifier(lexemes: Lexemes): string {

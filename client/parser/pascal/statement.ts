@@ -15,7 +15,7 @@ import {
   type Expression,
 } from "../definitions/expression.ts";
 import type Lexemes from "../definitions/lexemes.ts";
-import type Program from "../definitions/program.ts";
+import type { Program, Subroutine } from "../definitions/routine.ts";
 import {
   forStatement as _forStatement,
   ifStatement as _ifStatement,
@@ -33,8 +33,7 @@ import {
   type WhileStatement,
   type Statement,
 } from "../definitions/statement.ts";
-import type { Subroutine } from "../definitions/subroutine.ts";
-import type { Variable } from "../definitions/variable.ts";
+import { isArray, type Variable } from "../definitions/variable.ts";
 import { expression, typeCheck } from "../expression.ts";
 import * as find from "../find.ts";
 
@@ -172,7 +171,7 @@ function variableAssignment(
   // strings and array variables permit element indexes at this point
   const indexes: Expression[] = [];
   if (lexemes.get()?.content === "[") {
-    if (variable.isArray) {
+    if (isArray(variable)) {
       lexemes.next();
       while (lexemes.get() && lexemes.get()?.content !== "]") {
         // expecting integer expression for the element index
@@ -214,7 +213,7 @@ function variableAssignment(
   }
 
   // check the right number of array variable indexes have been given
-  if (variable.isArray) {
+  if (isArray(variable)) {
     const allowedIndexes =
       variable.type === "string"
         ? variable.arrayDimensions.length + 1 // one more for characters within strings
@@ -332,7 +331,7 @@ function forStatement(
   if (variable.type !== "integer" && variable.type !== "boolint") {
     throw new CompilerError("{lex} is not an integer variable.", variableLexeme);
   }
-  if (variable.isArray) {
+  if (isArray(variable)) {
     throw new CompilerError("FOR variable cannot be an array or array element.", variableLexeme);
   }
   lexemes.next();

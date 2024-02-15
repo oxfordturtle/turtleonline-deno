@@ -5,7 +5,6 @@ import {
   type Lexeme,
   type TypeLexeme,
 } from "../../lexer/lexeme.ts";
-import type { Type } from "../../lexer/types.ts";
 import { token } from "../../tokenizer/token.ts";
 import { CompilerError } from "../../tools/error.ts";
 import { procedureCall } from "../call.ts";
@@ -15,7 +14,7 @@ import {
   type Expression,
 } from "../definitions/expression.ts";
 import type Lexemes from "../definitions/lexemes.ts";
-import type Program from "../definitions/program.ts";
+import { getSubroutineType, getResultType, type Program, type Subroutine } from "../definitions/routine.ts";
 import {
   forStatement as _forStatement,
   ifStatement as _ifStatement,
@@ -35,8 +34,7 @@ import {
   type WhileStatement,
   type Statement,
 } from "../definitions/statement.ts";
-import type { Subroutine } from "../definitions/subroutine.ts";
-import type { Variable } from "../definitions/variable.ts";
+import { isArray, type Variable } from "../definitions/variable.ts";
 import { expression, typeCheck } from "../expression.ts";
 import * as find from "../find.ts";
 import constant from "./constant.ts";
@@ -175,7 +173,7 @@ function variableAssignment(
   // strings and array variables permit element indexes at this point
   const indexes: Expression[] = [];
   if (lexemes.get()?.content === "[") {
-    if (variable.isArray) {
+    if (isArray(variable)) {
       lexemes.next();
       while (lexemes.get() && lexemes.get()?.content !== "]") {
         // expecting integer expression for the element index
@@ -214,7 +212,7 @@ function variableAssignment(
   }
 
   // check the right number of array variable indexes have been given
-  if (variable.isArray) {
+  if (isArray(variable)) {
     const allowedIndexes =
       variable.type === "string"
         ? variable.arrayDimensions.length + 1 // one more for characters within strings
@@ -264,13 +262,13 @@ function returnStatement(
   lexemes: Lexemes,
   routine: Subroutine
 ): ReturnStatement {
-  if (routine.type !== "function") {
+  if (getSubroutineType(routine) !== "function") {
     throw new CompilerError("Procedures cannot return a value.", lexemes.get());
   }
 
   // expecting an expression of the right type, followed by semicolon
   let value = expression(lexemes, routine);
-  value = typeCheck(routine.language, value, routine.returns as Type);
+  value = typeCheck(routine.language, value, getResultType(routine)!);
   eosCheck(lexemes);
 
   // mark that this function has a return statement

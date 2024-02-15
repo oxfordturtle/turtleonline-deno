@@ -8,20 +8,22 @@ import {
   type VariableValue,
 } from "./definitions/expression.ts";
 import type Lexemes from "./definitions/lexemes.ts";
-import type Program from "./definitions/program.ts";
 import { procedureCall as _procedureCall, type ProcedureCall } from "./definitions/statement.ts";
-import type { Subroutine } from "./definitions/subroutine.ts";
-import { Variable } from "./definitions/variable.ts";
+import type { Routine, Subroutine } from "./definitions/routine.ts";
+import { isArray, variable } from "./definitions/variable.ts";
 import { expression, typeCheck } from "./expression.ts";
+import { getSubroutineType } from "./definitions/routine.ts";
+import { getParameters } from "./definitions/routine.ts";
 
 export const procedureCall = (
   lexeme: IdentifierLexeme,
   lexemes: Lexemes,
-  routine: Program | Subroutine,
+  routine: Routine,
   command: Command | Subroutine
 ): ProcedureCall => {
   // check it's not a function
-  if (command.type === "function") {
+  const commandType = command.__ === "command" ? command.type : getSubroutineType(command);
+  if (commandType === "function") {
     throw new CompilerError("{lex} is a function, not a procedure.", lexeme);
   }
 
@@ -47,16 +49,17 @@ export const procedureCall = (
 export const functionCall = (
   lexeme: IdentifierLexeme,
   lexemes: Lexemes,
-  routine: Program | Subroutine,
+  routine: Routine,
   command: Command | Subroutine
 ): FunctionCall => {
   // infer type
   if (command.__ === "subroutine" && !command.typeIsCertain) {
     command.typeIsCertain = true;
-    command.variables.unshift(new Variable("!result", command));
+    command.variables.unshift(variable("!result", command));
   }
 
-  if (command.type === "procedure") {
+  const commandType = command.__ === "command" ? command.type : getSubroutineType(command);
+  if (commandType === "procedure") {
     throw new CompilerError("{lex} is a procedure, not a function.", lexemes.get(-1));
   }
 
@@ -77,7 +80,7 @@ export const functionCall = (
 export const methodFunctionCall = (
   lexeme: IdentifierLexeme,
   lexemes: Lexemes,
-  routine: Program | Subroutine,
+  routine: Routine,
   method: Command,
   variableValue: VariableValue
 ): FunctionCall => {
@@ -100,15 +103,18 @@ export const methodFunctionCall = (
 const brackets = (
   lexeme: IdentifierLexeme,
   lexemes: Lexemes,
-  routine: Program | Subroutine,
+  routine: Routine,
   commandCall: ProcedureCall | FunctionCall
 ): void => {
+  const allParameters = commandCall.command.__ === "command"
+    ? commandCall.command.parameters
+    : getParameters(commandCall.command);
   const isMethod =
     commandCall.command.__ === "command" &&
     commandCall.command.names[routine.language]?.startsWith(".");
   const parameters = isMethod
-    ? commandCall.command.parameters.slice(1)
-    : commandCall.command.parameters;
+    ? allParameters.slice(1)
+    : allParameters;
 
   // with parameters
   if (parameters.length > 0) {
@@ -159,7 +165,7 @@ const brackets = (
 
 const _arguments = (
   lexemes: Lexemes,
-  routine: Program | Subroutine,
+  routine: Routine,
   commandCall: ProcedureCall | FunctionCall
 ): void => {
   const commandName =
@@ -168,11 +174,14 @@ const _arguments = (
       : commandCall.command.name;
 
   // handle the arguments
+  const parameters = commandCall.command.__ === "command"
+    ? commandCall.command.parameters
+    : getParameters(commandCall.command);
   while (
-    commandCall.arguments.length < commandCall.command.parameters.length &&
+    commandCall.arguments.length < parameters.length &&
     lexemes.get()?.content !== ")"
   ) {
-    const parameter = commandCall.command.parameters[commandCall.arguments.length];
+    const parameter = parameters[commandCall.arguments.length];
     let argument = expression(lexemes, routine);
     if (commandCall.command.__ === "command") {
       switch (commandCall.command.names[routine.language]?.toLowerCase()) {
@@ -183,7 +192,7 @@ const _arguments = (
 
         case "length":
           // length command allows string or array arguments
-          if (!(argument.expressionType === "variable") || !argument.variable.isArray) {
+          if (!(argument.expressionType === "variable") || !isArray(argument.variable)) {
             argument = typeCheck(routine.language, argument, parameter);
           }
           break;
@@ -197,7 +206,7 @@ const _arguments = (
       argument = typeCheck(routine.language, argument, parameter);
     }
     commandCall.arguments.push(argument);
-    if (commandCall.arguments.length < commandCall.command.parameters.length) {
+    if (commandCall.arguments.length < parameters.length) {
       if (!lexemes.get()) {
         throw new CompilerError("Comma needed after parameter.", argument.lexeme);
       }
@@ -215,7 +224,7 @@ const _arguments = (
   }
 
   // final error checking
-  if (commandCall.arguments.length < commandCall.command.parameters.length) {
+  if (commandCall.arguments.length < parameters.length) {
     throw new CompilerError("Too few arguments given for command {lex}.", commandCall.lexeme);
   }
   if (lexemes.get()?.content === ",") {

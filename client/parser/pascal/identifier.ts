@@ -1,11 +1,10 @@
 import { CompilerError } from "../../tools/error.ts";
 import type Lexemes from "../definitions/lexemes.ts";
-import type Program from "../definitions/program.ts";
-import type { Subroutine } from "../definitions/subroutine.ts";
+import type { Routine } from "../definitions/routine.ts";
 import * as find from "../find.ts";
 
 /** parses a lexeme as a new identifier */
-export default function identifier(lexemes: Lexemes, routine: Program | Subroutine): string {
+export default function identifier(lexemes: Lexemes, routine: Routine): string {
   const identifier = lexemes.get();
 
   if (!identifier) {

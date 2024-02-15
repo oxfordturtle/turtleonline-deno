@@ -25,7 +25,7 @@ import * as memory from "../machine/memory.ts";
 import tokenize from "../tokenizer/tokenize.ts";
 import lexify from "../lexer/lexify.ts";
 import parser from "../parser/parser.ts";
-import Program from "../parser/definitions/program.ts";
+import { program, type Program } from "../parser/definitions/routine.ts";
 import analyse from "../analyser/analyse.ts";
 import encoder from "../encoder/encode.ts";
 
@@ -112,7 +112,7 @@ export class State {
     this.#currentFileIndex = load("currentFileIndex");
     this.#tokens = [];
     this.#lexemes = [];
-    this.#program = new Program(this.#language, "");
+    this.#program = program(this.#language, "");
     this.#usage = [];
     this.#pcode = [];
     // machine runtime options
@@ -562,7 +562,7 @@ export class State {
     } else {
       this.tokens = tokenize(this.code, this.language);
       this.lexemes = [];
-      this.program = new Program(this.language, "");
+      this.program = program(this.language, "");
       this.usage = [];
       this.pcode = [];
     }

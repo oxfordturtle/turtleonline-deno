@@ -1,13 +1,12 @@
 import { CompilerError } from "../../tools/error.ts";
 import type Lexemes from "../definitions/lexemes.ts";
-import type Program from "../definitions/program.ts";
-import type { Subroutine } from "../definitions/subroutine.ts";
+import type { Routine } from "../definitions/routine.ts";
 import identifier from "./identifier.ts";
 
 /** parses lexemes as a comma-separated list of identifiers, and returns the names */
 export default function identifiers(
   lexemes: Lexemes,
-  routine: Program | Subroutine,
+  routine: Routine,
   context: "global" | "nonlocal"
 ): string[] {
   const names: string[] = [];

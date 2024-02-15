@@ -1,9 +1,8 @@
 import type { KeywordLexeme, Lexeme } from "../../lexer/lexeme.ts";
 import { CompilerError } from "../../tools/error.ts";
 import type Lexemes from "../definitions/lexemes.ts";
-import type Program from "../definitions/program.ts";
-import { Subroutine } from "../definitions/subroutine.ts";
-import { Variable } from "../definitions/variable.ts";
+import { subroutine as _subroutine, getSubroutineType, getAllSubroutines, type Program, type Subroutine } from "../definitions/routine.ts";
+import { variable as _variable, type Variable } from "../definitions/variable.ts";
 import identifier from "./identifier.ts";
 import { semicolon, statement } from "./statement.ts";
 import type from "./type.ts";
@@ -22,7 +21,7 @@ export default function subroutine(
   const name = identifier(lexemes, parent);
 
   // create the subroutine
-  const sub = new Subroutine(lexeme, parent, name);
+  const sub = _subroutine(lexeme, parent, name);
   sub.index = subroutineIndex(sub);
 
   // optionally expecting parameters
@@ -37,14 +36,14 @@ export default function subroutine(
     if (arrayDimensions.length > 0) {
       throw new CompilerError("Functions cannot return arrays.", lexemes.get(-1));
     }
-    const foo = new Variable("result", sub);
+    const foo = _variable("result", sub);
     foo.type = returnType;
     foo.stringLength = stringLength;
     sub.variables.unshift(foo);
   }
 
   // semicolon check
-  semicolon(lexemes, true, `${sub.type} definition`);
+  semicolon(lexemes, true, `${getSubroutineType(sub)} definition`);
 
   // expecting variable declarations, subroutine definitions, or subroutine body
   let begun = false;
@@ -80,7 +79,7 @@ export default function subroutine(
           default:
             if (!begun) {
               throw new CompilerError(
-                `Keyword "begin" missing for ${sub.type} ${sub.name}.`,
+                `Keyword "begin" missing for ${getSubroutineType(sub)} ${sub.name}.`,
                 lexemes.get()
               );
             }
@@ -92,7 +91,7 @@ export default function subroutine(
       default:
         if (!begun) {
           throw new CompilerError(
-            `Keyword "begin" missing for ${sub.type} ${sub.name}.`,
+            `Keyword "begin" missing for ${getSubroutineType(sub)} ${sub.name}.`,
             lexemes.get()
           );
         }
@@ -103,15 +102,15 @@ export default function subroutine(
   // final error checking
   if (!begun) {
     throw new CompilerError(
-      `Keyword "begin" missing for ${sub.type} ${sub.name}.`,
+      `Keyword "begin" missing for ${getSubroutineType(sub)} ${sub.name}.`,
       lexemes.get(-1)
     );
   }
   if (!lexemes.get()) {
-    throw new CompilerError(`Keyword "end" missing for ${sub.type} ${sub.name}.`, lexemes.get(-1));
+    throw new CompilerError(`Keyword "end" missing for ${getSubroutineType(sub)} ${sub.name}.`, lexemes.get(-1));
   }
   lexemes.next();
-  semicolon(lexemes, true, `${sub.type} end`);
+  semicolon(lexemes, true, `${getSubroutineType(sub)} end`);
 
   // return the subroutine
   return sub;
@@ -120,8 +119,8 @@ export default function subroutine(
 /** calculates the index of a subroutine (before it and its parents have been added to the program) */
 function subroutineIndex(subroutine: Subroutine): number {
   return subroutine.parent.__ === "program"
-    ? subroutine.parent.allSubroutines.length + 1
-    : subroutineIndex(subroutine.parent) + subroutine.allSubroutines.length + 1;
+    ? getAllSubroutines(subroutine.parent).length + 1
+    : subroutineIndex(subroutine.parent) + getAllSubroutines(subroutine).length + 1;
 }
 
 /** parses lexemes as subroutine parameters */
@@ -146,7 +145,7 @@ function parameters(lexemes: Lexemes, subroutine: Subroutine): Variable[] {
   // check for closing bracket
   if (lexemes.get()?.content !== ")") {
     throw new CompilerError(
-      `Closing bracket missing after ${subroutine.type} parameters.`,
+      `Closing bracket missing after ${getSubroutineType(subroutine)} parameters.`,
       lexemes.get(-1)
     );
   }
@@ -160,7 +159,7 @@ function parameters(lexemes: Lexemes, subroutine: Subroutine): Variable[] {
 function parameterSet(lexemes: Lexemes, subroutine: Subroutine): Variable[] {
   const parameters: Variable[] = [];
 
-  // "var" is permissable here (for reference parameters)
+  // "var" is permissible here (for reference parameters)
   let isReferenceParameter = false;
   if (lexemes.get()?.content === "var") {
     isReferenceParameter = true;
@@ -170,7 +169,7 @@ function parameterSet(lexemes: Lexemes, subroutine: Subroutine): Variable[] {
   // expecting comma separated list of identifiers
   while (lexemes.get() && lexemes.get()?.content !== ":") {
     const name = identifier(lexemes, subroutine);
-    parameters.push(new Variable(name, subroutine));
+    parameters.push(_variable(name, subroutine));
     if (lexemes.get()?.content === ",") {
       lexemes.next();
     } else if (lexemes.get()?.type === "identifier") {

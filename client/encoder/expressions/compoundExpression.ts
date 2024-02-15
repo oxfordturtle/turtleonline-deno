@@ -1,7 +1,7 @@
 import PCode from "../../constants/pcodes.ts";
 import type { Operator } from "../../lexer/types.ts";
 import type { CompoundExpression } from "../../parser/definitions/expression.ts";
-import type Program from "../../parser/definitions/program.ts";
+import type { Program } from "../../parser/definitions/routine.ts";
 import expression from "../expression.ts";
 import merge from "../merge.ts";
 import type { Options } from "../options.ts";

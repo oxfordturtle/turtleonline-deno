@@ -1,13 +1,14 @@
 import type { Language } from "../constants/languages.ts";
 import { CompilerError } from "../tools/error.ts";
 import type { Expression } from "./definitions/expression.ts";
+import { trueValue } from "../constants/languages.ts";
 
 const evaluate = (
   expression: Expression,
   language: Language,
   context: "constant" | "string" | "array" | "step"
 ): number | string => {
-  const True = language === "BASIC" || language === "Pascal" ? -1 : 1;
+  const True = trueValue[language];
   const False = 0;
 
   switch (expression.expressionType) {

@@ -1,13 +1,13 @@
 import type { Language } from "../../constants/languages.ts";
 import type { Type } from "../../lexer/types.ts";
 
-export type Constant = Readonly<{
-  __: "constant";
-  name: string;
-  language: Language;
-  value: number | string;
-  type: Type;
-}>;
+export interface Constant {
+  readonly __: "constant";
+  readonly name: string;
+  readonly language: Language;
+  readonly value: number | string;
+  readonly type: Type;
+};
 
 export default (language: Language, name: string, value: number | string): Constant =>
   ({
@@ -16,4 +16,4 @@ export default (language: Language, name: string, value: number | string): Const
     language,
     value,
     type: typeof value === "number" ? "boolint" : "string" satisfies Type,
-  } as const);
+  });

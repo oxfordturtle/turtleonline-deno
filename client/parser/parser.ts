@@ -3,7 +3,7 @@ import type { Lexeme } from "../lexer/lexeme.ts";
 import basicParser from "./basic/parser.ts";
 import cParser from "./c/parser.ts";
 import Lexemes from "./definitions/lexemes.ts";
-import type Program from "./definitions/program.ts";
+import type { Program } from "./definitions/routine.ts";
 import javaParser from "./java/parser.ts";
 import pascalParser from "./pascal/parser.ts";
 import pythonParser from "./python/parser.ts";

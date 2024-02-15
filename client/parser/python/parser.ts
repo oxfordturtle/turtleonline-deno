@@ -1,15 +1,14 @@
 import type { Lexeme } from "../../lexer/lexeme.ts";
 import { CompilerError } from "../../tools/error.ts";
 import type Lexemes from "../definitions/lexemes.ts";
-import Program from "../definitions/program.ts";
-import type { Subroutine } from "../definitions/subroutine.ts";
+import { program as _program, type Program, type Subroutine } from "../definitions/routine.ts";
 import { statement } from "./statement.ts";
 import subroutine from "./subroutine.ts";
 
 /** parses lexemes as a Python program */
 export default function python(lexemes: Lexemes): Program {
   // create the program
-  const program = new Program("Python");
+  const program = _program("Python");
   program.end = lexemes.lexemes.length;
 
   // parse the program (which will parse its subroutines in turn)

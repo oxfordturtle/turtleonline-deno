@@ -1,7 +1,7 @@
 import { trueValue } from "../../constants/languages.ts";
 import PCode from "../../constants/pcodes.ts";
-import type Program from "../../parser/definitions/program.ts";
-import type { Variable } from "../../parser/definitions/variable.ts";
+import { getMemoryNeeded, getTurtleVariables, type Program } from "../../parser/definitions/routine.ts";
+import { isArray, elementCount, getSubVariables, type Variable } from "../../parser/definitions/variable.ts";
 import { lengthByteAddress, turtleAddress, variableAddress } from "../addresses.ts";
 import type { Options } from "../options.ts";
 
@@ -18,15 +18,15 @@ export default (program: Program, _options: Options): number[][] => {
       0, // address of the turtle pointer
       PCode.sptr,
       PCode.ldin,
-      program.turtleVariables.length,
+      getTurtleVariables(program).length,
       PCode.swap,
       PCode.sptr,
       PCode.incr,
       PCode.ldin,
-      program.memoryNeeded + program.turtleVariables.length,
+      getMemoryNeeded(program) + getTurtleVariables(program).length,
       PCode.zptr,
       PCode.ldin,
-      turtleAddress(program) + program.memoryNeeded + program.turtleVariables.length,
+      turtleAddress(program) + getMemoryNeeded(program) + getTurtleVariables(program).length,
       PCode.stmt,
     ],
     // line 2: turtle and keybuffer setup
@@ -74,18 +74,18 @@ export default (program: Program, _options: Options): number[][] => {
 const setupGlobalVariable = (variable: Variable): number[][] => {
   const pcode: number[][] = [];
 
-  if (variable.isArray) {
+  if (isArray(variable)) {
     pcode.push([
       PCode.ldag,
       lengthByteAddress(variable),
       PCode.stvg,
       variableAddress(variable),
       PCode.ldin,
-      variable.elementCount,
+      elementCount(variable),
       PCode.stvg,
       lengthByteAddress(variable),
     ]);
-    for (const subVariable of variable.subVariables) {
+    for (const subVariable of getSubVariables(variable)) {
       const subPcode = setupGlobalVariable(subVariable);
       if (subPcode.length > 0) {
         pcode.push(...subPcode);

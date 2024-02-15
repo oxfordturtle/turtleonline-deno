@@ -1,4 +1,4 @@
-import type Program from "../parser/definitions/program.ts";
+import type { Program } from "../parser/definitions/routine.ts";
 import type { Statement } from "../parser/definitions/statement.ts";
 import type { Options } from "./options.ts";
 import forStatement from "./statements/forStatement.ts";

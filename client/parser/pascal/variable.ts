@@ -1,8 +1,7 @@
 import { CompilerError } from "../../tools/error.ts";
 import type Lexemes from "../definitions/lexemes.ts";
-import type Program from "../definitions/program.ts";
-import type { Subroutine } from "../definitions/subroutine.ts";
-import { Variable } from "../definitions/variable.ts";
+import type { Program, Subroutine } from "../definitions/routine.ts";
+import { variable as _variable, type Variable } from "../definitions/variable.ts";
 import identifier from "./identifier.ts";
 import { semicolon } from "./statement.ts";
 import type from "./type.ts";
@@ -14,7 +13,7 @@ export function variables(lexemes: Lexemes, routine: Program | Subroutine): Vari
   // expecting comma separated list of variables
   while (lexemes.get() && lexemes.get()?.content !== ":") {
     const name = identifier(lexemes, routine);
-    vars.push(new Variable(name, routine));
+    vars.push(_variable(name, routine));
     if (lexemes.get()?.content === ",") {
       lexemes.next();
     } else if (lexemes.get()?.type === "identifier") {

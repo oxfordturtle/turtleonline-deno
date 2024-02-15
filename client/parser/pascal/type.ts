@@ -1,8 +1,7 @@
 import type { Type } from "../../lexer/types.ts";
 import { CompilerError } from "../../tools/error.ts";
 import type Lexemes from "../definitions/lexemes.ts";
-import type Program from "../definitions/program.ts";
-import type { Subroutine } from "../definitions/subroutine.ts";
+import type { Program, Subroutine } from "../definitions/routine.ts";
 import evaluate from "../evaluate.ts";
 import { expression, typeCheck } from "../expression.ts";
 

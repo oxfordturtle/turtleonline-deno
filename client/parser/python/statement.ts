@@ -17,7 +17,7 @@ import {
   type Expression,
 } from "../definitions/expression.ts";
 import type Lexemes from "../definitions/lexemes.ts";
-import Program from "../definitions/program.ts";
+import { getResultVariable, type Program, type Subroutine } from "../definitions/routine.ts";
 import {
   forStatement as _forStatement,
   ifStatement as _ifStatement,
@@ -35,8 +35,7 @@ import {
   type VariableAssignment,
   type WhileStatement,
 } from "../definitions/statement.ts";
-import { Subroutine } from "../definitions/subroutine.ts";
-import { Variable } from "../definitions/variable.ts";
+import { variable as _variable, isArray, type Variable } from "../definitions/variable.ts";
 import evaluate from "../evaluate.ts";
 import { expression, typeCheck } from "../expression.ts";
 import * as find from "../find.ts";
@@ -201,7 +200,7 @@ export function variableAssignment(
   // strings and array variables permit element indexes at this point
   const indexes: Expression[] = [];
   if (lexemes.get()?.content === "[") {
-    if (variable.isArray) {
+    if (isArray(variable)) {
       lexemes.next();
       while (lexemes.get() && lexemes.get()?.content !== "]") {
         // expecting integer expression for the element index
@@ -240,7 +239,7 @@ export function variableAssignment(
   }
 
   // check the right number of array variable indexes have been given
-  if (variable.isArray) {
+  if (isArray(variable)) {
     const allowedIndexes =
       variable.type === "string"
         ? variable.arrayDimensions.length + 1 // one more for characters within strings
@@ -350,12 +349,13 @@ function returnStatement(
 
   // expecting an expression of the right type, followed by end of statement
   let value = expression(lexemes, routine);
-  if (routine.returns !== null) {
+  const resultVariable = getResultVariable(routine);
+  if (resultVariable !== undefined) {
     // check against previous return statements
-    value = typeCheck(routine.language, value, routine.returns);
+    value = typeCheck(routine.language, value, resultVariable);
   } else {
     // otherwise create a return variable
-    const result = new Variable("!result", routine);
+    const result = _variable("!result", routine);
     result.type = getType(value);
     result.typeIsCertain = true;
     routine.typeIsCertain = true;
@@ -513,7 +513,7 @@ function forStatement(
   let variable = find.variable(routine, lexemes.get()?.content as string);
   if (!variable) {
     // create the variable now
-    variable = new Variable(lexemes.get()?.content as string, routine);
+    variable = _variable(lexemes.get()?.content as string, routine);
     variable.type = "integer";
     variable.typeIsCertain = true;
     routine.variables.push(variable);

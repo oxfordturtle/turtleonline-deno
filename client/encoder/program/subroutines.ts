@@ -1,6 +1,12 @@
 import PCode from "../../constants/pcodes.ts";
-import type { Subroutine } from "../../parser/definitions/subroutine.ts";
-import type { Variable } from "../../parser/definitions/variable.ts";
+import {
+  getMemoryNeeded,
+  getParameters,
+  getProgram,
+  getSubroutineType,
+  type Subroutine,
+} from "../../parser/definitions/routine.ts";
+import { isArray, elementCount, getSubVariables, type Variable } from "../../parser/definitions/variable.ts";
 import {
   lengthByteAddress,
   resultAddress,
@@ -24,7 +30,7 @@ export default (subroutines: Subroutine[], startLine: number, options: Options):
     const innerCode = statements(subroutine, startLine + startCode.length, options);
     const subroutineCode = startCode.concat(innerCode);
 
-    if (subroutine.type === "procedure" || subroutine.program.language === "Pascal") {
+    if (getSubroutineType(subroutine) === "procedure" || subroutine.language === "Pascal") {
       // all procedures need end code, as do functions in Pascal
       // (functions in other languages include at least one RETURN statement)
       const endCode = subroutineEndCode(subroutine, options);
@@ -50,18 +56,18 @@ const subroutineStartCode = (subroutine: Subroutine, options: Options): number[]
   // initialise variables
   if (subroutine.variables.length > 0) {
     // claim memory
-    pcode.push([PCode.memc, subroutineAddress(subroutine), subroutine.memoryNeeded]);
+    pcode.push([PCode.memc, subroutineAddress(subroutine), getMemoryNeeded(subroutine)]);
 
     // zero memory
     if (options.initialiseLocals) {
-      if (subroutine.variables.length > subroutine.parameters.length) {
+      if (subroutine.variables.length > getParameters(subroutine).length) {
         // TODO: speak to Peter about this - his latest compiler doesn't appear to be doing this in every case
         pcode.push([
           PCode.ldav,
           subroutineAddress(subroutine),
           1,
           PCode.ldin,
-          subroutine.memoryNeeded,
+          getMemoryNeeded(subroutine),
           PCode.zptr,
         ]);
       }
@@ -77,11 +83,12 @@ const subroutineStartCode = (subroutine: Subroutine, options: Options): number[]
 
     // store values of parameters
     // (these should have been loaded onto the stack before the subroutine call)
-    if (subroutine.parameters.length > 0) {
+    const parameters = getParameters(subroutine);
+    if (parameters.length > 0) {
       pcode.push([]);
-      for (const parameter of subroutine.parameters.reverse()) {
+      for (const parameter of parameters.reverse()) {
         const lastStartLine = pcode[pcode.length - 1];
-        if (parameter.isArray && !parameter.isReferenceParameter) {
+        if (isArray(parameter) && !parameter.isReferenceParameter) {
           // TODO: copy the array
         } else if (parameter.type === "string" && !parameter.isReferenceParameter) {
           // copy the string
@@ -106,7 +113,7 @@ const setupLocalVariable = (variable: Variable): number[][] => {
   const subroutine = variable.routine as Subroutine;
   const pcode: number[][] = [];
 
-  if (variable.isArray && !variable.isReferenceParameter) {
+  if (isArray(variable) && !variable.isReferenceParameter) {
     pcode.push([
       PCode.ldav,
       subroutineAddress(subroutine),
@@ -115,12 +122,12 @@ const setupLocalVariable = (variable: Variable): number[][] => {
       subroutineAddress(subroutine),
       variableAddress(variable),
       PCode.ldin,
-      variable.elementCount,
+      elementCount(variable),
       PCode.stvv,
       subroutineAddress(subroutine),
       lengthByteAddress(variable),
     ]);
-    for (const subVariable of variable.subVariables) {
+    for (const subVariable of getSubVariables(variable)) {
       const subPcode = setupLocalVariable(subVariable);
       if (subPcode.length > 0) {
         pcode.push(...subPcode);
@@ -150,13 +157,13 @@ const setupLocalVariable = (variable: Variable): number[][] => {
 
 const subroutineEndCode = (subroutine: Subroutine, _options: Options): number[][] => {
   const pcode: number[] = [];
-  if (subroutine.type === "function") {
+  if (getSubroutineType(subroutine) === "function") {
     // store function result
     pcode.push(
       PCode.ldvg,
       subroutineAddress(subroutine),
       PCode.stvg,
-      resultAddress(subroutine.program)
+      resultAddress(getProgram(subroutine))
     );
   }
   if (subroutine.variables.length > 0) {

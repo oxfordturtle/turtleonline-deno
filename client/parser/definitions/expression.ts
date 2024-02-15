@@ -15,7 +15,7 @@ import type {
 import type { Operator, Type } from "../../lexer/types.ts";
 import type { Constant } from "./constant.ts";
 import { operatorType } from "./operators.ts";
-import type { Subroutine } from "./subroutine.ts";
+import { getResultType, type Subroutine } from "./routine.ts";
 import type { Variable } from "./variable.ts";
 
 export type Expression =
@@ -54,13 +54,13 @@ export const getType = (expression: Expression): Type => {
   }
 };
 
-export type IntegerValue = Readonly<{
-  __: "expression";
-  expressionType: "integer";
-  lexeme: BooleanLexeme | CharacterLexeme | IntegerLexeme;
-  type: "boolean" | "character" | "integer";
-  value: number;
-}>;
+export interface IntegerValue {
+  readonly __: "expression";
+  readonly expressionType: "integer";
+  readonly lexeme: BooleanLexeme | CharacterLexeme | IntegerLexeme;
+  readonly type: "boolean" | "character" | "integer";
+  readonly value: number;
+};
 
 export const integerValue = (
   lexeme: BooleanLexeme | CharacterLexeme | IntegerLexeme
@@ -72,13 +72,13 @@ export const integerValue = (
   value: lexeme.value,
 });
 
-export type StringValue = Readonly<{
-  __: "expression";
-  expressionType: "string";
-  lexeme: StringLexeme;
-  type: "string";
-  value: string;
-}>;
+export interface StringValue {
+  readonly __: "expression";
+  readonly expressionType: "string";
+  readonly lexeme: StringLexeme;
+  readonly type: "string";
+  readonly value: string;
+};
 
 export const stringValue = (lexeme: StringLexeme): StringValue => ({
   __: "expression",
@@ -88,13 +88,13 @@ export const stringValue = (lexeme: StringLexeme): StringValue => ({
   value: lexeme.value,
 });
 
-export type InputValue = Readonly<{
-  __: "expression";
-  expressionType: "input";
-  lexeme: InputCodeLexeme | QueryCodeLexeme;
-  type: "integer";
-  input: Input;
-}>;
+export interface InputValue {
+  readonly __: "expression";
+  readonly expressionType: "input";
+  readonly lexeme: InputCodeLexeme | QueryCodeLexeme;
+  readonly type: "integer";
+  readonly input: Input;
+};
 
 export const inputValue = (
   lexeme: InputCodeLexeme | QueryCodeLexeme,
@@ -107,13 +107,13 @@ export const inputValue = (
   input,
 });
 
-export type ColourValue = Readonly<{
-  __: "expression";
-  expressionType: "colour";
-  lexeme: IdentifierLexeme;
-  type: "integer";
-  colour: Colour;
-}>;
+export interface ColourValue {
+  readonly __: "expression";
+  readonly expressionType: "colour";
+  readonly lexeme: IdentifierLexeme;
+  readonly type: "integer";
+  readonly colour: Colour;
+};
 
 export const colourValue = (lexeme: IdentifierLexeme, colour: Colour): ColourValue => ({
   __: "expression",
@@ -123,13 +123,13 @@ export const colourValue = (lexeme: IdentifierLexeme, colour: Colour): ColourVal
   colour,
 });
 
-export type ConstantValue = Readonly<{
-  __: "expression";
-  expressionType: "constant";
-  lexeme: IdentifierLexeme;
-  constant: Constant;
-  indexes: Expression[];
-}>;
+export interface ConstantValue {
+  readonly __: "expression";
+  readonly expressionType: "constant";
+  readonly lexeme: IdentifierLexeme;
+  readonly constant: Constant;
+  readonly indexes: Expression[];
+};
 
 export const constantValue = (lexeme: IdentifierLexeme, constant: Constant): ConstantValue => ({
   __: "expression",
@@ -139,14 +139,14 @@ export const constantValue = (lexeme: IdentifierLexeme, constant: Constant): Con
   indexes: [],
 });
 
-export type VariableAddress = Readonly<{
-  __: "expression";
-  expressionType: "address";
-  lexeme: IdentifierLexeme | OperatorLexeme;
-  variable: Variable;
-  indexes: Expression[];
-  type: "integer";
-}>;
+export interface VariableAddress {
+  readonly __: "expression";
+  readonly expressionType: "address";
+  readonly lexeme: IdentifierLexeme | OperatorLexeme;
+  readonly variable: Variable;
+  readonly indexes: Expression[];
+  readonly type: "integer";
+};
 
 export const variableAddress = (
   lexeme: IdentifierLexeme | OperatorLexeme,
@@ -160,7 +160,7 @@ export const variableAddress = (
   type: "integer",
 });
 
-export type VariableValue = {
+export interface VariableValue {
   readonly __: "expression";
   readonly expressionType: "variable";
   readonly lexeme: IdentifierLexeme | OperatorLexeme; // can be "+=" or "-=" operators in a variable assignment
@@ -183,14 +183,14 @@ export const variableValue = (
   type: variable.type,
 });
 
-export type FunctionCall = Readonly<{
-  __: "expression";
-  expressionType: "function";
-  lexeme: IdentifierLexeme;
-  command: Subroutine | Command;
-  type: Type;
-  arguments: Expression[];
-}>;
+export interface FunctionCall {
+  readonly __: "expression";
+  readonly expressionType: "function";
+  readonly lexeme: IdentifierLexeme;
+  readonly command: Subroutine | Command;
+  readonly type: Type;
+  readonly arguments: Expression[];
+};
 
 export const functionCall = (
   lexeme: IdentifierLexeme,
@@ -200,19 +200,19 @@ export const functionCall = (
   expressionType: "function",
   lexeme,
   command,
-  type: command.returns!, // function calls should only ever be created with functions
+  type: command.__ === "command" ? command.returns! : getResultType(command)!, // function calls should only ever be created with functions
   arguments: [],
 });
 
-export type CompoundExpression = Readonly<{
-  __: "expression";
-  expressionType: "compound";
-  lexeme: OperatorLexeme;
-  left: Expression | null; // left hand side optional (for unary operators 'not' and 'minus')
-  right: Expression;
-  operator: Operator;
-  type: Type;
-}>;
+export interface CompoundExpression {
+  readonly __: "expression";
+  readonly expressionType: "compound";
+  readonly lexeme: OperatorLexeme;
+  readonly left: Expression | null; // left hand side optional (for unary operators 'not' and 'minus')
+  readonly right: Expression;
+  readonly operator: Operator;
+  readonly type: Type;
+};
 
 export const compoundExpression = (
   lexeme: OperatorLexeme,
@@ -229,13 +229,13 @@ export const compoundExpression = (
   type: operatorType[operator],
 });
 
-export type CastExpression = Readonly<{
-  __: "expression";
-  expressionType: "cast";
-  lexeme: Lexeme;
-  type: Type;
-  expression: Expression;
-}>;
+export interface CastExpression {
+  readonly __: "expression";
+  readonly expressionType: "cast";
+  readonly lexeme: Lexeme;
+  readonly type: Type;
+  readonly expression: Expression;
+};
 
 export const castExpression = (
   lexeme: Lexeme,

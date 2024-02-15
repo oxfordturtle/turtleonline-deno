@@ -1,15 +1,14 @@
 import { CompilerError } from "../../tools/error.ts";
 import type Lexemes from "../definitions/lexemes.ts";
-import type Program from "../definitions/program.ts";
-import type { Subroutine } from "../definitions/subroutine.ts";
-import { Variable } from "../definitions/variable.ts";
+import type { Routine } from "../definitions/routine.ts";
+import { variable as _variable, type Variable } from "../definitions/variable.ts";
 import evaluate from "../evaluate.ts";
 import { expression, typeCheck } from "../expression.ts";
 import * as find from "../find.ts";
 import { variableName } from "./identifier.ts";
 
 /** parses lexemes as a variable name */
-export function variable(lexemes: Lexemes, routine: Program | Subroutine): Variable {
+export function variable(lexemes: Lexemes, routine: Routine): Variable {
   const [name, type, stringLength] = variableName(lexemes);
 
   // duplicate check
@@ -18,7 +17,7 @@ export function variable(lexemes: Lexemes, routine: Program | Subroutine): Varia
   }
 
   // create the variable
-  const variable = new Variable(name, routine);
+  const variable = _variable(name, routine);
   variable.type = type;
   variable.stringLength = stringLength;
 
@@ -27,7 +26,7 @@ export function variable(lexemes: Lexemes, routine: Program | Subroutine): Varia
 }
 
 /** parses lexemes as an array variable declaration (following "DIM") */
-export function array(lexemes: Lexemes, routine: Program | Subroutine): Variable {
+export function array(lexemes: Lexemes, routine: Routine): Variable {
   const foo = variable(lexemes, routine);
 
   // expecting open bracket "("
@@ -93,7 +92,7 @@ export function array(lexemes: Lexemes, routine: Program | Subroutine): Variable
 }
 
 /** parses lexemes as a comma separated list of variables */
-export function variables(lexemes: Lexemes, routine: Program | Subroutine): Variable[] {
+export function variables(lexemes: Lexemes, routine: Routine): Variable[] {
   const variables: Variable[] = [];
   while (lexemes.get()?.type !== "newline") {
     variables.push(variable(lexemes, routine));

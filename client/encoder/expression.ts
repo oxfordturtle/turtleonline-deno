@@ -1,6 +1,7 @@
 import type { Expression } from "../parser/definitions/expression.ts";
 import type { VariableValue } from "../parser/definitions/expression.ts";
-import type Program from "../parser/definitions/program.ts";
+import type { Program } from "../parser/definitions/routine.ts";
+import { isArray } from "../parser/definitions/variable.ts";
 import type { Options } from "./options.ts";
 import castExpression from "./expressions/castExpression.ts";
 import colourValue from "./expressions/colourValue.ts";
@@ -46,5 +47,5 @@ export default (
 };
 
 const referenceVariableAddressIsValue = (exp: VariableValue): boolean =>
-  (exp.variable.isArray && exp.indexes.length < exp.variable.arrayDimensions.length) ||
+  (isArray(exp.variable) && exp.indexes.length < exp.variable.arrayDimensions.length) ||
   (exp.variable.type === "string" && exp.indexes.length === 0);

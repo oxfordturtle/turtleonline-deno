@@ -1,14 +1,14 @@
 import type { KeywordLexeme } from "../../lexer/lexeme.ts";
 import { CompilerError } from "../../tools/error.ts";
 import type Lexemes from "../definitions/lexemes.ts";
-import Program from "../definitions/program.ts";
+import { program as _program, type Program } from "../definitions/routine.ts";
 import body from "./body.ts";
 import subroutine from "./subroutine.ts";
 
 /** parses lexemes as a BASIC program */
 export default function basic(lexemes: Lexemes): Program {
   // create the program
-  const program = new Program("BASIC");
+  const program = _program("BASIC");
 
   // find the (first) "END" lexeme
   const endLexemeIndex = lexemes.lexemes.findIndex((x) => x.content === "END");

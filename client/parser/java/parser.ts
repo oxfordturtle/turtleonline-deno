@@ -1,7 +1,7 @@
 import type { Lexeme } from "../../lexer/lexeme.ts";
 import { CompilerError } from "../../tools/error.ts";
 import type Lexemes from "../definitions/lexemes.ts";
-import type Program from "../definitions/program.ts";
+import { getAllSubroutines, type Program } from "../definitions/routine.ts";
 import constant from "./constant.ts";
 import identifier from "./identifier.ts";
 import program from "./program.ts";
@@ -29,7 +29,7 @@ export default function java(lexemes: Lexemes): Program {
           eosCheck(lexemes);
         } else {
           throw new CompilerError(
-            "Program can only contain constant definitions, variable declarations, and subroutine defintions.",
+            "Program can only contain constant definitions, variable declarations, and subroutine definitions.",
             lexeme
           );
         }
@@ -37,7 +37,7 @@ export default function java(lexemes: Lexemes): Program {
 
       // variable declarations/assignments or subroutine definitions
       case "type":
-        // expecting type specification followed by idenfitier (throw away the results)
+        // expecting type specification followed by identifier (throw away the results)
         type(lexemes, prog);
         identifier(lexemes, prog);
 
@@ -65,7 +65,7 @@ export default function java(lexemes: Lexemes): Program {
   }
 
   // second pass: parse the statements of each subroutine
-  for (const subroutine of prog.allSubroutines) {
+  for (const subroutine of getAllSubroutines(prog)) {
     // loop through the lexemes
     lexemes.index = subroutine.start;
     while (lexemes.index < subroutine.end) {

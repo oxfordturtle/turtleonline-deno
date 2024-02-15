@@ -1,15 +1,14 @@
 import type { Type } from "../../lexer/types.ts";
 import { CompilerError } from "../../tools/error.ts";
 import type Lexemes from "../definitions/lexemes.ts";
-import type Program from "../definitions/program.ts";
-import type { Subroutine } from "../definitions/subroutine.ts";
+import type { Routine } from "../definitions/routine.ts";
 import evaluate from "../evaluate.ts";
 import { expression, typeCheck } from "../expression.ts";
 
 /** parses lexemes at a type specification */
 export default function type(
   lexemes: Lexemes,
-  routine: Program | Subroutine
+  routine: Routine
 ): [Type | null, number, [number, number][]] {
   const typeLexeme = lexemes.get();
 

@@ -1,5 +1,5 @@
 import PCode from "../../constants/pcodes.ts";
-import type Program from "../../parser/definitions/program.ts";
+import type { Program } from "../../parser/definitions/routine.ts";
 import type { ReturnStatement } from "../../parser/definitions/statement.ts";
 import { variableAssignment as _variableAssignment } from "../../parser/definitions/statement.ts";
 import { resultAddress, subroutineAddress } from "../addresses.ts";

@@ -19,9 +19,8 @@ import {
 } from "./definitions/expression.ts";
 import type Lexemes from "./definitions/lexemes.ts";
 import { operator, stringOperator } from "./definitions/operators.ts";
-import type Program from "./definitions/program.ts";
-import { Subroutine } from "./definitions/subroutine.ts";
-import { Variable } from "./definitions/variable.ts";
+import { getResultVariable, type Routine } from "./definitions/routine.ts";
+import { variable as _variable, isArray, type Variable } from "./definitions/variable.ts";
 import * as find from "./find.ts";
 
 /** checks types match (throws an error if not) */
@@ -49,14 +48,14 @@ export function typeCheck(
   if (
     found.expressionType === "function" &&
     found.command.__ === "subroutine" &&
-    (!found.command.typeIsCertain || (found.command.result && !found.command.result.typeIsCertain))
+    !found.command.typeIsCertain
   ) {
-    const result = found.command.result;
+    const result = getResultVariable(found.command);
     if (result) {
       result.type = found.type;
       result.typeIsCertain = true;
     } else {
-      const result = new Variable("!result", found.command);
+      const result = _variable("!result", found.command);
       result.type = found.type;
       result.typeIsCertain = true;
       found.command.variables.unshift(result);
@@ -119,7 +118,7 @@ export function typeCheck(
 }
 
 /** parses lexemes as an expression */
-export function expression(lexemes: Lexemes, routine: Program | Subroutine, level = 0): Expression {
+export function expression(lexemes: Lexemes, routine: Routine, level = 0): Expression {
   // break out of recursion at level > 2
   if (level > 2) {
     return factor(lexemes, routine);
@@ -167,7 +166,7 @@ export function expression(lexemes: Lexemes, routine: Program | Subroutine, leve
 }
 
 /** parses lexemes as a factor */
-function factor(lexemes: Lexemes, routine: Program | Subroutine): Expression {
+function factor(lexemes: Lexemes, routine: Routine): Expression {
   const lexeme = lexemes.get() as Lexeme;
   let exp: Expression;
 
@@ -260,7 +259,7 @@ function factor(lexemes: Lexemes, routine: Program | Subroutine): Expression {
         const open = routine.language === "BASIC" ? "(" : "[";
         const close = routine.language === "BASIC" ? ")" : "]";
         if (lexemes.get() && lexemes.get()?.content === open) {
-          if (variable.isArray) {
+          if (isArray(variable)) {
             lexemes.next();
             while (lexemes.get() && lexemes.get()?.content !== close) {
               // expecting integer expression for the element index
@@ -323,7 +322,7 @@ function factor(lexemes: Lexemes, routine: Program | Subroutine): Expression {
           }
         }
         // check the right number of array variable indexes have been given
-        if (variable.isArray) {
+        if (isArray(variable)) {
           const allowedIndexes =
             variable.type === "string"
               ? variable.arrayDimensions.length + 1 // one more for characters within strings

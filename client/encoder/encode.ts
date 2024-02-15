@@ -1,6 +1,5 @@
 import PCode, { pcodeArgs } from "../constants/pcodes.ts";
-import type Program from "../parser/definitions/program.ts";
-import type { Subroutine } from "../parser/definitions/subroutine.ts";
+import { getAllSubroutines, type Program, type Subroutine } from "../parser/definitions/routine.ts";
 import type { Options } from "./options.ts";
 import { defaultOptions } from "./options.ts";
 import programStart from "./program/programStart.ts";
@@ -13,14 +12,14 @@ export default (program: Program, options: Options = defaultOptions): number[][]
 
   // calculate the start line of the first subroutine
   const subroutinesStartLine =
-    program.allSubroutines.length > 0
+    getAllSubroutines(program).length > 0
       ? startCode.length + 2 // + 1 for jump line past subroutines
       : startCode.length + 1;
 
   // get the pcode for all (any) subroutines
   // N.B. this also saves the start line of each subroutine, required for
   // back-patching BASIC programs below
-  const subroutinesCode = subroutines(program.allSubroutines, subroutinesStartLine, options);
+  const subroutinesCode = subroutines(getAllSubroutines(program), subroutinesStartLine, options);
 
   // calculate the start line of the main program
   const programStartLine = subroutinesStartLine + subroutinesCode.length;
@@ -60,7 +59,7 @@ const backPatchSubroutineCalls = (program: Program, pcode: number[][]): void => 
   for (let i = 0; i < pcode.length; i += 1) {
     for (let j = 0; j < pcode[i].length; j += 1) {
       if (pcode[i][j - 1] && pcode[i][j - 1] === PCode.subr) {
-        const subroutine = program.allSubroutines.find((x) => x.index === pcode[i][j]);
+        const subroutine = getAllSubroutines(program).find((x) => x.index === pcode[i][j]);
         if (subroutine) {
           pcode[i][j] = subroutine.startLine;
         }
