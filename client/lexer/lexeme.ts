@@ -112,6 +112,7 @@ export const operatorLexeme = (token: Token, language: Language) => {
     mod: "mod",
     "%": "mod",
     "=": language === "BASIC" || language === "Pascal" ? "eqal" : "asgn",
+    ":=": "asgn",
     "+=": "asgn",
     "-=": "asgn",
     "==": "eqal",
