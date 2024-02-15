@@ -1,5 +1,5 @@
 import { CompilerError } from "../../tools/error.ts";
-import { Constant } from "../definitions/constant.ts";
+import constant, { type Constant } from "../definitions/constant.ts";
 import type Lexemes from "../definitions/lexemes.ts";
 import type Program from "../definitions/program.ts";
 import type { Subroutine } from "../definitions/subroutine.ts";
@@ -8,8 +8,7 @@ import { expression, typeCheck } from "../expression.ts";
 import identifier from "./identifier.ts";
 import type from "./type.ts";
 
-/** parses lexemes as a constant definition, and returns the constant */
-export default function constant(lexemes: Lexemes, routine: Program | Subroutine): Constant {
+export default (lexemes: Lexemes, routine: Program | Subroutine): Constant => {
   // expecting type specification
   const [constantType, , arrayDimensions] = type(lexemes, routine);
   if (constantType === null) {
@@ -40,5 +39,5 @@ export default function constant(lexemes: Lexemes, routine: Program | Subroutine
   const value = evaluate(exp, "Java", "constant");
 
   // create and return the constant
-  return new Constant("Java", name, value);
+  return constant("Java", name, value);
 }

@@ -1,5 +1,5 @@
 import { CompilerError } from "../../tools/error.ts";
-import { Constant } from "../definitions/constant.ts";
+import constant, { type Constant } from "../definitions/constant.ts";
 import type Lexemes from "../definitions/lexemes.ts";
 import type Program from "../definitions/program.ts";
 import evaluate from "../evaluate.ts";
@@ -7,8 +7,7 @@ import { expression } from "../expression.ts";
 import identifier from "./identifier.ts";
 import { semicolon } from "./statement.ts";
 
-/** parses lexemes as constant definitions (after "const") */
-export default function constant(lexemes: Lexemes, routine: Program): Constant {
+export default (lexemes: Lexemes, routine: Program): Constant => {
   // expecting constant name
   const name = identifier(lexemes, routine);
 
@@ -23,7 +22,7 @@ export default function constant(lexemes: Lexemes, routine: Program): Constant {
   const value = evaluate(exp, "Pascal", "constant");
 
   // create the constant
-  const foo = new Constant("Pascal", name, value);
+  const foo = constant("Pascal", name, value);
 
   // expecting a semicolon
   semicolon(lexemes, true, "constant definition");

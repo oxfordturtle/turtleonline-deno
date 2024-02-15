@@ -1,4 +1,4 @@
-import { Constant } from "../definitions/constant.ts";
+import constant, { type Constant } from "../definitions/constant.ts";
 import type Lexemes from "../definitions/lexemes.ts";
 import type Program from "../definitions/program.ts";
 import type { Subroutine } from "../definitions/subroutine.ts";
@@ -23,7 +23,7 @@ export default function variable(
 
     if (isConstant) {
       // return the constant with any value; the value will be set later
-      return new Constant("Python", name, 0);
+      return constant("Python", name, 0);
     }
 
     // create and return the variable

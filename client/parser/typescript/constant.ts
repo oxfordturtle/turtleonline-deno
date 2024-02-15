@@ -1,5 +1,5 @@
 import { CompilerError } from "../../tools/error.ts";
-import { Constant } from "../definitions/constant.ts";
+import constant, { type Constant } from "../definitions/constant.ts";
 import type Lexemes from "../definitions/lexemes.ts";
 import type Program from "../definitions/program.ts";
 import type { Subroutine } from "../definitions/subroutine.ts";
@@ -8,12 +8,11 @@ import { expression, typeCheck } from "../expression.ts";
 import identifier from "./identifier.ts";
 import type from "./type.ts";
 
-/** parses lexemes at a constant definition */
-export default function constant(
+export default (
   lexemes: Lexemes,
   routine: Program | Subroutine,
   duplicateCheck: boolean
-): Constant {
+): Constant => {
   // expecting identifier
   const name = identifier(lexemes, routine, duplicateCheck);
 
@@ -44,5 +43,5 @@ export default function constant(
   const value = evaluate(exp, "TypeScript", "constant");
 
   // create and return the constant
-  return new Constant("TypeScript", name, value);
-}
+  return constant("TypeScript", name, value);
+};

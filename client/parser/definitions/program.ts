@@ -13,8 +13,8 @@ export default class Program extends Routine {
 
   /** creates a built-in turtle variable */
   turt(name: "x" | "y" | "d" | "a" | "t" | "c"): Variable {
-    const fullname = this.language === "BASIC" ? `turt${name}%` : `turt${name}`;
-    const variable = new Variable(fullname, this);
+    const fullName = this.language === "BASIC" ? `turt${name}%` : `turt${name}`;
+    const variable = new Variable(fullName, this);
     variable.type = "integer";
     variable.typeIsCertain = true;
     variable.turtle = ["x", "y", "d", "a", "t", "c"].indexOf(name) + 1;
