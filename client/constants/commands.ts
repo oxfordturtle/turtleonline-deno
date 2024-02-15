@@ -2,7 +2,18 @@ import type { Type } from "../lexer/types.ts";
 import type { Language } from "./languages.ts";
 import PCode from "./pcodes.ts";
 
-export type Command = ReturnType<typeof command>;
+export interface Command {
+  readonly __: "Command";
+  readonly id: string;
+  readonly names: Readonly<Record<Language, string | null>>;
+  readonly code: (turtleAddress: number) => number[];
+  readonly parameters: ReadonlyArray<Parameter>;
+  readonly returns: Type | null;
+  readonly type: "procedure" | "function";
+  readonly category: number;
+  readonly level: number;
+  readonly description: string;
+}
 
 const command = (
   name:
@@ -20,7 +31,7 @@ const command = (
   returns: Type | null,
   help: { category: number; level: number },
   description: string
-) => {
+): Command => {
   const id = typeof name === "string" ? name : name.find((n) => n !== null)!;
   const names: Readonly<Record<Language, string | null>> =
     typeof name === "string"
@@ -42,7 +53,7 @@ const command = (
         };
 
   return {
-    __: "command",
+    __: "Command",
     id,
     names,
     code,
@@ -51,19 +62,24 @@ const command = (
     type: returns === null ? "procedure" : "function",
     ...help,
     description,
-  } as const;
+  };
 };
 
-export type Parameter = ReturnType<typeof p>;
+export interface Parameter {
+  readonly __: "Parameter";
+  readonly name: string;
+  readonly type: Type;
+  readonly isReferenceParameter: boolean;
+  readonly length: number;
+}
 
-const p = (name: string, type: Type, isReferenceParameter = false, length = 1) =>
-  ({
-    __: "parameter",
-    name,
-    type,
-    isReferenceParameter,
-    length,
-  } as const);
+const p = (name: string, type: Type, isReferenceParameter = false, length = 1): Parameter => ({
+  __: "Parameter",
+  name,
+  type,
+  isReferenceParameter,
+  length,
+});
 
 const commands = [
   // 0. Turtle: relative movement

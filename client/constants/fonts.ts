@@ -1,12 +1,16 @@
-export type Font = ReturnType<typeof font>;
+export interface Font {
+  readonly __: "Font";
+  readonly index: number;
+  readonly name: string;
+  readonly css: string;
+}
 
-const font = (index: number, name: string, css: string) =>
-  ({
-    __: "Font",
-    index,
-    name,
-    css,
-  } as const);
+const font = (index: number, name: string, css: string): Font => ({
+  __: "Font",
+  index,
+  name,
+  css,
+});
 
 export default [
   font(0x0, "Arial", "Arial, sans-serif"),

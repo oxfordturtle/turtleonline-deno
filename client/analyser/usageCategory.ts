@@ -1,11 +1,13 @@
 import { Category, Expression } from "../constants/categories.ts";
 import type { Language } from "../constants/languages.ts";
 import type { Lexeme } from "../lexer/lexeme.ts";
-import usageExpression from "./usageExpression.ts";
+import usageExpression, { type UsageExpression } from "./usageExpression.ts";
 
-export type UsageCategory<Exp extends Expression = Expression> = ReturnType<
-  typeof usageCategory<Exp>
->;
+export interface UsageCategory {
+  readonly category: string;
+  readonly expressions: UsageExpression[];
+  readonly total: number;
+}
 
 const usageCategory = <Exp extends Expression>(
   language: Language,

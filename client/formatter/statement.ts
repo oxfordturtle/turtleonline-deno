@@ -9,7 +9,7 @@ export default (stmt: Statement, language: Language): string => {
 
     case "procedureCall": {
       const name =
-        stmt.command.__ === "command"
+        stmt.command.__ === "Command"
           ? (stmt.command.names[language] as string)
           : stmt.command.name;
       if ((language === "BASIC" || language === "Pascal") && stmt.arguments.length === 0) {

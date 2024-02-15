@@ -19,41 +19,53 @@ export type Lexeme =
   | QueryCodeLexeme
   | IdentifierLexeme;
 
-const lexeme = (line: number, character: number, content: string) =>
-  ({
-    __: "lexeme",
-    line,
-    character,
-    content,
-  } as const);
+interface LexemeCommon {
+  readonly __: "Lexeme";
+  readonly line: number;
+  readonly character: number;
+  readonly content: string;
+}
 
-export type NewlineLexeme = ReturnType<typeof newlineLexeme>;
+const lexeme = (line: number, character: number, content: string): LexemeCommon => ({
+  __: "Lexeme",
+  line,
+  character,
+  content,
+});
 
-export const newlineLexeme = (token: Token) =>
-  ({
-    ...lexeme(token.line, token.character, "[newline]"),
-    type: "newline",
-  } as const);
+export interface NewlineLexeme extends LexemeCommon {
+  readonly type: "newline";
+}
 
-export type IndentLexeme = ReturnType<typeof indentLexeme>;
+export const newlineLexeme = (token: Token): NewlineLexeme => ({
+  ...lexeme(token.line, token.character, "[newline]"),
+  type: "newline",
+});
 
-export const indentLexeme = (token: Token) =>
-  ({
-    ...lexeme(token.line, token.character, "[indent]"),
-    type: "indent",
-  } as const);
+export interface IndentLexeme extends LexemeCommon {
+  readonly type: "indent";
+}
 
-export type DedentLexeme = ReturnType<typeof dedentLexeme>;
+export const indentLexeme = (token: Token): IndentLexeme => ({
+  ...lexeme(token.line, token.character, "[indent]"),
+  type: "indent",
+});
 
-export const dedentLexeme = (token: Token) =>
-  ({
-    ...lexeme(token.line, token.character, "[dedent]"),
-    type: "dedent",
-  } as const);
+export interface DedentLexeme extends LexemeCommon {
+  readonly type: "dedent";
+}
 
-export type CommentLexeme = ReturnType<typeof commentLexeme>;
+export const dedentLexeme = (token: Token): DedentLexeme => ({
+  ...lexeme(token.line, token.character, "[dedent]"),
+  type: "dedent",
+});
 
-export const commentLexeme = (token: Token, language: Language) => {
+export interface CommentLexeme extends LexemeCommon {
+  readonly type: "comment";
+  readonly value: string;
+}
+
+export const commentLexeme = (token: Token, language: Language): CommentLexeme => {
   const values = {
     BASIC: token.content.slice(3).trim(),
     C: token.content.slice(2).trim(),
@@ -67,21 +79,26 @@ export const commentLexeme = (token: Token, language: Language) => {
     ...lexeme(token.line, token.character, token.content),
     type: "comment",
     value: values[language],
-  } as const;
+  };
 };
 
-export type KeywordLexeme = ReturnType<typeof keywordLexeme>;
+export interface KeywordLexeme extends LexemeCommon {
+  readonly type: "keyword";
+  readonly subtype: Keyword;
+}
 
-export const keywordLexeme = (token: Token) =>
-  ({
-    ...lexeme(token.line, token.character, token.content),
-    type: "keyword",
-    subtype: token.content.toLowerCase() as Keyword,
-  } as const);
+export const keywordLexeme = (token: Token): KeywordLexeme => ({
+  ...lexeme(token.line, token.character, token.content),
+  type: "keyword",
+  subtype: token.content.toLowerCase() as Keyword,
+});
 
-export type TypeLexeme = ReturnType<typeof typeLexeme>;
+export interface TypeLexeme extends LexemeCommon {
+  readonly type: "type";
+  readonly subtype: Type;
+}
 
-export const typeLexeme = (token: Token) => {
+export const typeLexeme = (token: Token): TypeLexeme => {
   const subtypes: Record<string, Type> = {
     bool: "boolean",
     boolean: "boolean",
@@ -96,12 +113,15 @@ export const typeLexeme = (token: Token) => {
     ...lexeme(token.line, token.character, token.content),
     type: "type",
     subtype: subtypes[token.content.toLowerCase()],
-  } as const;
+  };
 };
 
-export type OperatorLexeme = ReturnType<typeof operatorLexeme>;
+export interface OperatorLexeme extends LexemeCommon {
+  readonly type: "operator";
+  readonly subtype: Operator | "asgn";
+}
 
-export const operatorLexeme = (token: Token, language: Language) => {
+export const operatorLexeme = (token: Token, language: Language): OperatorLexeme => {
   const subtypes: Record<string, Operator | "asgn"> = {
     "+": "plus",
     "-": "subt",
@@ -142,31 +162,41 @@ export const operatorLexeme = (token: Token, language: Language) => {
     ...lexeme(token.line, token.character, token.content),
     type: "operator",
     subtype: subtypes[token.content.toLowerCase()],
-  } as const;
+  };
 };
 
-export type DelimiterLexeme = ReturnType<typeof delimiterLexeme>;
+export interface DelimiterLexeme extends LexemeCommon {
+  readonly type: "delimiter";
+  readonly subtype: Delimiter;
+}
 
-export const delimiterLexeme = (token: Token) =>
-  ({
-    ...lexeme(token.line, token.character, token.content),
-    type: "delimiter",
-    subtype: token.content as Delimiter,
-  } as const);
+export const delimiterLexeme = (token: Token): DelimiterLexeme => ({
+  ...lexeme(token.line, token.character, token.content),
+  type: "delimiter",
+  subtype: token.content as Delimiter,
+});
 
-export type BooleanLexeme = ReturnType<typeof booleanLexeme>;
+export interface BooleanLexeme extends LexemeCommon {
+  readonly type: "literal";
+  readonly subtype: "boolean";
+  readonly value: 0 | 1 | -1;
+}
 
-export const booleanLexeme = (token: Token, language: Language) =>
-  ({
-    ...lexeme(token.line, token.character, token.content),
-    type: "literal",
-    subtype: "boolean",
-    value: token.content.toLowerCase() === "true" ? trueValue[language] : 0,
-  } as const);
+export const booleanLexeme = (token: Token, language: Language): BooleanLexeme => ({
+  ...lexeme(token.line, token.character, token.content),
+  type: "literal",
+  subtype: "boolean",
+  value: token.content.toLowerCase() === "true" ? trueValue[language] : 0,
+});
 
-export type IntegerLexeme = ReturnType<typeof integerLexeme>;
+export interface IntegerLexeme extends LexemeCommon {
+  readonly type: "literal";
+  readonly subtype: "integer";
+  readonly value: number;
+  readonly radix: number;
+}
 
-export const integerLexeme = (token: Token, radix: number) => {
+export const integerLexeme = (token: Token, radix: number): IntegerLexeme => {
   const firstNonInteger = token.content.match(/[^0-9]/);
   const trimmedContent = firstNonInteger
     ? token.content.slice((firstNonInteger.index ?? 0) + 1)
@@ -178,21 +208,28 @@ export const integerLexeme = (token: Token, radix: number) => {
     subtype: "integer",
     value: parseInt(trimmedContent, radix),
     radix,
-  } as const;
+  };
 };
 
-export type CharacterLexeme = ReturnType<typeof characterLexeme>;
+export interface CharacterLexeme extends LexemeCommon {
+  readonly type: "literal";
+  readonly subtype: "character";
+  readonly value: number;
+}
 
-export const characterLexeme = (token: Token, language: Language) =>
-  ({
-    ...stringLexeme(token, language),
-    subtype: "character",
-    value: token.content.charCodeAt(0),
-  } as const);
+export const characterLexeme = (token: Token, language: Language): CharacterLexeme => ({
+  ...stringLexeme(token, language),
+  subtype: "character",
+  value: token.content.charCodeAt(0),
+});
 
-export type StringLexeme = ReturnType<typeof stringLexeme>;
+export interface StringLexeme extends LexemeCommon {
+  readonly type: "literal";
+  readonly subtype: "string";
+  readonly value: string;
+}
 
-export const stringLexeme = (token: Token, language: Language) => {
+export const stringLexeme = (token: Token, language: Language): StringLexeme => {
   const values = {
     BASIC: token.content.slice(1, -1).replace(/""/g, '"'),
     C: token.content.slice(1, -1).replace(/\\('|")/g, "$1"),
@@ -210,35 +247,44 @@ export const stringLexeme = (token: Token, language: Language) => {
     type: "literal",
     subtype: "string",
     value: values[language],
-  } as const;
+  };
 };
 
-export type InputCodeLexeme = ReturnType<typeof inputCodeLexeme>;
+export interface InputCodeLexeme extends LexemeCommon {
+  readonly type: "input";
+  readonly subtype: "inputCode";
+  readonly value: string;
+}
 
-export const inputCodeLexeme = (token: Token, language: Language) =>
-  ({
-    ...lexeme(token.line, token.character, token.content),
-    type: "input",
-    subtype: "inputCode",
-    value: language === "Pascal" ? token.content.slice(1).toLowerCase() : token.content.slice(1),
-  } as const);
+export const inputCodeLexeme = (token: Token, language: Language): InputCodeLexeme => ({
+  ...lexeme(token.line, token.character, token.content),
+  type: "input",
+  subtype: "inputCode",
+  value: language === "Pascal" ? token.content.slice(1).toLowerCase() : token.content.slice(1),
+});
 
-export type QueryCodeLexeme = ReturnType<typeof queryCodeLexeme>;
+export interface QueryCodeLexeme extends LexemeCommon {
+  readonly type: "input";
+  readonly subtype: "queryCode";
+  readonly value: string;
+}
 
-export const queryCodeLexeme = (token: Token, language: Language) =>
-  ({
-    ...lexeme(token.line, token.character, token.content),
-    type: "input",
-    subtype: "queryCode",
-    value: language === "Pascal" ? token.content.slice(1).toLowerCase() : token.content.slice(1),
-  } as const);
+export const queryCodeLexeme = (token: Token, language: Language): QueryCodeLexeme => ({
+  ...lexeme(token.line, token.character, token.content),
+  type: "input",
+  subtype: "queryCode",
+  value: language === "Pascal" ? token.content.slice(1).toLowerCase() : token.content.slice(1),
+});
 
-export type IdentifierLexeme = ReturnType<typeof identifierLexeme>;
+export interface IdentifierLexeme extends LexemeCommon {
+  readonly type: "identifier";
+  readonly subtype: "turtle" | "identifier";
+  readonly value: string;
+}
 
-export const identifierLexeme = (token: Token, language: Language) =>
-  ({
-    ...lexeme(token.line, token.character, token.content),
-    type: "identifier",
-    subtype: token.type === "turtle" ? "turtle" : "identifier",
-    value: language === "Pascal" ? token.content.toLowerCase() : token.content,
-  } as const);
+export const identifierLexeme = (token: Token, language: Language): IdentifierLexeme => ({
+  ...lexeme(token.line, token.character, token.content),
+  type: "identifier",
+  subtype: token.type === "turtle" ? "turtle" : "identifier",
+  value: language === "Pascal" ? token.content.toLowerCase() : token.content,
+});

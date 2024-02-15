@@ -1,4 +1,10 @@
-export type Token = ReturnType<typeof token>;
+export interface Token {
+  readonly __: "Token";
+  readonly type: TokenType;
+  readonly content: string;
+  readonly line: number;
+  readonly character: number;
+}
 
 export type TokenType =
   | "spaces"
@@ -30,11 +36,15 @@ export type TokenType =
   | "identifier"
   | "illegal";
 
-export const token = (type: TokenType, content: string, line: number, character: number) =>
-  ({
-    __: "token",
-    type,
-    content,
-    line,
-    character,
-  } as const);
+export const token = (
+  type: TokenType,
+  content: string,
+  line: number,
+  character: number
+): Token => ({
+  __: "Token",
+  type,
+  content,
+  line,
+  character,
+});

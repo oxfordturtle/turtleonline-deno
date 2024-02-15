@@ -1,12 +1,16 @@
-export type Cursor = ReturnType<typeof cursor>;
+export interface Cursor {
+  readonly __: "Cursor";
+  readonly index: number;
+  readonly name: string;
+  readonly css: string;
+}
 
-const cursor = (index: number, name: string, css: string) =>
-  ({
-    __: "Cursor",
-    index,
-    name,
-    css,
-  } as const);
+const cursor = (index: number, name: string, css: string): Cursor => ({
+  __: "Cursor",
+  index,
+  name,
+  css,
+});
 
 export default [
   cursor(0x0, "None", "none"),

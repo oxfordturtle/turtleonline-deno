@@ -1,6 +1,12 @@
 import examples from "./examples.ts";
 
-export type ExampleGroup = ReturnType<typeof exampleGroup>;
+export interface ExampleGroup {
+  readonly __: "ExampleGroup";
+  readonly index: number;
+  readonly id: ExampleGroupId;
+  readonly title: string;
+  readonly examples: ReadonlyArray<(typeof examples)[number]>;
+}
 
 export type ExampleGroupId =
   | "CSAC"
@@ -15,14 +21,13 @@ export type ExampleGroupId =
   | "Fractals"
   | "Logic&CS";
 
-const exampleGroup = (index: number, id: ExampleGroupId, title: string) =>
-  ({
-    __: "ExampleGroup",
-    index,
-    id,
-    title,
-    examples: examples.filter((example) => example.groupId === id),
-  } as const);
+const exampleGroup = (index: number, id: ExampleGroupId, title: string): ExampleGroup => ({
+  __: "ExampleGroup",
+  index,
+  id,
+  title,
+  examples: examples.filter((example) => example.groupId === id),
+});
 
 export default [
   exampleGroup(0, "CSAC", "computer science across the curriculum"),

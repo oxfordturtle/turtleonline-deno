@@ -22,7 +22,7 @@ export const procedureCall = (
   command: Command | Subroutine
 ): ProcedureCall => {
   // check it's not a function
-  const commandType = command.__ === "command" ? command.type : getSubroutineType(command);
+  const commandType = command.__ === "Command" ? command.type : getSubroutineType(command);
   if (commandType === "function") {
     throw new CompilerError("{lex} is a function, not a procedure.", lexeme);
   }
@@ -58,7 +58,7 @@ export const functionCall = (
     command.variables.unshift(variable("!result", command));
   }
 
-  const commandType = command.__ === "command" ? command.type : getSubroutineType(command);
+  const commandType = command.__ === "Command" ? command.type : getSubroutineType(command);
   if (commandType === "procedure") {
     throw new CompilerError("{lex} is a procedure, not a function.", lexemes.get(-1));
   }
@@ -106,11 +106,11 @@ const brackets = (
   routine: Routine,
   commandCall: ProcedureCall | FunctionCall
 ): void => {
-  const allParameters = commandCall.command.__ === "command"
+  const allParameters = commandCall.command.__ === "Command"
     ? commandCall.command.parameters
     : getParameters(commandCall.command);
   const isMethod =
-    commandCall.command.__ === "command" &&
+    commandCall.command.__ === "Command" &&
     commandCall.command.names[routine.language]?.startsWith(".");
   const parameters = isMethod
     ? allParameters.slice(1)
@@ -169,12 +169,12 @@ const _arguments = (
   commandCall: ProcedureCall | FunctionCall
 ): void => {
   const commandName =
-    commandCall.command.__ === "command"
+    commandCall.command.__ === "Command"
       ? commandCall.command.names[routine.language]
       : commandCall.command.name;
 
   // handle the arguments
-  const parameters = commandCall.command.__ === "command"
+  const parameters = commandCall.command.__ === "Command"
     ? commandCall.command.parameters
     : getParameters(commandCall.command);
   while (
@@ -183,7 +183,7 @@ const _arguments = (
   ) {
     const parameter = parameters[commandCall.arguments.length];
     let argument = expression(lexemes, routine);
-    if (commandCall.command.__ === "command") {
+    if (commandCall.command.__ === "Command") {
       switch (commandCall.command.names[routine.language]?.toLowerCase()) {
         case "address":
           // variable passed (by reference) to built-in address function can be of any type

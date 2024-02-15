@@ -2,15 +2,18 @@ import type { Expression } from "../constants/categories.ts";
 import type { Language } from "../constants/languages.ts";
 import type { Lexeme } from "../lexer/lexeme.ts";
 
-export type UsageExpression<Exp extends Expression = Expression> = ReturnType<
-  typeof usageExpression<Exp>
->;
+export interface UsageExpression {
+  readonly name: string;
+  readonly level: number;
+  readonly count: number;
+  readonly lines: string;
+}
 
-const usageExpression = <Exp extends Expression>(
+const usageExpression = (
   language: Language,
   lexemes: Lexeme[],
-  expression: Exp
-) => {
+  expression: Expression
+): UsageExpression => {
   const name = expression.__ === "command" ? expression.names[language]! : expression.name;
 
   const uses =
@@ -24,7 +27,7 @@ const usageExpression = <Exp extends Expression>(
     level: expression.level + 1,
     count: uses.length,
     lines: uses.reduce((x, y) => `${x} ${y.line.toString(10)}`, "").trim(),
-  } as const;
+  };
 };
 
 export default usageExpression;

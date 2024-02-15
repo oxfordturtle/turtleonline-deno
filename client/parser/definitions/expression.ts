@@ -200,7 +200,7 @@ export const functionCall = (
   expressionType: "function",
   lexeme,
   command,
-  type: command.__ === "command" ? command.returns! : getResultType(command)!, // function calls should only ever be created with functions
+  type: command.__ === "Command" ? command.returns! : getResultType(command)!, // function calls should only ever be created with functions
   arguments: [],
 });
 

@@ -1,12 +1,16 @@
-export type Keyword = ReturnType<typeof keyword>;
+export interface Keyword {
+  readonly __: "Keyword";
+  readonly category: number;
+  readonly level: number;
+  readonly name: string;
+}
 
-const keyword = (category: number, level: number, name: string) =>
-  ({
-    __: "keyword",
-    category,
-    level,
-    name,
-  } as const);
+const keyword = (category: number, level: number, name: string): Keyword => ({
+  __: "Keyword",
+  category,
+  level,
+  name,
+});
 
 const BASIC = [
   // command structures

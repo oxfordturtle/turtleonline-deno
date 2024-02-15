@@ -10,7 +10,7 @@ export default (exp: FunctionCall, program: Program, options: Options): number[]
   const pcode: number[][] = [];
 
   // first: load arguments onto stack
-  const parameters = exp.command.__ === "command" ? exp.command.parameters : getParameters(exp.command);
+  const parameters = exp.command.__ === "Command" ? exp.command.parameters : getParameters(exp.command);
   for (let index = 0; index < parameters.length; index += 1) {
     const arg = exp.arguments[index];
     const param = parameters[index];

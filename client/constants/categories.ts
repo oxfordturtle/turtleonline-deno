@@ -4,19 +4,23 @@ import keywords, { type Keyword } from "./keywords.ts";
 
 export type Expression = Command | Keyword | Subroutine;
 
-export type Category<Exp extends Expression> = ReturnType<typeof category<Exp>>;
+export interface Category<Exp extends Expression> {
+  readonly __: "Category";
+  readonly index: number;
+  readonly title: string;
+  readonly expressions: ReadonlyArray<Exp>;
+}
 
 export const category = <Exp extends Expression>(
   index: number,
   title: string,
   expressions: ReadonlyArray<Exp>
-) =>
-  ({
-    __: "category",
-    index,
-    title,
-    expressions,
-  } as const);
+): Category<Exp> => ({
+  __: "Category",
+  index,
+  title,
+  expressions,
+});
 
 export const commandCategories = [
   category(

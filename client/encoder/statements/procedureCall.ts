@@ -15,7 +15,7 @@ export default (
   const pcode: number[][] = [];
 
   // first: load arguments onto the stack
-  const parameters = stmt.command.__ === "command" ? stmt.command.parameters : getParameters(stmt.command);
+  const parameters = stmt.command.__ === "Command" ? stmt.command.parameters : getParameters(stmt.command);
   for (let index = 0; index < parameters.length; index += 1) {
     const arg = stmt.arguments[index];
     const param = parameters[index];

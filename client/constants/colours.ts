@@ -1,21 +1,34 @@
-export type Colour = ReturnType<typeof colour>;
+export interface Colour {
+  readonly __: "Colour";
+  readonly index: number;
+  readonly names: {
+    readonly BASIC: string;
+    readonly C: string;
+    readonly Java: string;
+    readonly Pascal: string;
+    readonly Python: string;
+    readonly TypeScript: string;
+  };
+  readonly value: number;
+  readonly hex: string;
+  readonly dark: boolean;
+}
 
-const colour = (index: number, name: string, value: number, dark: boolean) =>
-  ({
-    __: "Colour",
-    index,
-    names: {
-      BASIC: name.toUpperCase(),
-      C: name,
-      Java: name,
-      Pascal: name,
-      Python: name,
-      TypeScript: name,
-    },
-    value,
-    hex: value.toString(16).padStart(6, "0").toUpperCase(),
-    dark,
-  } as const);
+const colour = (index: number, name: string, value: number, dark: boolean): Colour => ({
+  __: "Colour",
+  index,
+  names: {
+    BASIC: name.toUpperCase(),
+    C: name,
+    Java: name,
+    Pascal: name,
+    Python: name,
+    TypeScript: name,
+  },
+  value,
+  hex: value.toString(16).padStart(6, "0").toUpperCase(),
+  dark,
+});
 
 export default [
   colour(1, "green", 0x228b22, true),

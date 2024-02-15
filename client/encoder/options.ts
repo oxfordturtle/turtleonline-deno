@@ -1,6 +1,6 @@
 import { defaults } from "../constants/properties.ts";
 
-export type Options = {
+export interface Options {
   canvasStartSize: number;
   setupDefaultKeyBuffer: boolean;
   turtleAttributesAsGlobals: boolean;

@@ -1,28 +1,32 @@
 import type { ExampleGroupId } from "./exampleGroups.ts";
 import type { Language } from "./languages.ts";
 
-export type Example = ReturnType<typeof example>;
+export interface Example {
+  readonly __: "Example";
+  readonly groupId: ExampleGroupId;
+  readonly id: string;
+  readonly names: Partial<Record<Language, string | null>>;
+}
 
 const example = (
   groupId: ExampleGroupId,
   id: string,
   name: string,
   names: Partial<Record<Language, string | null>> = {}
-) =>
-  ({
-    __: "Example",
-    groupId,
-    id,
-    names: {
-      BASIC: name,
-      C: name,
-      Java: name,
-      Pascal: name,
-      Python: name,
-      TypeScript: name,
-      ...names,
-    },
-  } as const);
+): Example => ({
+  __: "Example",
+  groupId,
+  id,
+  names: {
+    BASIC: name,
+    C: name,
+    Java: name,
+    Pascal: name,
+    Python: name,
+    TypeScript: name,
+    ...names,
+  },
+});
 
 export default [
   // examples 0 - CSAC (not shown in the menu)

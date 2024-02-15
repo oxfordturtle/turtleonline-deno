@@ -34,7 +34,7 @@ const expression = (exp: Expression, language: Language): string => {
 
     case "function": {
       const name =
-        exp.command.__ === "command" ? (exp.command.names[language] as string) : exp.command.name;
+        exp.command.__ === "Command" ? (exp.command.names[language] as string) : exp.command.name;
       if ((language === "BASIC" || language === "Pascal") && exp.arguments.length === 0) {
         return name;
       }
