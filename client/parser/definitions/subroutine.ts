@@ -2,7 +2,7 @@ import type { KeywordLexeme, TypeLexeme } from "../../lexer/lexeme.ts";
 import type { Type } from "../../lexer/types.ts";
 import type Program from "./program.ts";
 import Routine from "./routine.ts";
-import type Variable from "./variable.ts";
+import type { Variable } from "./variable.ts";
 
 /** subroutine */
 export class Subroutine extends Routine {
@@ -45,11 +45,6 @@ export class Subroutine extends Routine {
   /** gets whether this subroutine is a procedure or a function */
   get type(): SubroutineType {
     return this.result === undefined ? "procedure" : "function";
-  }
-
-  /** gets this subroutine's address in memory */
-  get address(): number {
-    return this.index + this.program.baseOffset;
   }
 }
 

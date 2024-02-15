@@ -3,7 +3,7 @@ import type { IdentifierLexeme, KeywordLexeme, OperatorLexeme } from "../../lexe
 import type { Constant } from "./constant.ts";
 import { CompoundExpression, VariableValue, type Expression } from "./expression.ts";
 import type { Subroutine } from "./subroutine.ts";
-import type Variable from "./variable.ts";
+import type { Variable } from "./variable.ts";
 
 /** statement */
 export type Statement =

@@ -3,7 +3,7 @@ import { CompilerError } from "../../tools/error.ts";
 import type Lexemes from "../definitions/lexemes.ts";
 import type Program from "../definitions/program.ts";
 import { Subroutine } from "../definitions/subroutine.ts";
-import Variable from "../definitions/variable.ts";
+import { Variable } from "../definitions/variable.ts";
 import { subroutineName } from "./identifier.ts";
 import { newLine } from "./statement.ts";
 import { variable } from "./variable.ts";

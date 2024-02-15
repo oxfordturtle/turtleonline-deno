@@ -1,6 +1,7 @@
 import PCode from "../../constants/pcodes.ts";
 import { VariableValue } from "../../parser/definitions/expression.ts";
 import type Program from "../../parser/definitions/program.ts";
+import { subroutineAddress, turtleAddress, variableAddress } from "../addresses.ts";
 import expression from "../expression.ts";
 import merge from "../merge.ts";
 import type { Options } from "../options.ts";
@@ -52,12 +53,12 @@ export default (exp: VariableValue, program: Program, options: Options): number[
 
   // predefined turtle property
   else if (exp.variable.turtle) {
-    pcode.push([PCode.ldvg, program.turtleAddress + exp.variable.turtle]);
+    pcode.push([PCode.ldvg, turtleAddress(program) + exp.variable.turtle]);
   }
 
   // global variable
   else if (exp.variable.routine.__ === "program") {
-    pcode.push([PCode.ldvg, exp.variable.address]);
+    pcode.push([PCode.ldvg, variableAddress(exp.variable)]);
   }
 
   // local reference variable (except arrays and strings)
@@ -66,12 +67,12 @@ export default (exp: VariableValue, program: Program, options: Options): number[
     !exp.variable.isArray &&
     exp.variable.type !== "string"
   ) {
-    pcode.push([PCode.ldvr, exp.variable.routine.address, exp.variable.address]);
+    pcode.push([PCode.ldvr, subroutineAddress(exp.variable.routine), variableAddress(exp.variable)]);
   }
 
   // local value variable (and arrays and strings passed by reference)
   else {
-    pcode.push([PCode.ldvv, exp.variable.routine.address, exp.variable.address]);
+    pcode.push([PCode.ldvv, subroutineAddress(exp.variable.routine), variableAddress(exp.variable)]);
   }
 
   // add peek code for pointer variables

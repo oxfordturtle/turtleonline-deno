@@ -7,7 +7,7 @@ import type Lexemes from "./definitions/lexemes.ts";
 import type Program from "./definitions/program.ts";
 import { ProcedureCall } from "./definitions/statement.ts";
 import type { Subroutine } from "./definitions/subroutine.ts";
-import Variable from "./definitions/variable.ts";
+import { Variable } from "./definitions/variable.ts";
 import { expression, typeCheck } from "./expression.ts";
 
 /** parses lexemes as a procedure call */

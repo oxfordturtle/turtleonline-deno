@@ -1,8 +1,9 @@
 import PCode from "../../constants/pcodes.ts";
 import type { FunctionCall } from "../../parser/definitions/expression.ts";
 import type Program from "../../parser/definitions/program.ts";
-import merge from "../merge.ts";
+import { resultAddress, turtleAddress } from "../addresses.ts";
 import expression from "../expression.ts";
+import merge from "../merge.ts";
 import type { Options } from "../options.ts";
 
 export default (exp: FunctionCall, program: Program, options: Options): number[][] => {
@@ -24,13 +25,13 @@ export default (exp: FunctionCall, program: Program, options: Options): number[]
   } else {
     // native functions
     // copy the command.code array so it isn't modified subsequently
-    merge(pcode, [exp.command.code(program.turtleAddress)]);
+    merge(pcode, [exp.command.code(turtleAddress(program))]);
   }
 
   // custom functions: load the result variable onto the stack
   if (exp.command.__ === "subroutine") {
     // push, don't merge; anything after the subroutine call must be on a new line
-    pcode.push([PCode.ldvv, program.resultAddress, 1]);
+    pcode.push([PCode.ldvv, resultAddress(program), 1]);
     if (exp.command.returns === "string") {
       merge(pcode, [[PCode.hstr]]);
     }

@@ -1,7 +1,8 @@
 import { trueValue } from "../../constants/languages.ts";
 import PCode from "../../constants/pcodes.ts";
 import type Program from "../../parser/definitions/program.ts";
-import type Variable from "../../parser/definitions/variable.ts";
+import type { Variable } from "../../parser/definitions/variable.ts";
+import { lengthByteAddress, turtleAddress, variableAddress } from "../addresses.ts";
 import type { Options } from "../options.ts";
 
 export default (program: Program, _options: Options): number[][] => {
@@ -10,7 +11,7 @@ export default (program: Program, _options: Options): number[][] => {
     // line 1: global memory
     [
       PCode.ldin,
-      program.turtleAddress,
+      turtleAddress(program),
       PCode.dupl,
       PCode.dupl,
       PCode.ldin,
@@ -25,7 +26,7 @@ export default (program: Program, _options: Options): number[][] => {
       program.memoryNeeded + program.turtleVariables.length,
       PCode.zptr,
       PCode.ldin,
-      program.turtleAddress + program.memoryNeeded + program.turtleVariables.length,
+      turtleAddress(program) + program.memoryNeeded + program.turtleVariables.length,
       PCode.stmt,
     ],
     // line 2: turtle and keybuffer setup
@@ -76,13 +77,13 @@ const setupGlobalVariable = (variable: Variable): number[][] => {
   if (variable.isArray) {
     pcode.push([
       PCode.ldag,
-      variable.lengthByteAddress,
+      lengthByteAddress(variable),
       PCode.stvg,
-      variable.address,
+      variableAddress(variable),
       PCode.ldin,
       variable.elementCount,
       PCode.stvg,
-      variable.lengthByteAddress,
+      lengthByteAddress(variable),
     ]);
     for (const subVariable of variable.subVariables) {
       const subPcode = setupGlobalVariable(subVariable);
@@ -93,13 +94,13 @@ const setupGlobalVariable = (variable: Variable): number[][] => {
   } else if (variable.type === "string") {
     pcode.push([
       PCode.ldag,
-      variable.lengthByteAddress + 1,
+      lengthByteAddress(variable) + 1,
       PCode.stvg,
-      variable.address,
+      variableAddress(variable),
       PCode.ldin,
       variable.stringLength + 1, // +1 for the actual length byte (??)
       PCode.stvg,
-      variable.lengthByteAddress,
+      lengthByteAddress(variable),
     ]);
   }
 

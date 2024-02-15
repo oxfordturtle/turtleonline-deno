@@ -2,7 +2,7 @@ import { CompilerError } from "../../tools/error.ts";
 import type Lexemes from "../definitions/lexemes.ts";
 import type Program from "../definitions/program.ts";
 import type { Subroutine } from "../definitions/subroutine.ts";
-import Variable from "../definitions/variable.ts";
+import { Variable } from "../definitions/variable.ts";
 import evaluate from "../evaluate.ts";
 import { expression, typeCheck } from "../expression.ts";
 import * as find from "../find.ts";

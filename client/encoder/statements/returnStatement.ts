@@ -2,6 +2,7 @@ import PCode from "../../constants/pcodes.ts";
 import type Program from "../../parser/definitions/program.ts";
 import type { ReturnStatement } from "../../parser/definitions/statement.ts";
 import { VariableAssignment } from "../../parser/definitions/statement.ts";
+import { resultAddress, subroutineAddress } from "../addresses.ts";
 import type { Options } from "../options.ts";
 import variableAssignment from "./variableAssignment.ts";
 
@@ -18,11 +19,11 @@ export default (
   const pcode = variableAssignment(va, program, startLine, options);
   pcode.push([
     PCode.ldvg,
-    stmt.routine.address,
+    subroutineAddress(stmt.routine),
     PCode.stvg,
-    program.resultAddress,
+    resultAddress(program),
     PCode.memr,
-    stmt.routine.address,
+    subroutineAddress(stmt.routine),
     PCode.plsr,
     PCode.retn,
   ]);

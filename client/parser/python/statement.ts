@@ -26,7 +26,7 @@ import {
   type Statement,
 } from "../definitions/statement.ts";
 import { Subroutine } from "../definitions/subroutine.ts";
-import Variable from "../definitions/variable.ts";
+import { Variable } from "../definitions/variable.ts";
 import evaluate from "../evaluate.ts";
 import { expression, typeCheck } from "../expression.ts";
 import * as find from "../find.ts";

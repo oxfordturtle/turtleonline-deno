@@ -16,7 +16,7 @@ import type { Operator, Type } from "../../lexer/types.ts";
 import type { Constant } from "./constant.ts";
 import { type } from "./operators.ts";
 import type { Subroutine } from "./subroutine.ts";
-import type Variable from "./variable.ts";
+import type { Variable } from "./variable.ts";
 
 /** expression */
 export type Expression =

@@ -30,7 +30,7 @@ import {
   type Statement,
 } from "../definitions/statement.ts";
 import type { Subroutine } from "../definitions/subroutine.ts";
-import type Variable from "../definitions/variable.ts";
+import type { Variable } from "../definitions/variable.ts";
 import evaluate from "../evaluate.ts";
 import { expression, typeCheck } from "../expression.ts";
 import * as find from "../find.ts";

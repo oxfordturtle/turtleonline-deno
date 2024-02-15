@@ -1,6 +1,7 @@
 import PCode from "../../constants/pcodes.ts";
 import type Program from "../../parser/definitions/program.ts";
 import type { ProcedureCall } from "../../parser/definitions/statement.ts";
+import { turtleAddress } from "../addresses.ts";
 import expression from "../expression.ts";
 import merge from "../merge.ts";
 import type { Options } from "../options.ts";
@@ -28,7 +29,7 @@ export default (
     merge(pcode, [[PCode.subr, stmt.command.index]]);
   } else {
     // native commands
-    merge(pcode, [stmt.command.code(program.turtleAddress)]);
+    merge(pcode, [stmt.command.code(turtleAddress(program))]);
   }
 
   return pcode;

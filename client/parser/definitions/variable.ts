@@ -1,10 +1,9 @@
 import type { Type } from "../../lexer/types.ts";
 import type Program from "./program.ts";
-import Routine from "./routine.ts";
 import type { Subroutine } from "./subroutine.ts";
 
 /** variable */
-export default class Variable {
+export class Variable {
   readonly __ = "variable";
   readonly name: string;
   readonly routine: Program | Subroutine;
@@ -86,27 +85,10 @@ export default class Variable {
     }
     return subVariables;
   }
-
-  /** address of the variable (absolute for globals, relative for subroutines) */
-  get address(): number {
-    // N.B. this is different for subvariables
-    const arrayIndex = this.routine.variables.indexOf(this);
-    const routine = new Routine(this.routine.language);
-    routine.variables = this.routine.variables.slice(0, arrayIndex);
-    return this.routine.__ === "program"
-      ? this.routine.turtleAddress + this.routine.turtleVariables.length + routine.memoryNeeded + 1
-      : routine.memoryNeeded + 1;
-  }
-
-  /** address of the length byte of the variable (for strings and arrays) */
-  get lengthByteAddress(): number {
-    // N.B. this is different for subvariables
-    return this.address + 1;
-  }
 }
 
 /** subvariable (element of array variable) */
-class SubVariable extends Variable {
+export class SubVariable extends Variable {
   readonly variable: Variable | SubVariable;
   readonly index: number;
 
@@ -121,19 +103,5 @@ class SubVariable extends Variable {
     this.stringLength = variable.stringLength;
     this.arrayDimensions = variable.arrayDimensions.slice(1);
     this.private = variable.private;
-  }
-
-  /** address of the subvariable (absolute for globals, relative for subroutines) */
-  get address(): number {
-    //const base = this.variable.lengthByteAddress + 1
-    //return base + (this.index * this.variable.elementLength)
-    return this.variable.lengthByteAddress + this.index + 1;
-  }
-
-  /** address of the length byte of the variable (for strings and arrays) */
-  get lengthByteAddress(): number {
-    //const base = this.variable.lengthByteAddress + (this.variable.elementLength * this.variable.elementCount) + 1
-    const base = this.variable.lengthByteAddress + this.variable.elementCount + 1;
-    return base + (this.length - 1) * this.index; // length - 1 because we don't want to count the pointer here
   }
 }

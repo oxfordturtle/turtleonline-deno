@@ -3,6 +3,7 @@ import { VariableValue } from "../../parser/definitions/expression.ts";
 import type Program from "../../parser/definitions/program.ts";
 import { VariableAssignment } from "../../parser/definitions/statement.ts";
 import type { Subroutine } from "../../parser/definitions/subroutine.ts";
+import { subroutineAddress, turtleAddress, variableAddress } from "../addresses.ts";
 import expression from "../expression.ts";
 import merge from "../merge.ts";
 import type { Options } from "../options.ts";
@@ -44,7 +45,7 @@ const turtleVariableAssignment = (
   const pcode = expression(stmt.value, program, options);
 
   // TODO: after NEWTURTLE??
-  merge(pcode, [[PCode.stvg, program.turtleAddress + (stmt.variable.turtle as number)]]);
+  merge(pcode, [[PCode.stvg, turtleAddress(program) + (stmt.variable.turtle as number)]]);
 
   return pcode;
 };
@@ -72,12 +73,12 @@ const globalVariableAssignment = (
 
   // global string
   else if (stmt.variable.type === "string") {
-    merge(pcode, [[PCode.ldvg, stmt.variable.address, PCode.cstr]]);
+    merge(pcode, [[PCode.ldvg, variableAddress(stmt.variable), PCode.cstr]]);
   }
 
   // global boolean/character/integer
   else {
-    merge(pcode, [[PCode.stvg, stmt.variable.address]]);
+    merge(pcode, [[PCode.stvg, variableAddress(stmt.variable)]]);
   }
 
   return pcode;
@@ -111,7 +112,7 @@ const referenceVariableAssignment = (
   const pcode = expression(stmt.value, program, options);
 
   merge(pcode, [
-    [PCode.stvr, (stmt.variable.routine as Subroutine).address, stmt.variable.address],
+    [PCode.stvr, subroutineAddress(stmt.variable.routine as Subroutine), variableAddress(stmt.variable)],
   ]);
 
   return pcode;
@@ -143,8 +144,8 @@ const localVariableAssignment = (
     merge(pcode, [
       [
         PCode.ldvv,
-        (stmt.variable.routine as Subroutine).address,
-        stmt.variable.address,
+        subroutineAddress(stmt.variable.routine as Subroutine),
+        variableAddress(stmt.variable),
         PCode.cstr,
       ],
     ]);
@@ -153,7 +154,7 @@ const localVariableAssignment = (
   // local boolean/character/integer
   else {
     merge(pcode, [
-      [PCode.stvv, (stmt.variable.routine as Subroutine).address, stmt.variable.address],
+      [PCode.stvv, subroutineAddress(stmt.variable.routine as Subroutine), variableAddress(stmt.variable)],
     ]);
   }
 

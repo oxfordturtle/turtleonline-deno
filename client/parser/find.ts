@@ -4,7 +4,7 @@ import inputs, { type Input } from "../constants/inputs.ts";
 import type { Constant } from "./definitions/constant.ts";
 import type Program from "./definitions/program.ts";
 import type { Subroutine } from "./definitions/subroutine.ts";
-import type Variable from "./definitions/variable.ts";
+import type { Variable } from "./definitions/variable.ts";
 
 /** looks for a constant visible to the given routine */
 export function constant(routine: Program | Subroutine, name: string): Constant | undefined {

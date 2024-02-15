@@ -1,6 +1,12 @@
 import PCode from "../../constants/pcodes.ts";
 import type { Subroutine } from "../../parser/definitions/subroutine.ts";
-import type Variable from "../../parser/definitions/variable.ts";
+import type { Variable } from "../../parser/definitions/variable.ts";
+import {
+  lengthByteAddress,
+  resultAddress,
+  subroutineAddress,
+  variableAddress,
+} from "../addresses.ts";
 import type { Options } from "../options.ts";
 import statements from "./statements.ts";
 
@@ -44,7 +50,7 @@ const subroutineStartCode = (subroutine: Subroutine, options: Options): number[]
   // initialise variables
   if (subroutine.variables.length > 0) {
     // claim memory
-    pcode.push([PCode.memc, subroutine.address, subroutine.memoryNeeded]);
+    pcode.push([PCode.memc, subroutineAddress(subroutine), subroutine.memoryNeeded]);
 
     // zero memory
     if (options.initialiseLocals) {
@@ -52,7 +58,7 @@ const subroutineStartCode = (subroutine: Subroutine, options: Options): number[]
         // TODO: speak to Peter about this - his latest compiler doesn't appear to be doing this in every case
         pcode.push([
           PCode.ldav,
-          subroutine.address,
+          subroutineAddress(subroutine),
           1,
           PCode.ldin,
           subroutine.memoryNeeded,
@@ -79,10 +85,15 @@ const subroutineStartCode = (subroutine: Subroutine, options: Options): number[]
           // TODO: copy the array
         } else if (parameter.type === "string" && !parameter.isReferenceParameter) {
           // copy the string
-          lastStartLine.push(PCode.ldvv, subroutine.address, parameter.address, PCode.cstr);
+          lastStartLine.push(
+            PCode.ldvv,
+            subroutineAddress(subroutine),
+            variableAddress(parameter),
+            PCode.cstr
+          );
         } else {
           // for booleans and integers, or longer reference parameters, just store the value/address
-          lastStartLine.push(PCode.stvv, subroutine.address, parameter.address);
+          lastStartLine.push(PCode.stvv, subroutineAddress(subroutine), variableAddress(parameter));
         }
       }
     }
@@ -98,16 +109,16 @@ const setupLocalVariable = (variable: Variable): number[][] => {
   if (variable.isArray && !variable.isReferenceParameter) {
     pcode.push([
       PCode.ldav,
-      subroutine.address,
-      variable.lengthByteAddress,
+      subroutineAddress(subroutine),
+      lengthByteAddress(variable),
       PCode.stvv,
-      subroutine.address,
-      variable.address,
+      subroutineAddress(subroutine),
+      variableAddress(variable),
       PCode.ldin,
       variable.elementCount,
       PCode.stvv,
-      subroutine.address,
-      variable.lengthByteAddress,
+      subroutineAddress(subroutine),
+      lengthByteAddress(variable),
     ]);
     for (const subVariable of variable.subVariables) {
       const subPcode = setupLocalVariable(subVariable);
@@ -121,16 +132,16 @@ const setupLocalVariable = (variable: Variable): number[][] => {
   if (variable.type === "string") {
     pcode.push([
       PCode.ldav,
-      subroutine.address,
-      variable.lengthByteAddress + 1,
+      subroutineAddress(subroutine),
+      lengthByteAddress(variable) + 1,
       PCode.stvv,
-      subroutine.address,
-      variable.address,
+      subroutineAddress(subroutine),
+      variableAddress(variable),
       PCode.ldin,
       variable.stringLength + 1, // +1 for the actual length byte (??)
       PCode.stvv,
-      subroutine.address,
-      variable.lengthByteAddress,
+      subroutineAddress(subroutine),
+      lengthByteAddress(variable),
     ]);
   }
 
@@ -141,11 +152,16 @@ const subroutineEndCode = (subroutine: Subroutine, _options: Options): number[][
   const pcode: number[] = [];
   if (subroutine.type === "function") {
     // store function result
-    pcode.push(PCode.ldvg, subroutine.address, PCode.stvg, subroutine.program.resultAddress);
+    pcode.push(
+      PCode.ldvg,
+      subroutineAddress(subroutine),
+      PCode.stvg,
+      resultAddress(subroutine.program)
+    );
   }
   if (subroutine.variables.length > 0) {
     // release memory
-    pcode.push(PCode.memr, subroutine.address);
+    pcode.push(PCode.memr, subroutineAddress(subroutine));
   }
   pcode.push(PCode.plsr, PCode.retn);
 

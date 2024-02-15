@@ -1,24 +1,14 @@
 import type { Language } from "../../constants/languages.ts";
 import Routine from "./routine.ts";
-import Variable from "./variable.ts";
+import { Variable } from "./variable.ts";
 
 /** program */
 export default class Program extends Routine {
   readonly __ = "program";
-  readonly baseGlobals: number = 12; // turtle, keybuffer, and 10 file handles
-  readonly baseOffset: number = 11; // baseGlobals - 1
 
   /** constructor */
   constructor(language: Language, name?: string) {
     super(language, name);
-  }
-
-  /** address of the turtle in memory */
-  get turtleAddress(): number {
-    const subroutinePointers = this.allSubroutines.some((x) => x.type === "function")
-      ? this.allSubroutines.length + 1
-      : this.allSubroutines.length;
-    return subroutinePointers + this.baseGlobals;
   }
 
   /** creates a built-in turtle variable */
@@ -41,10 +31,5 @@ export default class Program extends Routine {
       this.turt("t"),
       this.turt("c"),
     ];
-  }
-
-  /** gets the address of the function result variable */
-  get resultAddress(): number {
-    return this.allSubroutines.length + this.baseGlobals;
   }
 }

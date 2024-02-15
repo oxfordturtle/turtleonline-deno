@@ -20,7 +20,7 @@ import type Lexemes from "./definitions/lexemes.ts";
 import { operator, stringOperator } from "./definitions/operators.ts";
 import type Program from "./definitions/program.ts";
 import { Subroutine } from "./definitions/subroutine.ts";
-import Variable from "./definitions/variable.ts";
+import { Variable } from "./definitions/variable.ts";
 import * as find from "./find.ts";
 
 /** checks types match (throws an error if not) */

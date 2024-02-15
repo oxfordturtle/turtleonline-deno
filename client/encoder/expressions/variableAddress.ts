@@ -2,6 +2,7 @@ import PCode from "../../constants/pcodes.ts";
 import type { VariableAddress } from "../../parser/definitions/expression.ts";
 import { VariableValue } from "../../parser/definitions/expression.ts";
 import type Program from "../../parser/definitions/program.ts";
+import { subroutineAddress, turtleAddress, variableAddress } from "../addresses.ts";
 import expression from "../expression.ts";
 import merge from "../merge.ts";
 import type { Options } from "../options.ts";
@@ -48,17 +49,17 @@ export default (
 
   // predefined turtle property
   else if (exp.variable.turtle) {
-    pcode.push([PCode.ldag, program.turtleAddress + exp.variable.turtle]);
+    pcode.push([PCode.ldag, turtleAddress(program) + exp.variable.turtle]);
   }
 
   // global variable
   else if (exp.variable.routine.__ === "program") {
-    pcode.push([PCode.ldag, exp.variable.address]);
+    pcode.push([PCode.ldag, variableAddress(exp.variable)]);
   }
 
   // local variable
   else {
-    pcode.push([PCode.ldav, exp.variable.routine.address, exp.variable.address]);
+    pcode.push([PCode.ldav, subroutineAddress(exp.variable.routine), variableAddress(exp.variable)]);
   }
 
   // return the pcode
