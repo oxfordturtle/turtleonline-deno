@@ -17,7 +17,7 @@ export default (exp: VariableValue, program: Program, options: Options): number[
       const indexExp = expression(index, program, options);
       merge(pcode, indexExp);
       if (exp.variable.arrayDimensions[i] && exp.variable.arrayDimensions[i][0] !== 0) {
-        // substract the start index if not indexed from 0
+        // subtract the start index if not indexed from 0
         merge(pcode, [[PCode.ldin, exp.variable.arrayDimensions[i][0], PCode.subt]]);
       } else if (exp.variable.arrayDimensions[i] === undefined) {
         // this means the final index expression is to a character within an array of strings

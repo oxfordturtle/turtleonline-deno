@@ -76,7 +76,7 @@ addEventListener("beforeunload", function () {
 // register to handle state and machine errors
 on("error", function (error: Error): void {
   console.error(error);
-  window.alert(error.message);
+  alert(error.message);
 });
 
 // initialise the page

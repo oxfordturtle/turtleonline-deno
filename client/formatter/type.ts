@@ -1,5 +1,5 @@
 import { Language } from "../constants/languages.ts";
-import { Type } from "../lexer/lexeme.ts";
+import { Type } from "../lexer/types.ts";
 
 /** formats a type as a code string */
 export default function type(type: Type | null, language: Language): string {

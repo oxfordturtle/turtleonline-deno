@@ -1,5 +1,5 @@
 import PCode from "../../constants/pcodes.ts";
-import type { Operator } from "../../lexer/lexeme.ts";
+import type { Operator } from "../../lexer/types.ts";
 import type { CompoundExpression } from "../../parser/definitions/expression.ts";
 import type Program from "../../parser/definitions/program.ts";
 import expression from "../expression.ts";

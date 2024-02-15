@@ -31,12 +31,12 @@ export default [
     Java: null,
     TypeScript: null,
   }),
-  example("CSAC", "Mandelbrot", "Manelbrot set", {
+  example("CSAC", "Mandelbrot", "Mandelbrot set", {
     C: null,
     Java: null,
     TypeScript: null,
   }),
-  example("CSAC", "MandelbrotMini", "Manelbrot mini", {
+  example("CSAC", "MandelbrotMini", "Mandelbrot mini", {
     C: null,
     Java: null,
     TypeScript: null,
@@ -51,7 +51,7 @@ export default [
     Java: null,
     TypeScript: null,
   }),
-  example("CSAC", "SierpinskiColour", "Siepinski colour", {
+  example("CSAC", "SierpinskiColour", "Sierpinski colour", {
     C: null,
     Java: null,
     Python: null,
@@ -399,7 +399,7 @@ export default [
     Java: null,
     TypeScript: null,
   }),
-  example("Logic&CS", "Fibonaccis", "Fibonacci recursion and iteration (dynamic programming)", {
+  example("Logic&CS", "Fibonacci", "Fibonacci recursion and iteration (dynamic programming)", {
     C: null,
     Java: null,
     TypeScript: null,

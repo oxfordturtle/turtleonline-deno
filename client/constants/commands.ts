@@ -1,4 +1,4 @@
-import type { Type } from "../lexer/lexeme.ts";
+import type { Type } from "../lexer/types.ts";
 import type { Language } from "./languages.ts";
 import PCode from "./pcodes.ts";
 
@@ -130,7 +130,7 @@ const commands = [
     [p("x", "integer")],
     null,
     { category: 1, level: 0 },
-    "Sets the Turtle&rsquo;s <code>x</code> coordinate directly (without movement or drawing on the canvas). This can also be achieved by direct assignment of the global variable <code>turtx</code>."
+    "Sets the Turtle’s <code>x</code> coordinate directly (without movement or drawing on the canvas). This can also be achieved by direct assignment of the global variable <code>turtx</code>."
   ),
   command(
     "setY",
@@ -138,7 +138,7 @@ const commands = [
     [p("y", "integer")],
     null,
     { category: 1, level: 0 },
-    "Sets the Turtle&rsquo;s <code>y</code> coordinate directly (without movement or drawing on the canvas). This can also be achieved by direct assignment of the global variable <code>turty</code>."
+    "Sets the Turtle’s <code>y</code> coordinate directly (without movement or drawing on the canvas). This can also be achieved by direct assignment of the global variable <code>turty</code>."
   ),
   command(
     "setXY",
@@ -146,7 +146,7 @@ const commands = [
     [p("x", "integer"), p("y", "integer")],
     null,
     { category: 1, level: 0 },
-    "Sets the Turtle&rsquo;s <code>x</code> and <code>y</code> coordinates directly (without movement or drawing on the canvas). This can also be achieved by direct assingment of the global variables <code>turtx</code> and <code>turty</code>."
+    "Sets the Turtle’s <code>x</code> and <code>y</code> coordinates directly (without movement or drawing on the canvas). This can also be achieved by direct assignment of the global variables <code>turtx</code> and <code>turty</code>."
   ),
   command(
     "direction",
@@ -154,7 +154,7 @@ const commands = [
     [p("n", "integer")],
     null,
     { category: 1, level: 0 },
-    "Sets the Turtle&rsquo;s direction to <code>n</code> degrees (0 for north, 90 for east, 180 for south, 270 for west). This can also be achieved by direct assignment of the global variable <code>turtd</code>. Note that the number of degrees in a circle (360 by default) can be changed with the <code>angles</code> command."
+    "Sets the Turtle’s direction to <code>n</code> degrees (0 for north, 90 for east, 180 for south, 270 for west). This can also be achieved by direct assignment of the global variable <code>turtd</code>. Note that the number of degrees in a circle (360 by default) can be changed with the <code>angles</code> command."
   ),
   command(
     "angles",
@@ -170,7 +170,7 @@ const commands = [
     [p("x", "integer"), p("y", "integer")],
     null,
     { category: 1, level: 1 },
-    "Turns the Turtle to face the point <code>x</code> units away alongthe x-axis and <code>y</code> units away along the y-axis."
+    "Turns the Turtle to face the point <code>x</code> units away along the x-axis and <code>y</code> units away along the y-axis."
   ),
   // 2. Turtle: shape drawing
   command(
@@ -179,7 +179,7 @@ const commands = [
     [p("radius", "integer")],
     null,
     { category: 2, level: 0 },
-    "Draws a circle outline in the Turtle&rsquo;s current colour and thickness, of the given <code>radius</code>, centred on the Turtle&rsquo;s current location."
+    "Draws a circle outline in the Turtle’s current colour and thickness, of the given <code>radius</code>, centred on the Turtle’s current location."
   ),
   command(
     "blot",
@@ -187,23 +187,23 @@ const commands = [
     [p("radius", "integer")],
     null,
     { category: 2, level: 0 },
-    "Draws a filled circle in the Turtle&rsquo;s current colour, of the given <code>radius</code>, centred on the Turtle&rsquo;s current location."
+    "Draws a filled circle in the Turtle’s current colour, of the given <code>radius</code>, centred on the Turtle’s current location."
   ),
   command(
     "ellipse",
     () => [PCode.elps],
-    [p("Xradius", "integer"), p("Yradius", "integer")],
+    [p("xRadius", "integer"), p("yRadius", "integer")],
     null,
     { category: 2, level: 0 },
-    "Draws an ellipse outline in the Turtle&rsquo;s current colour and thickness, of the given <code>Xradius</code> and <code>Yradius</code>, centred on the Turtle&rsquo;s current location."
+    "Draws an ellipse outline in the Turtle’s current colour and thickness, of the given <code>xRadius</code> and <code>yRadius</code>, centred on the Turtle’s current location."
   ),
   command(
     "ellblot",
     () => [PCode.eblt],
-    [p("Xradius", "integer"), p("Yradius", "integer")],
+    [p("xRadius", "integer"), p("yRadius", "integer")],
     null,
     { category: 2, level: 0 },
-    "Draws a filled ellipse in the Turtle&rsquo;s current colour, of the given <code>Xradius</code> and <code>Yradius</code>, centred on the Turtle&rsquo;s current location."
+    "Draws a filled ellipse in the Turtle’s current colour, of the given <code>xRadius</code> and <code>yRadius</code>, centred on the Turtle’s current location."
   ),
   command(
     "polyline",
@@ -211,7 +211,7 @@ const commands = [
     [p("n", "integer")],
     null,
     { category: 2, level: 1 },
-    "Draws a polygon outline in the Turtle&rsquo;s current colour and thickness, connecting the last <code>n</code> locations that the Turtle has visited."
+    "Draws a polygon outline in the Turtle’s current colour and thickness, connecting the last <code>n</code> locations that the Turtle has visited."
   ),
   command(
     "polygon",
@@ -219,7 +219,7 @@ const commands = [
     [p("n", "integer")],
     null,
     { category: 2, level: 1 },
-    "Draws a filled polygon in the Turtle&rsquo;s current colour and thickness, connecting the last <code>n</code> locations that the Turtle has visited."
+    "Draws a filled polygon in the Turtle’s current colour and thickness, connecting the last <code>n</code> locations that the Turtle has visited."
   ),
   command(
     "forget",
@@ -227,7 +227,7 @@ const commands = [
     [p("n", "integer")],
     null,
     { category: 2, level: 1 },
-    "Makes the Turtle &ldquo;forget&rdquo; the last <code>n</code> points it has visited. Used in conjunction with <code>polyline</code> and <code>polygon</code>."
+    "Makes the Turtle “forget” the last <code>n</code> points it has visited. Used in conjunction with <code>polyline</code> and <code>polygon</code>."
   ),
   command(
     "remember",
@@ -235,7 +235,7 @@ const commands = [
     [],
     null,
     { category: 2, level: 1 },
-    "Makes the Turtle &ldquo;remember&rdquo; its current location. This is only necessary if its current location was set by a direct assignment of the global variables <code>turtx</code> and <code>turty</code>; when using the standard moving commands, the Turtle automatically remembers where it has been."
+    "Makes the Turtle “remember” its current location. This is only necessary if its current location was set by a direct assignment of the global variables <code>turtx</code> and <code>turty</code>; when using the standard moving commands, the Turtle automatically remembers where it has been."
   ),
   command(
     "box",
@@ -243,7 +243,7 @@ const commands = [
     [p("x", "integer"), p("y", "integer"), p("colour", "integer"), p("border", "boolean")],
     null,
     { category: 2, level: 1 },
-    "Draws a box of width <code>x</code> and height <code>y</code>, with the top left corner in the Turtle&rsquo;s current location, filled with the specified <code>colour</code>. If <code>border</code> is <code>true</code>, a border is drawn around the box in the Turtle&rsquo;s current colour and and thickness. This is intended to be used with the <code>display</code> command, to provide a box for framing text."
+    "Draws a box of width <code>x</code> and height <code>y</code>, with the top left corner in the Turtle’s current location, filled with the specified <code>colour</code>. If <code>border</code> is <code>true</code>, a border is drawn around the box in the Turtle’s current colour and and thickness. This is intended to be used with the <code>display</code> command, to provide a box for framing text."
   ),
   // 3. Other Turtle commands
   command(
@@ -252,7 +252,7 @@ const commands = [
     [p("colour", "integer")],
     null,
     { category: 3, level: 0 },
-    "Sets the <code>colour</code> of the Turtle&rsquo;s pen. Takes as an argument either an RGB value, or one of the Turtle System&rsquo;s fifty predefined colour constants (see the <b>Colours</b> tab). This can also be achieved by direct assignment of the global variable <code>turtc</code>."
+    "Sets the <code>colour</code> of the Turtle’s pen. Takes as an argument either an RGB value, or one of the Turtle System’s fifty predefined colour constants (see the <b>Colours</b> tab). This can also be achieved by direct assignment of the global variable <code>turtc</code>."
   ),
   command(
     ["RNDCOL", "randcol", "randCol", "randcol", "randcol", "randCol"],
@@ -260,7 +260,7 @@ const commands = [
     [p("n", "integer")],
     null,
     { category: 3, level: 0 },
-    "Assigns a random colour to the Turte&rsquo;s pen, between 1 and <code>n</code> (maximum 50). The colours are taken from the Turtle System&rsquo;s fifty predefined colours, which are each assigned a number between 1 and 50 (see the <b>Colours</b> tab)."
+    "Assigns a random colour to the Turtle’s pen, between 1 and <code>n</code> (maximum 50). The colours are taken from the Turtle System’s fifty predefined colours, which are each assigned a number between 1 and 50 (see the <b>Colours</b> tab)."
   ),
   command(
     "thickness",
@@ -268,7 +268,7 @@ const commands = [
     [p("thickness", "integer")],
     null,
     { category: 3, level: 0 },
-    "Sets the <code>thickness</code> of the Turtle&rsquo;s pen (for line drawing, and outlines of circles, ellipses, boxes, and polygons). This can also be achieved by direct assignment of the global variable <code>turtt</code>."
+    "Sets the <code>thickness</code> of the Turtle’s pen (for line drawing, and outlines of circles, ellipses, boxes, and polygons). This can also be achieved by direct assignment of the global variable <code>turtt</code>."
   ),
   command(
     "penUp",
@@ -276,7 +276,7 @@ const commands = [
     [],
     null,
     { category: 3, level: 0 },
-    "Lifts the Turtle&rsquo;s pen, so that subsequent movement will not draw a line on the Canvas."
+    "Lifts the Turtle’s pen, so that subsequent movement will not draw a line on the Canvas."
   ),
   command(
     "penDown",
@@ -284,12 +284,12 @@ const commands = [
     [],
     null,
     { category: 3, level: 0 },
-    "Lowers the Turtle&rsquo;s pen, so that subsequent movement will draw a line on the Canvas."
+    "Lowers the Turtle’s pen, so that subsequent movement will draw a line on the Canvas."
   ),
   command(
     "output",
     () => [PCode.outp],
-    [p("clear", "boolean"), p("colour", "integer"), p("tofront", "boolean")],
+    [p("clear", "boolean"), p("colour", "integer"), p("toFront", "boolean")],
     null,
     { category: 3, level: 1 },
     "Modifies the textual output. If the first argument is <code>true</code>, it clears any existing text. The second argument specifies the background colour, and the third argument is for switching the display. If the third argument is <code>true</code>, it switches to the <b>Output</b> tab, while if it is <code>false</code>, it switches to the <b>Canvas and Console</b> tab."
@@ -324,7 +324,7 @@ const commands = [
     [p("array", "integer", false, 5)],
     null,
     { category: 3, level: 2 },
-    "Points the Turtle to a custom array in memory (this must be an array of five integers, corresponding to the Turtle&rsquo;s five properties, <code>turtx</code>, <code>turty</code>, <code>turtd</code>, <code>turtt</code>, and <code>turtc</code>). Use repeatedly to simulate multiple Turtles."
+    "Points the Turtle to a custom array in memory (this must be an array of five integers, corresponding to the Turtle’s five properties, <code>turtx</code>, <code>turty</code>, <code>turtd</code>, <code>turtt</code>, and <code>turtc</code>). Use repeatedly to simulate multiple Turtles."
   ),
   command(
     "oldTurtle",
@@ -332,7 +332,7 @@ const commands = [
     [],
     null,
     { category: 3, level: 2 },
-    "Points the Turtle back to the default (built-in) array in memory. Use in conjunction with <code>newturtle</code>."
+    "Points the Turtle back to the default (built-in) array in memory. Use in conjunction with <code>newTurtle</code>."
   ),
   // 4. Canvas operations
   command(
@@ -673,7 +673,7 @@ const commands = [
     [p("string", "string"), p("font", "integer"), p("size", "integer")],
     null,
     { category: 7, level: 0 },
-    "Displays the input <code>string</code> on the canvas, in the Turtle&rsquo;s current colour and at the Turtle&rsquo;s current location, in the specified <code>font</code> and <code>size</code>. Can be used in conjunction with the <code>box</code> drawing command. For a list of available fonts, see the <b>Constants</b> tab."
+    "Displays the input <code>string</code> on the canvas, in the Turtle’s current colour and at the Turtle’s current location, in the specified <code>font</code> and <code>size</code>. Can be used in conjunction with the <code>box</code> drawing command. For a list of available fonts, see the <b>Constants</b> tab."
   ),
   command(
     ["LCASE$", "strlwr", "toLowerCase", "lowercase", ".lower", "toLowerCase"],
@@ -1374,7 +1374,7 @@ const commands = [
     [],
     null,
     { category: 11, level: 2 },
-    "&ldquo;Dumps&rdquo; the current memory state into the display in the memory tab."
+    "“Dumps” the current memory state into the display in the memory tab."
   ),
   command(
     "heapReset",

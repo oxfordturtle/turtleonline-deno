@@ -27,10 +27,10 @@ export default (
   pcode.unshift(...condition);
 
   // first lines: initialise loop variable
-  pcode.unshift(...variableAssignment(stmt.initialisation, program, options));
+  pcode.unshift(...variableAssignment(stmt.initialisation, program, startLine, options));
 
   // last lines: modify loop variable, then jump back to second lines (loop test)
-  pcode.push(...variableAssignment(stmt.change, program, options));
+  pcode.push(...variableAssignment(stmt.change, program, startLine, options));
   merge(pcode, [[PCode.jump, startLine + 1]]);
 
   return pcode;

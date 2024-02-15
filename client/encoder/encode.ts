@@ -35,8 +35,8 @@ export default (program: Program, options: Options = defaultOptions): number[][]
       ? startCode.concat(jumpLine).concat(subroutinesCode).concat(innerCode)
       : startCode.concat(innerCode);
 
-  // backpatch subroutine jump codes
-  backpatchSubroutineCalls(program, pcode);
+  // back-patch subroutine jump codes
+  backPatchSubroutineCalls(program, pcode);
 
   // add call to the "main" subroutine for C and Java
   if (program.language === "C" || program.language === "Java") {
@@ -56,7 +56,7 @@ export default (program: Program, options: Options = defaultOptions): number[][]
   return pcode;
 };
 
-const backpatchSubroutineCalls = (program: Program, pcode: number[][]): void => {
+const backPatchSubroutineCalls = (program: Program, pcode: number[][]): void => {
   for (let i = 0; i < pcode.length; i += 1) {
     for (let j = 0; j < pcode[i].length; j += 1) {
       if (pcode[i][j - 1] && pcode[i][j - 1] === PCode.subr) {

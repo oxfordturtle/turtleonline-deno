@@ -20,7 +20,7 @@ export default (
     pcode.push(...statement(subStmt, program, subStartLine, options));
   }
 
-  // first lines: evalutate boolean expression; if false, jump out of the loop
+  // first lines: evaluate boolean expression; if false, jump out of the loop
   const condition = expression(stmt.condition, program, options);
   const nextLine = startLine + pcode.length + condition.length + 1; // +1 for last line
   merge(condition, [[PCode.ifno, nextLine]]);

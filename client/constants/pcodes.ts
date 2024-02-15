@@ -16,7 +16,7 @@ enum PCode {
   // random numbers
   rand = 0x0c,
   seed = 0x0d,
-  // maxint
+  // maxInt
   mxin = 0x0e,
   // true value
   true = 0x0f,

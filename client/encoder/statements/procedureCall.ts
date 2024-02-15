@@ -23,7 +23,7 @@ export default (
   // next: code for the command
   if (stmt.command.__ === "subroutine") {
     // custom commands
-    // N.B. use command index as placeholder for now; this will be backpatched
+    // N.B. use command index as placeholder for now; this will be back-patched
     // when compilation is otherwise complete
     merge(pcode, [[PCode.subr, stmt.command.index]]);
   } else {
