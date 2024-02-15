@@ -8,6 +8,7 @@ import {
 import { token } from "../../tokenizer/token.ts";
 import { CompilerError } from "../../tools/error.ts";
 import { procedureCall } from "../call.ts";
+import constant from "../definitions/constant.ts";
 import {
   CompoundExpression,
   IntegerValue,
@@ -305,10 +306,11 @@ export function variableDeclaration(
 
     // expecting an expression
     const exp = expression(lexemes, routine);
-    foo.value = evaluate(exp, "Python", "constant");
+    const value = evaluate(exp, "Python", "constant");
 
     // add the constant to the routine
-    routine.constants.push(foo);
+    const bar = constant(routine.language, foo.name, value)
+    routine.constants.push(bar);
 
     // return a pass statement
     return new PassStatement();

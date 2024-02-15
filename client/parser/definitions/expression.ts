@@ -14,7 +14,7 @@ import type {
 } from "../../lexer/lexeme.ts";
 import type { Operator, Type } from "../../lexer/types.ts";
 import type { Constant } from "./constant.ts";
-import { type } from "./operators.ts";
+import { operatorType } from "./operators.ts";
 import type { Subroutine } from "./subroutine.ts";
 import type { Variable } from "./variable.ts";
 
@@ -193,7 +193,7 @@ export class CompoundExpression {
     this.left = left;
     this.right = right;
     this.operator = operator;
-    this.type = type(operator);
+    this.type = operatorType[operator];
   }
 }
 

@@ -1,14 +1,16 @@
 import type { Language } from "../../constants/languages.ts";
+import type { Type } from "../../lexer/types.ts";
 
 export type Constant = ReturnType<typeof constant>;
 
-const constant = (language: Language, name: string, value: number | string) => ({
-  __: "constant",
-  name,
-  language,
-  value,
-  type: typeof value === "number" ? "boolint" : "string",
-})
+const constant = (language: Language, name: string, value: number | string) =>
+  ({
+    __: "constant",
+    name,
+    language,
+    value,
+    type: typeof value === "number" ? "boolint" : "string" satisfies Type,
+  } as const);
 
 export default constant;
 
