@@ -1,7 +1,7 @@
 import type { Lexeme } from "../../lexer/lexeme.ts";
 import { CompilerError } from "../../tools/error.ts";
-import type Lexemes from "../definitions/lexemes.ts";
-import { program as _program, type Program } from "../definitions/routine.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import makeProgram, { type Program } from "../definitions/routines/program.ts";
 import constant from "./constant.ts";
 import identifier from "./identifier.ts";
 import { semicolon, statement } from "./statement.ts";
@@ -11,7 +11,7 @@ import { variables } from "./variable.ts";
 /** parses lexemes as a Pascal program */
 export default function pascal(lexemes: Lexemes): Program {
   // create the program
-  const program = _program("Pascal");
+  const program = makeProgram("Pascal");
 
   // expecting "PROGRAM"
   const programLexeme = lexemes.get();

@@ -1,15 +1,10 @@
 import { type IdentifierLexeme } from "../../../lexer/lexeme.ts";
 import { CompilerError } from "../../../tools/error.ts";
 import constant from "../../definitions/constant.ts";
-import { variableValue as _variableValue } from "../../definitions/expression.ts";
-import type Lexemes from "../../definitions/lexemes.ts";
+import type { Lexemes } from "../../definitions/lexemes.ts";
 import { type Routine } from "../../definitions/routine.ts";
-import {
-  passStatement as _passStatement,
-  type PassStatement,
-  type VariableAssignment,
-} from "../../definitions/statement.ts";
-import { variable as _variable } from "../../definitions/variable.ts";
+import makePassStatement, { type PassStatement } from "../../definitions/statements/passStatement.ts";
+import type { VariableAssignment } from "../../definitions/statements/variableAssignment.ts";
 import evaluate from "../../evaluate.ts";
 import { expression } from "../../expression.ts";
 import variable from "../variable.ts";
@@ -43,7 +38,7 @@ export default (
     routine.constants.push(bar);
 
     // return a pass statement
-    return _passStatement();
+    return makePassStatement();
   }
 
   // otherwise it's a variable
@@ -55,5 +50,5 @@ export default (
   }
 
   // otherwise pass
-  return _passStatement();
+  return makePassStatement();
 };

@@ -9,7 +9,7 @@ export interface Constant {
   readonly type: Type;
 };
 
-export default (language: Language, name: string, value: number | string): Constant =>
+const makeConstant = (language: Language, name: string, value: number | string): Constant =>
   ({
     __: "constant",
     name,
@@ -17,3 +17,5 @@ export default (language: Language, name: string, value: number | string): Const
     value,
     type: typeof value === "number" ? "boolint" : "string" satisfies Type,
   });
+
+export default makeConstant;

@@ -2,18 +2,14 @@ import type { Command } from "../constants/commands.ts";
 import type { IdentifierLexeme } from "../lexer/lexeme.ts";
 import { CompilerError } from "../tools/error.ts";
 import basicBody from "./basic/body.ts";
-import {
-  functionCall as _functionCall,
-  type FunctionCall,
-  type VariableValue,
-} from "./definitions/expression.ts";
-import type Lexemes from "./definitions/lexemes.ts";
-import { procedureCall as _procedureCall, type ProcedureCall } from "./definitions/statement.ts";
-import type { Routine, Subroutine } from "./definitions/routine.ts";
-import { isArray, variable } from "./definitions/variable.ts";
+import makeFunctionCall, { type FunctionCall } from "./definitions/expressions/functionCall.ts";
+import type { VariableValue } from "./definitions/expressions/variableValue.ts";
+import type { Lexemes } from "./definitions/lexemes.ts";
+import type { Routine, } from "./definitions/routine.ts";
+import { getParameters, getSubroutineType, type Subroutine } from "./definitions/routines/subroutine.ts";
+import makeProcedureCall, { type ProcedureCall } from "./definitions/statements/procedureCall.ts";
+import makeVariable, { isArray } from "./definitions/variable.ts";
 import { expression, typeCheck } from "./expression.ts";
-import { getSubroutineType } from "./definitions/routine.ts";
-import { getParameters } from "./definitions/routine.ts";
 
 export const procedureCall = (
   lexeme: IdentifierLexeme,
@@ -29,13 +25,13 @@ export const procedureCall = (
 
   // for Python, establish that it's definitely not a function
   // (so subsequent attempts to call it as such will throw an error)
-  if (command.__ === "subroutine") {
+  if (command.__ === "Subroutine") {
     command.typeIsCertain = true;
   }
 
-  const procedureCall = _procedureCall(lexeme, command);
+  const procedureCall = makeProcedureCall(lexeme, command);
   brackets(lexeme, lexemes, routine, procedureCall);
-  if (procedureCall.command.__ === "subroutine" && procedureCall.command !== routine) {
+  if (procedureCall.command.__ === "Subroutine" && procedureCall.command !== routine) {
     if (routine.language === "BASIC" && procedureCall.command.statements.length === 0) {
       const previousLexemeIndex = lexemes.index;
       basicBody(lexemes, procedureCall.command);
@@ -53,9 +49,9 @@ export const functionCall = (
   command: Command | Subroutine
 ): FunctionCall => {
   // infer type
-  if (command.__ === "subroutine" && !command.typeIsCertain) {
+  if (command.__ === "Subroutine" && !command.typeIsCertain) {
     command.typeIsCertain = true;
-    command.variables.unshift(variable("!result", command));
+    command.variables.unshift(makeVariable("!result", command));
   }
 
   const commandType = command.__ === "Command" ? command.type : getSubroutineType(command);
@@ -63,7 +59,7 @@ export const functionCall = (
     throw new CompilerError("{lex} is a procedure, not a function.", lexemes.get(-1));
   }
 
-  const functionCall = _functionCall(lexeme, command);
+  const functionCall = makeFunctionCall(lexeme, command);
   brackets(lexeme, lexemes, routine, functionCall);
 
   if (functionCall.command.__ === "subroutine" && functionCall.command !== routine) {
@@ -93,7 +89,7 @@ export const methodFunctionCall = (
     );
   }
 
-  const functionCall = _functionCall(lexeme, method);
+  const functionCall = makeFunctionCall(lexeme, method);
   functionCall.arguments.push(variableValue);
   brackets(lexeme, lexemes, routine, functionCall);
 
@@ -106,6 +102,8 @@ const brackets = (
   routine: Routine,
   commandCall: ProcedureCall | FunctionCall
 ): void => {
+  const comm = commandCall.command;
+
   const allParameters = commandCall.command.__ === "Command"
     ? commandCall.command.parameters
     : getParameters(commandCall.command);

@@ -1,12 +1,9 @@
-import {
-  getAllSubroutines,
-  getMemoryNeeded,
-  getSubroutineType,
+import { getAllSubroutines, getMemoryNeeded } from "../parser/definitions/routine.ts";
+import makeProgram, {
   getTurtleVariables,
-  program,
   type Program,
-  type Subroutine,
-} from "../parser/definitions/routine.ts";
+} from "../parser/definitions/routines/program.ts";
+import { getSubroutineType, type Subroutine } from "../parser/definitions/routines/subroutine.ts";
 import {
   elementCount,
   getLength,
@@ -37,9 +34,9 @@ export const variableAddress = (variable: Variable | SubVariable): number => {
     return lengthByteAddress(variable.variable) + variable.index + 1;
   } else {
     const arrayIndex = variable.routine.variables.indexOf(variable);
-    const routine = program(variable.routine.language);
+    const routine = makeProgram(variable.routine.language);
     routine.variables = variable.routine.variables.slice(0, arrayIndex);
-    return variable.routine.__ === "program"
+    return variable.routine.__ === "Program"
       ? turtleAddress(variable.routine) +
           getTurtleVariables(variable.routine).length +
           getMemoryNeeded(routine) +

@@ -1,19 +1,19 @@
 import { CompilerError } from "../../tools/error.ts";
-import type Lexemes from "../definitions/lexemes.ts";
-import type { Program, Subroutine } from "../definitions/routine.ts";
-import { variable as _variable, type Variable } from "../definitions/variable.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import type { Routine } from "../definitions/routine.ts";
+import makeVariable, { type Variable } from "../definitions/variable.ts";
 import identifier from "./identifier.ts";
 import { semicolon } from "./statement.ts";
 import type from "./type.ts";
 
 /** parses lexemes as a declaration of variables (after "var") */
-export function variables(lexemes: Lexemes, routine: Program | Subroutine): Variable[] {
+export function variables(lexemes: Lexemes, routine: Routine): Variable[] {
   const vars: Variable[] = [];
 
   // expecting comma separated list of variables
   while (lexemes.get() && lexemes.get()?.content !== ":") {
     const name = identifier(lexemes, routine);
-    vars.push(_variable(name, routine));
+    vars.push(makeVariable(name, routine));
     if (lexemes.get()?.content === ",") {
       lexemes.next();
     } else if (lexemes.get()?.type === "identifier") {

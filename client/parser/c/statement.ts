@@ -8,32 +8,33 @@ import {
 import { token } from "../../tokenizer/token.ts";
 import { CompilerError } from "../../tools/error.ts";
 import { procedureCall } from "../call.ts";
+import { type Expression } from "../definitions/expression.ts";
+import makeCompoundExpression from "../definitions/expressions/compoundExpression.ts";
+import makeVariableValue from "../definitions/expressions/variableValue.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import type { Program } from "../definitions/routines/program.ts";
 import {
-  compoundExpression,
-  variableValue as _variableValue,
-  type Expression,
-} from "../definitions/expression.ts";
-import type Lexemes from "../definitions/lexemes.ts";
-import { getSubroutineType, getResultType, type Program, type Subroutine } from "../definitions/routine.ts";
-import {
-  forStatement as _forStatement,
-  ifStatement as _ifStatement,
-  passStatement as _passStatement,
-  procedureCall as _procedureCall,
-  repeatStatement as _repeatStatement,
-  returnStatement as _returnStatement,
-  variableAssignment as _variableAssignment,
-  whileStatement as _whileStatement,
-  type ForStatement,
-  type IfStatement,
-  type PassStatement,
-  type ProcedureCall,
+  getResultType,
+  getSubroutineType,
+  type Subroutine,
+} from "../definitions/routines/subroutine.ts";
+import { type Statement } from "../definitions/statement.ts";
+import makeForStatement, { type ForStatement } from "../definitions/statements/forStatement.ts";
+import makeIfStatement, { type IfStatement } from "../definitions/statements/ifStatement.ts";
+import makePassStatement, { type PassStatement } from "../definitions/statements/passStatement.ts";
+import { type ProcedureCall } from "../definitions/statements/procedureCall.ts";
+import makeRepeatStatement, {
   type RepeatStatement,
+} from "../definitions/statements/repeatStatement.ts";
+import makeReturnStatement, {
   type ReturnStatement,
+} from "../definitions/statements/returnStatement.ts";
+import makeVariableAssignment, {
   type VariableAssignment,
+} from "../definitions/statements/variableAssignment.ts";
+import makeWhileStatement, {
   type WhileStatement,
-  type Statement,
-} from "../definitions/statement.ts";
+} from "../definitions/statements/whileStatement.ts";
 import { isArray, type Variable } from "../definitions/variable.ts";
 import { expression, typeCheck } from "../expression.ts";
 import * as find from "../find.ts";
@@ -131,7 +132,7 @@ export function simpleStatement(
     case "keyword":
       lexemes.next();
       routine.constants.push(constant(lexemes, routine));
-      return _passStatement();
+      return makePassStatement();
 
     // type specification means a variable declaration
     case "type": {
@@ -141,7 +142,7 @@ export function simpleStatement(
       if (lexemes.get()?.content === "=") {
         return variableAssignment(variableLexeme, lexemes, routine, foo);
       } else {
-        return _passStatement();
+        return makePassStatement();
       }
     }
 
@@ -246,14 +247,14 @@ function variableAssignment(
     );
   }
   let value = expression(lexemes, routine);
-  const variableValue = _variableValue(variableLexeme, variable);
+  const variableValue = makeVariableValue(variableLexeme, variable);
   variableValue.indexes.push(...indexes);
   // check against variableValue.type rather than variableAssignment.variable.type
   // in case string has indexes and should be a character
   value = typeCheck(routine.language, value, variableValue.type);
 
   // create and return the variable assignment statement
-  return _variableAssignment(assignmentLexeme, variable, indexes, value);
+  return makeVariableAssignment(assignmentLexeme, variable, indexes, value);
 }
 
 /** parses lexemes as a RETURN statement */
@@ -275,7 +276,7 @@ function returnStatement(
   routine.hasReturnStatement = true;
 
   // create and return the return statement
-  return _returnStatement(returnLexeme, routine, value);
+  return makeReturnStatement(returnLexeme, routine, value);
 }
 
 /** parses lexemes as an IF statement */
@@ -303,7 +304,7 @@ function ifStatement(ifLexeme: KeywordLexeme, lexemes: Lexemes, routine: Subrout
   lexemes.next();
 
   // create the if statement
-  const ifStatement = _ifStatement(ifLexeme, condition);
+  const ifStatement = makeIfStatement(ifLexeme, condition);
 
   // expecting an opening curly bracket
   if (!lexemes.get() || lexemes.get()?.content !== "{") {
@@ -422,7 +423,7 @@ function forStatement(
   lexemes.next();
 
   // create the for statement
-  const forStatement = _forStatement(forLexeme, initialisation, condition, change);
+  const forStatement = makeForStatement(forLexeme, initialisation, condition, change);
 
   // expecting an opening curly bracket
   if (!lexemes.get() || lexemes.get()?.content !== "{") {
@@ -476,7 +477,7 @@ function doStatement(
   // negate the condition
   const notToken = token("operator", "!", condition.lexeme.line, condition.lexeme.character);
   const notLexeme = operatorLexeme(notToken, "C");
-  condition = compoundExpression(notLexeme, null, condition, "not");
+  condition = makeCompoundExpression(notLexeme, null, condition, "not");
 
   // expecting a closing bracket
   if (!lexemes.get() || lexemes.get()?.content !== ")") {
@@ -491,7 +492,7 @@ function doStatement(
   eosCheck(lexemes);
 
   // create and return the repeat statement
-  const repeatStatement = _repeatStatement(doLexeme, condition);
+  const repeatStatement = makeRepeatStatement(doLexeme, condition);
   repeatStatement.statements.push(...repeatStatements);
   return repeatStatement;
 }
@@ -525,7 +526,7 @@ function whileStatement(
   lexemes.next();
 
   // create the while statement
-  const whileStatement = _whileStatement(whileLexeme, condition);
+  const whileStatement = makeWhileStatement(whileLexeme, condition);
 
   // expecting an opening curly bracket
   if (!lexemes.get() || lexemes.get()?.content !== "{") {

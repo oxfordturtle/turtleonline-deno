@@ -1,6 +1,7 @@
 import PCode from "../../constants/pcodes.ts";
-import { getParameters, type Program } from "../../parser/definitions/routine.ts";
-import type { ProcedureCall } from "../../parser/definitions/statement.ts";
+import { type Program } from "../../parser/definitions/routines/program.ts";
+import { getParameters } from "../../parser/definitions/routines/subroutine.ts";
+import type { ProcedureCall } from "../../parser/definitions/statements/procedureCall.ts";
 import { turtleAddress } from "../addresses.ts";
 import expression from "../expression.ts";
 import merge from "../merge.ts";
@@ -23,7 +24,7 @@ export default (
   }
 
   // next: code for the command
-  if (stmt.command.__ === "subroutine") {
+  if (stmt.command.__ === "Subroutine") {
     // custom commands
     // N.B. use command index as placeholder for now; this will be back-patched
     // when compilation is otherwise complete

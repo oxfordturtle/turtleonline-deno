@@ -1,6 +1,6 @@
 import type { Expression } from "../parser/definitions/expression.ts";
-import type { VariableValue } from "../parser/definitions/expression.ts";
-import type { Program } from "../parser/definitions/routine.ts";
+import type { VariableValue } from "../parser/definitions/expressions/variableValue.ts";
+import type { Program } from "../parser/definitions/routines/program.ts";
 import { isArray } from "../parser/definitions/variable.ts";
 import type { Options } from "./options.ts";
 import castExpression from "./expressions/castExpression.ts";

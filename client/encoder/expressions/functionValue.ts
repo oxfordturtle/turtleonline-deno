@@ -1,6 +1,7 @@
 import PCode from "../../constants/pcodes.ts";
-import type { FunctionCall } from "../../parser/definitions/expression.ts";
-import { getParameters, getResultType, type Program } from "../../parser/definitions/routine.ts";
+import type { FunctionCall } from "../../parser/definitions/expressions/functionCall.ts";
+import type { Program } from "../../parser/definitions/routines/program.ts";
+import { getParameters, getResultType } from "../../parser/definitions/routines/subroutine.ts";
 import { resultAddress, turtleAddress } from "../addresses.ts";
 import expression from "../expression.ts";
 import merge from "../merge.ts";
@@ -18,7 +19,7 @@ export default (exp: FunctionCall, program: Program, options: Options): number[]
   }
 
   // next: code for the function
-  if (exp.command.__ === "subroutine") {
+  if (exp.command.__ === "Subroutine") {
     // custom functions
     // N.B. use command index as placeholder for now; this will be back-patched
     // when compilation is otherwise complete
@@ -30,7 +31,7 @@ export default (exp: FunctionCall, program: Program, options: Options): number[]
   }
 
   // custom functions: load the result variable onto the stack
-  if (exp.command.__ === "subroutine") {
+  if (exp.command.__ === "Subroutine") {
     // push, don't merge; anything after the subroutine call must be on a new line
     pcode.push([PCode.ldvv, resultAddress(program), 1]);
     if (getResultType(exp.command) === "string") {

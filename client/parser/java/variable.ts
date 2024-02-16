@@ -1,7 +1,7 @@
 import { CompilerError } from "../../tools/error.ts";
-import type Lexemes from "../definitions/lexemes.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
 import type { Routine } from "../definitions/routine.ts";
-import { variable as _variable, type Variable } from "../definitions/variable.ts";
+import makeVariable, { type Variable } from "../definitions/variable.ts";
 import identifier from "./identifier.ts";
 import type from "./type.ts";
 
@@ -22,7 +22,7 @@ export default function variable(lexemes: Lexemes, routine: Routine): Variable {
   const name = identifier(lexemes, routine);
 
   // create the variable
-  const variable = _variable(name, routine);
+  const variable = makeVariable(name, routine);
   variable.type = variableType;
   variable.stringLength = stringLength;
   variable.arrayDimensions = arrayDimensions;

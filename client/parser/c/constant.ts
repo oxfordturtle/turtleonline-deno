@@ -1,6 +1,6 @@
 import { CompilerError } from "../../tools/error.ts";
 import constant, { type Constant } from "../definitions/constant.ts";
-import type Lexemes from "../definitions/lexemes.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
 import type { Routine } from "../definitions/routine.ts";
 import evaluate from "../evaluate.ts";
 import { expression, typeCheck } from "../expression.ts";

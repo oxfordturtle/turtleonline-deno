@@ -1,7 +1,7 @@
 import { CompilerError } from "../../tools/error.ts";
-import type Lexemes from "../definitions/lexemes.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
 import type { Routine } from "../definitions/routine.ts";
-import { variable as _variable, type Variable } from "../definitions/variable.ts";
+import makeVariable, { type Variable } from "../definitions/variable.ts";
 import evaluate from "../evaluate.ts";
 import { expression, typeCheck } from "../expression.ts";
 import * as find from "../find.ts";
@@ -17,7 +17,7 @@ export function variable(lexemes: Lexemes, routine: Routine): Variable {
   }
 
   // create the variable
-  const variable = _variable(name, routine);
+  const variable = makeVariable(name, routine);
   variable.type = type;
   variable.stringLength = stringLength;
 

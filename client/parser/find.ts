@@ -2,12 +2,9 @@ import colours, { type Colour } from "../constants/colours.ts";
 import commands, { type Command } from "../constants/commands.ts";
 import inputs, { type Input } from "../constants/inputs.ts";
 import type { Constant } from "./definitions/constant.ts";
-import {
-  getProgram,
-  getTurtleVariables,
-  type Routine,
-  type Subroutine,
-} from "./definitions/routine.ts";
+import { type Routine } from "./definitions/routine.ts";
+import { getTurtleVariables } from "./definitions/routines/program.ts";
+import { getProgram, type Subroutine } from "./definitions/routines/subroutine.ts";
 import type { Variable } from "./definitions/variable.ts";
 
 /** looks for a constant visible to the given routine */
@@ -17,7 +14,7 @@ export function constant(routine: Routine, name: string): Constant | undefined {
   if (match) {
     return match;
   }
-  if (routine.__ === "subroutine") {
+  if (routine.__ === "Subroutine") {
     return constant(routine.parent, name);
   }
 }
@@ -41,7 +38,7 @@ export function variable(routine: Routine, name: string): Variable | undefined {
 
   // look for turtle variable first
   const turtleVariables =
-    routine.__ === "program"
+    routine.__ === "Program"
       ? getTurtleVariables(routine)
       : getTurtleVariables(getProgram(routine));
   const turtleVariable = turtleVariables.find((x) => x.name === searchName);
@@ -50,7 +47,7 @@ export function variable(routine: Routine, name: string): Variable | undefined {
   }
 
   // for Python subroutines, look up global variables if the name is declared as global
-  if (routine.language === "Python" && routine.__ === "subroutine") {
+  if (routine.language === "Python" && routine.__ === "Subroutine") {
     const isGlobal = routine.globals.indexOf(name) > -1;
     if (isGlobal) {
       return variable(getProgram(routine), name);
@@ -59,7 +56,7 @@ export function variable(routine: Routine, name: string): Variable | undefined {
 
   // otherwise search this routine, then its ancestors recursively
   let match = routine.variables.find((x) => x.name === name);
-  if (match === undefined && routine.__ === "subroutine") {
+  if (match === undefined && routine.__ === "Subroutine") {
     match = variable(routine.parent, name);
   }
   if (match) {
@@ -75,7 +72,7 @@ export function variable(routine: Routine, name: string): Variable | undefined {
 export function isDuplicate(routine: Routine, name: string): boolean {
   const searchName = routine.language === "Pascal" ? name.toLowerCase() : name;
   if (routine.constants.some((x) => x.name === searchName)) return true;
-  if (routine.language === "Python" && routine.__ === "subroutine") {
+  if (routine.language === "Python" && routine.__ === "Subroutine") {
     if (routine.globals.some((x) => x === searchName)) return true;
     if (routine.nonlocals.some((x) => x === searchName)) return true;
   }
@@ -93,7 +90,7 @@ export function subroutine(routine: Routine, name: string): Subroutine | undefin
     return match;
   }
   // if this is a subroutine...
-  if (routine.__ === "subroutine") {
+  if (routine.__ === "Subroutine") {
     // check for a recursive self-reference
     // N.B. this clause is only necessary for the sake of Pascal, where
     // recursive self-references occur before the subroutine has been added to

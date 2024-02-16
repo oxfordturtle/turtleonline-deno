@@ -1,10 +1,8 @@
 import { type KeywordLexeme } from "../../../lexer/lexeme.ts";
 import { CompilerError } from "../../../tools/error.ts";
-import { variableValue as _variableValue } from "../../definitions/expression.ts";
-import type Lexemes from "../../definitions/lexemes.ts";
+import type { Lexemes } from "../../definitions/lexemes.ts";
 import { type Routine } from "../../definitions/routine.ts";
-import { ifStatement as _ifStatement, type IfStatement } from "../../definitions/statement.ts";
-import { variable as _variable } from "../../definitions/variable.ts";
+import makeIfStatement, { type IfStatement } from "../../definitions/statements/ifStatement.ts";
 import { expression, typeCheck } from "../../expression.ts";
 import parseBlock from "./block.ts";
 
@@ -48,7 +46,7 @@ const parseIfStatement = (
   lexemes.next();
 
   // create the if statement
-  const thisIfStatement = _ifStatement(ifLexeme, condition);
+  const thisIfStatement = makeIfStatement(ifLexeme, condition);
 
   // expecting indent
   if (!lexemes.get()) {

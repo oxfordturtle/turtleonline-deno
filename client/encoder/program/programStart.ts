@@ -1,6 +1,7 @@
 import { trueValue } from "../../constants/languages.ts";
 import PCode from "../../constants/pcodes.ts";
-import { getMemoryNeeded, getTurtleVariables, type Program } from "../../parser/definitions/routine.ts";
+import { getTurtleVariables, type Program } from "../../parser/definitions/routines/program.ts";
+import { getMemoryNeeded } from "../../parser/definitions/routine.ts";
 import { isArray, elementCount, getSubVariables, type Variable } from "../../parser/definitions/variable.ts";
 import { lengthByteAddress, turtleAddress, variableAddress } from "../addresses.ts";
 import type { Options } from "../options.ts";

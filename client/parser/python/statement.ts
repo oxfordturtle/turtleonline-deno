@@ -1,11 +1,11 @@
 import { type Lexeme } from "../../lexer/lexeme.ts";
 import { CompilerError } from "../../tools/error.ts";
 import { procedureCall } from "../call.ts";
-import { variableValue as _variableValue } from "../definitions/expression.ts";
-import type Lexemes from "../definitions/lexemes.ts";
-import { type Program, type Subroutine } from "../definitions/routine.ts";
-import { passStatement as _passStatement, type Statement } from "../definitions/statement.ts";
-import { variable as _variable } from "../definitions/variable.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import type { Routine } from "../definitions/routine.ts";
+import type { Subroutine } from "../definitions/routines/subroutine.ts";
+import type { Statement } from "../definitions/statement.ts";
+import makePassStatement from "../definitions/statements/passStatement.ts";
 import * as find from "../find.ts";
 import identifiers from "./identifiers.ts";
 import eosCheck from "./statements/eosCheck.ts";
@@ -16,7 +16,7 @@ import parseVariableAssignment from "./statements/variableAssignment.ts";
 import parseVariableDeclaration from "./statements/variableDeclaration.ts";
 import parseWhileStatement from "./statements/whileStatement.ts";
 
-export default (lexeme: Lexeme, lexemes: Lexemes, routine: Program | Subroutine): Statement => {
+export default (lexeme: Lexeme, lexemes: Lexemes, routine: Routine): Statement => {
   let statement: Statement;
 
   switch (lexeme.type) {
@@ -27,7 +27,7 @@ export default (lexeme: Lexeme, lexemes: Lexemes, routine: Program | Subroutine)
       // of the program or the start of a block, if there's a comment on the
       // first line
       lexemes.next();
-      statement = _passStatement();
+      statement = makePassStatement();
       break;
 
     // identifiers (variable declaration, variable assignment, or procedure call)
@@ -58,7 +58,7 @@ export default (lexeme: Lexeme, lexemes: Lexemes, routine: Program | Subroutine)
           // N.B. lexemes[sub.end] is the final DEDENT lexeme; here we want to
           // move past it, hence sub.end + 1
           lexemes.index = sub.end + 1;
-          statement = _passStatement();
+          statement = makePassStatement();
           break;
         }
 
@@ -66,7 +66,7 @@ export default (lexeme: Lexeme, lexemes: Lexemes, routine: Program | Subroutine)
         case "global":
         case "nonlocal":
           lexemes.next();
-          if (routine.__ === "program") {
+          if (routine.__ === "Program") {
             throw new CompilerError(
               "{lex} statements can only occur inside a subroutine.",
               lexemes.get(-1)
@@ -77,7 +77,7 @@ export default (lexeme: Lexeme, lexemes: Lexemes, routine: Program | Subroutine)
           } else {
             routine.nonlocals.push(...identifiers(lexemes, routine, "nonlocal"));
           }
-          statement = _passStatement();
+          statement = makePassStatement();
           eosCheck(lexemes);
           break;
 
@@ -116,7 +116,7 @@ export default (lexeme: Lexeme, lexemes: Lexemes, routine: Program | Subroutine)
         case "pass":
           lexemes.next();
           eosCheck(lexemes);
-          statement = _passStatement();
+          statement = makePassStatement();
           break;
 
         // any other keyword is an error

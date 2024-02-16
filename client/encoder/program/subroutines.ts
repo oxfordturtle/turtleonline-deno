@@ -1,12 +1,17 @@
 import PCode from "../../constants/pcodes.ts";
+import { getMemoryNeeded } from "../../parser/definitions/routine.ts";
 import {
-  getMemoryNeeded,
   getParameters,
   getProgram,
   getSubroutineType,
   type Subroutine,
-} from "../../parser/definitions/routine.ts";
-import { isArray, elementCount, getSubVariables, type Variable } from "../../parser/definitions/variable.ts";
+} from "../../parser/definitions/routines/subroutine.ts";
+import {
+  elementCount,
+  getSubVariables,
+  isArray,
+  type Variable,
+} from "../../parser/definitions/variable.ts";
 import {
   lengthByteAddress,
   resultAddress,

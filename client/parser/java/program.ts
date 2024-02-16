@@ -1,6 +1,6 @@
 import { CompilerError } from "../../tools/error.ts";
-import type Lexemes from "../definitions/lexemes.ts";
-import { program as _program, type Program } from "../definitions/routine.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import makeProgram, { type Program } from "../definitions/routines/program.ts";
 
 /** parses outermost structure "class ProgramName { ... }" */
 export default function program(lexemes: Lexemes): Program {
@@ -59,7 +59,7 @@ export default function program(lexemes: Lexemes): Program {
   }
 
   // create the program
-  const prog = _program("Java", identifier.content as string);
+  const prog = makeProgram("Java", identifier.content as string);
   prog.start = 3;
   prog.end = lexemes.lexemes.length - 1;
 

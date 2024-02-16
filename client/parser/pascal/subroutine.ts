@@ -1,8 +1,13 @@
 import type { KeywordLexeme, Lexeme } from "../../lexer/lexeme.ts";
 import { CompilerError } from "../../tools/error.ts";
-import type Lexemes from "../definitions/lexemes.ts";
-import { subroutine as _subroutine, getSubroutineType, getAllSubroutines, type Program, type Subroutine } from "../definitions/routine.ts";
-import { variable as _variable, type Variable } from "../definitions/variable.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import { getAllSubroutines } from "../definitions/routine.ts";
+import type { Program } from "../definitions/routines/program.ts";
+import makeSubroutine, {
+  getSubroutineType,
+  type Subroutine,
+} from "../definitions/routines/subroutine.ts";
+import makeVariable, { type Variable } from "../definitions/variable.ts";
 import identifier from "./identifier.ts";
 import { semicolon, statement } from "./statement.ts";
 import type from "./type.ts";
@@ -21,7 +26,7 @@ export default function subroutine(
   const name = identifier(lexemes, parent);
 
   // create the subroutine
-  const sub = _subroutine(lexeme, parent, name);
+  const sub = makeSubroutine(lexeme, parent, name);
   sub.index = subroutineIndex(sub);
 
   // optionally expecting parameters
@@ -36,7 +41,7 @@ export default function subroutine(
     if (arrayDimensions.length > 0) {
       throw new CompilerError("Functions cannot return arrays.", lexemes.get(-1));
     }
-    const foo = _variable("result", sub);
+    const foo = makeVariable("result", sub);
     foo.type = returnType;
     foo.stringLength = stringLength;
     sub.variables.unshift(foo);
@@ -107,7 +112,10 @@ export default function subroutine(
     );
   }
   if (!lexemes.get()) {
-    throw new CompilerError(`Keyword "end" missing for ${getSubroutineType(sub)} ${sub.name}.`, lexemes.get(-1));
+    throw new CompilerError(
+      `Keyword "end" missing for ${getSubroutineType(sub)} ${sub.name}.`,
+      lexemes.get(-1)
+    );
   }
   lexemes.next();
   semicolon(lexemes, true, `${getSubroutineType(sub)} end`);
@@ -118,7 +126,7 @@ export default function subroutine(
 
 /** calculates the index of a subroutine (before it and its parents have been added to the program) */
 function subroutineIndex(subroutine: Subroutine): number {
-  return subroutine.parent.__ === "program"
+  return subroutine.parent.__ === "Program"
     ? getAllSubroutines(subroutine.parent).length + 1
     : subroutineIndex(subroutine.parent) + getAllSubroutines(subroutine).length + 1;
 }
@@ -169,7 +177,7 @@ function parameterSet(lexemes: Lexemes, subroutine: Subroutine): Variable[] {
   // expecting comma separated list of identifiers
   while (lexemes.get() && lexemes.get()?.content !== ":") {
     const name = identifier(lexemes, subroutine);
-    parameters.push(_variable(name, subroutine));
+    parameters.push(makeVariable(name, subroutine));
     if (lexemes.get()?.content === ",") {
       lexemes.next();
     } else if (lexemes.get()?.type === "identifier") {

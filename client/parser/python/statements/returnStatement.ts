@@ -1,13 +1,11 @@
 import { type KeywordLexeme } from "../../../lexer/lexeme.ts";
 import { CompilerError } from "../../../tools/error.ts";
-import { variableValue as _variableValue, getType } from "../../definitions/expression.ts";
-import type Lexemes from "../../definitions/lexemes.ts";
-import { getResultVariable, type Routine } from "../../definitions/routine.ts";
-import {
-  returnStatement as _returnStatement,
-  type ReturnStatement,
-} from "../../definitions/statement.ts";
-import { variable as _variable } from "../../definitions/variable.ts";
+import { getType } from "../../definitions/expression.ts";
+import type { Lexemes } from "../../definitions/lexemes.ts";
+import type { Routine } from "../../definitions/routine.ts";
+import { getResultVariable } from "../../definitions/routines/subroutine.ts";
+import makeReturnStatement, { type ReturnStatement} from "../../definitions/statements/returnStatement.ts";
+import makeVariable from "../../definitions/variable.ts";
 import { expression, typeCheck } from "../../expression.ts";
 import eosCheck from "./eosCheck.ts";
 
@@ -17,7 +15,7 @@ export default (
   routine: Routine
 ): ReturnStatement => {
   // check a return statement is allowed
-  if (routine.__ === "program") {
+  if (routine.__ === "Program") {
     throw new CompilerError("Programs cannot return a value.", lexemes.get());
   }
 
@@ -29,7 +27,7 @@ export default (
     value = typeCheck(routine.language, value, resultVariable);
   } else {
     // otherwise create a return variable
-    const result = _variable("!result", routine);
+    const result = makeVariable("!result", routine);
     result.type = getType(value);
     result.typeIsCertain = true;
     routine.typeIsCertain = true;
@@ -41,5 +39,5 @@ export default (
   routine.hasReturnStatement = true;
 
   // create and return the return statement
-  return _returnStatement(returnLexeme, routine, value);
+  return makeReturnStatement(returnLexeme, routine, value);
 };

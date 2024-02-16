@@ -8,31 +8,26 @@ import {
 import { token } from "../../tokenizer/token.ts";
 import { CompilerError } from "../../tools/error.ts";
 import { procedureCall } from "../call.ts";
-import {
-  compoundExpression,
-  integerValue,
-  variableValue,
-  type Expression,
-} from "../definitions/expression.ts";
-import type Lexemes from "../definitions/lexemes.ts";
-import type { Program, Subroutine } from "../definitions/routine.ts";
-import {
-  forStatement as _forStatement,
-  ifStatement as _ifStatement,
-  passStatement as _passStatement,
-  procedureCall as _procedureCall,
-  repeatStatement as _repeatStatement,
-  returnStatement as _returnStatement,
-  variableAssignment as _variableAssignment,
-  whileStatement as _whileStatement,
-  type ForStatement,
-  type IfStatement,
-  type ProcedureCall,
+import { type Expression } from "../definitions/expression.ts";
+import makeCompoundExpression from "../definitions/expressions/compoundExpression.ts";
+import makeIntegerValue from "../definitions/expressions/integerValue.ts";
+import makeVariableValue from "../definitions/expressions/variableValue.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import type { Program } from "../definitions/routines/program.ts";
+import type { Subroutine } from "../definitions/routines/subroutine.ts";
+import { type Statement } from "../definitions/statement.ts";
+import makeForStatement, { type ForStatement } from "../definitions/statements/forStatement.ts";
+import makeIfStatement, { type IfStatement } from "../definitions/statements/ifStatement.ts";
+import { type ProcedureCall } from "../definitions/statements/procedureCall.ts";
+import makeRepeatStatement, {
   type RepeatStatement,
+} from "../definitions/statements/repeatStatement.ts";
+import makeVariableAssignment, {
   type VariableAssignment,
+} from "../definitions/statements/variableAssignment.ts";
+import makeWhileStatement, {
   type WhileStatement,
-  type Statement,
-} from "../definitions/statement.ts";
+} from "../definitions/statements/whileStatement.ts";
 import { isArray, type Variable } from "../definitions/variable.ts";
 import { expression, typeCheck } from "../expression.ts";
 import * as find from "../find.ts";
@@ -250,7 +245,7 @@ function variableAssignment(
   value = typeCheck(routine.language, value, typeToCheck);
 
   // create and return the variable assignment
-  return _variableAssignment(assignmentLexeme, variable, indexes, value);
+  return makeVariableAssignment(assignmentLexeme, variable, indexes, value);
 }
 
 /** parses lexemes as an IF statement */
@@ -267,7 +262,7 @@ function ifStatement(
   condition = typeCheck(routine.language, condition, "boolean");
 
   // now we can create the statement
-  const ifStatement = _ifStatement(ifLexeme, condition);
+  const ifStatement = makeIfStatement(ifLexeme, condition);
 
   // expecting "then"
   if (!lexemes.get() || lexemes.get()?.content?.toLowerCase() !== "then") {
@@ -354,11 +349,11 @@ function forStatement(
   const oneLexeme = integerLexeme(oneToken, 10);
   const assignmentLexeme = operatorLexeme(assignmentToken, "Pascal");
   const plusLexeme = operatorLexeme(operatorToken, "Pascal");
-  const left = variableValue(variableLexeme, variable);
-  const right = integerValue(oneLexeme);
+  const left = makeVariableValue(variableLexeme, variable);
+  const right = makeIntegerValue(oneLexeme);
   const changeOperator = toOrDownTo === "to" ? "plus" : "subt";
-  const value = compoundExpression(plusLexeme, left, right, changeOperator);
-  const change = _variableAssignment(assignmentLexeme, variable, [], value);
+  const value = makeCompoundExpression(plusLexeme, left, right, changeOperator);
+  const change = makeVariableAssignment(assignmentLexeme, variable, [], value);
   lexemes.next();
 
   // expecting integer expression (for the final value)
@@ -373,10 +368,10 @@ function forStatement(
   const comparisonToken = token("operator", toOrDownTo === "to" ? "<=" : ">=", forLexeme.line, -1);
   const comparisonLexeme = operatorLexeme(comparisonToken, "Pascal");
   const comparisonOperator = toOrDownTo === "to" ? "lseq" : "mreq";
-  const condition = compoundExpression(comparisonLexeme, left, finalValue, comparisonOperator);
+  const condition = makeCompoundExpression(comparisonLexeme, left, finalValue, comparisonOperator);
 
   // now we can create the FOR statement
-  const forStatement = _forStatement(forLexeme, initialisation, condition, change);
+  const forStatement = makeForStatement(forLexeme, initialisation, condition, change);
 
   // expecting "do"
   const doLexeme = lexemes.get();
@@ -418,7 +413,7 @@ function repeatStatement(
   condition = typeCheck(routine.language, condition, "boolean");
 
   // now we have everything we need
-  const repeatStatement = _repeatStatement(repeatLexeme, condition);
+  const repeatStatement = makeRepeatStatement(repeatLexeme, condition);
   repeatStatement.statements.push(...repeatStatements);
   return repeatStatement;
 }
@@ -437,7 +432,7 @@ function whileStatement(
   condition = typeCheck(routine.language, condition, "boolean");
 
   // now we can create the statement
-  const whileStatement = _whileStatement(whileLexeme, condition);
+  const whileStatement = makeWhileStatement(whileLexeme, condition);
 
   // expecting "DO"
   if (!lexemes.get()) {

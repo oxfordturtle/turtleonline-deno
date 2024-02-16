@@ -30,7 +30,7 @@ const usageCategory = <Exp extends Expression>(
 };
 
 const isUsed = (language: Language, lexemes: Lexeme[], expression: Expression) => {
-  const name = expression.__ === "command" ? expression.names[language] : expression.name;
+  const name = expression.__ === "Command" ? expression.names[language] : expression.name;
 
   if (!name) {
     return false;

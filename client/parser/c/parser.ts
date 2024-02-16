@@ -1,7 +1,8 @@
 import type { Lexeme } from "../../lexer/lexeme.ts";
 import { CompilerError } from "../../tools/error.ts";
-import type Lexemes from "../definitions/lexemes.ts";
-import { program as _program, getAllSubroutines, type Program } from "../definitions/routine.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import { getAllSubroutines } from "../definitions/routine.ts";
+import makeProgram, { type Program } from "../definitions/routines/program.ts";
 import constant from "./constant.ts";
 import identifier from "./identifier.ts";
 import { eosCheck, simpleStatement, statement } from "./statement.ts";
@@ -11,7 +12,7 @@ import type from "./type.ts";
 /** parses lexemes as a C program */
 export default function c(lexemes: Lexemes): Program {
   // create the program
-  const program = _program("C");
+  const program = makeProgram("C");
 
   // first pass: hoist all constants, variables, and methods
   while (lexemes.get()) {
@@ -26,14 +27,14 @@ export default function c(lexemes: Lexemes): Program {
           eosCheck(lexemes);
         } else {
           throw new CompilerError(
-            "Program can only contain constant definitions, variable declarations, and subroutine defintions.",
+            "Program can only contain constant definitions, variable declarations, and subroutine definitions.",
             lexeme
           );
         }
         break;
 
       case "type":
-        // expecting type specification followed by idenfitier (throw away the results)
+        // expecting type specification followed by identifier (throw away the results)
         type(lexemes);
         identifier(lexemes, program);
 

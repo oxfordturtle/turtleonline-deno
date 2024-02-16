@@ -14,7 +14,7 @@ const usageExpression = (
   lexemes: Lexeme[],
   expression: Expression
 ): UsageExpression => {
-  const name = expression.__ === "command" ? expression.names[language]! : expression.name;
+  const name = expression.__ === "Command" ? expression.names[language]! : expression.name;
 
   const uses =
     language === "Pascal"

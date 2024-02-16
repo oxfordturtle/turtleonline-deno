@@ -1,6 +1,7 @@
 import PCode from "../../constants/pcodes.ts";
-import { getType, type CastExpression } from "../../parser/definitions/expression.ts";
-import type { Program } from "../../parser/definitions/routine.ts";
+import { getType } from "../../parser/definitions/expression.ts";
+import type { CastExpression } from "../../parser/definitions/expressions/castExpression.ts";
+import type { Program } from "../../parser/definitions/routines/program.ts";
 import expression from "../expression.ts";
 import merge from "../merge.ts";
 import type { Options } from "../options.ts";

@@ -1,5 +1,5 @@
 import type { Lexeme } from "../../lexer/lexeme.ts";
-import type Lexemes from "../definitions/lexemes.ts";
+import { type Lexemes } from "../definitions/lexemes.ts";
 import type { Routine } from "../definitions/routine.ts";
 import { statement } from "./statement.ts";
 

@@ -1,8 +1,9 @@
 import type { Type } from "../../lexer/types.ts";
-import type { Routine, Subroutine } from "./routine.ts";
+import type { Routine } from "./routine.ts";
+import type { Subroutine } from "./routines/subroutine.ts";
 
 export interface Variable {
-  readonly __: "variable";
+  readonly __: "Variable";
   readonly name: string;
   readonly routine: Routine;
   readonly isGlobal: boolean;
@@ -17,11 +18,11 @@ export interface Variable {
   private?: Subroutine; // subroutine for private variables (BASIC only)
 }
 
-export const variable = (name: string, routine: Routine): Variable => ({
-  __: "variable",
+const makeVariable = (name: string, routine: Routine): Variable => ({
+  __: "Variable",
   name: routine.language === "Pascal" ? name.toLowerCase() : name,
   routine,
-  isGlobal: routine.__ === "program",
+  isGlobal: routine.__ === "Program",
   isParameter: false,
   isReferenceParameter: false,
   isPointer: false,
@@ -30,6 +31,8 @@ export const variable = (name: string, routine: Routine): Variable => ({
   stringLength: 32,
   arrayDimensions: [],
 });
+
+export default makeVariable;
 
 export const isArray = (variable: Variable): boolean => variable.arrayDimensions.length > 0;
 
@@ -60,7 +63,7 @@ export const getSubVariables = (variable: Variable): SubVariable[] => {
   const subVariables: SubVariable[] = [];
   if (isArray(variable)) {
     for (let i = 0; i < elementCount(variable); i += 1) {
-      subVariables.push(subVariable(variable, i));
+      subVariables.push(makeSubVariable(variable, i));
     }
   }
   return subVariables;
@@ -71,10 +74,8 @@ export interface SubVariable extends Variable {
   readonly index: number;
 }
 
-export const subVariable = (variable: Variable | SubVariable, index: number): SubVariable => ({
-  __: "variable",
-  name: `${variable.name}_${index.toString(10)}`,
-  routine: variable.routine,
+export const makeSubVariable = (variable: Variable | SubVariable, index: number): SubVariable => ({
+  ...makeVariable(`${variable.name}_${index.toString(10)}`, variable.routine),
   isGlobal: variable.isGlobal,
   isParameter: variable.isParameter,
   isReferenceParameter: variable.isReferenceParameter,

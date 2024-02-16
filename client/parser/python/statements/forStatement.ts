@@ -1,21 +1,15 @@
 import { integerLexeme, operatorLexeme, type KeywordLexeme } from "../../../lexer/lexeme.ts";
 import { token } from "../../../tokenizer/token.ts";
 import { CompilerError } from "../../../tools/error.ts";
-import {
-  variableValue as _variableValue,
-  compoundExpression,
-  integerValue,
-  type Expression,
-} from "../../definitions/expression.ts";
-import type Lexemes from "../../definitions/lexemes.ts";
+import { type Expression } from "../../definitions/expression.ts";
+import makeCompoundExpression from "../../definitions/expressions/compoundExpression.ts";
+import makeIntegerValue from "../../definitions/expressions/integerValue.ts";
+import makeVariableValue from "../../definitions/expressions/variableValue.ts";
+import type { Lexemes } from "../../definitions/lexemes.ts";
 import { type Routine } from "../../definitions/routine.ts";
-import {
-  forStatement as _forStatement,
-  variableAssignment as _variableAssignment,
-  type ForStatement,
-  type VariableAssignment,
-} from "../../definitions/statement.ts";
-import { variable as _variable } from "../../definitions/variable.ts";
+import makeForStatement, { type ForStatement } from "../../definitions/statements/forStatement.ts";
+import makeVariableAssignment, { type VariableAssignment } from "../../definitions/statements/variableAssignment.ts";
+import makeVariable from "../../definitions/variable.ts";
 import evaluate from "../../evaluate.ts";
 import { expression, typeCheck } from "../../expression.ts";
 import * as find from "../../find.ts";
@@ -33,7 +27,7 @@ export default (forLexeme: KeywordLexeme, lexemes: Lexemes, routine: Routine): F
   let variable = find.variable(routine, lexemes.get()?.content as string);
   if (!variable) {
     // create the variable now
-    variable = _variable(lexemes.get()?.content as string, routine);
+    variable = makeVariable(lexemes.get()?.content as string, routine);
     variable.type = "integer";
     variable.typeIsCertain = true;
     routine.variables.push(variable);
@@ -136,13 +130,13 @@ export default (forLexeme: KeywordLexeme, lexemes: Lexemes, routine: Routine): F
   // some dummy things we need to create the things we want to know
   const zeroToken = token("decimal", "0", forLexeme.line, -1);
   const zeroLexeme = integerLexeme(zeroToken, 10);
-  const zero = integerValue(zeroLexeme);
+  const zero = makeIntegerValue(zeroLexeme);
   const oneToken = token("decimal", "1", forLexeme.line, -1);
   const oneLexeme = integerLexeme(oneToken, 10);
-  const one = integerValue(oneLexeme);
+  const one = makeIntegerValue(oneLexeme);
   const assignmentToken = token("operator", "=", forLexeme.line, -1);
   const assignmentLexeme = operatorLexeme(assignmentToken, "Python");
-  const left = _variableValue(variableLexeme, variable);
+  const left = makeVariableValue(variableLexeme, variable);
   const plusToken = token("operator", "+", forLexeme.line, -1);
   const lessToken = token("operator", "<", forLexeme.line, -1);
   const moreToken = token("operator", ">", forLexeme.line, -1);
@@ -154,46 +148,46 @@ export default (forLexeme: KeywordLexeme, lexemes: Lexemes, routine: Routine): F
   switch (providedValues.length) {
     case 1:
       // initial value is zero
-      initialisation = _variableAssignment(assignmentLexeme, variable, [], zero);
+      initialisation = makeVariableAssignment(assignmentLexeme, variable, [], zero);
       // change is +1
-      change = _variableAssignment(
+      change = makeVariableAssignment(
         assignmentLexeme,
         variable,
         [],
-        compoundExpression(plusLexeme, left, one, "plus")
+        makeCompoundExpression(plusLexeme, left, one, "plus")
       );
       // termination condition is < providedValues[0]
-      condition = compoundExpression(lessLexeme, left, providedValues[0], "less");
+      condition = makeCompoundExpression(lessLexeme, left, providedValues[0], "less");
       break;
     case 2:
       // initial value is providedValues[0]
-      initialisation = _variableAssignment(assignmentLexeme, variable, [], providedValues[0]);
+      initialisation = makeVariableAssignment(assignmentLexeme, variable, [], providedValues[0]);
       // change is +1
-      change = _variableAssignment(
+      change = makeVariableAssignment(
         assignmentLexeme,
         variable,
         [],
-        compoundExpression(plusLexeme, left, one, "plus")
+        makeCompoundExpression(plusLexeme, left, one, "plus")
       );
       // termination condition is < providedValues[1]
-      condition = compoundExpression(lessLexeme, left, providedValues[1]!, "less");
+      condition = makeCompoundExpression(lessLexeme, left, providedValues[1]!, "less");
       break;
     case 3: {
       // initial value is providedValues[0]
-      initialisation = _variableAssignment(assignmentLexeme, variable, [], providedValues[0]);
+      initialisation = makeVariableAssignment(assignmentLexeme, variable, [], providedValues[0]);
       // change is +/- providedValues[1]
       const stepValue = evaluate(providedValues[2]!, "Python", "step") as number;
-      change = _variableAssignment(
+      change = makeVariableAssignment(
         assignmentLexeme,
         variable,
         [],
-        compoundExpression(plusLexeme, left, providedValues[2]!, "plus")
+        makeCompoundExpression(plusLexeme, left, providedValues[2]!, "plus")
       );
       // termination condition is >/< providedValues[2]
       condition =
         stepValue < 0
-          ? compoundExpression(moreLexeme, left, providedValues[1]!, "more")
-          : compoundExpression(lessLexeme, left, providedValues[1]!, "less");
+          ? makeCompoundExpression(moreLexeme, left, providedValues[1]!, "more")
+          : makeCompoundExpression(lessLexeme, left, providedValues[1]!, "less");
       break;
     }
   }
@@ -247,7 +241,7 @@ export default (forLexeme: KeywordLexeme, lexemes: Lexemes, routine: Routine): F
   lexemes.next();
 
   // create the for statement
-  const forStatement = _forStatement(forLexeme, initialisation, condition, change);
+  const forStatement = makeForStatement(forLexeme, initialisation, condition, change);
 
   // expecting indent
   if (!lexemes.get()) {

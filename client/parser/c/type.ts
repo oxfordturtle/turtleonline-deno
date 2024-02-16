@@ -1,6 +1,6 @@
 import type { Type } from "../../lexer/types.ts";
 import { CompilerError } from "../../tools/error.ts";
-import type Lexemes from "../definitions/lexemes.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
 
 /** parses lexemes at a type specification */
 export default function type(lexemes: Lexemes): [Type | null, number] {

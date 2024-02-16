@@ -1,6 +1,5 @@
 import { type Lexeme } from "../../../lexer/lexeme.ts";
-import { variableValue as _variableValue } from "../../definitions/expression.ts";
-import type Lexemes from "../../definitions/lexemes.ts";
+import type { Lexemes } from "../../definitions/lexemes.ts";
 import { type Routine } from "../../definitions/routine.ts";
 import { type Statement } from "../../definitions/statement.ts";
 import parseStatement from "../statement.ts";

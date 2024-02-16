@@ -1,6 +1,6 @@
 import PCode from "../../constants/pcodes.ts";
-import type { ConstantValue } from "../../parser/definitions/expression.ts";
-import type { Program } from "../../parser/definitions/routine.ts";
+import type { ConstantValue } from "../../parser/definitions/expressions/constantValue.ts";
+import type { Program } from "../../parser/definitions/routines/program.ts";
 import expression from "../expression.ts";
 import merge from "../merge.ts";
 import type { Options } from "../options.ts";

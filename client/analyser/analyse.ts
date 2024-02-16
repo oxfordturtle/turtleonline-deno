@@ -7,7 +7,8 @@ import {
 import type { Command } from "../constants/commands.ts";
 import type { Keyword } from "../constants/keywords.ts";
 import type { Lexeme } from "../lexer/lexeme.ts";
-import { getAllSubroutines, type Program } from "../parser/definitions/routine.ts";
+import { getAllSubroutines } from "../parser/definitions/routine.ts";
+import type { Program } from "../parser/definitions/routines/program.ts";
 import usageCategory, { type UsageCategory } from "./usageCategory.ts";
 
 export default (lexemes: Lexeme[], program: Program): UsageCategory[] => {

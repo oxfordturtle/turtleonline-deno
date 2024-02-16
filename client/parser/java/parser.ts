@@ -1,7 +1,8 @@
 import type { Lexeme } from "../../lexer/lexeme.ts";
 import { CompilerError } from "../../tools/error.ts";
-import type Lexemes from "../definitions/lexemes.ts";
-import { getAllSubroutines, type Program } from "../definitions/routine.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import { getAllSubroutines } from "../definitions/routine.ts";
+import type { Program } from "../definitions/routines/program.ts";
 import constant from "./constant.ts";
 import identifier from "./identifier.ts";
 import program from "./program.ts";
@@ -58,7 +59,7 @@ export default function java(lexemes: Lexemes): Program {
       // anything else is an error
       default:
         throw new CompilerError(
-          "Program can only contain constant definitions, variable declarations, and subroutine defintions.",
+          "Program can only contain constant definitions, variable declarations, and subroutine definitions.",
           lexeme
         );
     }

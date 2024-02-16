@@ -1,5 +1,5 @@
 import { CompilerError } from "../../../tools/error.ts";
-import type Lexemes from "../../definitions/lexemes.ts";
+import type { Lexemes } from "../../definitions/lexemes.ts";
 
 export default (lexemes: Lexemes): void => {
   if (lexemes.get()) {

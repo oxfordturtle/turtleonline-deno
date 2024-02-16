@@ -1,6 +1,7 @@
 import type { Lexeme } from "../../lexer/lexeme.ts";
-import type Lexemes from "../definitions/lexemes.ts";
-import { program as _program, type Program, type Subroutine } from "../definitions/routine.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import makeProgram, { type Program } from "../definitions/routines/program.ts";
+import type { Subroutine } from "../definitions/routines/subroutine.ts";
 import constant from "./constant.ts";
 import { eosCheck, statement } from "./statement.ts";
 import subroutine from "./subroutine.ts";
@@ -9,7 +10,7 @@ import variable from "./variable.ts";
 /** parses lexemes as a TypeScript program */
 export default function typescript(lexemes: Lexemes): Program {
   // create the program
-  const program = _program("TypeScript");
+  const program = makeProgram("TypeScript");
   program.end = lexemes.lexemes.length;
 
   // parse the program (which will parse its subroutines in turn)

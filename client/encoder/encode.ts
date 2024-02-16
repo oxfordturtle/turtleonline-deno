@@ -1,5 +1,7 @@
 import PCode, { pcodeArgs } from "../constants/pcodes.ts";
-import { getAllSubroutines, type Program, type Subroutine } from "../parser/definitions/routine.ts";
+import { getAllSubroutines } from "../parser/definitions/routine.ts";
+import type { Program } from "../parser/definitions/routines/program.ts";
+import type { Subroutine } from "../parser/definitions/routines/subroutine.ts";
 import type { Options } from "./options.ts";
 import { defaultOptions } from "./options.ts";
 import programStart from "./program/programStart.ts";

@@ -1,7 +1,7 @@
 import constant, { type Constant } from "../definitions/constant.ts";
-import type Lexemes from "../definitions/lexemes.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
 import type { Routine } from "../definitions/routine.ts";
-import { variable as _variable, type Variable } from "../definitions/variable.ts";
+import makeVariable, { type Variable } from "../definitions/variable.ts";
 import identifier from "./identifier.ts";
 import type from "./type.ts";
 
@@ -22,7 +22,7 @@ export default (lexemes: Lexemes, routine: Routine): Constant | Variable => {
     }
 
     // create and return the variable
-    const variable = _variable(name, routine);
+    const variable = makeVariable(name, routine);
     variable.type = variableType;
     variable.typeIsCertain = true;
     variable.stringLength = stringLength;
@@ -31,5 +31,5 @@ export default (lexemes: Lexemes, routine: Routine): Constant | Variable => {
   }
 
   // if there's no type hint, just return a default (boolint) variable
-  return _variable(name, routine);
+  return makeVariable(name, routine);
 };

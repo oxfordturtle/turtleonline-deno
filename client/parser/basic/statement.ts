@@ -9,32 +9,27 @@ import {
 import { token } from "../../tokenizer/token.ts";
 import { CompilerError } from "../../tools/error.ts";
 import { procedureCall } from "../call.ts";
+import { type Expression } from "../definitions/expression.ts";
+import makeCompoundExpression from "../definitions/expressions/compoundExpression.ts";
+import makeIntegerValue from "../definitions/expressions/integerValue.ts";
+import makeVariableValue from "../definitions/expressions/variableValue.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
 import {
-  compoundExpression,
-  integerValue,
-  variableValue,
-  type Expression,
-} from "../definitions/expression.ts";
-import type Lexemes from "../definitions/lexemes.ts";
-import { getProgram, getResultType, getSubroutineType, type Program, type Subroutine } from "../definitions/routine.ts";
-import {
-  forStatement as _forStatement,
-  ifStatement as _ifStatement,
-  passStatement as _passStatement,
-  procedureCall as _procedureCall,
-  repeatStatement as _repeatStatement,
-  returnStatement as _returnStatement,
-  variableAssignment as _variableAssignment,
-  whileStatement as _whileStatement,
-  type ForStatement,
-  type IfStatement,
-  type ProcedureCall,
-  type RepeatStatement,
-  type ReturnStatement,
-  type Statement,
-  type VariableAssignment,
-  type WhileStatement,
-} from "../definitions/statement.ts";
+  getProgram,
+  getResultType,
+  getSubroutineType,
+  type Subroutine,
+} from "../definitions/routines/subroutine.ts";
+import type { Program } from "../definitions/routines/program.ts";
+import makeForStatement, { type ForStatement } from "../definitions/statements/forStatement.ts";
+import makeIfStatement, { type IfStatement } from "../definitions/statements/ifStatement.ts";
+import makePassStatement from "../definitions/statements/passStatement.ts";
+import { type ProcedureCall } from "../definitions/statements/procedureCall.ts";
+import makeRepeatStatement, { type RepeatStatement } from "../definitions/statements/repeatStatement.ts";
+import makeReturnStatement, { type ReturnStatement } from "../definitions/statements/returnStatement.ts";
+import makeVariableAssignment, { type VariableAssignment } from "../definitions/statements/variableAssignment.ts";
+import makeWhileStatement, { type WhileStatement } from "../definitions/statements/whileStatement.ts";
+import type { Statement } from "../definitions/statement.ts";
 import { isArray, type Variable } from "../definitions/variable.ts";
 import evaluate from "../evaluate.ts";
 import { expression, typeCheck } from "../expression.ts";
@@ -68,7 +63,7 @@ export function statement(
       // the end of the previous statement), but it can happen at the start of
       // of the program or the start of a block, if there's a comment on the
       // first line (which is necessarily followed by a line break)
-      statement = _passStatement();
+      statement = makePassStatement();
       break;
 
     // '=' (at the end of a function)
@@ -93,19 +88,19 @@ export function statement(
         case "const":
           lexemes.next();
           routine.constants.push(constant(lexemes, routine));
-          statement = _passStatement();
+          statement = makePassStatement();
           break;
 
         // DIM statement
         case "dim":
           lexemes.next();
           routine.variables.push(array(lexemes, routine));
-          statement = _passStatement();
+          statement = makePassStatement();
           break;
 
         // LOCAL statement
         case "local":
-          if (routine.__ === "program") {
+          if (routine.__ === "Program") {
             throw new CompilerError(
               "Main program cannot declare any LOCAL variables.",
               lexemes.get()
@@ -113,12 +108,12 @@ export function statement(
           }
           lexemes.next();
           routine.variables.push(...variables(lexemes, routine));
-          statement = _passStatement();
+          statement = makePassStatement();
           break;
 
         // PRIVATE statement
         case "private": {
-          if (routine.__ === "program") {
+          if (routine.__ === "Program") {
             throw new CompilerError(
               "Main program cannot declare any PRIVATE variables.",
               lexemes.get()
@@ -130,7 +125,7 @@ export function statement(
             privateVariable.private = routine;
           }
           getProgram(routine).variables.push(...privateVariables);
-          statement = _passStatement();
+          statement = makePassStatement();
           break;
         }
 
@@ -159,7 +154,7 @@ export function statement(
           break;
 
         case "def":
-          if (routine.__ === "program") {
+          if (routine.__ === "Program") {
             throw new CompilerError('Subroutines must be defined after program "END".', lexeme);
           }
           throw new CompilerError(
@@ -217,7 +212,7 @@ function simpleStatement(
   }
 
   // otherwise create the variable as a global
-  const program = routine.__ === "program" ? routine : getProgram(routine);
+  const program = routine.__ === "Program" ? routine : getProgram(routine);
   const baz = variable(lexemes, program);
   program.variables.push(baz);
   return variableAssignment(lexeme, lexemes, routine, baz);
@@ -298,7 +293,7 @@ function variableAssignment(
   value = typeCheck(routine.language, value, variable.type);
 
   // create and return the variable assignment statement
-  return _variableAssignment(assignmentLexeme, variable, indexes, value);
+  return makeVariableAssignment(assignmentLexeme, variable, indexes, value);
 }
 
 /** parses lexemes as a RETURN statement */
@@ -308,7 +303,7 @@ function returnStatement(
   routine: Program | Subroutine
 ): ReturnStatement {
   // check a return statement is allowed
-  if (routine.__ === "program") {
+  if (routine.__ === "Program") {
     throw new CompilerError("Statement in the main program cannot begin with {lex}.", lexeme);
   }
   if (getSubroutineType(routine) !== "function") {
@@ -320,7 +315,7 @@ function returnStatement(
   value = typeCheck(routine.language, value, getResultType(routine)!);
 
   // create and return the statement
-  return _returnStatement(lexeme, routine, value);
+  return makeReturnStatement(lexeme, routine, value);
 }
 
 /** parses lexemes as an IF statement */
@@ -348,7 +343,7 @@ function ifStatement(
   lexemes.next();
 
   // ok, create the IF statement
-  const ifStatement = _ifStatement(lexeme, condition);
+  const ifStatement = makeIfStatement(lexeme, condition);
 
   // expecting a statement on the same line or a block of statements on a new line
   const firstInnerLexeme = lexemes.get();
@@ -421,7 +416,7 @@ function forStatement(
   const existing = find.variable(routine, variableLexeme.content);
   if (!existing) {
     // create the variable as a global
-    const program = routine.__ === "program" ? routine : getProgram(routine);
+    const program = routine.__ === "Program" ? routine : getProgram(routine);
     foo = variable(lexemes, program);
     program.variables.push(foo);
   } else {
@@ -467,15 +462,15 @@ function forStatement(
   const mreqLexeme = operatorLexeme(mreqToken, "BASIC");
 
   // define default condition and step change
-  const left = variableValue(variableLexeme, foo);
-  const right = integerValue(oneLexeme);
-  let change = _variableAssignment(
+  const left = makeVariableValue(variableLexeme, foo);
+  const right = makeIntegerValue(oneLexeme);
+  let change = makeVariableAssignment(
     assignmentLexeme,
     foo,
     [],
-    compoundExpression(plusLexeme, left, right, "plus")
+    makeCompoundExpression(plusLexeme, left, right, "plus")
   );
-  let condition = compoundExpression(lseqLexeme, left, finalValue, "lseq");
+  let condition = makeCompoundExpression(lseqLexeme, left, finalValue, "lseq");
 
   // "STEP" permissible here
   if (lexemes.get() && lexemes.get()?.content === "STEP") {
@@ -491,21 +486,21 @@ function forStatement(
     if (evaluatedStepValue === 0) {
       throw new CompilerError("Step value cannot be zero.", stepValue.lexeme);
     }
-    change = _variableAssignment(
+    change = makeVariableAssignment(
       assignmentLexeme,
       foo,
       [],
-      compoundExpression(plusLexeme, left, stepValue, "plus")
+      makeCompoundExpression(plusLexeme, left, stepValue, "plus")
     );
     if (evaluatedStepValue < 0) {
-      condition = compoundExpression(mreqLexeme, left, finalValue, "mreq");
+      condition = makeCompoundExpression(mreqLexeme, left, finalValue, "mreq");
     } else {
-      condition = compoundExpression(lseqLexeme, left, finalValue, "lseq");
+      condition = makeCompoundExpression(lseqLexeme, left, finalValue, "lseq");
     }
   }
 
   // now we can create the FOR statement
-  const forStatement = _forStatement(lexeme, initialisation, condition, change);
+  const forStatement = makeForStatement(lexeme, initialisation, condition, change);
 
   // expecting a statement on the same line or a block of statements on a new line
   const firstInnerLexeme = lexemes.get();
@@ -555,7 +550,7 @@ function repeatStatement(
   condition = typeCheck(routine.language, condition, "boolean");
 
   // now we have everything we need
-  const repeatStatement = _repeatStatement(lexeme, condition);
+  const repeatStatement = makeRepeatStatement(lexeme, condition);
   repeatStatement.statements.push(...repeatStatements);
   return repeatStatement;
 }
@@ -574,7 +569,7 @@ function whileStatement(
   condition = typeCheck(routine.language, condition, "boolean");
 
   // create the statement
-  const whileStatement = _whileStatement(lexeme, condition);
+  const whileStatement = makeWhileStatement(lexeme, condition);
 
   // expecting a statement on the same line or a block of statements on a new line
   const firstInnerLexeme = lexemes.get();

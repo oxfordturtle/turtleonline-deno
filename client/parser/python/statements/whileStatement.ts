@@ -1,13 +1,8 @@
 import { type KeywordLexeme } from "../../../lexer/lexeme.ts";
 import { CompilerError } from "../../../tools/error.ts";
-import { variableValue as _variableValue } from "../../definitions/expression.ts";
-import type Lexemes from "../../definitions/lexemes.ts";
+import type { Lexemes } from "../../definitions/lexemes.ts";
 import { type Routine } from "../../definitions/routine.ts";
-import {
-  whileStatement as _whileStatement,
-  type WhileStatement,
-} from "../../definitions/statement.ts";
-import { variable as _variable } from "../../definitions/variable.ts";
+import makeWhileStatement, { type WhileStatement } from "../../definitions/statements/whileStatement.ts";
 import { expression, typeCheck } from "../../expression.ts";
 import parseBlock from "./block.ts";
 
@@ -41,7 +36,7 @@ export default (whileLexeme: KeywordLexeme, lexemes: Lexemes, routine: Routine):
   lexemes.next();
 
   // create the while statement
-  const whileStatement = _whileStatement(whileLexeme, condition);
+  const whileStatement = makeWhileStatement(whileLexeme, condition);
 
   // expecting indent
   if (!lexemes.get()) {

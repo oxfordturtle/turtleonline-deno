@@ -1,4 +1,4 @@
-import type { Subroutine } from "../parser/definitions/routine.ts";
+import type { Subroutine } from "../parser/definitions/routines/subroutine.ts";
 import commands, { type Command } from "./commands.ts";
 import keywords, { type Keyword } from "./keywords.ts";
 

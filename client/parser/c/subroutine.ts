@@ -1,8 +1,9 @@
 import type { TypeLexeme } from "../../lexer/lexeme.ts";
 import { CompilerError } from "../../tools/error.ts";
-import type Lexemes from "../definitions/lexemes.ts";
-import { subroutine as _subroutine, type Program, type Subroutine } from "../definitions/routine.ts";
-import { variable as _variable, type Variable } from "../definitions/variable.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import type { Program } from "../definitions/routines/program.ts";
+import makeSubroutine, { type Subroutine } from "../definitions/routines/subroutine.ts";
+import makeVariable, { type Variable } from "../definitions/variable.ts";
 import identifier from "./identifier.ts";
 import type from "./type.ts";
 import variable from "./variable.ts";
@@ -18,12 +19,12 @@ export default function subroutine(
   const name = identifier(lexemes, program);
 
   // create the subroutine
-  const subroutine = _subroutine(lexeme, program, name);
+  const subroutine = makeSubroutine(lexeme, program, name);
   subroutine.index = program.subroutines.length + 1;
 
   // set the return type and unshift the result variable for functions
   if (subroutineType !== null) {
-    const variable = _variable("!result", subroutine);
+    const variable = makeVariable("!result", subroutine);
     variable.type = subroutineType;
     variable.stringLength = stringLength;
     subroutine.variables.push(variable);

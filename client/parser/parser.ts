@@ -2,8 +2,8 @@ import type { Language } from "../constants/languages.ts";
 import type { Lexeme } from "../lexer/lexeme.ts";
 import basicParser from "./basic/parser.ts";
 import cParser from "./c/parser.ts";
-import Lexemes from "./definitions/lexemes.ts";
-import type { Program } from "./definitions/routine.ts";
+import makeLexemes from "./definitions/lexemes.ts";
+import type { Program } from "./definitions/routines/program.ts";
 import javaParser from "./java/parser.ts";
 import pascalParser from "./pascal/parser.ts";
 import pythonParser from "./python/parser.ts";
@@ -11,7 +11,7 @@ import typeScriptParser from "./typescript/parser.ts";
 
 /** parses codes string or lexemes and returns a program object */
 export default function parser(rawLexemes: Lexeme[], language: Language): Program {
-  const lexemes = new Lexemes(rawLexemes);
+  const lexemes = makeLexemes(rawLexemes);
 
   switch (language) {
     case "BASIC":

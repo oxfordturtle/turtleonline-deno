@@ -1,7 +1,8 @@
 import PCode from "../../constants/pcodes.ts";
-import { variableValue as _variableValue } from "../../parser/definitions/expression.ts";
-import type { Program, Subroutine } from "../../parser/definitions/routine.ts";
-import type { VariableAssignment } from "../../parser/definitions/statement.ts";
+import makeVariableValue from "../../parser/definitions/expressions/variableValue.ts";
+import type { Program } from "../../parser/definitions/routines/program.ts";
+import type { Subroutine } from "../../parser/definitions/routines/subroutine.ts";
+import type { VariableAssignment } from "../../parser/definitions/statements/variableAssignment.ts";
 import { isArray } from "../../parser/definitions/variable.ts";
 import { subroutineAddress, turtleAddress, variableAddress } from "../addresses.ts";
 import expression from "../expression.ts";
@@ -59,7 +60,7 @@ const globalVariableAssignment = (
 
   // global array
   if (isArray(stmt.variable) || (stmt.variable.type === "string" && stmt.indexes.length > 0)) {
-    const exp = _variableValue(stmt.lexeme, stmt.variable);
+    const exp = makeVariableValue(stmt.lexeme, stmt.variable);
     exp.indexes.push(...stmt.indexes);
     const element = expression(exp, program, options);
     const lastLine = element[element.length - 1];
@@ -89,7 +90,7 @@ const pointerVariableAssignment = (
   program: Program,
   options: Options
 ): number[][] => {
-  const variableValue = _variableValue(stmt.lexeme, stmt.variable);
+  const variableValue = makeVariableValue(stmt.lexeme, stmt.variable);
   const pcode = expression(variableValue, program, options);
   pcode[pcode.length - 1].pop(); // pop off PCode.peek
 
@@ -127,7 +128,7 @@ const localVariableAssignment = (
 
   // local array
   if (isArray(stmt.variable) || (stmt.variable.type === "string" && stmt.indexes.length > 0)) {
-    const exp = _variableValue(stmt.lexeme, stmt.variable);
+    const exp = makeVariableValue(stmt.lexeme, stmt.variable);
     exp.indexes.push(...stmt.indexes);
     const element = expression(exp, program, options);
     const lastLine = element[element.length - 1];

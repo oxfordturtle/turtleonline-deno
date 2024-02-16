@@ -1,14 +1,14 @@
 import { type IdentifierLexeme } from "../../../lexer/lexeme.ts";
 import { CompilerError } from "../../../tools/error.ts";
-import { variableValue as _variableValue, type Expression } from "../../definitions/expression.ts";
-import type Lexemes from "../../definitions/lexemes.ts";
+import { type Expression } from "../../definitions/expression.ts";
+import makeVariableValue from "../../definitions/expressions/variableValue.ts";
+import type { Lexemes } from "../../definitions/lexemes.ts";
 import { type Routine } from "../../definitions/routine.ts";
-import {
-  variableAssignment as _variableAssignment,
-  type PassStatement,
+import type { PassStatement } from "../../definitions/statements/passStatement.ts";
+import makeVariableAssignment, {
   type VariableAssignment,
-} from "../../definitions/statement.ts";
-import { variable as _variable, isArray, type Variable } from "../../definitions/variable.ts";
+} from "../../definitions/statements/variableAssignment.ts";
+import { isArray, type Variable } from "../../definitions/variable.ts";
 import { expression, typeCheck } from "../../expression.ts";
 
 export default (
@@ -102,12 +102,12 @@ export default (
     );
   }
   let value = expression(lexemes, routine);
-  const variableValue = _variableValue(variableLexeme, variable);
+  const variableValue = makeVariableValue(variableLexeme, variable);
   variableValue.indexes.push(...indexes);
 
   // type checking
   value = typeCheck(routine.language, value, variable);
 
   // create and return the variable assignment statement
-  return _variableAssignment(assignmentLexeme, variable, indexes, value);
+  return makeVariableAssignment(assignmentLexeme, variable, indexes, value);
 };
