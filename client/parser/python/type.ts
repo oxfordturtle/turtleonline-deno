@@ -5,11 +5,9 @@ import type { Routine } from "../definitions/routine.ts";
 import evaluate from "../evaluate.ts";
 import { expression, typeCheck } from "../expression.ts";
 
-/** parses lexemes as a variable/parameter type specification */
-export default function type(
-  lexemes: Lexemes,
-  routine: Routine
-): [boolean, Type, number, [number, number][]] {
+type TypeInformation = [boolean, Type, number, [number, number][]];
+
+const type = (lexemes: Lexemes, routine: Routine): TypeInformation => {
   const lexeme = lexemes.get();
   let stringLength = 32;
 
@@ -146,4 +144,6 @@ export default function type(
         lexemes.get()
       );
   }
-}
+};
+
+export default type;

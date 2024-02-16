@@ -1,19 +1,24 @@
 import type { KeywordLexeme } from "../../lexer/lexeme.ts";
 import { CompilerError } from "../../tools/error.ts";
 import type Lexemes from "../definitions/lexemes.ts";
-import { subroutine as _subroutine, getProgram, getAllSubroutines, type Program, type Subroutine } from "../definitions/routine.ts";
+import {
+  subroutine as _subroutine,
+  getAllSubroutines,
+  getProgram,
+  type Routine,
+  type Subroutine,
+} from "../definitions/routine.ts";
 import { variable as _variable, type Variable } from "../definitions/variable.ts";
 import identifier from "./identifier.ts";
 import type from "./type.ts";
 import variable from "./variable.ts";
 
-/** parses lexemes as a subroutine definition (without parsing the subroutine's statements) */
-export default function subroutine(
+export default (
   lexeme: KeywordLexeme,
   lexemes: Lexemes,
-  parent: Program | Subroutine,
+  parent: Routine,
   baseIndent: number
-): Subroutine {
+): Subroutine => {
   // expecting an identifier
   const name = identifier(lexemes, parent, true);
 
@@ -105,10 +110,9 @@ export default function subroutine(
 
   // return the subroutine
   return subroutine;
-}
+};
 
-/** parses lexemes as subroutine parameters inside brackets */
-function parameters(lexemes: Lexemes, routine: Subroutine): Variable[] {
+const parameters = (lexemes: Lexemes, routine: Subroutine): Variable[] => {
   // expecting open bracket
   if (!lexemes.get()) {
     throw new CompilerError('Opening bracket "(" missing after function name.', lexemes.get(-1));
@@ -140,4 +144,4 @@ function parameters(lexemes: Lexemes, routine: Subroutine): Variable[] {
 
   // return the parameters
   return parameters;
-}
+};

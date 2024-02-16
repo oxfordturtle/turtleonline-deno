@@ -3,12 +3,7 @@ import type Lexemes from "../definitions/lexemes.ts";
 import type { Routine } from "../definitions/routine.ts";
 import * as find from "../find.ts";
 
-/** parses lexeme as an identifier, and returns the name */
-export default function identifier(
-  lexemes: Lexemes,
-  routine: Routine,
-  duplicateCheck: boolean
-): string {
+export default (lexemes: Lexemes, routine: Routine, duplicateCheck: boolean): string => {
   const identifier = lexemes.get();
 
   if (!identifier) {
@@ -34,4 +29,4 @@ export default function identifier(
   lexemes.next();
 
   return identifier.value;
-}
+};

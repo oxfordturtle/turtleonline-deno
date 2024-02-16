@@ -3,12 +3,9 @@ import type Lexemes from "../definitions/lexemes.ts";
 import type { Routine } from "../definitions/routine.ts";
 import identifier from "./identifier.ts";
 
-/** parses lexemes as a comma-separated list of identifiers, and returns the names */
-export default function identifiers(
-  lexemes: Lexemes,
-  routine: Routine,
-  context: "global" | "nonlocal"
-): string[] {
+type Context = "global" | "nonlocal";
+
+const identifiers = (lexemes: Lexemes, routine: Routine, context: Context): string[] => {
   const names: string[] = [];
 
   // expecting identifier
@@ -28,4 +25,6 @@ export default function identifiers(
   }
 
   return names;
-}
+};
+
+export default identifiers;

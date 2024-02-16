@@ -5,11 +5,7 @@ import { variable as _variable, type Variable } from "../definitions/variable.ts
 import identifier from "./identifier.ts";
 import type from "./type.ts";
 
-/** parses lexemes as a variable/parameter declaration */
-export default function variable(
-  lexemes: Lexemes,
-  routine: Routine
-): Constant | Variable {
+export default (lexemes: Lexemes, routine: Routine): Constant | Variable => {
   // expecting identifier
   const name = identifier(lexemes, routine, true);
 
@@ -36,4 +32,4 @@ export default function variable(
 
   // if there's no type hint, just return a default (boolint) variable
   return _variable(name, routine);
-}
+};
