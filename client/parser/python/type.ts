@@ -2,8 +2,9 @@ import type { Type } from "../../lexer/types.ts";
 import { CompilerError } from "../../tools/error.ts";
 import type { Lexemes } from "../definitions/lexemes.ts";
 import type { Routine } from "../definitions/routine.ts";
-import evaluate from "../evaluate.ts";
-import { expression, typeCheck } from "../expression.ts";
+import evaluate from "../common/evaluate.ts";
+import parseExpression from "../common/expression.ts";
+import typeCheck from "../common/typeCheck.ts";
 
 type TypeInformation = [boolean, Type, number, [number, number][]];
 
@@ -108,7 +109,7 @@ const type = (lexemes: Lexemes, routine: Routine): TypeInformation => {
       lexemes.next();
 
       // expecting integer expression (size of array)
-      const exp = expression(lexemes, routine);
+      const exp = parseExpression(lexemes, routine);
       typeCheck(routine.language, exp, "integer");
       const value = evaluate(exp, "Python", "array");
       if (typeof value === "string") {

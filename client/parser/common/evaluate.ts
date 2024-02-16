@@ -1,7 +1,7 @@
-import type { Language } from "../constants/languages.ts";
-import { CompilerError } from "../tools/error.ts";
-import type { Expression } from "./definitions/expression.ts";
-import { trueValue } from "../constants/languages.ts";
+import type { Language } from "../../constants/languages.ts";
+import { CompilerError } from "../../tools/error.ts";
+import type { Expression } from "../definitions/expression.ts";
+import { trueValue } from "../../constants/languages.ts";
 
 const evaluate = (
   expression: Expression,

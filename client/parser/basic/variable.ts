@@ -1,10 +1,11 @@
 import { CompilerError } from "../../tools/error.ts";
+import evaluate from "../common/evaluate.ts";
+import parseExpression from "../common/expression.ts";
+import * as find from "../common/find.ts";
+import typeCheck from "../common/typeCheck.ts";
 import type { Lexemes } from "../definitions/lexemes.ts";
 import type { Routine } from "../definitions/routine.ts";
 import makeVariable, { type Variable } from "../definitions/variable.ts";
-import evaluate from "../evaluate.ts";
-import { expression, typeCheck } from "../expression.ts";
-import * as find from "../find.ts";
 import { variableName } from "./identifier.ts";
 
 /** parses lexemes as a variable name */
@@ -53,7 +54,7 @@ export function array(lexemes: Lexemes, routine: Routine): Variable {
     if (lexemes.get()?.type === "newline") {
       throw new CompilerError("Array declaration must be one a single line.", lexemes.get(-1));
     }
-    const exp = expression(lexemes, routine);
+    const exp = parseExpression(lexemes, routine);
     typeCheck(routine.language, exp, "integer");
     const value = evaluate(exp, "BASIC", "array");
     if (typeof value === "string") {

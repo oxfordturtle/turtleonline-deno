@@ -1,9 +1,10 @@
 import { type KeywordLexeme } from "../../../lexer/lexeme.ts";
 import { CompilerError } from "../../../tools/error.ts";
+import parseExpression from "../../common/expression.ts";
+import typeCheck from "../../common/typeCheck.ts";
 import type { Lexemes } from "../../definitions/lexemes.ts";
 import { type Routine } from "../../definitions/routine.ts";
 import makeIfStatement, { type IfStatement } from "../../definitions/statements/ifStatement.ts";
-import { expression, typeCheck } from "../../expression.ts";
 import parseBlock from "./block.ts";
 
 const parseIfStatement = (
@@ -18,7 +19,7 @@ const parseIfStatement = (
       ifLexeme
     );
   }
-  let condition = expression(lexemes, routine);
+  let condition = parseExpression(lexemes, routine);
   condition = typeCheck(routine.language, condition, "boolean");
 
   // expecting a colon

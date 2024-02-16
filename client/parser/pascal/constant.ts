@@ -2,8 +2,8 @@ import { CompilerError } from "../../tools/error.ts";
 import constant, { type Constant } from "../definitions/constant.ts";
 import type { Lexemes } from "../definitions/lexemes.ts";
 import type { Program } from "../definitions/routines/program.ts";
-import evaluate from "../evaluate.ts";
-import { expression } from "../expression.ts";
+import evaluate from "../common/evaluate.ts";
+import parseExpression from "../common/expression.ts";
 import identifier from "./identifier.ts";
 import { semicolon } from "./statement.ts";
 
@@ -18,7 +18,7 @@ export default (lexemes: Lexemes, routine: Program): Constant => {
   lexemes.next();
 
   // expecting an expression
-  const exp = expression(lexemes, routine);
+  const exp = parseExpression(lexemes, routine);
   const value = evaluate(exp, "Pascal", "constant");
 
   // create the constant

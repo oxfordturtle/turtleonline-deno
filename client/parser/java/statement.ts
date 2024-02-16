@@ -7,7 +7,10 @@ import {
 } from "../../lexer/lexeme.ts";
 import { token } from "../../tokenizer/token.ts";
 import { CompilerError } from "../../tools/error.ts";
-import { procedureCall } from "../call.ts";
+import parseExpression from "../common/expression.ts";
+import * as find from "../common/find.ts";
+import parseProcedureCall from "../common/procedureCall.ts";
+import typeCheck from "../common/typeCheck.ts";
 import { type Expression } from "../definitions/expression.ts";
 import makeCompoundExpression from "../definitions/expressions/compoundExpression.ts";
 import makeVariableValue from "../definitions/expressions/variableValue.ts";
@@ -36,8 +39,6 @@ import makeWhileStatement, {
   type WhileStatement,
 } from "../definitions/statements/whileStatement.ts";
 import { isArray, type Variable } from "../definitions/variable.ts";
-import { expression, typeCheck } from "../expression.ts";
-import * as find from "../find.ts";
 import constant from "./constant.ts";
 import variable from "./variable.ts";
 
@@ -156,7 +157,7 @@ export function simpleStatement(
         return variableAssignment(lexeme, lexemes, routine, bar);
       } else if (baz) {
         lexemes.next();
-        const statement = procedureCall(lexeme, lexemes, routine, baz);
+        const statement = parseProcedureCall(lexeme, lexemes, routine, baz);
         return statement;
       } else {
         throw new CompilerError("{lex} is not defined.", lexemes.get());
@@ -179,7 +180,7 @@ function variableAssignment(
       lexemes.next();
       while (lexemes.get() && lexemes.get()?.content !== "]") {
         // expecting integer expression for the element index
-        let exp = expression(lexemes, routine);
+        let exp = parseExpression(lexemes, routine);
         exp = typeCheck(routine.language, exp, "integer");
         indexes.push(exp);
         // maybe move past "]["
@@ -197,7 +198,7 @@ function variableAssignment(
     } else if (variable.type === "string") {
       lexemes.next();
       // expecting integer expression for the character index
-      let exp = expression(lexemes, routine);
+      let exp = parseExpression(lexemes, routine);
       exp = typeCheck(routine.language, exp, "integer");
       indexes.push(exp);
       // expecting closing bracket
@@ -247,7 +248,7 @@ function variableAssignment(
       lexemes.get(-1)
     );
   }
-  let value = expression(lexemes, routine);
+  let value = parseExpression(lexemes, routine);
   const variableValue = makeVariableValue(variableLexeme, variable);
   variableValue.indexes.push(...indexes);
   // check against variableValue.type rather than variableAssignment.variable.type
@@ -269,7 +270,7 @@ function returnStatement(
   }
 
   // expecting an expression of the right type, followed by semicolon
-  let value = expression(lexemes, routine);
+  let value = parseExpression(lexemes, routine);
   value = typeCheck(routine.language, value, getResultType(routine)!);
   eosCheck(lexemes);
 
@@ -292,7 +293,7 @@ function ifStatement(ifLexeme: KeywordLexeme, lexemes: Lexemes, routine: Subrout
   if (!lexemes.get()) {
     throw new CompilerError('"if (" must be followed by a Boolean expression.', lexemes.get(-1));
   }
-  let condition = expression(lexemes, routine);
+  let condition = parseExpression(lexemes, routine);
   condition = typeCheck(routine.language, condition, "boolean");
 
   // expecting a closing bracket
@@ -385,7 +386,7 @@ function forStatement(
   if (!lexemes.get()) {
     throw new CompilerError('"for (...;" must be followed by a loop condition.', lexemes.get(-1));
   }
-  let condition = expression(lexemes, routine);
+  let condition = parseExpression(lexemes, routine);
   condition = typeCheck(routine.language, condition, "boolean");
   eosCheck(lexemes);
 
@@ -473,7 +474,7 @@ function doStatement(
   if (!lexemes.get()) {
     throw new CompilerError('"while (" must be followed by a boolean expression.', lexemes.get(-1));
   }
-  let condition = expression(lexemes, routine);
+  let condition = parseExpression(lexemes, routine);
   condition = typeCheck(routine.language, condition, "boolean");
   // negate the condition
   const notToken = token("operator", "!", condition.lexeme.line, condition.lexeme.character);
@@ -514,7 +515,7 @@ function whileStatement(
   if (!lexemes.get()) {
     throw new CompilerError('"while (" must be followed by a Boolean expression.', lexemes.get(-1));
   }
-  let condition = expression(lexemes, routine);
+  let condition = parseExpression(lexemes, routine);
   condition = typeCheck(routine.language, condition, "boolean");
 
   // expecting a closing bracket

@@ -1,10 +1,11 @@
 import type { Type } from "../../lexer/types.ts";
 import { CompilerError } from "../../tools/error.ts";
+import evaluate from "../common/evaluate.ts";
+import parseExpression from "../common/expression.ts";
+import typeCheck from "../common/typeCheck.ts";
 import type { Lexemes } from "../definitions/lexemes.ts";
 import type { Program } from "../definitions/routines/program.ts";
 import type { Subroutine } from "../definitions/routines/subroutine.ts";
-import evaluate from "../evaluate.ts";
-import { expression, typeCheck } from "../expression.ts";
 
 /** parses lexemes at a type specification */
 export default function type(
@@ -48,7 +49,7 @@ export default function type(
       // expecting comma separated list of dimensions
       while (lexemes.get() && lexemes.get()?.content !== "]") {
         // expecting start index
-        const startExp = expression(lexemes, routine);
+        const startExp = parseExpression(lexemes, routine);
         typeCheck(routine.language, startExp, "integer");
         const start = evaluate(startExp, "Pascal", "array") as number;
         // expecting ".."
@@ -60,7 +61,7 @@ export default function type(
         }
         lexemes.next();
         // expecting end index
-        const endExp = expression(lexemes, routine);
+        const endExp = parseExpression(lexemes, routine);
         typeCheck(routine.language, endExp, "integer");
         const end = evaluate(endExp, "Pascal", "array") as number;
         // push the dimensions and move on
@@ -110,7 +111,7 @@ export default function type(
     if (lexemes.get()?.content === "[") {
       lexemes.next();
       // expecting positive integer
-      const stringLengthExp = expression(lexemes, routine);
+      const stringLengthExp = parseExpression(lexemes, routine);
       typeCheck(routine.language, stringLengthExp, "integer");
       stringLength = evaluate(stringLengthExp, "Pascal", "string") as number;
       // expecting closing bracket

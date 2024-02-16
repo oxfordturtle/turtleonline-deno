@@ -1,7 +1,7 @@
 import { CompilerError } from "../../tools/error.ts";
+import * as find from "../common/find.ts";
 import type { Lexemes } from "../definitions/lexemes.ts";
 import type { Routine } from "../definitions/routine.ts";
-import * as find from "../find.ts";
 
 /** parses lexeme as an identifier (checking for potential errors) */
 export default function identifier(

@@ -1,5 +1,7 @@
 import { type IdentifierLexeme } from "../../../lexer/lexeme.ts";
 import { CompilerError } from "../../../tools/error.ts";
+import parseExpression from "../../common/expression.ts";
+import typeCheck from "../../common/typeCheck.ts";
 import { type Expression } from "../../definitions/expression.ts";
 import makeVariableValue from "../../definitions/expressions/variableValue.ts";
 import type { Lexemes } from "../../definitions/lexemes.ts";
@@ -9,7 +11,6 @@ import makeVariableAssignment, {
   type VariableAssignment,
 } from "../../definitions/statements/variableAssignment.ts";
 import { isArray, type Variable } from "../../definitions/variable.ts";
-import { expression, typeCheck } from "../../expression.ts";
 
 export default (
   variableLexeme: IdentifierLexeme,
@@ -24,7 +25,7 @@ export default (
       lexemes.next();
       while (lexemes.get() && lexemes.get()?.content !== "]") {
         // expecting integer expression for the element index
-        let exp = expression(lexemes, routine);
+        let exp = parseExpression(lexemes, routine);
         exp = typeCheck(routine.language, exp, variable);
         indexes.push(exp);
         // maybe move past "]["
@@ -42,7 +43,7 @@ export default (
     } else if (variable.type === "string") {
       lexemes.next();
       // expecting integer expression for the character index
-      let exp = expression(lexemes, routine);
+      let exp = parseExpression(lexemes, routine);
       exp = typeCheck(routine.language, exp, variable);
       indexes.push(exp);
       // expecting closing bracket
@@ -101,7 +102,7 @@ export default (
       lexemes.get(-1)
     );
   }
-  let value = expression(lexemes, routine);
+  let value = parseExpression(lexemes, routine);
   const variableValue = makeVariableValue(variableLexeme, variable);
   variableValue.indexes.push(...indexes);
 

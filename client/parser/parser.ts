@@ -9,27 +9,23 @@ import pascalParser from "./pascal/parser.ts";
 import pythonParser from "./python/parser.ts";
 import typeScriptParser from "./typescript/parser.ts";
 
-/** parses codes string or lexemes and returns a program object */
-export default function parser(rawLexemes: Lexeme[], language: Language): Program {
+const parseProgram = (rawLexemes: Lexeme[], language: Language): Program => {
   const lexemes = makeLexemes(rawLexemes);
 
   switch (language) {
     case "BASIC":
       return basicParser(lexemes);
-
     case "C":
       return cParser(lexemes);
-
     case "Java":
       return javaParser(lexemes);
-
     case "Pascal":
       return pascalParser(lexemes);
-
     case "Python":
       return pythonParser(lexemes);
-
     case "TypeScript":
       return typeScriptParser(lexemes);
   }
-}
+};
+
+export default parseProgram;

@@ -1,9 +1,10 @@
 import { CompilerError } from "../../tools/error.ts";
+import evaluate from "../common/evaluate.ts";
+import parseExpression from "../common/expression.ts";
+import typeCheck from "../common/typeCheck.ts";
 import constant, { type Constant } from "../definitions/constant.ts";
 import type { Lexemes } from "../definitions/lexemes.ts";
 import type { Routine } from "../definitions/routine.ts";
-import evaluate from "../evaluate.ts";
-import { expression, typeCheck } from "../expression.ts";
 import identifier from "./identifier.ts";
 import type from "./type.ts";
 
@@ -37,7 +38,7 @@ export default (
   lexemes.next();
 
   // expecting value expression
-  const exp = expression(lexemes, routine);
+  const exp = parseExpression(lexemes, routine);
   typeCheck(routine.language, exp, constantType);
   const value = evaluate(exp, "TypeScript", "constant");
 

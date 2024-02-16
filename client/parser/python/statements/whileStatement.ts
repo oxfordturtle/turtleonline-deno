@@ -1,9 +1,10 @@
 import { type KeywordLexeme } from "../../../lexer/lexeme.ts";
 import { CompilerError } from "../../../tools/error.ts";
+import parseExpression from "../../common/expression.ts";
+import typeCheck from "../../common/typeCheck.ts";
 import type { Lexemes } from "../../definitions/lexemes.ts";
 import { type Routine } from "../../definitions/routine.ts";
 import makeWhileStatement, { type WhileStatement } from "../../definitions/statements/whileStatement.ts";
-import { expression, typeCheck } from "../../expression.ts";
 import parseBlock from "./block.ts";
 
 export default (whileLexeme: KeywordLexeme, lexemes: Lexemes, routine: Routine): WhileStatement => {
@@ -11,7 +12,7 @@ export default (whileLexeme: KeywordLexeme, lexemes: Lexemes, routine: Routine):
   if (!lexemes.get()) {
     throw new CompilerError('"while" must be followed by a Boolean expression.', whileLexeme);
   }
-  let condition = expression(lexemes, routine);
+  let condition = parseExpression(lexemes, routine);
   condition = typeCheck(routine.language, condition, "boolean");
 
   // expecting a colon

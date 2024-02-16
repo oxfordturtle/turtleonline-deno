@@ -1,9 +1,10 @@
 import { CompilerError } from "../../tools/error.ts";
+import evaluate from "../common/evaluate.ts";
+import parseExpression from "../common/expression.ts";
+import typeCheck from "../common/typeCheck.ts";
 import type { Lexemes } from "../definitions/lexemes.ts";
 import type { Routine } from "../definitions/routine.ts";
 import makeVariable, { type Variable } from "../definitions/variable.ts";
-import evaluate from "../evaluate.ts";
-import { expression, typeCheck } from "../expression.ts";
 import identifier from "./identifier.ts";
 import type from "./type.ts";
 
@@ -49,7 +50,7 @@ export default function variable(lexemes: Lexemes, routine: Routine): Variable {
         lexemes.get(-1)
       );
     }
-    const exp = expression(lexemes, routine);
+    const exp = parseExpression(lexemes, routine);
     typeCheck(routine.language, exp, "integer");
     const value = evaluate(exp, "C", "array");
     if (typeof value === "string") {

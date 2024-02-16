@@ -1,12 +1,12 @@
 import { type Lexeme } from "../../lexer/lexeme.ts";
 import { CompilerError } from "../../tools/error.ts";
-import { procedureCall } from "../call.ts";
+import * as find from "../common/find.ts";
+import parseProcedureCall from "../common/procedureCall.ts";
 import type { Lexemes } from "../definitions/lexemes.ts";
 import type { Routine } from "../definitions/routine.ts";
 import type { Subroutine } from "../definitions/routines/subroutine.ts";
 import type { Statement } from "../definitions/statement.ts";
 import makePassStatement from "../definitions/statements/passStatement.ts";
-import * as find from "../find.ts";
 import identifiers from "./identifiers.ts";
 import eosCheck from "./statements/eosCheck.ts";
 import parseForStatement from "./statements/forStatement.ts";
@@ -39,7 +39,7 @@ export default (lexeme: Lexeme, lexemes: Lexemes, routine: Routine): Statement =
         statement = parseVariableAssignment(lexeme, lexemes, routine, foo);
       } else if (bar) {
         lexemes.next();
-        statement = procedureCall(lexeme, lexemes, routine, bar);
+        statement = parseProcedureCall(lexeme, lexemes, routine, bar);
       } else {
         statement = parseVariableDeclaration(lexeme, lexemes, routine);
       }

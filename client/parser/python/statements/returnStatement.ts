@@ -1,12 +1,13 @@
 import { type KeywordLexeme } from "../../../lexer/lexeme.ts";
 import { CompilerError } from "../../../tools/error.ts";
+import parseExpression from "../../common/expression.ts";
+import typeCheck from "../../common/typeCheck.ts";
 import { getType } from "../../definitions/expression.ts";
 import type { Lexemes } from "../../definitions/lexemes.ts";
 import type { Routine } from "../../definitions/routine.ts";
 import { getResultVariable } from "../../definitions/routines/subroutine.ts";
-import makeReturnStatement, { type ReturnStatement} from "../../definitions/statements/returnStatement.ts";
+import makeReturnStatement, { type ReturnStatement } from "../../definitions/statements/returnStatement.ts";
 import makeVariable from "../../definitions/variable.ts";
-import { expression, typeCheck } from "../../expression.ts";
 import eosCheck from "./eosCheck.ts";
 
 export default (
@@ -20,7 +21,7 @@ export default (
   }
 
   // expecting an expression of the right type, followed by end of statement
-  let value = expression(lexemes, routine);
+  let value = parseExpression(lexemes, routine);
   const resultVariable = getResultVariable(routine);
   if (resultVariable !== undefined) {
     // check against previous return statements

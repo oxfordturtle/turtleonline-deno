@@ -2,8 +2,9 @@ import type { Type } from "../../lexer/types.ts";
 import { CompilerError } from "../../tools/error.ts";
 import type { Lexemes } from "../definitions/lexemes.ts";
 import type { Routine } from "../definitions/routine.ts";
-import evaluate from "../evaluate.ts";
-import { expression, typeCheck } from "../expression.ts";
+import evaluate from "../common/evaluate.ts";
+import parseExpression from "../common/expression.ts";
+import typeCheck from "../common/typeCheck.ts";
 
 /** parses lexemes at a type specification */
 export default function type(
@@ -83,7 +84,7 @@ export default function type(
         lexemes.get(-1)
       );
     }
-    const exp = expression(lexemes, routine);
+    const exp = parseExpression(lexemes, routine);
     typeCheck(routine.language, exp, "integer");
     const value = evaluate(exp, "TypeScript", "array");
     if (typeof value === "string") {

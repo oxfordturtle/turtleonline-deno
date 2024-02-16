@@ -1,170 +1,24 @@
-import type { Parameter } from "../constants/commands.ts";
-import type { Language } from "../constants/languages.ts";
-import type { Lexeme, OperatorLexeme, TypeLexeme } from "../lexer/lexeme.ts";
-import type { Operator, Type } from "../lexer/types.ts";
-import { CompilerError } from "../tools/error.ts";
-import { functionCall, methodFunctionCall } from "./call.ts";
-import { getType, type Expression } from "./definitions/expression.ts";
-import makeCastExpression from "./definitions/expressions/castExpression.ts";
-import makeColourValue from "./definitions/expressions/colourValue.ts";
-import makeCompoundExpression from "./definitions/expressions/compoundExpression.ts";
-import makeConstantValue from "./definitions/expressions/constantValue.ts";
-import makeInputValue from "./definitions/expressions/inputValue.ts";
-import makeIntegerValue from "./definitions/expressions/integerValue.ts";
-import makeStringValue from "./definitions/expressions/stringValue.ts";
-import makeVariableAddress from "./definitions/expressions/variableAddress.ts";
-import makeVariableValue from "./definitions/expressions/variableValue.ts";
-import { type Lexemes } from "./definitions/lexemes.ts";
-import { operator, stringOperator } from "./definitions/operators.ts";
-import type { Routine } from "./definitions/routine.ts";
-import { getResultVariable } from "./definitions/routines/subroutine.ts";
-import makeVariable, { isArray, type Variable } from "./definitions/variable.ts";
+import type { Lexeme, TypeLexeme } from "../../lexer/lexeme.ts";
+import { CompilerError } from "../../tools/error.ts";
+import parseFunctionCall, { parseMethodFunctionCall } from "./functionCall.ts";
+import { getType, type Expression } from "../definitions/expression.ts";
+import makeCastExpression from "../definitions/expressions/castExpression.ts";
+import makeColourValue from "../definitions/expressions/colourValue.ts";
+import makeCompoundExpression from "../definitions/expressions/compoundExpression.ts";
+import makeConstantValue from "../definitions/expressions/constantValue.ts";
+import makeInputValue from "../definitions/expressions/inputValue.ts";
+import makeIntegerValue from "../definitions/expressions/integerValue.ts";
+import makeStringValue from "../definitions/expressions/stringValue.ts";
+import makeVariableAddress from "../definitions/expressions/variableAddress.ts";
+import makeVariableValue from "../definitions/expressions/variableValue.ts";
+import { type Lexemes } from "../definitions/lexemes.ts";
+import type { Routine } from "../definitions/routine.ts";
+import { isArray } from "../definitions/variable.ts";
+import parseExpression from "./expression.ts";
 import * as find from "./find.ts";
+import typeCheck from "./typeCheck.ts";
 
-/** checks types match (throws an error if not) */
-export function typeCheck(
-  language: Language,
-  found: Expression,
-  expected: Type | Variable | Parameter
-): Expression {
-  const expectedType = typeof expected === "string" ? expected : expected.type;
-  const foundType = getType(found);
-
-  // if expected type isn't yet certain, infer it
-  if (typeof expected !== "string" && expected.__ === "Variable" && !expected.typeIsCertain) {
-    expected.type = foundType;
-    expected.typeIsCertain = true;
-    return found;
-  }
-
-  // if found type isn't yet certain, infer it
-  if (found.expressionType === "variable" && !found.variable.typeIsCertain) {
-    found.variable.type = expectedType;
-    found.variable.typeIsCertain = true;
-    return found;
-  }
-  if (
-    found.expressionType === "function" &&
-    found.command.__ === "subroutine" &&
-    !found.command.typeIsCertain
-  ) {
-    const result = getResultVariable(found.command);
-    if (result) {
-      result.type = found.type;
-      result.typeIsCertain = true;
-    } else {
-      const result = makeVariable("!result", found.command);
-      result.type = found.type;
-      result.typeIsCertain = true;
-      found.command.variables.unshift(result);
-    }
-    found.command.typeIsCertain = true;
-    return found;
-  }
-
-  // found and expected the same is obviously ok
-  if (foundType === expectedType) {
-    return found;
-  }
-
-  // if STRING is expected, CHARACTER is ok
-  if (expectedType === "string" && foundType === "character") {
-    // but we'll need to cast it as a string
-    return makeCastExpression(found.lexeme, "string", found);
-  }
-
-  // if CHARACTER is expected, STRING is ok
-  // (the whole expression will end up being a string anyway)
-  if (expectedType === "character" && foundType === "string") {
-    return found;
-  }
-
-  // if CHARACTER is expected, INTEGER is ok
-  if (expectedType === "character" && foundType === "integer") {
-    return found;
-  }
-
-  // if INTEGER is expected, CHARACTER is ok
-  if (expectedType === "integer" && foundType === "character") {
-    return found;
-  }
-
-  // if BOOLINT is expected, either BOOLEAN or INTEGER is ok
-  if (expectedType === "boolint" && (foundType === "boolean" || foundType === "integer")) {
-    return found;
-  }
-
-  // if BOOLINT is found, either BOOLEAN or INTEGER expected is ok
-  if (foundType === "boolint" && (expectedType === "boolean" || expectedType === "integer")) {
-    return found;
-  }
-
-  // if INTEGER is found and BOOLEAN is expected, that's fine in Python and TypeScript
-  if (
-    (language === "Python" || language === "TypeScript") &&
-    expectedType === "boolean" &&
-    foundType === "integer"
-  ) {
-    return found;
-  }
-
-  // everything else is an error
-  throw new CompilerError(
-    `Type error: '${expectedType}' expected but '${foundType}' found.`,
-    found.lexeme
-  );
-}
-
-/** parses lexemes as an expression */
-export function expression(lexemes: Lexemes, routine: Routine, level = 0): Expression {
-  // break out of recursion at level > 2
-  if (level > 2) {
-    return factor(lexemes, routine);
-  }
-
-  // evaluate the first bit
-  let exp = expression(lexemes, routine, level + 1);
-
-  while (lexemes.get() && operator(lexemes.get() as Lexeme, level)) {
-    // get the operator (provisionally), and save the operator lexeme
-    const lexeme = lexemes.get() as OperatorLexeme;
-    let op = operator(lexeme, level) as Operator;
-
-    // move past the operator
-    lexemes.next();
-
-    // evaluate the second bit
-    let nextExp = expression(lexemes, routine, level + 1);
-
-    // check types match (check both ways - so that if there's a character on
-    // either side, and a string on the other, we'll know to convert the
-    // character to a string)
-    exp = typeCheck(routine.language, exp, getType(nextExp));
-    nextExp = typeCheck(routine.language, nextExp, getType(exp));
-
-    // maybe replace provisional operator with its string equivalent
-    if (getType(exp) === "string" || getType(nextExp) === "string") {
-      op = stringOperator(op);
-    }
-    if (getType(exp) === "character" || getType(nextExp) === "character") {
-      // TODO: reconsider this, as this behaviour is not ideal
-      // whether to use the string operator should be determined by the context
-      // i.e. if we're expecting a string, use the string equivalent ??
-      if (op === "plus") {
-        op = stringOperator(op);
-      }
-    }
-
-    // create a compound expression with the operator
-    exp = makeCompoundExpression(lexeme, exp, nextExp, op);
-  }
-
-  // return the expression
-  return exp;
-}
-
-/** parses lexemes as a factor */
-function factor(lexemes: Lexemes, routine: Routine): Expression {
+const parseFactor = (lexemes: Lexemes, routine: Routine): Expression => {
   const lexeme = lexemes.get() as Lexeme;
   let exp: Expression;
 
@@ -174,13 +28,13 @@ function factor(lexemes: Lexemes, routine: Routine): Expression {
       switch (lexeme.subtype) {
         case "subt":
           lexemes.next();
-          exp = factor(lexemes, routine);
+          exp = parseFactor(lexemes, routine);
           exp = typeCheck(routine.language, exp, "integer");
           return makeCompoundExpression(lexeme, null, exp, "neg");
 
         case "not":
           lexemes.next();
-          exp = factor(lexemes, routine);
+          exp = parseFactor(lexemes, routine);
           exp = typeCheck(routine.language, exp, "boolint");
           return makeCompoundExpression(lexeme, null, exp, "not");
 
@@ -189,7 +43,7 @@ function factor(lexemes: Lexemes, routine: Routine): Expression {
             throw new CompilerError("Expression cannot begin with {lex}.", lexemes.get());
           }
           lexemes.next();
-          exp = factor(lexemes, routine);
+          exp = parseFactor(lexemes, routine);
           if (exp.expressionType !== "variable") {
             throw new CompilerError('Address operator "&" must be followed by a variable.', lexeme);
           }
@@ -231,7 +85,7 @@ function factor(lexemes: Lexemes, routine: Routine): Expression {
           if (constant.type === "string") {
             lexemes.next();
             // expecting an integer expression for the character index
-            let exp = expression(lexemes, routine);
+            let exp = parseExpression(lexemes, routine);
             exp = typeCheck(routine.language, exp, "integer");
             constantValue.indexes.push(exp);
             // expecting closing bracket
@@ -261,7 +115,7 @@ function factor(lexemes: Lexemes, routine: Routine): Expression {
             lexemes.next();
             while (lexemes.get() && lexemes.get()?.content !== close) {
               // expecting integer expression for the element index
-              let exp = expression(lexemes, routine);
+              let exp = parseExpression(lexemes, routine);
               exp = typeCheck(routine.language, exp, "integer");
               variableValue.indexes.push(exp);
               if (routine.language === "BASIC" || routine.language === "Pascal") {
@@ -296,12 +150,12 @@ function factor(lexemes: Lexemes, routine: Routine): Expression {
           } else if (variable.type === "string") {
             lexemes.next();
             // expecting integer expression for the character index
-            exp = expression(lexemes, routine);
+            exp = parseExpression(lexemes, routine);
             exp = typeCheck(routine.language, exp, "integer");
             if (routine.language === "Python" && lexemes.get()?.content === ":") {
               lexemes.next();
               // expecting integer expression for the character index
-              let exp2 = expression(lexemes, routine);
+              let exp2 = parseExpression(lexemes, routine);
               exp2 = typeCheck(routine.language, exp2, "integer");
               variableValue.slice = [exp, exp2];
             } else {
@@ -341,7 +195,7 @@ function factor(lexemes: Lexemes, routine: Routine): Expression {
             throw new CompilerError(`Method "${methodLexeme.value}" is not defined.`, methodLexeme);
           }
           lexemes.next();
-          return methodFunctionCall(methodLexeme, lexemes, routine, method, variableValue);
+          return parseMethodFunctionCall(methodLexeme, lexemes, routine, method, variableValue);
         }
         // return the variable value
         return variableValue;
@@ -358,7 +212,7 @@ function factor(lexemes: Lexemes, routine: Routine): Expression {
       const command = find.command(routine, lexeme.value);
       if (command) {
         lexemes.next();
-        return functionCall(lexeme, lexemes, routine, command);
+        return parseFunctionCall(lexeme, lexemes, routine, command);
       }
 
       // if none of those were found, throw an error
@@ -387,7 +241,7 @@ function factor(lexemes: Lexemes, routine: Routine): Expression {
           );
         }
         lexemes.next();
-        exp = expression(lexemes, routine);
+        exp = parseExpression(lexemes, routine);
         const expType = getType(exp);
         if (type !== expType) {
           if (type === "boolean" && expType === "character") {
@@ -414,7 +268,7 @@ function factor(lexemes: Lexemes, routine: Routine): Expression {
       else if (lexemes.get()?.content === "(") {
         // what follows should be an expression
         lexemes.next();
-        exp = expression(lexemes, routine);
+        exp = parseExpression(lexemes, routine);
 
         // now check for a closing bracket
         if (lexemes.get() && lexemes.get()?.content === ")") {
@@ -432,3 +286,5 @@ function factor(lexemes: Lexemes, routine: Routine): Expression {
     }
   }
 }
+
+export default parseFactor;

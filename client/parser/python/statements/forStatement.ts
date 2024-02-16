@@ -1,6 +1,10 @@
 import { integerLexeme, operatorLexeme, type KeywordLexeme } from "../../../lexer/lexeme.ts";
 import { token } from "../../../tokenizer/token.ts";
 import { CompilerError } from "../../../tools/error.ts";
+import evaluate from "../../common/evaluate.ts";
+import parseExpression from "../../common/expression.ts";
+import * as find from "../../common/find.ts";
+import typeCheck from "../../common/typeCheck.ts";
 import { type Expression } from "../../definitions/expression.ts";
 import makeCompoundExpression from "../../definitions/expressions/compoundExpression.ts";
 import makeIntegerValue from "../../definitions/expressions/integerValue.ts";
@@ -10,9 +14,6 @@ import { type Routine } from "../../definitions/routine.ts";
 import makeForStatement, { type ForStatement } from "../../definitions/statements/forStatement.ts";
 import makeVariableAssignment, { type VariableAssignment } from "../../definitions/statements/variableAssignment.ts";
 import makeVariable from "../../definitions/variable.ts";
-import evaluate from "../../evaluate.ts";
-import { expression, typeCheck } from "../../expression.ts";
-import * as find from "../../find.ts";
 import parseBlock from "./block.ts";
 
 export default (forLexeme: KeywordLexeme, lexemes: Lexemes, routine: Routine): ForStatement => {
@@ -79,7 +80,7 @@ export default (forLexeme: KeywordLexeme, lexemes: Lexemes, routine: Routine): F
     throw new CompilerError('Missing first argument to the "range" function.', lexemes.get(-1));
   }
   const providedValues: [Expression, Expression?, Expression?] = [
-    typeCheck(routine.language, expression(lexemes, routine), "integer"),
+    typeCheck(routine.language, parseExpression(lexemes, routine), "integer"),
   ];
 
   // expecting a comma or closing bracket
@@ -99,7 +100,7 @@ export default (forLexeme: KeywordLexeme, lexemes: Lexemes, routine: Routine): F
     if (!lexemes.get()) {
       throw new CompilerError('Too few arguments for "range" function.', lexemes.get(-1));
     }
-    providedValues.push(typeCheck(routine.language, expression(lexemes, routine), "integer"));
+    providedValues.push(typeCheck(routine.language, parseExpression(lexemes, routine), "integer"));
   }
 
   // expecting a comma or closing bracket
@@ -119,7 +120,7 @@ export default (forLexeme: KeywordLexeme, lexemes: Lexemes, routine: Routine): F
     if (!lexemes.get()) {
       throw new CompilerError('Too few arguments for "range" function.', lexemes.get(-1));
     }
-    providedValues.push(typeCheck(routine.language, expression(lexemes, routine), "integer"));
+    providedValues.push(typeCheck(routine.language, parseExpression(lexemes, routine), "integer"));
   }
 
   // the things we want to know

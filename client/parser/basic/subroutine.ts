@@ -8,7 +8,7 @@ import makeSubroutine, {
 } from "../definitions/routines/subroutine.ts";
 import makeVariable, { type Variable } from "../definitions/variable.ts";
 import { subroutineName } from "./identifier.ts";
-import { newLine } from "./statement.ts";
+import parseNewLine from "./statements/newLine.ts";
 import { variable } from "./variable.ts";
 
 export default (lexeme: KeywordLexeme, lexemes: Lexemes, program: Program): Subroutine => {
@@ -35,7 +35,7 @@ export default (lexeme: KeywordLexeme, lexemes: Lexemes, program: Program): Subr
   if (!lexemes.get()) {
     throw new CompilerError("No statements found after subroutine declaration.", lexemes.get(-1));
   }
-  newLine(lexemes);
+  parseNewLine(lexemes);
 
   // save first inner lexeme index (for the second pass)
   subroutine.start = lexemes.index;
@@ -81,7 +81,7 @@ export default (lexeme: KeywordLexeme, lexemes: Lexemes, program: Program): Subr
   }
 
   // new line check
-  newLine(lexemes);
+  parseNewLine(lexemes);
 
   // return the subroutine
   return subroutine;

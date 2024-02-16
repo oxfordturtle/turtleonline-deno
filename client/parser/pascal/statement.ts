@@ -7,7 +7,10 @@ import {
 } from "../../lexer/lexeme.ts";
 import { token } from "../../tokenizer/token.ts";
 import { CompilerError } from "../../tools/error.ts";
-import { procedureCall } from "../call.ts";
+import parseExpression from "../common/expression.ts";
+import * as find from "../common/find.ts";
+import parseProcedureCall from "../common/procedureCall.ts";
+import typeCheck from "../common/typeCheck.ts";
 import { type Expression } from "../definitions/expression.ts";
 import makeCompoundExpression from "../definitions/expressions/compoundExpression.ts";
 import makeIntegerValue from "../definitions/expressions/integerValue.ts";
@@ -29,8 +32,6 @@ import makeWhileStatement, {
   type WhileStatement,
 } from "../definitions/statements/whileStatement.ts";
 import { isArray, type Variable } from "../definitions/variable.ts";
-import { expression, typeCheck } from "../expression.ts";
-import * as find from "../find.ts";
 
 /** parses semicolons */
 export function semicolon(lexemes: Lexemes, compulsory = false, context = "statement"): void {
@@ -149,7 +150,7 @@ function simpleStatement(
   const command = find.command(routine, lexeme.value);
   if (command) {
     lexemes.next();
-    return procedureCall(lexeme, lexemes, routine, command);
+    return parseProcedureCall(lexeme, lexemes, routine, command);
   }
 
   // if there are no matches, throw an error
@@ -170,7 +171,7 @@ function variableAssignment(
       lexemes.next();
       while (lexemes.get() && lexemes.get()?.content !== "]") {
         // expecting integer expression for the element index
-        let exp = expression(lexemes, routine);
+        let exp = parseExpression(lexemes, routine);
         exp = typeCheck(routine.language, exp, "integer");
         indexes.push(exp);
         // maybe move past comma
@@ -191,7 +192,7 @@ function variableAssignment(
     } else if (variable.type === "string") {
       lexemes.next();
       // expecting integer expression for the character index
-      let exp = expression(lexemes, routine);
+      let exp = parseExpression(lexemes, routine);
       exp = typeCheck(routine.language, exp, "integer");
       indexes.push(exp);
       // expecting closing bracket
@@ -241,7 +242,7 @@ function variableAssignment(
   }
   const typeToCheck =
     variable.type === "string" && indexes.length > 0 ? "character" : variable.type;
-  let value = expression(lexemes, routine);
+  let value = parseExpression(lexemes, routine);
   value = typeCheck(routine.language, value, typeToCheck);
 
   // create and return the variable assignment
@@ -258,7 +259,7 @@ function ifStatement(
   if (!lexemes.get()) {
     throw new CompilerError('"IF" must be followed by a boolean expression.', ifLexeme);
   }
-  let condition = expression(lexemes, routine);
+  let condition = parseExpression(lexemes, routine);
   condition = typeCheck(routine.language, condition, "boolean");
 
   // now we can create the statement
@@ -363,7 +364,7 @@ function forStatement(
       toLexeme
     );
   }
-  let finalValue = expression(lexemes, routine);
+  let finalValue = parseExpression(lexemes, routine);
   finalValue = typeCheck(routine.language, finalValue, "integer");
   const comparisonToken = token("operator", toOrDownTo === "to" ? "<=" : ">=", forLexeme.line, -1);
   const comparisonLexeme = operatorLexeme(comparisonToken, "Pascal");
@@ -409,7 +410,7 @@ function repeatStatement(
   if (!lexemes.get()) {
     throw new CompilerError('"UNTIL" must be followed by a boolean expression.', lexemes.get(-1));
   }
-  let condition = expression(lexemes, routine);
+  let condition = parseExpression(lexemes, routine);
   condition = typeCheck(routine.language, condition, "boolean");
 
   // now we have everything we need
@@ -428,7 +429,7 @@ function whileStatement(
   if (!lexemes.get()) {
     throw new CompilerError('"WHILE" must be followed by a boolean expression.', whileLexeme);
   }
-  let condition = expression(lexemes, routine);
+  let condition = parseExpression(lexemes, routine);
   condition = typeCheck(routine.language, condition, "boolean");
 
   // now we can create the statement

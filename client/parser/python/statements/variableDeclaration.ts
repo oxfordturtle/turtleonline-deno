@@ -1,12 +1,12 @@
 import { type IdentifierLexeme } from "../../../lexer/lexeme.ts";
 import { CompilerError } from "../../../tools/error.ts";
+import evaluate from "../../common/evaluate.ts";
+import parseExpression from "../../common/expression.ts";
 import constant from "../../definitions/constant.ts";
 import type { Lexemes } from "../../definitions/lexemes.ts";
 import { type Routine } from "../../definitions/routine.ts";
 import makePassStatement, { type PassStatement } from "../../definitions/statements/passStatement.ts";
 import type { VariableAssignment } from "../../definitions/statements/variableAssignment.ts";
-import evaluate from "../../evaluate.ts";
-import { expression } from "../../expression.ts";
 import variable from "../variable.ts";
 import parseVariableAssignment from "./variableAssignment.ts";
 
@@ -30,7 +30,7 @@ export default (
     lexemes.next();
 
     // expecting an expression
-    const exp = expression(lexemes, routine);
+    const exp = parseExpression(lexemes, routine);
     const value = evaluate(exp, "Python", "constant");
 
     // add the constant to the routine

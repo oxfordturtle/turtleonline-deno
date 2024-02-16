@@ -1,14 +1,13 @@
-import colours, { type Colour } from "../constants/colours.ts";
-import commands, { type Command } from "../constants/commands.ts";
-import inputs, { type Input } from "../constants/inputs.ts";
-import type { Constant } from "./definitions/constant.ts";
-import { type Routine } from "./definitions/routine.ts";
-import { getTurtleVariables } from "./definitions/routines/program.ts";
-import { getProgram, type Subroutine } from "./definitions/routines/subroutine.ts";
-import type { Variable } from "./definitions/variable.ts";
+import colours, { type Colour } from "../../constants/colours.ts";
+import commands, { type Command } from "../../constants/commands.ts";
+import inputs, { type Input } from "../../constants/inputs.ts";
+import type { Constant } from "../definitions/constant.ts";
+import { type Routine } from "../definitions/routine.ts";
+import { getTurtleVariables } from "../definitions/routines/program.ts";
+import { getProgram, type Subroutine } from "../definitions/routines/subroutine.ts";
+import type { Variable } from "../definitions/variable.ts";
 
-/** looks for a constant visible to the given routine */
-export function constant(routine: Routine, name: string): Constant | undefined {
+export const constant = (routine: Routine, name: string): Constant | undefined => {
   const searchName = routine.language === "Pascal" ? name.toLowerCase() : name;
   const match = routine.constants.find((x) => x.name === searchName);
   if (match) {
@@ -17,23 +16,20 @@ export function constant(routine: Routine, name: string): Constant | undefined {
   if (routine.__ === "Subroutine") {
     return constant(routine.parent, name);
   }
-}
+};
 
-/** looks for a colour */
-export function colour(routine: Routine, name: string): Colour | undefined {
+export const colour = (routine: Routine, name: string): Colour | undefined => {
   const tempName = routine.language === "Pascal" ? name.toLowerCase() : name;
   const searchName = tempName.replace(/gray$/, "grey").replace(/GRAY$/, "GREY"); // allow American spelling
   return colours.find((x) => x.names[routine.language] === searchName);
-}
+};
 
-/** looks for an input query code */
-export function input(routine: Routine, name: string): Input | undefined {
+export const input = (routine: Routine, name: string): Input | undefined => {
   const searchName = routine.language === "Pascal" ? name.toLowerCase() : name;
   return inputs.find((x) => x.name === searchName);
-}
+};
 
-/** looks for a variable visible to this routine */
-export function variable(routine: Routine, name: string): Variable | undefined {
+export const variable = (routine: Routine, name: string): Variable | undefined => {
   const searchName = routine.language === "Pascal" ? name.toLowerCase() : name;
 
   // look for turtle variable first
@@ -66,10 +62,9 @@ export function variable(routine: Routine, name: string): Variable | undefined {
     }
     return match;
   }
-}
+};
 
-/** tests whether a potential variable/constant/subroutine name would clash in this routine's scope */
-export function isDuplicate(routine: Routine, name: string): boolean {
+export const isDuplicate = (routine: Routine, name: string): boolean => {
   const searchName = routine.language === "Pascal" ? name.toLowerCase() : name;
   if (routine.constants.some((x) => x.name === searchName)) return true;
   if (routine.language === "Python" && routine.__ === "Subroutine") {
@@ -79,10 +74,9 @@ export function isDuplicate(routine: Routine, name: string): boolean {
   if (routine.variables.some((x) => x.name === searchName)) return true;
   if (routine.subroutines.some((x) => x.name === searchName)) return true;
   return false;
-}
+};
 
-/** looks for a subroutine visible to this routine */
-export function subroutine(routine: Routine, name: string): Subroutine | undefined {
+export const subroutine = (routine: Routine, name: string): Subroutine | undefined => {
   const searchName = routine.language === "Pascal" ? name.toLowerCase() : name;
   // search this routine's subroutines
   const match = routine.subroutines.find((x) => x.name === searchName);
@@ -102,16 +96,13 @@ export function subroutine(routine: Routine, name: string): Subroutine | undefin
     // otherwise search its parents recursively
     return subroutine(routine.parent, searchName);
   }
-}
+};
 
-/** looks for a native turtle command */
-export function nativeCommand(routine: Routine, name: string): Command | undefined {
+export const nativeCommand = (routine: Routine, name: string): Command | undefined => {
   const searchName = routine.language === "Pascal" ? name.toLowerCase() : name;
   return commands.find((x) => x.names[routine.language] === searchName);
-}
+};
 
-/** looks for a command (native or custom) visible to this routine */
-export function command(routine: Routine, name: string): Command | Subroutine | undefined {
+export const command = (routine: Routine, name: string): Command | Subroutine | undefined =>
   // N.B. custom subroutines have priority
-  return subroutine(routine, name) || nativeCommand(routine, name);
-}
+  subroutine(routine, name) || nativeCommand(routine, name);
