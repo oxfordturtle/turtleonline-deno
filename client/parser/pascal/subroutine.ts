@@ -9,7 +9,8 @@ import makeSubroutine, {
 } from "../definitions/routines/subroutine.ts";
 import makeVariable, { type Variable } from "../definitions/variable.ts";
 import identifier from "./identifier.ts";
-import { semicolon, statement } from "./statement.ts";
+import parseStatement from "./statement.ts";
+import parseSemicolon from "./statements/semicolon.ts";
 import type from "./type.ts";
 import { variables } from "./variable.ts";
 
@@ -48,7 +49,7 @@ export default function subroutine(
   }
 
   // semicolon check
-  semicolon(lexemes, true, `${getSubroutineType(sub)} definition`);
+  parseSemicolon(lexemes, true, `${getSubroutineType(sub)} definition`);
 
   // expecting variable declarations, subroutine definitions, or subroutine body
   let begun = false;
@@ -76,7 +77,7 @@ export default function subroutine(
             lexemes.next();
             while (lexemes.get() && lexemes.get()?.content?.toLowerCase() !== "end") {
               const lexeme = lexemes.get() as Lexeme;
-              sub.statements.push(statement(lexeme, lexemes, sub));
+              sub.statements.push(parseStatement(lexeme, lexemes, sub));
             }
             break;
 
@@ -118,7 +119,7 @@ export default function subroutine(
     );
   }
   lexemes.next();
-  semicolon(lexemes, true, `${getSubroutineType(sub)} end`);
+  parseSemicolon(lexemes, true, `${getSubroutineType(sub)} end`);
 
   // return the subroutine
   return sub;

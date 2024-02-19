@@ -3,7 +3,8 @@ import type { Lexemes } from "../definitions/lexemes.ts";
 import makeProgram, { type Program } from "../definitions/routines/program.ts";
 import type { Subroutine } from "../definitions/routines/subroutine.ts";
 import constant from "./constant.ts";
-import { eosCheck, statement } from "./statement.ts";
+import eosCheck from "./statements/eosCheck.ts";
+import parseStatement from "./statement.ts";
 import subroutine from "./subroutine.ts";
 import variable from "./variable.ts";
 
@@ -53,7 +54,7 @@ function parseBody(lexemes: Lexemes, routine: Program | Subroutine): void {
   // second pass: parse the statements of this routine and any subroutines recursively
   lexemes.index = routine.start;
   while (lexemes.index < routine.end) {
-    routine.statements.push(statement(lexemes.get() as Lexeme, lexemes, routine));
+    routine.statements.push(parseStatement(lexemes.get() as Lexeme, lexemes, routine));
   }
   for (const sub of routine.subroutines) {
     parseBody(lexemes, sub);

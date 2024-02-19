@@ -3,7 +3,7 @@ import type { Lexemes } from "../definitions/lexemes.ts";
 import type { Routine } from "../definitions/routine.ts";
 import makeVariable, { type Variable } from "../definitions/variable.ts";
 import identifier from "./identifier.ts";
-import { semicolon } from "./statement.ts";
+import parseSemicolon from "./statements/semicolon.ts";
 import type from "./type.ts";
 
 /** parses lexemes as a declaration of variables (after "var") */
@@ -30,7 +30,7 @@ export function variables(lexemes: Lexemes, routine: Routine): Variable[] {
   }
 
   // expecting a semicolon
-  semicolon(lexemes, true, "variable declaration");
+  parseSemicolon(lexemes, true, "variable declaration");
 
   // an identifier next means more variable declarations
   if (lexemes.get() && lexemes.get()?.type === "identifier") {

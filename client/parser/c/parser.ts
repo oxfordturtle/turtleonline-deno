@@ -5,7 +5,9 @@ import { getAllSubroutines } from "../definitions/routine.ts";
 import makeProgram, { type Program } from "../definitions/routines/program.ts";
 import constant from "./constant.ts";
 import identifier from "./identifier.ts";
-import { eosCheck, simpleStatement, statement } from "./statement.ts";
+import parseStatement from "./statement.ts";
+import eosCheck from "./statements/eosCheck.ts";
+import parseSimpleStatement from "./statements/simpleStatement.ts";
 import subroutine from "./subroutine.ts";
 import type from "./type.ts";
 
@@ -47,7 +49,7 @@ export default function c(lexemes: Lexemes): Program {
         // otherwise its a variable declaration/assignment
         else {
           lexemes.index = lexemeIndex; // go back to the start
-          program.statements.push(simpleStatement(lexeme, lexemes, program));
+          program.statements.push(parseSimpleStatement(lexeme, lexemes, program));
           eosCheck(lexemes);
         }
         break;
@@ -65,7 +67,7 @@ export default function c(lexemes: Lexemes): Program {
     // loop through the lexemes
     lexemes.index = subroutine.start;
     while (lexemes.index < subroutine.end) {
-      subroutine.statements.push(statement(lexemes.get() as Lexeme, lexemes, subroutine));
+      subroutine.statements.push(parseStatement(lexemes.get() as Lexeme, lexemes, subroutine));
     }
   }
 

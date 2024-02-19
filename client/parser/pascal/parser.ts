@@ -4,7 +4,8 @@ import type { Lexemes } from "../definitions/lexemes.ts";
 import makeProgram, { type Program } from "../definitions/routines/program.ts";
 import constant from "./constant.ts";
 import identifier from "./identifier.ts";
-import { semicolon, statement } from "./statement.ts";
+import parseStatement from "./statement.ts";
+import parseSemicolon from "./statements/semicolon.ts";
 import subroutine from "./subroutine.ts";
 import { variables } from "./variable.ts";
 
@@ -24,7 +25,7 @@ export default function pascal(lexemes: Lexemes): Program {
   program.name = identifier(lexemes, program);
 
   // semicolon check
-  semicolon(lexemes, true, "program declaration");
+  parseSemicolon(lexemes, true, "program declaration");
 
   // parse the body of the program (which parses subroutines recursively)
   let begun = false;
@@ -86,7 +87,7 @@ export default function pascal(lexemes: Lexemes): Program {
             lexemes.next();
             while (lexemes.get() && lexemes.get()?.content?.toLowerCase() !== "end") {
               const lexeme = lexemes.get() as Lexeme;
-              program.statements.push(statement(lexeme, lexemes, program));
+              program.statements.push(parseStatement(lexeme, lexemes, program));
             }
             break;
 
