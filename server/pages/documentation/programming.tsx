@@ -58,10 +58,16 @@ const main = (
           Turtle Python 6 - Cellular Automata
         </a>
       </li>
-      <li>Turtle Python 7 - Chaos and Self-Similarity (in preparation, Autumn 2023)</li>
-      <li>Turtle Python 8 - Models in Biology (in preparation, Autumn 2023)</li>
-      <li>Turtle Python 9 - Models in Physics (in preparation, Autumn 2023)</li>
-      <li>Turtle Python 10 - Models in Chemistry (in preparation, Autumn 2023)</li>
+      <li>
+        <a href="/downloads/docs/Turtle_Python_7_Chaotic_Phenomena.pdf">
+          Turtle Python 7 - Chaotic Phenomena
+        </a>
+      </li>
+      <li>
+        <a href="/downloads/docs/Turtle_Python_8_Iterated_Function_Systems.pdf">
+          Turtle Python 8 - Iterated Function Systems
+        </a>
+      </li>
     </ul>
   </>
 );
