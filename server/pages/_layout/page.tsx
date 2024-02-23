@@ -134,6 +134,12 @@ const Nav = ({
                 Turtle System User Guides
               </a>
               <a
+                href="/documentation/machine"
+                className={requestParams.page === "machine" ? "active" : ""}
+              >
+                Turtle Machine Guides
+              </a>
+              <a
                 href="/documentation/help"
                 className={requestParams.page === "help" ? "active" : ""}
               >
@@ -150,12 +156,6 @@ const Nav = ({
                 className={requestParams.page === "exercises" ? "active" : ""}
               >
                 Self-Teach Exercises
-              </a>
-              <a
-                href="/documentation/machine"
-                className={requestParams.page === "machine" ? "active" : ""}
-              >
-                Turtle Machine Specification
               </a>
               <a
                 href="/documentation/languages"
