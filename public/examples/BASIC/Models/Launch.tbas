@@ -17,6 +17,12 @@ t%=0
 dist%=0
 prevdiff%=1
 thrust%=INITTHRUST%
+xthrust%=0
+ythrust%=0
+gravity%=0
+xgravity%=0
+ygravity%=0
+dist%=0
 REPEAT
  PROCdrawrocket
  prevdist%=dist%

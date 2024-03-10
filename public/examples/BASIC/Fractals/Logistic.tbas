@@ -35,7 +35,7 @@ REPEAT
  UPDATE
  REPEAT
   det%=DETECT(\lmouse,0)
- UNTIL (?lmouse>0) AND (?clicky<(100-TMARGIN%)) AND (?clickx>=130) AND (?clickx<1030)
+ UNTIL (?clicky<(100-TMARGIN%)) AND (?clickx>=130) AND (?clickx<1030)
  r%=((?clickx-130) DIV 90)+((?clicky+TMARGIN%+100) DIV 50)*10+1
 UNTIL 0=1
 END
