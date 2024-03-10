@@ -1,13 +1,18 @@
 import type { IdentifierLexeme } from "../../lexer/lexeme.ts";
 import { CompilerError } from "../../tools/error.ts";
+import type { Language } from "../../constants/languages.ts";
+import type { Expression } from "../definitions/expression.ts";
 import type { FunctionCall } from "../definitions/expressions/functionCall.ts";
 import type { Lexemes } from "../definitions/lexemes.ts";
 import type { Routine } from "../definitions/routine.ts";
-import { getParameters } from "../definitions/routines/subroutine.ts";
+import { Subroutine, getParameters } from "../definitions/routines/subroutine.ts";
 import type { ProcedureCall } from "../definitions/statements/procedureCall.ts";
 import { isArray } from "../definitions/variable.ts";
 import parseExpression from "./expression.ts";
 import typeCheck from "./typeCheck.ts";
+import { Command } from "../../constants/commands.ts";
+import { Variable } from "../definitions/variable.ts";
+import { Parameter } from "../../constants/commands.ts";
 
 const parseArguments = (
   lexeme: IdentifierLexeme,
@@ -91,28 +96,7 @@ const parseArgumentList = (
   while (commandCall.arguments.length < parameters.length && lexemes.get()?.content !== ")") {
     const parameter = parameters[commandCall.arguments.length];
     let argument = parseExpression(lexemes, routine);
-    if (commandCall.command.__ === "Command") {
-      switch (commandCall.command.names[routine.language]?.toLowerCase()) {
-        case "address":
-          // variable passed (by reference) to built-in address function can be of any type
-          // so no type check is needed
-          break;
-
-        case "length":
-          // length command allows string or array arguments
-          if (!(argument.expressionType === "variable") || !isArray(argument.variable)) {
-            argument = typeCheck(routine.language, argument, parameter);
-          }
-          break;
-
-        default:
-          // standard type check by default
-          argument = typeCheck(routine.language, argument, parameter);
-          break;
-      }
-    } else {
-      argument = typeCheck(routine.language, argument, parameter);
-    }
+    argument = typeCheckArgument(routine.language, commandCall.command, argument, parameter);
     commandCall.arguments.push(argument);
     if (commandCall.arguments.length < parameters.length) {
       if (!lexemes.get()) {
@@ -144,4 +128,34 @@ const parseArgumentList = (
 
   // move past the closing bracket
   lexemes.next();
+};
+
+export const typeCheckArgument = (
+  language: Language,
+  command: Command | Subroutine,
+  argument: Expression,
+  parameter: Parameter | Variable
+): Expression => {
+  if (command.__ === "Command") {
+    switch (command.names[language]?.toLowerCase()) {
+      case "address":
+        // variable passed (by reference) to built-in address function can be of any type
+        // so no type check is needed
+        return argument;
+
+      case "length":
+      case ".length":
+        // length command allows string or array arguments
+        if (argument.expressionType === "variable" && isArray(argument.variable)) {
+          return argument;
+        }
+        return typeCheck(language, argument, parameter);
+
+      default:
+        // standard type check by default
+        return typeCheck(language, argument, parameter);
+    }
+  } else {
+    return typeCheck(language, argument, parameter);
+  }
 };

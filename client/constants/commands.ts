@@ -740,7 +740,15 @@ const commands = [
     "Returns the length of the input <code>string</code> (i.e. the number of characters)."
   ),
   command(
-    ["DEL$", "delete"],
+    [, , , ".length"],
+    () => [PCode.slen],
+    [p("string", "string")],
+    "integer",
+    { category: 7, level: 1 },
+    "Returns the length of the input <code>string</code> (i.e. the number of characters)."
+  ),
+  command(
+    ["DEL$", "delete", , "delete"],
     () => [PCode.dels],
     [p("string", "string"), p("index", "integer"), p("length", "integer")],
     "string",

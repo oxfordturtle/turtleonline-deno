@@ -220,7 +220,7 @@ export interface CharacterLexeme extends LexemeCommon {
 export const characterLexeme = (token: Token, language: Language): CharacterLexeme => ({
   ...stringLexeme(token, language),
   subtype: "character",
-  value: token.content.charCodeAt(0),
+  value: token.content.charCodeAt(1),
 });
 
 export interface StringLexeme extends LexemeCommon {
@@ -252,27 +252,23 @@ export const stringLexeme = (token: Token, language: Language): StringLexeme => 
 
 export interface InputCodeLexeme extends LexemeCommon {
   readonly type: "input";
-  readonly subtype: "inputCode";
   readonly value: string;
 }
 
 export const inputCodeLexeme = (token: Token, language: Language): InputCodeLexeme => ({
   ...lexeme(token.line, token.character, token.content),
   type: "input",
-  subtype: "inputCode",
   value: language === "Pascal" ? token.content.slice(1).toLowerCase() : token.content.slice(1),
 });
 
 export interface QueryCodeLexeme extends LexemeCommon {
-  readonly type: "input";
-  readonly subtype: "queryCode";
+  readonly type: "query";
   readonly value: string;
 }
 
 export const queryCodeLexeme = (token: Token, language: Language): QueryCodeLexeme => ({
   ...lexeme(token.line, token.character, token.content),
-  type: "input",
-  subtype: "queryCode",
+  type: "query",
   value: language === "Pascal" ? token.content.slice(1).toLowerCase() : token.content.slice(1),
 });
 

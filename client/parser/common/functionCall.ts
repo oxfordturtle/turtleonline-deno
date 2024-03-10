@@ -8,7 +8,7 @@ import type { Lexemes } from "../definitions/lexemes.ts";
 import type { Routine } from "../definitions/routine.ts";
 import { getSubroutineType, type Subroutine } from "../definitions/routines/subroutine.ts";
 import makeVariable from "../definitions/variable.ts";
-import parseArguments from "./arguments.ts";
+import parseArguments, { typeCheckArgument } from "./arguments.ts";
 
 const parseFunctionCall = (
   lexeme: IdentifierLexeme,
@@ -50,7 +50,9 @@ export const parseMethodFunctionCall = (
   method: Command,
   variableValue: VariableValue
 ): FunctionCall => {
-  if (method.parameters[0].type !== variableValue.variable.type) {
+  try {
+    typeCheckArgument(routine.language, method, variableValue, method.parameters[0]);
+  } catch {
     throw new CompilerError(
       `Method "${method.names[routine.language]}" is not defined for type "${
         variableValue.variable.type

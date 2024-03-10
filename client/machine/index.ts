@@ -2304,6 +2304,8 @@ function execute(): void {
               detectTimeoutID = setTimeout(execute, n3);
               addEventListener("keyup", detect);
               addEventListener("mouseup", detect);
+            } else {
+              throw new MachineError(`Detect called with invalid input code: ${n1}.`);
             }
           } else {
             throw new MachineError("Stack operation called on empty stack.");
@@ -2664,33 +2666,30 @@ function preventDefault(event: Event): void {
 /** breaks out of DETECT loop and resumes program execution if the right key/button is pressed */
 function detect(event: KeyboardEvent | MouseEvent): void {
   let rightThingPressed = false;
+
   // -11 is \mousekey - returns whatever was clicked/pressed
   if (detectInputcode === -11) rightThingPressed = true;
-  // -10 and -9 return for any key (not for mouse)
-  if (
-    (detectInputcode === -9 || detectInputcode === -10) &&
-    (event as KeyboardEvent).keyCode !== undefined
-  )
-    rightThingPressed = true;
-  // -8 to -4 - returns for any mouse click
-  if (
-    -8 <= detectInputcode &&
-    detectInputcode <= -4 &&
-    (event as KeyboardEvent).keyCode === undefined
-  )
-    rightThingPressed = true;
-  // specific mouse button cases
-  if (detectInputcode === -3 && (event as MouseEvent).button == 1) rightThingPressed = true;
-  if (detectInputcode === -2 && (event as MouseEvent).button == 2) rightThingPressed = true;
-  if (detectInputcode === -1 && (event as MouseEvent).button == 0) rightThingPressed = true;
-  // keybuffer
-  if (detectInputcode === 0 && (event as KeyboardEvent).keyCode !== undefined)
-    rightThingPressed = true;
-  // otherwise return if the key pressed matches the detectInputcode
-  if ((event as KeyboardEvent).keyCode === detectInputcode) rightThingPressed = true;
+
+  if (event instanceof KeyboardEvent) {
+    // -10 and -9 return for any key (not for mouse)
+    if (detectInputcode === -9 || detectInputcode === -10) rightThingPressed = true;
+    // keybuffer
+    if (detectInputcode === 0) rightThingPressed = true;
+    // otherwise return if the key pressed matches the detectInputcode
+    if (event.keyCode === detectInputcode) rightThingPressed = true;
+  } else {
+    // -8 to -4 - returns for any mouse click
+    if (-8 <= detectInputcode && detectInputcode <= -4) rightThingPressed = true;
+    // specific mouse button cases
+    if (detectInputcode === -3 && event.button == 1) rightThingPressed = true;
+    if (detectInputcode === -2 && event.button == 2) rightThingPressed = true;
+    if (detectInputcode === -1 && event.button == 0) rightThingPressed = true;
+  }
+
   if (rightThingPressed) {
-    const returnValue =
-      detectInputcode < 0 ? memory.query[-detectInputcode] : memory.keys[detectInputcode];
+    const returnValue = detectInputcode < 0
+      ? memory.query[-detectInputcode]
+      : memory.keys[detectInputcode];
     memory.stack.pop();
     // the event listener that negates the input (onkeyup or onmouseup) is called first, so by the
     // time this listener is called it will be negative - but for consistency with the downloadable

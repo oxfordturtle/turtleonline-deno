@@ -10,7 +10,7 @@ type TypeInformation = [boolean, Type, number, [number, number][]];
 
 const type = (lexemes: Lexemes, routine: Routine): TypeInformation => {
   const lexeme = lexemes.get();
-  let stringLength = 32;
+  let stringLength = 64;
 
   // expecting type
   if (!lexeme) {

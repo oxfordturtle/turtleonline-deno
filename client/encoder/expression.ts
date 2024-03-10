@@ -9,6 +9,7 @@ import compoundExpression from "./expressions/compoundExpression.ts";
 import constantValue from "./expressions/constantValue.ts";
 import functionValue from "./expressions/functionValue.ts";
 import inputValue from "./expressions/inputValue.ts";
+import queryValue from "./expressions/queryValue.ts";
 import literalIntegerValue from "./expressions/literalIntegerValue.ts";
 import literalStringValue from "./expressions/literalStringValue.ts";
 import variableAddress from "./expressions/variableAddress.ts";
@@ -27,6 +28,8 @@ export default (
       return [literalStringValue(exp, program, options)];
     case "input":
       return [inputValue(exp, program, options)];
+    case "query":
+      return [queryValue(exp, program, options)];
     case "colour":
       return [colourValue(exp, program, options)];
     case "constant":

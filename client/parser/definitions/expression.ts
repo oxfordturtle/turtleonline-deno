@@ -5,6 +5,7 @@ import type { CompoundExpression } from "./expressions/compoundExpression.ts";
 import type { ConstantValue } from "./expressions/constantValue.ts";
 import type { FunctionCall } from "./expressions/functionCall.ts";
 import type { InputValue } from "./expressions/inputValue.ts";
+import type { QueryValue } from "./expressions/queryValue.ts";
 import type { IntegerValue } from "./expressions/integerValue.ts";
 import type { StringValue } from "./expressions/stringValue.ts";
 import type { VariableAddress } from "./expressions/variableAddress.ts";
@@ -14,6 +15,7 @@ export type Expression =
   | IntegerValue
   | StringValue
   | InputValue
+  | QueryValue
   | ColourValue
   | ConstantValue
   | VariableAddress

@@ -45,7 +45,7 @@ export function subroutineName(lexemes: Lexemes): [string, SubroutineType, Type,
 
   const test = name.match(/\$(\d+)$/);
   let type: Type = "boolint";
-  let stringLength = 32;
+  let stringLength = 64;
   if (name.slice(-1) === "$") {
     type = "string";
   } else if (test) {
@@ -62,7 +62,7 @@ export function variableName(lexemes: Lexemes): [string, Type, number] {
 
   const test = name.match(/\$(\d+)$/);
   let type: Type;
-  let stringLength = 32;
+  let stringLength = 64;
   if (name.slice(-1) === "%") {
     type = "boolint";
   } else if (name.slice(-1) === "$") {

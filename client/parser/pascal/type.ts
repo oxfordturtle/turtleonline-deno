@@ -106,7 +106,7 @@ export default function type(
   lexemes.next();
 
   // possibly expecting string size specification
-  let stringLength = 32;
+  let stringLength = 64;
   if (type === "string") {
     if (lexemes.get()?.content === "[") {
       lexemes.next();

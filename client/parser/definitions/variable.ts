@@ -28,7 +28,7 @@ const makeVariable = (name: string, routine: Routine): Variable => ({
   isPointer: false,
   type: "boolint",
   typeIsCertain: routine.language === "Python" ? false : true,
-  stringLength: 32,
+  stringLength: 64,
   arrayDimensions: [],
 });
 

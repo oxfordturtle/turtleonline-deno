@@ -23,7 +23,7 @@ export default function type(lexemes: Lexemes): [Type | null, number] {
   lexemes.next();
 
   // string length is allowable here
-  let stringLength = 32;
+  let stringLength = 64;
   if (lexemes.get()?.content === "[") {
     lexemes.next();
     // expecting integer

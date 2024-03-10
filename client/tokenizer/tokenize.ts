@@ -406,7 +406,7 @@ const queryCode = (
   character: number,
   language: Language
 ): Token | null => {
-  const names = inputs.map((x) => `\\?${x.name}`).join("|");
+  const names = inputs.filter((input) => input.value < 0).map((x) => `\\?${x.name}`).join("|");
   const regex =
     language === "Pascal" ? new RegExp(`^(${names})\\b`, "i") : new RegExp(`^(${names})\\b`);
   const good = code.match(regex);

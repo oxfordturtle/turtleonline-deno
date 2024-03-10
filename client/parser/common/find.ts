@@ -29,6 +29,11 @@ export const input = (routine: Routine, name: string): Input | undefined => {
   return inputs.find((x) => x.name === searchName);
 };
 
+export const query = (routine: Routine, name: string): Input | undefined => {
+  const searchName = routine.language === "Pascal" ? name.toLowerCase() : name;
+  return inputs.filter((input) => input.value < 0).find((x) => x.name === searchName);
+};
+
 export const variable = (routine: Routine, name: string): Variable | undefined => {
   const searchName = routine.language === "Pascal" ? name.toLowerCase() : name;
 

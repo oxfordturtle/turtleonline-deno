@@ -7,6 +7,7 @@ import makeColourValue from "../definitions/expressions/colourValue.ts";
 import makeCompoundExpression from "../definitions/expressions/compoundExpression.ts";
 import makeConstantValue from "../definitions/expressions/constantValue.ts";
 import makeInputValue from "../definitions/expressions/inputValue.ts";
+import makeQueryValue from "../definitions/expressions/queryValue.ts";
 import makeIntegerValue from "../definitions/expressions/integerValue.ts";
 import makeStringValue from "../definitions/expressions/stringValue.ts";
 import makeVariableAddress from "../definitions/expressions/variableAddress.ts";
@@ -69,6 +70,16 @@ const parseFactor = (lexemes: Lexemes, routine: Routine): Expression => {
         return makeInputValue(lexeme, input);
       }
       throw new CompilerError("{lex} is not a valid input code.", lexeme);
+    }
+
+    // query codes
+    case "query": {
+      const query = find.query(routine, lexeme.value);
+      if (query) {
+        lexemes.next();
+        return makeQueryValue(lexeme, query);
+      }
+      throw new CompilerError("{lex} is not a valid query code.", lexeme);
     }
 
     // identifiers
