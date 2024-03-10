@@ -1,8 +1,4 @@
-// type imports
-import type { Language } from "../constants/languages.ts";
-
-// module imports
-import { extensions } from "../constants/languages.ts";
+import { extension, type Language } from "../constants/languages.ts";
 
 /** turtle system file */
 export class File {
@@ -27,7 +23,7 @@ export class File {
 
   /** file extension */
   get extension(): string {
-    return extensions[this.language];
+    return extension[this.language];
   }
 
   /** filename */

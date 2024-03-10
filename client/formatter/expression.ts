@@ -1,13 +1,8 @@
 import type { Expression } from "../parser/definitions/expression.ts";
 import type { Language } from "../constants/languages.ts";
 import type from "./type.ts";
-import { Command } from "../constants/commands.ts";
 
-/** formats an expression as a code string */
-export default function expression(
-  exp: Expression,
-  language: Language
-): string {
+const expression = (exp: Expression, language: Language): string => {
   switch (exp.expressionType) {
     case "colour":
     case "constant":
@@ -21,18 +16,16 @@ export default function expression(
 
     case "cast":
       if (language === "C" || language === "Java") {
-        return `(${type(exp.type, language)}) ${expression(
-          exp.expression,
-          language
-        )}`;
+        return `(${type(exp.type, language)}) ${expression(exp.expression, language)}`;
       }
       return expression(exp.expression, language);
 
     case "compound":
       if (exp.left) {
-        return `(${expression(exp.left, language)} ${
-          exp.lexeme.content
-        } ${expression(exp.right, language)})`;
+        return `(${expression(exp.left, language)} ${exp.lexeme.content} ${expression(
+          exp.right,
+          language
+        )})`;
       }
       if (exp.lexeme.content.toLowerCase() === "not") {
         return `${exp.lexeme.content} ${expression(exp.right, language)}`;
@@ -41,18 +34,11 @@ export default function expression(
 
     case "function": {
       const name =
-        exp.command instanceof Command
-          ? (exp.command.names[language] as string)
-          : exp.command.name;
-      if (
-        (language === "BASIC" || language === "Pascal") &&
-        exp.arguments.length === 0
-      ) {
+        exp.command.__ === "Command" ? (exp.command.names[language] as string) : exp.command.name;
+      if ((language === "BASIC" || language === "Pascal") && exp.arguments.length === 0) {
         return name;
       }
-      return `${name}(${exp.arguments
-        .map((x) => expression(x, language))
-        .join(", ")})`;
+      return `${name}(${exp.arguments.map((x) => expression(x, language)).join(", ")})`;
     }
 
     case "variable":
@@ -75,3 +61,5 @@ export default function expression(
       return exp.lexeme.content;
   }
 }
+
+export default expression;

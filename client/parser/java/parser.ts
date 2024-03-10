@@ -1,13 +1,16 @@
-import program from "./program.ts";
-import constant from "./constant.ts";
-import { statement, simpleStatement, eosCheck } from "./statement.ts";
-import type from "./type.ts";
-import identifier from "./identifier.ts";
-import subroutine from "./subroutine.ts";
-import Lexemes from "../definitions/lexemes.ts";
-import Program from "../definitions/program.ts";
+import type { Lexeme } from "../../lexer/lexeme.ts";
 import { CompilerError } from "../../tools/error.ts";
-import { Lexeme } from "../../lexer/lexeme.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import { getAllSubroutines } from "../definitions/routine.ts";
+import type { Program } from "../definitions/routines/program.ts";
+import constant from "./constant.ts";
+import identifier from "./identifier.ts";
+import program from "./program.ts";
+import parseStatement from "./statement.ts";
+import eosCheck from "./statements/eosCheck.ts";
+import parseSimpleStatement from "./statements/simpleStatement.ts";
+import subroutine from "./subroutine.ts";
+import type from "./type.ts";
 
 /** parses lexemes as a Java program */
 export default function java(lexemes: Lexemes): Program {
@@ -29,7 +32,7 @@ export default function java(lexemes: Lexemes): Program {
           eosCheck(lexemes);
         } else {
           throw new CompilerError(
-            "Program can only contain constant definitions, variable declarations, and subroutine defintions.",
+            "Program can only contain constant definitions, variable declarations, and subroutine definitions.",
             lexeme
           );
         }
@@ -37,7 +40,7 @@ export default function java(lexemes: Lexemes): Program {
 
       // variable declarations/assignments or subroutine definitions
       case "type":
-        // expecting type specification followed by idenfitier (throw away the results)
+        // expecting type specification followed by identifier (throw away the results)
         type(lexemes, prog);
         identifier(lexemes, prog);
 
@@ -50,7 +53,7 @@ export default function java(lexemes: Lexemes): Program {
         // otherwise its a variable declaration/assignment
         else {
           lexemes.index = lexemeIndex; // go back to the start
-          prog.statements.push(simpleStatement(lexeme, lexemes, prog));
+          prog.statements.push(parseSimpleStatement(lexeme, lexemes, prog));
           eosCheck(lexemes);
         }
         break;
@@ -58,20 +61,18 @@ export default function java(lexemes: Lexemes): Program {
       // anything else is an error
       default:
         throw new CompilerError(
-          "Program can only contain constant definitions, variable declarations, and subroutine defintions.",
+          "Program can only contain constant definitions, variable declarations, and subroutine definitions.",
           lexeme
         );
     }
   }
 
   // second pass: parse the statements of each subroutine
-  for (const subroutine of prog.allSubroutines) {
+  for (const subroutine of getAllSubroutines(prog)) {
     // loop through the lexemes
     lexemes.index = subroutine.start;
     while (lexemes.index < subroutine.end) {
-      subroutine.statements.push(
-        statement(lexemes.get() as Lexeme, lexemes, subroutine)
-      );
+      subroutine.statements.push(parseStatement(lexemes.get() as Lexeme, lexemes, subroutine));
     }
   }
 

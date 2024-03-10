@@ -1,0 +1,57 @@
+numsides = 6
+initsize = 240
+shrink = 40
+rangle = 180
+polygap = 0
+levels = 5
+slowdraw = 3
+mode = 1
+firstcol = 1
+colinc = 2
+minthick = 2
+addthick = 6
+circsize = 60
+
+def recurse(flag, size, depth, col):
+  if depth > 0:
+    if depth < slowlev:
+      noupdate()
+    else:
+      update()
+    if flag == 1:
+      for flag in range(2, 4):
+        storex = turtx
+        storey = turty
+        for sides in range (0, numsides, 1):
+          recurse(flag, size, depth, col)
+        turtx = storex
+        turty = storey
+    else:
+      penup()
+      if flag == 2:
+        colour(rgb(col))
+        thickness(minthick + ((depth - 1) * addthick) / 12)
+        if mode == 1:
+          pendown()
+        else:
+          if mode == 2:
+            blot(size * circsize / 120)
+          else:
+            circle(size * circsize / 120)
+      left(halfangle)
+      forward(size)
+      right(180 - halfangle + rangle)
+      if flag == 3:
+        forward(size * polygap / 120)
+        recurse(1, (size * shrink) / 120, depth - 1, ((col + colinc - 1) % 7) + 1)
+        back(size * polygap / 120)
+      left(rangle)
+
+blank(black)
+if 180 % numsides == 0:
+  halfangle = 90 - (180 / numsides)
+  slowlev = levels + 1 - slowdraw
+  if slowlev > levels - 1:
+    slowlev = levels - 1
+  movexy(0, initsize)
+  recurse(1, initsize, levels, firstcol)

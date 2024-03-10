@@ -169,7 +169,7 @@ while (hits < targets) {
     hits = hits + 1;
   }
 }
-// print end of game message
+// display end of game message
 blank(black);
 setXY(200, 450);
 colour(green);

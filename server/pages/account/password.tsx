@@ -1,5 +1,5 @@
 import React from "react";
-import { Status } from "http";
+import { STATUS_CODE } from "http";
 import * as bcrypt from "bcrypt";
 import type { Imp, RequestParams, User } from "../../types.ts";
 import page from "../_layout/page.tsx";
@@ -19,7 +19,7 @@ export default (
     ? passwordResponse(requestParams, user)
     : requestParams.method === "POST"
     ? handleForm(requestParams, user, imp)
-    : error(requestParams, Status.MethodNotAllowed);
+    : error(requestParams, STATUS_CODE.MethodNotAllowed);
 
 const passwordResponse = (
   requestParams: RequestParams,

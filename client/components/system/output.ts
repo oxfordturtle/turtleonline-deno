@@ -6,9 +6,7 @@
 import { on } from "../../tools/hub.ts";
 
 // get relevant elements
-const output = document.querySelector(
-  '[data-component="output"]'
-) as HTMLPreElement;
+const output = document.querySelector('[data-component="output"]') as HTMLPreElement;
 
 if (output) {
   // write text to the textual output

@@ -1,15 +1,14 @@
-import subroutine from "./subroutine.ts";
-import { statement } from "./statement.ts";
-import Lexemes from "../definitions/lexemes.ts";
-import Program from "../definitions/program.ts";
-import { Subroutine } from "../definitions/subroutine.ts";
-import { Lexeme } from "../../lexer/lexeme.ts";
+import type { Lexeme } from "../../lexer/lexeme.ts";
 import { CompilerError } from "../../tools/error.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import makeProgram, { type Program } from "../definitions/routines/program.ts";
+import type { Subroutine } from "../definitions/routines/subroutine.ts";
+import statement from "./statement.ts";
+import subroutine from "./subroutine.ts";
 
-/** parses lexemes as a Python program */
-export default function python(lexemes: Lexemes): Program {
+export default (lexemes: Lexemes): Program => {
   // create the program
-  const program = new Program("Python");
+  const program = makeProgram("Python");
   program.end = lexemes.lexemes.length;
 
   // parse the program (which will parse its subroutines in turn)
@@ -22,8 +21,7 @@ export default function python(lexemes: Lexemes): Program {
   return program;
 }
 
-/** parses the body of a routine, generating statements from its lexemes */
-function parseBody(lexemes: Lexemes, routine: Program | Subroutine): void {
+const parseBody = (lexemes: Lexemes, routine: Program | Subroutine): void => {
   // first pass: hoist global and nonlocal declarations and subroutine definitions
   let indents = 0;
   lexemes.index = routine.start;
@@ -44,9 +42,7 @@ function parseBody(lexemes: Lexemes, routine: Program | Subroutine): void {
       // keywords
       case "keyword":
         if (lexeme.subtype === "def") {
-          routine.subroutines.push(
-            subroutine(lexeme, lexemes, routine, indents)
-          );
+          routine.subroutines.push(subroutine(lexeme, lexemes, routine, indents));
         }
         break;
     }
@@ -55,22 +51,17 @@ function parseBody(lexemes: Lexemes, routine: Program | Subroutine): void {
   // second pass: parse the statements of this routine and any subroutines recursively
   lexemes.index = routine.start;
   while (lexemes.index < routine.end) {
-    routine.statements.push(
-      statement(lexemes.get() as Lexeme, lexemes, routine)
-    );
+    routine.statements.push(statement(lexemes.get() as Lexeme, lexemes, routine));
   }
   for (const sub of routine.subroutines) {
     parseBody(lexemes, sub);
   }
 }
 
-/** checks for any variables in a routine with uncertain types */
-function checkForUncertainTypes(routine: Program | Subroutine): void {
+const checkForUncertainTypes = (routine: Program | Subroutine): void => {
   const untypedVariable = routine.variables.find((x) => !x.typeIsCertain);
   if (untypedVariable) {
-    throw new CompilerError(
-      `Could not infer the type of variable ${untypedVariable.name}.`
-    );
+    throw new CompilerError(`Could not infer the type of variable ${untypedVariable.name}.`);
   }
 
   routine.subroutines.forEach(checkForUncertainTypes);

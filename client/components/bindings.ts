@@ -4,7 +4,7 @@
 import { state } from "../state/index.ts";
 import type { Property } from "../constants/properties.ts";
 import type { Language } from "../constants/languages.ts";
-import { languages } from "../constants/languages.ts";
+import languages from "../constants/languages.ts";
 import type { Mode } from "../constants/modes.ts";
 import { option, fill } from "../tools/elements.ts";
 import { commandCategories } from "../constants/categories.ts";
@@ -52,8 +52,7 @@ for (const element of Array.from(document.querySelectorAll("[data-binding]"))) {
         state.editorFontSize = parseInt((element as HTMLSelectElement).value);
       });
       on("editorFontSizeChanged", function (): void {
-        (element as HTMLSelectElement).value =
-          state.editorFontSize.toString(10);
+        (element as HTMLSelectElement).value = state.editorFontSize.toString(10);
       });
       break;
 
@@ -72,8 +71,7 @@ for (const element of Array.from(document.querySelectorAll("[data-binding]"))) {
         state.outputFontSize = parseInt((element as HTMLSelectElement).value);
       });
       on("outputFontSizeChanged", function (): void {
-        (element as HTMLSelectElement).value =
-          state.outputFontSize.toString(10);
+        (element as HTMLSelectElement).value = state.outputFontSize.toString(10);
       });
       break;
 
@@ -121,11 +119,9 @@ for (const element of Array.from(document.querySelectorAll("[data-binding]"))) {
       });
       on("decimalChanged", function (): void {
         if (state.decimal) {
-          (element as HTMLInputElement).checked =
-            (element as HTMLInputElement).value === "decimal";
+          (element as HTMLInputElement).checked = (element as HTMLInputElement).value === "decimal";
         } else {
-          (element as HTMLInputElement).checked =
-            (element as HTMLInputElement).value !== "decimal";
+          (element as HTMLInputElement).checked = (element as HTMLInputElement).value !== "decimal";
         }
       });
       break;
@@ -174,13 +170,10 @@ for (const element of Array.from(document.querySelectorAll("[data-binding]"))) {
     case "commandsCategoryIndex":
       fillCommandsCategory(element as HTMLSelectElement);
       element.addEventListener("change", function (): void {
-        state.commandsCategoryIndex = parseInt(
-          (element as HTMLSelectElement).value
-        );
+        state.commandsCategoryIndex = parseInt((element as HTMLSelectElement).value);
       });
       on("commandsCategoryIndexChanged", function (): void {
-        (element as HTMLSelectElement).value =
-          state.commandsCategoryIndex.toString(10);
+        (element as HTMLSelectElement).value = state.commandsCategoryIndex.toString(10);
       });
       break;
 
@@ -221,8 +214,7 @@ for (const element of Array.from(document.querySelectorAll("[data-binding]"))) {
         fillFile(element as HTMLSelectElement);
       });
       on("currentFileIndexChanged", function () {
-        (element as HTMLSelectElement).value =
-          state.currentFileIndex.toString(10);
+        (element as HTMLSelectElement).value = state.currentFileIndex.toString(10);
       });
       break;
 
@@ -347,10 +339,7 @@ for (const element of Array.from(document.querySelectorAll("[data-binding]"))) {
         }
       });
       on("canvasStartSizeChanged", function (): void {
-        if (
-          (element as HTMLInputElement).value ===
-          state.canvasStartSize.toString(10)
-        ) {
+        if ((element as HTMLInputElement).value === state.canvasStartSize.toString(10)) {
           (element as HTMLInputElement).checked = true;
         }
       });
@@ -409,33 +398,25 @@ for (const element of Array.from(document.querySelectorAll("[data-binding]"))) {
     case "separateMemoryControlStack":
       disableInput(element);
       element.addEventListener("change", function (): void {
-        state.separateMemoryControlStack = (
-          element as HTMLInputElement
-        ).checked;
+        state.separateMemoryControlStack = (element as HTMLInputElement).checked;
       });
       on("separateMemoryControlStackChanged", function (): void {
-        (element as HTMLInputElement).checked =
-          state.separateMemoryControlStack;
+        (element as HTMLInputElement).checked = state.separateMemoryControlStack;
       });
       break;
 
     case "separateSubroutineRegisterStack":
       disableInput(element);
       element.addEventListener("change", function (): void {
-        state.separateSubroutineRegisterStack = (
-          element as HTMLInputElement
-        ).checked;
+        state.separateSubroutineRegisterStack = (element as HTMLInputElement).checked;
       });
       on("separateSubroutineRegisterStackChanged", function (): void {
-        (element as HTMLInputElement).checked =
-          state.separateSubroutineRegisterStack;
+        (element as HTMLInputElement).checked = state.separateSubroutineRegisterStack;
       });
       break;
 
     default:
-      console.error(
-        `Unknown data binding '${(element as HTMLElement).dataset.binding}'.`
-      );
+      console.error(`Unknown data binding '${(element as HTMLElement).dataset.binding}'.`);
       break;
   }
 }
@@ -477,9 +458,9 @@ function fillFile(input: HTMLSelectElement): void {
     state.files.map((file, index) =>
       option({
         value: index.toString(10),
-        content: `${(index + 1).toString(10).padStart(2, "0")} [${
-          file.language
-        }] ${file.name || "[no name]"}`,
+        content: `${(index + 1).toString(10).padStart(2, "0")} [${file.language}] ${
+          file.name || "[no name]"
+        }`,
         selected: state.currentFileIndex === index ? "selected" : undefined,
       })
     )
@@ -490,12 +471,7 @@ function disableInput(input: Element): void {
   input.setAttribute("disabled", "disabled");
   if (input.parentElement) {
     input.parentElement.addEventListener("click", function () {
-      send(
-        "error",
-        new SystemError(
-          "This option cannot yet be modified in the online system."
-        )
-      );
+      send("error", new SystemError("This option cannot yet be modified in the online system."));
     });
   }
 }
@@ -507,10 +483,7 @@ async function disableInputIfNotLoggedIn(input: Element): Promise<void> {
     input.setAttribute("disabled", "disabled");
     if (input.parentElement) {
       input.parentElement.addEventListener("click", function () {
-        send(
-          "error",
-          new SystemError("You must be logged in to change this setting.")
-        );
+        send("error", new SystemError("You must be logged in to change this setting."));
       });
     }
   }

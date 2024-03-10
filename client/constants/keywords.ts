@@ -1,139 +1,128 @@
-/**
- * Keywords for the Turtle languages.
- */
-import type { Language } from "./languages.ts";
-
-/** keyword class definition */
-export class Keyword {
+export interface Keyword {
+  readonly __: "Keyword";
   readonly category: number;
   readonly level: number;
   readonly name: string;
-
-  constructor(category: number, level: number, name: string) {
-    this.category = category;
-    this.level = level;
-    this.name = name;
-  }
 }
 
-/** keywords for Turtle BASIC */
+const keyword = (category: number, level: number, name: string): Keyword => ({
+  __: "Keyword",
+  category,
+  level,
+  name,
+});
+
 const BASIC = [
   // command structures
-  new Keyword(20, 0, "IF"),
-  new Keyword(20, 0, "ELSE"),
-  new Keyword(20, 0, "FOR"),
-  new Keyword(20, 1, "REPEAT"),
-  new Keyword(20, 1, "WHILE"),
-  new Keyword(20, 1, "DEF"),
+  keyword(20, 0, "IF"),
+  keyword(20, 0, "ELSE"),
+  keyword(20, 0, "FOR"),
+  keyword(20, 1, "REPEAT"),
+  keyword(20, 1, "WHILE"),
+  keyword(20, 1, "DEF"),
   // variable scope modifiers
-  new Keyword(21, 1, "LOCAL"),
-  new Keyword(21, 2, "PRIVATE"),
+  keyword(21, 1, "LOCAL"),
+  keyword(21, 2, "PRIVATE"),
   // other keywords (not shown in usage tables)
-  new Keyword(22, 0, "RETURN"),
-  new Keyword(22, 0, "CONST"),
-  new Keyword(22, 0, "DIM"),
-  new Keyword(22, 0, "END"),
-  new Keyword(22, 0, "ENDPROC"),
-  new Keyword(22, 0, "THEN"),
-  new Keyword(22, 0, "ENDIF"),
-  new Keyword(22, 0, "TO"),
-  new Keyword(22, 0, "STEP"),
-  new Keyword(22, 0, "NEXT"),
-  new Keyword(22, 0, "UNTIL"),
-  new Keyword(22, 0, "ENDWHILE"),
-];
+  keyword(22, 0, "RETURN"),
+  keyword(22, 0, "CONST"),
+  keyword(22, 0, "DIM"),
+  keyword(22, 0, "END"),
+  keyword(22, 0, "ENDPROC"),
+  keyword(22, 0, "THEN"),
+  keyword(22, 0, "ENDIF"),
+  keyword(22, 0, "TO"),
+  keyword(22, 0, "STEP"),
+  keyword(22, 0, "NEXT"),
+  keyword(22, 0, "UNTIL"),
+  keyword(22, 0, "ENDWHILE"),
+] as const;
 
-/** keywords for Turtle C */
 const C = [
   // command structures
-  new Keyword(20, 0, "if"),
-  new Keyword(20, 0, "else"),
-  new Keyword(20, 0, "for"),
-  new Keyword(20, 1, "while"),
-  new Keyword(20, 1, "do"),
+  keyword(20, 0, "if"),
+  keyword(20, 0, "else"),
+  keyword(20, 0, "for"),
+  keyword(20, 1, "while"),
+  keyword(20, 1, "do"),
   // other keywords (not shown in usage tables)
-  new Keyword(22, 0, "const"),
-  new Keyword(22, 0, "return"),
-];
+  keyword(22, 0, "const"),
+  keyword(22, 0, "return"),
+] as const;
 
-/** keywords for Turtle Java */
 const Java = [
   // command structures
-  new Keyword(20, 0, "if"),
-  new Keyword(20, 0, "else"),
-  new Keyword(20, 0, "for"),
-  new Keyword(20, 1, "while"),
-  new Keyword(20, 1, "do"),
+  keyword(20, 0, "if"),
+  keyword(20, 0, "else"),
+  keyword(20, 0, "for"),
+  keyword(20, 1, "while"),
+  keyword(20, 1, "do"),
   // other keywords (not shown in usage tables)
-  new Keyword(22, 0, "class"),
-  new Keyword(22, 0, "final"),
-  new Keyword(22, 0, "return"),
-];
+  keyword(22, 0, "class"),
+  keyword(22, 0, "final"),
+  keyword(22, 0, "return"),
+] as const;
 
-/** keywords for Turtle Pascal */
 const Pascal = [
   // command structures
-  new Keyword(20, 0, "if"),
-  new Keyword(20, 0, "else"),
-  new Keyword(20, 0, "for"),
-  new Keyword(20, 1, "repeat"),
-  new Keyword(20, 1, "while"),
-  new Keyword(20, 1, "procedure"),
-  new Keyword(20, 2, "function"),
+  keyword(20, 0, "if"),
+  keyword(20, 0, "else"),
+  keyword(20, 0, "for"),
+  keyword(20, 1, "repeat"),
+  keyword(20, 1, "while"),
+  keyword(20, 1, "procedure"),
+  keyword(20, 2, "function"),
   // other keywords (not shown in usage tables)
-  new Keyword(22, 0, "program"),
-  new Keyword(22, 0, "var"),
-  new Keyword(22, 0, "const"),
-  new Keyword(22, 0, "array"),
-  new Keyword(22, 0, "of"),
-  new Keyword(22, 0, "begin"),
-  new Keyword(22, 0, "end"),
-  new Keyword(22, 0, "then"),
-  new Keyword(22, 0, "to"),
-  new Keyword(22, 0, "downto"),
-  new Keyword(22, 0, "do"),
-  new Keyword(22, 0, "until"),
-];
+  keyword(22, 0, "program"),
+  keyword(22, 0, "var"),
+  keyword(22, 0, "const"),
+  keyword(22, 0, "array"),
+  keyword(22, 0, "of"),
+  keyword(22, 0, "begin"),
+  keyword(22, 0, "end"),
+  keyword(22, 0, "then"),
+  keyword(22, 0, "to"),
+  keyword(22, 0, "downto"),
+  keyword(22, 0, "do"),
+  keyword(22, 0, "until"),
+] as const;
 
-/** keywords for Turtle Python */
 const Python = [
   // command structures
-  new Keyword(20, 0, "if"),
-  new Keyword(20, 0, "else"),
-  new Keyword(20, 0, "elif"),
-  new Keyword(20, 0, "for"),
-  new Keyword(20, 1, "while"),
-  new Keyword(20, 1, "def"),
+  keyword(20, 0, "if"),
+  keyword(20, 0, "else"),
+  keyword(20, 0, "elif"),
+  keyword(20, 0, "for"),
+  keyword(20, 1, "while"),
+  keyword(20, 1, "def"),
   // variable scope modifiers
-  new Keyword(21, 1, "global"),
-  new Keyword(21, 2, "nonlocal"),
+  keyword(21, 1, "global"),
+  keyword(21, 2, "nonlocal"),
   // other keywords (not shown in usage tables)
-  new Keyword(22, 0, "in"),
-  new Keyword(22, 0, "pass"),
-  new Keyword(22, 0, "return"),
-];
+  keyword(22, 0, "in"),
+  keyword(22, 0, "pass"),
+  keyword(22, 0, "return"),
+] as const;
 
-/** keywords for Turtle TypeScript */
 const TypeScript = [
   // command structures
-  new Keyword(20, 0, "if"),
-  new Keyword(20, 0, "else"),
-  new Keyword(20, 0, "for"),
-  new Keyword(20, 1, "while"),
-  new Keyword(20, 1, "do"),
-  new Keyword(20, 1, "function"),
+  keyword(20, 0, "if"),
+  keyword(20, 0, "else"),
+  keyword(20, 0, "for"),
+  keyword(20, 1, "while"),
+  keyword(20, 1, "do"),
+  keyword(20, 1, "function"),
   // other keywords (not shown in usage tables)
-  new Keyword(22, 0, "var"),
-  new Keyword(22, 0, "const"),
-  new Keyword(22, 0, "return"),
+  keyword(22, 0, "var"),
+  keyword(22, 0, "const"),
+  keyword(22, 0, "return"),
 ];
 
-/** export a record of all keywords */
-export const keywords: Record<Language, Keyword[]> = {
+export default {
   BASIC,
   C,
   Java,
   Pascal,
   Python,
   TypeScript,
-};
+} as const;

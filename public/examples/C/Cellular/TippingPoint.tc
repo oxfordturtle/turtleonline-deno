@@ -15,18 +15,18 @@ void infect (int x, int y) {
   numinfected = numinfected + 1;
   numinfectious = numinfectious + 1;
   if (report) {
-    writeline('Infected: ' + strpad(itoa(numinfected), ' ', 4) + '      Infectious: ' + strpad(itoa(numinfectious), ' ', 4));
+    print('Infected: ' + strpad(itoa(numinfected), ' ', 4) + '      Infectious: ' + strpad(itoa(numinfectious), ' ', 4));
   }
 }
 
 void main () {
   canvas(0, 0, width, height);
   resolution(width, height);
-  writeline('Contacts per person:       ' + itoa(contacts));
-  writeline('Transmission probability:  ' + itoa(infectprob) + '%');
-  writeline('R0 (reproduction number):  ' + qitoa(contacts * infectprob, 100, 2));
+  print('Contacts per person:       ' + itoa(contacts));
+  print('Transmission probability:  ' + itoa(infectprob) + '%');
+  print('R0 (reproduction number):  ' + qitoa(contacts * infectprob, 100, 2));
   if (report) {
-    writeline('');
+    print('');
   }
   int n = srand(3);
   timeset(0);
@@ -60,13 +60,13 @@ void main () {
       pixset(x, y, recovered);
       numinfectious = numinfectious - 1;
       if (report) {
-        writeline('                    Infectious: ' + strpad(itoa(numinfectious), ' ', 4));
+        print('                    Infectious: ' + strpad(itoa(numinfectious), ' ', 4));
       }
     }
   } while (numinfectious != 0);
   if (report) {
-    writeline('');
+    print('');
   }
-  writeline('Total infected overall:    ' + itoa(numinfected) + ' (' + qitoa(time(), 1000, 2) + ' sec)');
-  writeline('Proportion infected:       ' + qitoa(numinfected * 100, width * height - numimmune, 2) + '%');
+  print('Total infected overall:    ' + itoa(numinfected) + ' (' + qitoa(time(), 1000, 2) + ' sec)');
+  print('Proportion infected:       ' + qitoa(numinfected * 100, width * height - numimmune, 2) + '%');
 }

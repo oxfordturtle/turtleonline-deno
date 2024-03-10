@@ -1,30 +1,24 @@
-import type Program from "../definitions/program.ts";
-import { variableName } from "./identifier.ts";
-import type { Subroutine } from "../definitions/subroutine.ts";
-import Variable from "../definitions/variable.ts";
-import type Lexemes from "../definitions/lexemes.ts";
-import * as find from "../find.ts";
-import { typeCheck, expression } from "../expression.ts";
-import evaluate from "../evaluate.ts";
 import { CompilerError } from "../../tools/error.ts";
+import evaluate from "../common/evaluate.ts";
+import parseExpression from "../common/expression.ts";
+import * as find from "../common/find.ts";
+import typeCheck from "../common/typeCheck.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import type { Routine } from "../definitions/routine.ts";
+import makeVariable, { type Variable } from "../definitions/variable.ts";
+import { variableName } from "./identifier.ts";
 
 /** parses lexemes as a variable name */
-export function variable(
-  lexemes: Lexemes,
-  routine: Program | Subroutine
-): Variable {
+export function variable(lexemes: Lexemes, routine: Routine): Variable {
   const [name, type, stringLength] = variableName(lexemes);
 
   // duplicate check
   if (find.isDuplicate(routine, name)) {
-    throw new CompilerError(
-      "{lex} is already defined in the current scope.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("{lex} is already defined in the current scope.", lexemes.get(-1));
   }
 
   // create the variable
-  const variable = new Variable(name, routine);
+  const variable = makeVariable(name, routine);
   variable.type = type;
   variable.stringLength = stringLength;
 
@@ -32,11 +26,8 @@ export function variable(
   return variable;
 }
 
-/** parses lexemes as an array variable declaraion (following "DIM") */
-export function array(
-  lexemes: Lexemes,
-  routine: Program | Subroutine
-): Variable {
+/** parses lexemes as an array variable declaration (following "DIM") */
+export function array(lexemes: Lexemes, routine: Routine): Variable {
   const foo = variable(lexemes, routine);
 
   // expecting open bracket "("
@@ -58,19 +49,13 @@ export function array(
   while (lexemes.get()?.content !== ")") {
     // expecting array dimension size
     if (!lexemes.get()) {
-      throw new CompilerError(
-        "Expected array size specification.",
-        lexemes.get(-1)
-      );
+      throw new CompilerError("Expected array size specification.", lexemes.get(-1));
     }
     if (lexemes.get()?.type === "newline") {
-      throw new CompilerError(
-        "Array declaration must be one a single line.",
-        lexemes.get(-1)
-      );
+      throw new CompilerError("Array declaration must be one a single line.", lexemes.get(-1));
     }
-    const exp = expression(lexemes, routine);
-    typeCheck(exp, "integer");
+    const exp = parseExpression(lexemes, routine);
+    typeCheck(routine.language, exp, "integer");
     const value = evaluate(exp, "BASIC", "array");
     if (typeof value === "string") {
       throw new CompilerError("Array size must be an integer.", lexemes.get());
@@ -86,10 +71,7 @@ export function array(
     if (lexemes.get()?.content === ",") {
       lexemes.next();
       if (lexemes.get()?.content === ")") {
-        throw new CompilerError(
-          "Trailing comma in array size specification.",
-          lexemes.get()
-        );
+        throw new CompilerError("Trailing comma in array size specification.", lexemes.get());
       }
     }
   }
@@ -102,10 +84,7 @@ export function array(
     );
   }
   if (foo.arrayDimensions.length === 0) {
-    throw new CompilerError(
-      "Expected array size specification.",
-      lexemes.get()
-    );
+    throw new CompilerError("Expected array size specification.", lexemes.get());
   }
   lexemes.next();
 
@@ -114,20 +93,14 @@ export function array(
 }
 
 /** parses lexemes as a comma separated list of variables */
-export function variables(
-  lexemes: Lexemes,
-  routine: Program | Subroutine
-): Variable[] {
+export function variables(lexemes: Lexemes, routine: Routine): Variable[] {
   const variables: Variable[] = [];
   while (lexemes.get()?.type !== "newline") {
     variables.push(variable(lexemes, routine));
     if (lexemes.get()?.content === ",") {
       lexemes.next();
       if (!lexemes.get() || lexemes.get()?.type === "newline") {
-        throw new CompilerError(
-          "Trailing comma at end of line.",
-          lexemes.get(-1)
-        );
+        throw new CompilerError("Trailing comma at end of line.", lexemes.get(-1));
       }
     }
   }

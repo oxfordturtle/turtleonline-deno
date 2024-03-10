@@ -1,19 +1,21 @@
 import type { Language } from "../../constants/languages.ts";
-import type { Type } from "../../lexer/lexeme.ts";
+import type { Type } from "../../lexer/types.ts";
 
-/** constant */
-export class Constant {
+export interface Constant {
+  readonly __: "constant";
   readonly name: string;
   readonly language: Language;
-  value: number | string;
+  readonly value: number | string;
+  readonly type: Type;
+};
 
-  constructor(language: Language, name: string, value: number | string) {
-    this.name = language === "Pascal" ? name.toLowerCase() : name;
-    this.language = language;
-    this.value = value;
-  }
+const makeConstant = (language: Language, name: string, value: number | string): Constant =>
+  ({
+    __: "constant",
+    name,
+    language,
+    value,
+    type: typeof value === "number" ? "boolint" : "string" satisfies Type,
+  });
 
-  get type(): Type {
-    return typeof this.value === "number" ? "boolint" : "string";
-  }
-}
+export default makeConstant;

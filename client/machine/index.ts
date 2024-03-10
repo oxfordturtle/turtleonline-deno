@@ -1,24 +1,21 @@
 /// <reference lib="dom" />
 
 // type imports
-import type { Options } from "./options.ts";
-import type { Turtle } from "./turtle.ts";
+import type { Options, VirtualCanvas } from "./types.ts";
 
 // module imports
 import * as memory from "./memory.ts";
 import { defaultOptions } from "./options.ts";
-import { mixBytes } from "./misc.ts";
-import { colours } from "../constants/colours.ts";
-import { PCode } from "../constants/pcodes.ts";
+import colours from "../constants/colours.ts";
+import PCode from "../constants/pcodes.ts";
 import { MachineError } from "../tools/error.ts";
 import { send } from "../tools/hub.ts";
 import hex from "../tools/hex.ts";
+import { turtle, turtx, turty, vcoords, virtx, virty } from "./turtle.ts";
 
 // machine variables
-let canvas: HTMLCanvasElement = document.createElement("canvas");
-let context: CanvasRenderingContext2D = document
-  .createElement("canvas")
-  .getContext("2d") as CanvasRenderingContext2D;
+let canvas = document.createElement("canvas");
+let context = document.createElement("canvas").getContext("2d")!;
 let running = false;
 let paused = false;
 let pcode: number[][] = [];
@@ -27,13 +24,15 @@ let code = 0;
 let options: Options = defaultOptions;
 
 // the virtual canvas
-let startx = 0;
-let starty = 0;
-let sizex = 1000;
-let sizey = 1000;
-let width = 1000;
-let height = 1000;
-let doubled = false;
+const virtualCanvas: VirtualCanvas = {
+  startx: 0,
+  starty: 0,
+  sizex: 1000,
+  sizey: 1000,
+  width: 1000,
+  height: 1000,
+  doubled: false,
+};
 
 let detectInputcode = 0;
 let detectTimeoutID = 0;
@@ -44,12 +43,11 @@ let startTime = 0;
 let update = false;
 let keyecho = false;
 let seed = 0;
+let trueValue = 1;
+let pcodeHalt = -1;
 
 /** sets the canvas and context */
-export function setCanvasAndContext(
-  can: HTMLCanvasElement,
-  con: CanvasRenderingContext2D
-): void {
+export function setCanvasAndContext(can: HTMLCanvasElement, con: CanvasRenderingContext2D): void {
   canvas = can;
   context = con;
 }
@@ -57,13 +55,13 @@ export function setCanvasAndContext(
 /** resets the machine */
 export function reset(): void {
   // reset the virtual canvas
-  startx = 0;
-  starty = 0;
-  sizex = 1000;
-  sizey = 1000;
-  width = 1000;
-  height = 1000;
-  doubled = false;
+  virtualCanvas.startx = 0;
+  virtualCanvas.starty = 0;
+  virtualCanvas.sizex = 1000;
+  virtualCanvas.sizey = 1000;
+  virtualCanvas.width = 1000;
+  virtualCanvas.height = 1000;
+  virtualCanvas.doubled = false;
   // send reset machine components signals
   send("resolution", { width: 1000, height: 1000 });
   send("console", { clear: true, colour: "#FFFFFF" });
@@ -210,13 +208,17 @@ function execute(): void {
   let g: number;
   let b: number;
   try {
-    while (
-      drawCount < options.drawCountMax &&
-      codeCount <= options.codeCountMax
-    ) {
+    while (drawCount < options.drawCountMax && codeCount <= options.codeCountMax) {
       switch (pcode[line][code]) {
-        // 0x0 - basic stack operations, conversion operators
+        // basic stack operations
         case PCode.null:
+          break;
+
+        case PCode.drop:
+          n1 = memory.stack.pop();
+          if (n1 === undefined) {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
           break;
 
         case PCode.dupl:
@@ -249,6 +251,35 @@ function execute(): void {
           }
           break;
 
+        case PCode.roll:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            if (n1 > 0) {
+              [n2] = memory.stack.splice(n1, 1);
+              memory.stack.push(n2);
+            } else if (n1 < 0) {
+              n2 = memory.stack.pop();
+              if (n2 !== undefined) {
+                memory.stack.splice(n1, 0, n2);
+              } else {
+                throw new MachineError("Argument to ROLL cannot be zero.");
+              }
+            } else {
+              throw new MachineError("Argument to ROLL cannot be zero.");
+            }
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.pick:
+          n1 = pcode[line][code + 1];
+          n2 = memory.stack[n1];
+          memory.stack.push(n2);
+          code += 1;
+          break;
+
+        // operators on stack value
         case PCode.incr:
           n1 = memory.stack.pop();
           if (n1 !== undefined) {
@@ -267,10 +298,34 @@ function execute(): void {
           }
           break;
 
-        case PCode.mxin:
-          memory.stack.push(Math.pow(2, 31) - 1);
+        case PCode.neg:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            memory.stack.push(-n1);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
           break;
 
+        case PCode.abs:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            memory.stack.push(Math.abs(n1));
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.sign:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            memory.stack.push(Math.sign(n1));
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        // random numbers
         case PCode.rand:
           n1 = memory.stack.pop();
           if (n1 !== undefined) {
@@ -282,106 +337,47 @@ function execute(): void {
           }
           break;
 
-        case PCode.hstr:
+        case PCode.seed:
           n1 = memory.stack.pop();
           if (n1 !== undefined) {
-            s1 = memory.getHeapString(n1);
-            memory.makeHeapString(s1);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.ctos:
-          n1 = memory.stack.pop();
-          if (n1 !== undefined) {
-            memory.makeHeapString(String.fromCharCode(n1));
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.sasc:
-          n1 = memory.stack.pop();
-          if (n1 !== undefined) {
-            s1 = memory.getHeapString(n1);
-            if (s1.length === 0) {
-              memory.stack.push(0);
+            if (n1 === 0) {
+              memory.stack.push(seed);
             } else {
-              memory.stack.push(s1.charCodeAt(0));
+              seed = n1;
+              memory.stack.push(n1);
             }
           } else {
             throw new MachineError("Stack operation called on empty stack.");
           }
           break;
 
-        case PCode.itos:
-          n1 = memory.stack.pop();
-          if (n1 !== undefined) {
-            memory.makeHeapString(n1.toString(10));
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
+        // maximum integer
+        case PCode.mxin:
+          memory.stack.push(Math.pow(2, 31) - 1);
           break;
 
-        case PCode.hexs:
+        // true value
+        case PCode.true:
+          n1 = pcode[line][code + 1];
+          trueValue = n1;
+          code += 1;
+          break;
+
+        // Boolean (bitwise) operators
+        case PCode.shft:
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
           if (n1 !== undefined && n2 !== undefined) {
-            s1 = n1.toString(16).toUpperCase();
-            while (s1.length < n2) {
-              s1 = "0" + s1;
-            }
-            memory.makeHeapString(s1);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.sval:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            s1 = memory.getHeapString(n1);
-            if (s1[0] === "#") {
-              n3 = isNaN(parseInt(s1.slice(1), 16))
-                ? n2
-                : parseInt(s1.slice(1), 16);
+            if (n2 < 0) {
+              memory.stack.push(n1 << -n2);
             } else {
-              n3 = isNaN(parseInt(s1, 10)) ? n2 : parseInt(s1, 10);
+              memory.stack.push(n1 >> n2);
             }
-            memory.stack.push(n3);
           } else {
             throw new MachineError("Stack operation called on empty stack.");
           }
           break;
 
-        case PCode.qtos:
-          n4 = memory.stack.pop();
-          n3 = memory.stack.pop();
-          n2 = memory.stack.pop();
-          if (n2 !== undefined && n3 !== undefined && n4 !== undefined) {
-            n1 = n2 / n3;
-            memory.makeHeapString(n1.toFixed(n4));
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.qval:
-          n3 = memory.stack.pop();
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
-            s1 = memory.getHeapString(n1);
-            n4 = isNaN(parseFloat(s1)) ? n3 : parseFloat(s1);
-            memory.stack.push(Math.round(n4 * n2));
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        // 0x10s - Boolean operators, integer operators
         case PCode.not:
           n1 = memory.stack.pop();
           if (n1 !== undefined) {
@@ -421,6 +417,7 @@ function execute(): void {
           }
           break;
 
+        // lazy Boolean operators
         case PCode.andl:
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
@@ -441,47 +438,7 @@ function execute(): void {
           }
           break;
 
-        case PCode.shft:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            if (n2 < 0) {
-              memory.stack.push(n1 << -n2);
-            } else {
-              memory.stack.push(n1 >> n2);
-            }
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.neg:
-          n1 = memory.stack.pop();
-          if (n1 !== undefined) {
-            memory.stack.push(-n1);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.abs:
-          n1 = memory.stack.pop();
-          if (n1 !== undefined) {
-            memory.stack.push(Math.abs(n1));
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.sign:
-          n1 = memory.stack.pop();
-          if (n1 !== undefined) {
-            memory.stack.push(Math.sign(n1));
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
+        // binary integer operators
         case PCode.plus:
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
@@ -550,184 +507,32 @@ function execute(): void {
           }
           break;
 
-        // 0x20s - comparison operators
-        case PCode.eqal:
+        // floored integer division
+        case PCode.divf:
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
           if (n1 !== undefined && n2 !== undefined) {
-            memory.stack.push(n1 === n2 ? -1 : 0);
+            if (n2 === 0) {
+              throw new MachineError("Cannot divide by zero.");
+            }
+            n3 = n1 / n2;
+            memory.stack.push(Math.floor(n3));
           } else {
             throw new MachineError("Stack operation called on empty stack.");
           }
           break;
 
-        case PCode.noeq:
+        case PCode.modf:
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
           if (n1 !== undefined && n2 !== undefined) {
-            memory.stack.push(n1 !== n2 ? -1 : 0);
+            memory.stack.push(n1 - Math.floor(n1 / n2) * n2);
           } else {
             throw new MachineError("Stack operation called on empty stack.");
           }
           break;
 
-        case PCode.less:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            memory.stack.push(n1 < n2 ? -1 : 0);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.more:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            memory.stack.push(n1 > n2 ? -1 : 0);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.lseq:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            memory.stack.push(n1 <= n2 ? -1 : 0);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.mreq:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            memory.stack.push(n1 >= n2 ? -1 : 0);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.maxi:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            memory.stack.push(Math.max(n1, n2));
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.mini:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            memory.stack.push(Math.min(n1, n2));
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.seql:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            s2 = memory.getHeapString(n2);
-            s1 = memory.getHeapString(n1);
-            memory.stack.push(s1 === s2 ? -1 : 0);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.sneq:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            s2 = memory.getHeapString(n2);
-            s1 = memory.getHeapString(n1);
-            memory.stack.push(s1 !== s2 ? -1 : 0);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.sles:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            s2 = memory.getHeapString(n1);
-            s1 = memory.getHeapString(n2);
-            memory.stack.push(n1 < n2 ? -1 : 0);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.smor:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            s2 = memory.getHeapString(n2);
-            s1 = memory.getHeapString(n1);
-            memory.stack.push(n1 > n2 ? -1 : 0);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.sleq:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            s2 = memory.getHeapString(n2);
-            s1 = memory.getHeapString(n1);
-            memory.stack.push(s1 <= s2 ? -1 : 0);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.smeq:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            s2 = memory.getHeapString(n2);
-            s1 = memory.getHeapString(n1);
-            memory.stack.push(s1 >= s2 ? -1 : 0);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.smax:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            s2 = memory.getHeapString(n2);
-            s1 = memory.getHeapString(n1);
-            memory.makeHeapString(s2 > s1 ? s2 : s1);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.smin:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            s2 = memory.getHeapString(n2);
-            s1 = memory.getHeapString(n1);
-            memory.makeHeapString(s2 < s1 ? s2 : s1);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        // 0x30s - pseudo-real operators
+        // pseudo-real number operators
         case PCode.divm:
           n3 = memory.stack.pop();
           n2 = memory.stack.pop();
@@ -765,12 +570,7 @@ function execute(): void {
           n3 = memory.stack.pop();
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
-          if (
-            n1 !== undefined &&
-            n2 !== undefined &&
-            n3 !== undefined &&
-            n4 !== undefined
-          ) {
+          if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
             memory.stack.push(Math.round(Math.pow(n1 / n2, 1 / n3) * n4));
           } else {
             throw new MachineError("Stack operation called on empty stack.");
@@ -782,12 +582,7 @@ function execute(): void {
           n3 = memory.stack.pop();
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
-          if (
-            n1 !== undefined &&
-            n2 !== undefined &&
-            n3 !== undefined &&
-            n4 !== undefined
-          ) {
+          if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
             memory.stack.push(Math.round(Math.pow(n1 / n2, n3) * n4));
           } else {
             throw new MachineError("Stack operation called on empty stack.");
@@ -919,28 +714,185 @@ function execute(): void {
           }
           break;
 
-        // 0x40s - string operators
-        case PCode.scat:
+        // integer/Boolean comparison operators
+        case PCode.eqal:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            memory.stack.push(n1 === n2 ? trueValue : 0);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.noeq:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            memory.stack.push(n1 !== n2 ? trueValue : 0);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.less:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            memory.stack.push(n1 < n2 ? trueValue : 0);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.more:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            memory.stack.push(n1 > n2 ? trueValue : 0);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.lseq:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            memory.stack.push(n1 <= n2 ? trueValue : 0);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.mreq:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            memory.stack.push(n1 >= n2 ? trueValue : 0);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.maxi:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            memory.stack.push(Math.max(n1, n2));
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.mini:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            memory.stack.push(Math.min(n1, n2));
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        // string comparison operators
+        case PCode.seql:
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
           if (n1 !== undefined && n2 !== undefined) {
             s2 = memory.getHeapString(n2);
             s1 = memory.getHeapString(n1);
-            memory.makeHeapString(s1 + s2);
+            memory.stack.push(s1 === s2 ? trueValue : 0);
           } else {
             throw new MachineError("Stack operation called on empty stack.");
           }
           break;
 
-        case PCode.slen:
+        case PCode.sneq:
+          n2 = memory.stack.pop();
           n1 = memory.stack.pop();
-          if (n1 !== undefined) {
-            memory.stack.push(memory.main[n1]);
+          if (n1 !== undefined && n2 !== undefined) {
+            s2 = memory.getHeapString(n2);
+            s1 = memory.getHeapString(n1);
+            memory.stack.push(s1 !== s2 ? trueValue : 0);
           } else {
             throw new MachineError("Stack operation called on empty stack.");
           }
           break;
 
+        case PCode.sles:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            s2 = memory.getHeapString(n1);
+            s1 = memory.getHeapString(n2);
+            memory.stack.push(n1 < n2 ? trueValue : 0);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.smor:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            s2 = memory.getHeapString(n2);
+            s1 = memory.getHeapString(n1);
+            memory.stack.push(n1 > n2 ? trueValue : 0);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.sleq:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            s2 = memory.getHeapString(n2);
+            s1 = memory.getHeapString(n1);
+            memory.stack.push(s1 <= s2 ? trueValue : 0);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.smeq:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            s2 = memory.getHeapString(n2);
+            s1 = memory.getHeapString(n1);
+            memory.stack.push(s1 >= s2 ? trueValue : 0);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.smax:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            s2 = memory.getHeapString(n2);
+            s1 = memory.getHeapString(n1);
+            memory.makeHeapString(s2 > s1 ? s2 : s1);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.smin:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            s2 = memory.getHeapString(n2);
+            s1 = memory.getHeapString(n1);
+            memory.makeHeapString(s2 < s1 ? s2 : s1);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        // string operators
         case PCode.case:
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
@@ -975,9 +927,7 @@ function execute(): void {
                 // swap case
                 s1 = s1
                   .split("")
-                  .map((x) =>
-                    x === x.toLowerCase() ? x.toUpperCase() : x.toLowerCase()
-                  )
+                  .map((x) => (x === x.toLowerCase() ? x.toUpperCase() : x.toLowerCase()))
                   .join("");
                 memory.makeHeapString(s1);
                 break;
@@ -1047,12 +997,7 @@ function execute(): void {
           n3 = memory.stack.pop();
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
-          if (
-            n1 !== undefined &&
-            n2 !== undefined &&
-            n3 !== undefined &&
-            n4 !== undefined
-          ) {
+          if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
             s3 = memory.getHeapString(n3);
             s2 = memory.getHeapString(n2);
             s1 = memory.getHeapString(n1);
@@ -1065,6 +1010,42 @@ function execute(): void {
             } else {
               memory.makeHeapString(s1.replace(new RegExp(s2, "g"), s3));
             }
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.scat:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            s2 = memory.getHeapString(n2);
+            s1 = memory.getHeapString(n1);
+            memory.makeHeapString(s1 + s2);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.slen:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            memory.stack.push(memory.main[n1]);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.smul:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            s1 = memory.getHeapString(n1);
+            while (n2 > 0) {
+              s1 = s1 + s1;
+              n2 -= 1;
+            }
+            memory.makeHeapString(s1);
           } else {
             throw new MachineError("Stack operation called on empty stack.");
           }
@@ -1100,10 +1081,294 @@ function execute(): void {
           }
           break;
 
-        // 0x50s - turtle settings and movement
+        // python string tests
+        case PCode.ctst:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            s1 = memory.getHeapString(n1);
+            if (s1.length !== 1) {
+              throw new MachineError("String is not a character."); // TODO: better error message
+            }
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.ernf:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            if (n1 < 0) {
+              throw new MachineError("Not found."); // TODO: better error message
+            }
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        // string/array/list bound test
+        case PCode.test:
+          n2 = memory.stack[memory.stack.length - 1]; // leave the stack unchanged
+          n1 = memory.stack[memory.stack.length - 2];
+          if (n1 !== undefined && n2 !== undefined) {
+            if (n1 < 0 || n1 > memory.main[n2]) {
+              // TODO: make range check a runtime option
+              throw new MachineError(`Array index out of range (${line}, ${code}).`);
+            }
+          }
+          break;
+
+        // exception handling
+        case PCode.try:
+          code += 1;
+          memory.tryStack.push(pcode[line][code]);
+          break;
+
+        case PCode.xcpt:
+          // nothing to do here, this is just an anchor for TRY to jump to
+          break;
+
+        // list operators
+        case PCode.lapp: // fallthrough
+        case PCode.lcpy: // fallthrough
+        case PCode.lext: // fallthrough
+        case PCode.lidx: // fallthrough
+        case PCode.lins: // fallthrough
+        case PCode.lmul: // fallthrough
+        case PCode.lprt: // fallthrough
+        case PCode.lrem: // fallthrough
+        case PCode.lrev: // fallthrough
+        case PCode.liad: // fallthrough
+        case PCode.lihp:
+          // TODO
+          throw new Error("Not yet implemented.");
+
+        // file processing
+        case PCode.chdr: // fallthrough
+        case PCode.file: // fallthrough
+        case PCode.diry: // fallthrough
+        case PCode.open: // fallthrough
+        case PCode.clos: // fallthrough
+        case PCode.fbeg: // fallthrough
+        case PCode.eof: // fallthrough
+        case PCode.eoln: // fallthrough
+        case PCode.frds: // fallthrough
+        case PCode.frln: // fallthrough
+        case PCode.fwrs: // fallthrough
+        case PCode.fwln: // fallthrough
+        case PCode.ffnd: // fallthrough
+        case PCode.fdir: // fallthrough
+        case PCode.fnxt: // fallthrough
+        case PCode.fmov:
+          // not yet implemented
+          throw new MachineError(
+            "File processing has not yet been implemented in the online Turtle System. We are working on introducing this very soon. In the meantime, please run this program using the downloable system."
+          );
+
+        // type conversion operators
+        case PCode.ctos:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            memory.makeHeapString(String.fromCharCode(n1));
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.sasc:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            s1 = memory.getHeapString(n1);
+            if (s1.length === 0) {
+              memory.stack.push(0);
+            } else {
+              memory.stack.push(s1.charCodeAt(0));
+            }
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.itos:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            memory.makeHeapString(n1.toString(10));
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.hexs:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            s1 = n1.toString(16).toUpperCase();
+            while (s1.length < n2) {
+              s1 = "0" + s1;
+            }
+            memory.makeHeapString(s1);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.sval:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            s1 = memory.getHeapString(n1);
+            s2 = n2 === 1 ? "$" : n2 === 2 ? "#" : "0x";
+            n3 = s1.startsWith(s2) ? parseInt(s1.slice(1), 16) : parseInt(s1, 10);
+            if (isNaN(n3)) {
+              throw new MachineError(`Cannot parse ${s1} to integer.`);
+            } else {
+              memory.stack.push(n3);
+            }
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.svdf:
+          n3 = memory.stack.pop();
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
+            s1 = memory.getHeapString(n1);
+            s2 = n3 === 1 ? "$" : n3 === 2 ? "#" : "0x";
+            n4 = s1.startsWith("#") ? parseInt(s1.slice(1), 16) : parseInt(s1, 10);
+            memory.stack.push(isNaN(n4) ? n2 : n4);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.qtos:
+          n4 = memory.stack.pop();
+          n3 = memory.stack.pop();
+          n2 = memory.stack.pop();
+          if (n2 !== undefined && n3 !== undefined && n4 !== undefined) {
+            n1 = n2 / n3;
+            memory.makeHeapString(n1.toFixed(n4));
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.qval:
+          n3 = memory.stack.pop();
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
+            s1 = memory.getHeapString(n1);
+            n4 = isNaN(parseFloat(s1)) ? n3 : parseFloat(s1);
+            memory.stack.push(Math.round(n4 * n2));
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        // debugging and tracing
+        case PCode.trac:
+          // not implemented -
+          // just pop the top off the stack
+          memory.stack.pop();
+          break;
+
+        case PCode.memw:
+          // not implemented -
+          // just pop the top off the stack
+          memory.stack.pop();
+          break;
+
+        case PCode.dump:
+          send("memoryDumped", memory.dump());
+          if (options.showMemoryOnDump) {
+            send("selectTab", "memory");
+          }
+          break;
+
+        case PCode.pcoh:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            pcodeHalt = n1;
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.poke:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            memory.main[n1] = n2;
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        // canvas state
+        case PCode.canv:
+          n4 = memory.stack.pop();
+          n3 = memory.stack.pop();
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
+            virtualCanvas.sizey = n4;
+            virtualCanvas.sizex = n3;
+            virtualCanvas.starty = n2;
+            virtualCanvas.startx = n1;
+            send("canvas", virtualCanvas);
+            memory.setTurtX(Math.round(virtualCanvas.startx + virtualCanvas.sizex / 2));
+            memory.setTurtY(Math.round(virtualCanvas.starty + virtualCanvas.sizey / 2));
+            memory.setTurtD(0);
+            send("turtxChanged", memory.getTurtX());
+            send("turtyChanged", memory.getTurtY());
+            send("turtdChanged", memory.getTurtD());
+            memory.coords.push([memory.getTurtX(), memory.getTurtY()]);
+            drawCount = options.drawCountMax; // force update
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.reso:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            if (Math.min(n1, n2) <= options.smallSize) {
+              n1 *= 2;
+              n2 *= 2;
+              virtualCanvas.doubled = true;
+            } else {
+              virtualCanvas.doubled = false;
+            }
+            virtualCanvas.width = n1;
+            virtualCanvas.height = n2;
+            send("resolution", { width: n1, height: n2 });
+            send("blank", "#FFFFFF");
+            drawCount = options.drawCountMax; // force update
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        case PCode.udat:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            bool1 = n1 !== 0;
+            update = bool1;
+            if (bool1) {
+              drawCount = options.drawCountMax; // force update
+            }
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        // basic turtle settings
         case PCode.home:
-          n1 = startx + sizex / 2;
-          n2 = starty + sizey / 2;
+          n1 = virtualCanvas.startx + virtualCanvas.sizex / 2;
+          n2 = virtualCanvas.starty + virtualCanvas.sizey / 2;
           memory.setTurtX(Math.round(n1));
           memory.setTurtY(Math.round(n2));
           memory.setTurtD(0);
@@ -1184,16 +1449,6 @@ function execute(): void {
           }
           break;
 
-        case PCode.colr:
-          n1 = memory.stack.pop();
-          if (n1 !== undefined) {
-            memory.setTurtC(n1);
-            send("turtcChanged", hex(n1));
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
         case PCode.pen:
           n1 = memory.stack.pop();
           if (n1 !== undefined) {
@@ -1207,6 +1462,17 @@ function execute(): void {
           }
           break;
 
+        case PCode.colr:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            memory.setTurtC(n1);
+            send("turtcChanged", hex(n1));
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        // turtle movement
         case PCode.toxy:
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
@@ -1244,7 +1510,11 @@ function execute(): void {
             n2 += memory.getTurtY();
             n1 += memory.getTurtX();
             if (memory.getTurtT() > 0) {
-              send("line", { turtle: turtle(), x: turtx(n1), y: turty(n2) });
+              send("line", {
+                turtle: turtle(virtualCanvas),
+                x: turtx(virtualCanvas, n1),
+                y: turty(virtualCanvas, n2),
+              });
               if (update) {
                 drawCount += 1;
               }
@@ -1272,7 +1542,11 @@ function execute(): void {
             n1 = Math.round(n1 * n3);
             n1 += memory.getTurtX();
             if (memory.getTurtT() > 0) {
-              send("line", { turtle: turtle(), x: turtx(n1), y: turty(n2) });
+              send("line", {
+                turtle: turtle(virtualCanvas),
+                x: turtx(virtualCanvas, n1),
+                y: turty(virtualCanvas, n2),
+              });
               if (update) {
                 drawCount += 1;
               }
@@ -1300,7 +1574,11 @@ function execute(): void {
             n1 = -Math.round(n1 * n3);
             n1 += memory.getTurtX();
             if (memory.getTurtT() > 0) {
-              send("line", { turtle: turtle(), x: turtx(n1), y: turty(n2) });
+              send("line", {
+                turtle: turtle(virtualCanvas),
+                x: turtx(virtualCanvas, n1),
+                y: turty(virtualCanvas, n2),
+              });
               if (update) {
                 drawCount += 1;
               }
@@ -1359,9 +1637,7 @@ function execute(): void {
               }
               n3 /= 2;
             }
-            n3 =
-              Math.round((n3 * memory.getTurtA()) / Math.PI / 2) %
-              memory.getTurtA();
+            n3 = Math.round((n3 * memory.getTurtA()) / Math.PI / 2) % memory.getTurtA();
             memory.setTurtD(n3);
             send("turtdChanged", n1);
           } else {
@@ -1369,7 +1645,7 @@ function execute(): void {
           }
           break;
 
-        // 0x60s - colour operators, shapes and fills
+        // fills and colours
         case PCode.blnk:
           n1 = memory.stack.pop();
           if (n1 !== undefined) {
@@ -1388,8 +1664,8 @@ function execute(): void {
           n1 = memory.stack.pop();
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
             send("flood", {
-              x: turtx(n1),
-              y: turty(n2),
+              x: turtx(virtualCanvas, n1),
+              y: turty(virtualCanvas, n2),
               c1: n3,
               c2: 0,
               boundary: false,
@@ -1407,15 +1683,10 @@ function execute(): void {
           n3 = memory.stack.pop();
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
-          if (
-            n1 !== undefined &&
-            n2 !== undefined &&
-            n3 !== undefined &&
-            n4 !== undefined
-          ) {
+          if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
             send("flood", {
-              x: turtx(n1),
-              y: turty(n2),
+              x: turtx(virtualCanvas, n1),
+              y: turty(virtualCanvas, n2),
               c1: n3,
               c2: n4,
               boundary: true,
@@ -1432,10 +1703,8 @@ function execute(): void {
           n3 = memory.stack.pop();
           n2 = memory.stack.pop();
           if (n2 !== undefined && n3 !== undefined) {
-            image = context.getImageData(turtx(n2), turty(n3), 1, 1);
-            memory.stack.push(
-              image.data[0] * 65536 + image.data[1] * 256 + image.data[2]
-            );
+            image = context.getImageData(turtx(virtualCanvas, n2), turty(virtualCanvas, n3), 1, 1);
+            memory.stack.push(image.data[0] * 65536 + image.data[1] * 256 + image.data[2]);
           } else {
             throw new MachineError("Stack operation called on empty stack.");
           }
@@ -1447,10 +1716,10 @@ function execute(): void {
           n1 = memory.stack.pop();
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
             send("pixset", {
-              x: turtx(n1),
-              y: turty(n2),
+              x: turtx(virtualCanvas, n1),
+              y: turty(virtualCanvas, n2),
               c: n3,
-              doubled: doubled,
+              doubled: virtualCanvas.doubled,
             });
             if (update) {
               drawCount += 1;
@@ -1479,29 +1748,20 @@ function execute(): void {
           n3 = memory.stack.pop(); // first proportion
           n2 = memory.stack.pop(); // second colour
           n1 = memory.stack.pop(); // first colour
-          if (
-            n1 !== undefined &&
-            n2 !== undefined &&
-            n3 !== undefined &&
-            n4 !== undefined
-          ) {
-            r = mixBytes(
-              Math.floor(n1 / 0x10000),
-              Math.floor(n2 / 0x10000),
-              n3,
-              n4
-            ); // red byte
-            g = mixBytes(
-              Math.floor((n1 & 0xff00) / 0x100),
-              Math.floor((n2 & 0xff00) / 0x100),
-              n3,
-              n4
-            ); // green byte
-            b = mixBytes(n1 & 0xff, n2 & 0xff, n3, n4); // blue byte
+          if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
+            r = Math.round(
+              (Math.floor(n1 / 0x10000) * n3 + Math.floor(n2 / 0x10000) * n4) / (n3 + n4)
+            );
+            g = Math.round(
+              (Math.floor((n1 & 0xff00) / 0x100) * n3 + Math.floor((n2 & 0xff00) / 0x100) * n4) /
+                (n3 + n4)
+            );
+            b = Math.round((n1 & (0xff * n3 + n2) & (0xff * n4)) / (n3 + n4));
             memory.stack.push(r * 0x10000 + g * 0x100 + b);
           }
           break;
 
+        // drawing shapes
         case PCode.rmbr:
           memory.coords.push([memory.getTurtX(), memory.getTurtY()]);
           break;
@@ -1521,8 +1781,8 @@ function execute(): void {
             n2 = memory.coords.length;
             n1 = n3 > n2 ? 0 : n2 - n3;
             send("poly", {
-              turtle: turtle(),
-              coords: memory.coords.slice(n1, n2).map(vcoords),
+              turtle: turtle(virtualCanvas),
+              coords: memory.coords.slice(n1, n2).map(vcoords.bind(null, virtualCanvas)),
               fill: false,
             });
             if (update) {
@@ -1539,8 +1799,8 @@ function execute(): void {
             n2 = memory.coords.length;
             n1 = n3 > n2 ? 0 : n2 - n3;
             send("poly", {
-              turtle: turtle(),
-              coords: memory.coords.slice(n1, n2).map(vcoords),
+              turtle: turtle(virtualCanvas),
+              coords: memory.coords.slice(n1, n2).map(vcoords.bind(null, virtualCanvas)),
               fill: true,
             });
             if (update) {
@@ -1555,9 +1815,9 @@ function execute(): void {
           n1 = memory.stack.pop();
           if (n1 !== undefined) {
             send("arc", {
-              turtle: turtle(),
-              x: turtx(n1 + startx),
-              y: turty(n1 + starty),
+              turtle: turtle(virtualCanvas),
+              x: turtx(virtualCanvas, n1 + virtualCanvas.startx),
+              y: turty(virtualCanvas, n1 + virtualCanvas.starty),
               fill: false,
             });
             if (update) {
@@ -1572,9 +1832,9 @@ function execute(): void {
           n1 = memory.stack.pop();
           if (n1 !== undefined) {
             send("arc", {
-              turtle: turtle(),
-              x: turtx(n1 + startx),
-              y: turty(n1 + starty),
+              turtle: turtle(virtualCanvas),
+              x: turtx(virtualCanvas, n1 + virtualCanvas.startx),
+              y: turty(virtualCanvas, n1 + virtualCanvas.starty),
               fill: true,
             });
             if (update) {
@@ -1590,9 +1850,9 @@ function execute(): void {
           n1 = memory.stack.pop();
           if (n1 !== undefined && n2 !== undefined) {
             send("arc", {
-              turtle: turtle(),
-              x: turtx(n1 + startx),
-              y: turty(n2 + starty),
+              turtle: turtle(virtualCanvas),
+              x: turtx(virtualCanvas, n1 + virtualCanvas.startx),
+              y: turty(virtualCanvas, n2 + virtualCanvas.starty),
               fill: false,
             });
             if (update) {
@@ -1608,9 +1868,9 @@ function execute(): void {
           n1 = memory.stack.pop();
           if (n1 !== undefined && n2 !== undefined) {
             send("arc", {
-              turtle: turtle(),
-              x: turtx(n1 + startx),
-              y: turty(n2 + starty),
+              turtle: turtle(virtualCanvas),
+              x: turtx(virtualCanvas, n1 + virtualCanvas.startx),
+              y: turty(virtualCanvas, n2 + virtualCanvas.starty),
               fill: true,
             });
             if (update) {
@@ -1626,19 +1886,14 @@ function execute(): void {
           n3 = memory.stack.pop();
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
-          if (
-            n1 !== undefined &&
-            n2 !== undefined &&
-            n3 !== undefined &&
-            n4 !== undefined
-          ) {
+          if (n1 !== undefined && n2 !== undefined && n3 !== undefined && n4 !== undefined) {
             bool1 = n4 !== 0;
             n2 += memory.getTurtY();
             n1 += memory.getTurtX();
             send("box", {
-              turtle: turtle(),
-              x: turtx(n1),
-              y: turty(n2),
+              turtle: turtle(virtualCanvas),
+              x: turtx(virtualCanvas, n1),
+              y: turty(virtualCanvas, n2),
               fill: hex(n3),
               border: bool1,
             });
@@ -1650,7 +1905,7 @@ function execute(): void {
           }
           break;
 
-        // 0x70s - loading from stack, storing from stack, pointer and array operations
+        // loading the (evaluation) stack
         case PCode.ldin:
           n1 = pcode[line][code + 1];
           memory.stack.push(n1);
@@ -1702,6 +1957,7 @@ function execute(): void {
           memory.makeHeapString(s1);
           break;
 
+        // storing from the (evaluation) stack
         case PCode.stvg:
           n1 = memory.stack.pop();
           if (n1 !== undefined) {
@@ -1736,6 +1992,7 @@ function execute(): void {
           }
           break;
 
+        // pointer and string/array operations
         case PCode.lptr:
           n1 = memory.stack.pop();
           if (n1 !== undefined) {
@@ -1788,20 +2045,17 @@ function execute(): void {
           }
           break;
 
-        case PCode.test:
-          n2 = memory.stack[memory.stack.length - 1]; // leave the stack unchanged
-          n1 = memory.stack[memory.stack.length - 2];
-          if (n1 !== undefined && n2 !== undefined) {
-            if (n1 < 0 || n1 > memory.main[n2]) {
-              // TODO: make range check a runtime option
-              throw new MachineError(
-                `Array index out of range (${line}, ${code}).`
-              );
-            }
+        case PCode.hstr:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            s1 = memory.getHeapString(n1);
+            memory.makeHeapString(s1);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
           }
           break;
 
-        // 0x80s - flow control, memory control
+        // flow control
         case PCode.jump:
           line = pcode[line][code + 1] - 1;
           code = -1;
@@ -1868,6 +2122,7 @@ function execute(): void {
           }
           break;
 
+        // memory management
         case PCode.ldmt:
           memory.stack.push(memory.memoryStack.length - 1);
           break;
@@ -1930,131 +2185,7 @@ function execute(): void {
           memory.heapReset();
           break;
 
-        // 0x90s - runtime variables, debugging
-        case PCode.canv:
-          n4 = memory.stack.pop();
-          n3 = memory.stack.pop();
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (
-            n1 !== undefined &&
-            n2 !== undefined &&
-            n3 !== undefined &&
-            n4 !== undefined
-          ) {
-            sizey = n4;
-            sizex = n3;
-            starty = n2;
-            startx = n1;
-            send("canvas", {
-              startx: startx,
-              starty: starty,
-              sizex: sizex,
-              sizey: sizey,
-              width: width,
-              height: height,
-              doubled: doubled,
-            });
-            memory.setTurtX(Math.round(startx + sizex / 2));
-            memory.setTurtY(Math.round(starty + sizey / 2));
-            memory.setTurtD(0);
-            send("turtxChanged", memory.getTurtX());
-            send("turtyChanged", memory.getTurtY());
-            send("turtdChanged", memory.getTurtD());
-            memory.coords.push([memory.getTurtX(), memory.getTurtY()]);
-            drawCount = options.drawCountMax; // force update
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.reso:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            if (Math.min(n1, n2) <= options.smallSize) {
-              n1 *= 2;
-              n2 *= 2;
-              doubled = true;
-            } else {
-              doubled = false;
-            }
-            width = n1;
-            height = n2;
-            send("resolution", { width: n1, height: n2 });
-            send("blank", "#FFFFFF");
-            drawCount = options.drawCountMax; // force update
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.udat:
-          n1 = memory.stack.pop();
-          if (n1 !== undefined) {
-            bool1 = n1 !== 0;
-            update = bool1;
-            if (bool1) {
-              drawCount = options.drawCountMax; // force update
-            }
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.seed:
-          n1 = memory.stack.pop();
-          if (n1 !== undefined) {
-            if (n1 === 0) {
-              memory.stack.push(seed);
-            } else {
-              seed = n1;
-              memory.stack.push(n1);
-            }
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.trac:
-          // not implemented -
-          // just pop the top off the stack
-          memory.stack.pop();
-          break;
-
-        case PCode.memw:
-          // not implemented -
-          // just pop the top off the stack
-          memory.stack.pop();
-          break;
-
-        case PCode.dump:
-          send("memoryDumped", memory.dump());
-          if (options.showMemoryOnDump) {
-            send("selectTab", "memory");
-          }
-          break;
-
-        case PCode.peek:
-          n1 = memory.stack.pop();
-          if (n1 !== undefined) {
-            memory.stack.push(memory.main[n1]);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        case PCode.poke:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            memory.main[n1] = n2;
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
-        // 0xA0s - text output, timing
+        // input
         case PCode.stat:
           n1 = memory.stack.pop();
           if (n1 !== undefined) {
@@ -2157,6 +2288,40 @@ function execute(): void {
           addEventListener("keyup", readline);
           return;
 
+        case PCode.tdet:
+          n2 = memory.stack.pop();
+          n1 = memory.stack.pop();
+          if (n1 !== undefined && n2 !== undefined) {
+            if (-11 <= n1 && n1 < 256) {
+              memory.stack.push(0);
+              code += 1;
+              if (code === pcode[line].length) {
+                line += 1;
+                code = 0;
+              }
+              detectInputcode = n1;
+              n3 = n2 === 0 ? Math.pow(2, 31) - 1 : n2; // 0 means "as long as possible"
+              detectTimeoutID = setTimeout(execute, n3);
+              addEventListener("keyup", detect);
+              addEventListener("mouseup", detect);
+            } else {
+              throw new MachineError(`Detect called with invalid input code: ${n1}.`);
+            }
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          return;
+
+        case PCode.curs:
+          n1 = memory.stack.pop();
+          if (n1 !== undefined) {
+            send("cursor", n1);
+          } else {
+            throw new MachineError("Stack operation called on empty stack.");
+          }
+          break;
+
+        // text output
         case PCode.kech:
           n1 = memory.stack.pop();
           if (n1 !== undefined) {
@@ -2194,13 +2359,18 @@ function execute(): void {
           }
           break;
 
-        case PCode.prnt:
+        case PCode.disp:
           n3 = memory.stack.pop();
           n2 = memory.stack.pop();
           n1 = memory.stack.pop();
           if (n1 !== undefined && n2 !== undefined && n3 !== undefined) {
             s1 = memory.getHeapString(n1);
-            send("print", { turtle: turtle(), string: s1, font: n2, size: n3 });
+            send("print", {
+              turtle: turtle(virtualCanvas),
+              string: s1,
+              font: n2,
+              size: n3,
+            });
           } else {
             throw new MachineError("Stack operation called on empty stack.");
           }
@@ -2225,15 +2395,7 @@ function execute(): void {
           send("log", "\n");
           break;
 
-        case PCode.curs:
-          n1 = memory.stack.pop();
-          if (n1 !== undefined) {
-            send("cursor", n1);
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          break;
-
+        // timing
         case PCode.time:
           n1 = Date.now();
           n1 = n1 - startTime;
@@ -2264,57 +2426,11 @@ function execute(): void {
           }
           return;
 
-        case PCode.tdet:
-          n2 = memory.stack.pop();
-          n1 = memory.stack.pop();
-          if (n1 !== undefined && n2 !== undefined) {
-            if (-11 <= n1 && n1 < 256) {
-              memory.stack.push(0);
-              code += 1;
-              if (code === pcode[line].length) {
-                line += 1;
-                code = 0;
-              }
-              detectInputcode = n1;
-              n3 = n2 === 0 ? Math.pow(2, 31) - 1 : n2; // 0 means "as long as possible"
-              detectTimeoutID = setTimeout(execute, n3);
-              addEventListener("keyup", detect);
-              addEventListener("mouseup", detect);
-            }
-          } else {
-            throw new MachineError("Stack operation called on empty stack.");
-          }
-          return;
-
-        // 0xB0s - file processing
-        case PCode.chdr: // fallthrough
-        case PCode.file: // fallthrough
-        case PCode.diry: // fallthrough
-        case PCode.open: // fallthrough
-        case PCode.clos: // fallthrough
-        case PCode.fbeg: // fallthrough
-        case PCode.eof: // fallthrough
-        case PCode.eoln: // fallthrough
-        case PCode.frds: // fallthrough
-        case PCode.frln: // fallthrough
-        case PCode.fwrs: // fallthrough
-        case PCode.fwln: // fallthrough
-        case PCode.ffnd: // fallthrough
-        case PCode.fdir: // fallthrough
-        case PCode.fnxt: // fallthrough
-        case PCode.fmov:
-          // not yet implemented
-          throw new MachineError(
-            "File processing has not yet been implemented in the online Turtle System. We are working on introducing this very soon. In the meantime, please run this program using the downloable system."
-          );
-
         // anything else is an error
         default:
           console.log(line);
           console.log(code);
-          throw new MachineError(
-            `Unknown PCode 0x${pcode[line][code].toString(16)}.`
-          );
+          throw new MachineError(`Unknown PCode 0x${pcode[line][code].toString(16)}.`);
       }
       codeCount += 1;
       code += 1;
@@ -2323,6 +2439,9 @@ function execute(): void {
           "The program has tried to jump to a line that does not exist. This is either a bug in our compiler, or in your assembled code."
         );
       }
+      if (pcodeHalt === line) {
+        halt();
+      }
       if (code === pcode[line].length) {
         // line wrap
         line += 1;
@@ -2330,8 +2449,13 @@ function execute(): void {
       }
     }
   } catch (error) {
-    halt();
-    send("error", error);
+    if (memory.tryStack.length !== 0) {
+      line = memory.tryStack.pop()!;
+      code = 0;
+    } else {
+      halt();
+      send("error", error);
+    }
   }
   // setTimeout (with no delay) instead of direct recursion means the function will return and the
   // canvas will be updated
@@ -2362,11 +2486,7 @@ function storeKey(event: KeyboardEvent): void {
         memory.keys[0] = memory.main[buffer + 2] - memory.main[buffer + 1];
       } else {
         memory.keys[0] =
-          memory.main[buffer + 2] -
-          memory.main[buffer + 1] +
-          memory.main[buffer] -
-          buffer -
-          2;
+          memory.main[buffer + 2] - memory.main[buffer + 1] + memory.main[buffer] - buffer - 2;
       }
     }
   }
@@ -2426,11 +2546,7 @@ function putInBuffer(event: KeyboardEvent): void {
         memory.keys[0] = memory.main[buffer + 2] - memory.main[buffer + 1];
       } else {
         memory.keys[0] =
-          memory.main[buffer + 2] -
-          memory.main[buffer + 1] +
-          memory.main[buffer] -
-          buffer -
-          2;
+          memory.main[buffer + 2] - memory.main[buffer + 1] + memory.main[buffer] - buffer - 2;
       }
       // maybe show in the console
       if (keyecho) {
@@ -2444,14 +2560,14 @@ function putInBuffer(event: KeyboardEvent): void {
 function storeMouseXY(event: MouseEvent | TouchEvent): void {
   switch (event.type) {
     case "mousemove":
-      memory.query[7] = virtx((event as MouseEvent).clientX);
-      memory.query[8] = virty((event as MouseEvent).clientY);
+      memory.query[7] = virtx(canvas, virtualCanvas, (event as MouseEvent).clientX);
+      memory.query[8] = virty(canvas, virtualCanvas, (event as MouseEvent).clientY);
       break;
 
     case "touchmove": // fallthrough
     case "touchstart":
-      memory.query[7] = virtx((event as TouchEvent).touches[0].clientX);
-      memory.query[8] = virty((event as TouchEvent).touches[0].clientY);
+      memory.query[7] = virtx(canvas, virtualCanvas, (event as TouchEvent).touches[0].clientX);
+      memory.query[8] = virty(canvas, virtualCanvas, (event as TouchEvent).touches[0].clientY);
       break;
   }
 }
@@ -2475,8 +2591,8 @@ function storeClickXY(event: MouseEvent | TouchEvent): void {
   memory.query[11] = now; // save to check for next double-click
   switch (event.type) {
     case "mousedown":
-      memory.query[5] = virtx((event as MouseEvent).clientX);
-      memory.query[6] = virty((event as MouseEvent).clientY);
+      memory.query[5] = virtx(canvas, virtualCanvas, (event as MouseEvent).clientX);
+      memory.query[6] = virty(canvas, virtualCanvas, (event as MouseEvent).clientY);
       switch ((event as MouseEvent).button) {
         case 0:
           memory.query[4] += 1;
@@ -2505,8 +2621,8 @@ function storeClickXY(event: MouseEvent | TouchEvent): void {
       break;
 
     case "touchstart":
-      memory.query[5] = virtx((event as TouchEvent).touches[0].clientX);
-      memory.query[6] = virty((event as TouchEvent).touches[0].clientY);
+      memory.query[5] = virtx(canvas, virtualCanvas, (event as TouchEvent).touches[0].clientX);
+      memory.query[6] = virty(canvas, virtualCanvas, (event as TouchEvent).touches[0].clientY);
       memory.query[4] += 1;
       memory.query[1] = memory.query[4];
       memory.query[2] = -1;
@@ -2550,39 +2666,30 @@ function preventDefault(event: Event): void {
 /** breaks out of DETECT loop and resumes program execution if the right key/button is pressed */
 function detect(event: KeyboardEvent | MouseEvent): void {
   let rightThingPressed = false;
+
   // -11 is \mousekey - returns whatever was clicked/pressed
   if (detectInputcode === -11) rightThingPressed = true;
-  // -10 and -9 return for any key (not for mouse)
-  if (
-    (detectInputcode === -9 || detectInputcode === -10) &&
-    (event as KeyboardEvent).keyCode !== undefined
-  )
-    rightThingPressed = true;
-  // -8 to -4 - returns for any mouse click
-  if (
-    -8 <= detectInputcode &&
-    detectInputcode <= -4 &&
-    (event as KeyboardEvent).keyCode === undefined
-  )
-    rightThingPressed = true;
-  // specific mouse button cases
-  if (detectInputcode === -3 && (event as MouseEvent).button == 1)
-    rightThingPressed = true;
-  if (detectInputcode === -2 && (event as MouseEvent).button == 2)
-    rightThingPressed = true;
-  if (detectInputcode === -1 && (event as MouseEvent).button == 0)
-    rightThingPressed = true;
-  // keybuffer
-  if (detectInputcode === 0 && (event as KeyboardEvent).keyCode !== undefined)
-    rightThingPressed = true;
-  // otherwise return if the key pressed matches the detectInputcode
-  if ((event as KeyboardEvent).keyCode === detectInputcode)
-    rightThingPressed = true;
+
+  if (event instanceof KeyboardEvent) {
+    // -10 and -9 return for any key (not for mouse)
+    if (detectInputcode === -9 || detectInputcode === -10) rightThingPressed = true;
+    // keybuffer
+    if (detectInputcode === 0) rightThingPressed = true;
+    // otherwise return if the key pressed matches the detectInputcode
+    if (event.keyCode === detectInputcode) rightThingPressed = true;
+  } else {
+    // -8 to -4 - returns for any mouse click
+    if (-8 <= detectInputcode && detectInputcode <= -4) rightThingPressed = true;
+    // specific mouse button cases
+    if (detectInputcode === -3 && event.button == 1) rightThingPressed = true;
+    if (detectInputcode === -2 && event.button == 2) rightThingPressed = true;
+    if (detectInputcode === -1 && event.button == 0) rightThingPressed = true;
+  }
+
   if (rightThingPressed) {
-    const returnValue =
-      detectInputcode < 0
-        ? memory.query[-detectInputcode]
-        : memory.keys[detectInputcode];
+    const returnValue = detectInputcode < 0
+      ? memory.query[-detectInputcode]
+      : memory.keys[detectInputcode];
     memory.stack.pop();
     // the event listener that negates the input (onkeyup or onmouseup) is called first, so by the
     // time this listener is called it will be negative - but for consistency with the downloadable
@@ -2602,73 +2709,18 @@ function readline(event: KeyboardEvent): void {
     let string = "";
     let readNextAddress = memory.main[bufferAddress + 1];
     const readLastAddress = memory.main[bufferAddress + 2];
-    while (
-      readNextAddress !== readLastAddress &&
-      memory.main[readNextAddress] !== 13
-    ) {
+    while (readNextAddress !== readLastAddress && memory.main[readNextAddress] !== 13) {
       string += String.fromCharCode(memory.main[readNextAddress]);
       readNextAddress =
-        readNextAddress < bufferEndAddress
-          ? readNextAddress + 1
-          : bufferEndAddress + 3; // loop back to the start
+        readNextAddress < bufferEndAddress ? readNextAddress + 1 : bufferEndAddress + 3; // loop back to the start
     }
     // move past the ENTER
     memory.main[bufferAddress + 1] =
-      readNextAddress < bufferEndAddress
-        ? readNextAddress + 1
-        : bufferEndAddress + 3; // loop back to the start
+      readNextAddress < bufferEndAddress ? readNextAddress + 1 : bufferEndAddress + 3; // loop back to the start
     // put the string on the heap
     memory.makeHeapString(string);
     // clear the timeout and resume ordinary pcode execution
     clearTimeout(readlineTimeoutID);
     execute();
   }
-}
-
-/** gets current turtle properties */
-function turtle(): Turtle {
-  return {
-    x: turtx(memory.getTurtX()),
-    y: turty(memory.getTurtY()),
-    d: memory.getTurtD(),
-    a: memory.getTurtA(),
-    p: turtt(memory.getTurtT()),
-    c: hex(memory.getTurtC()),
-  };
-}
-
-/** converts turtx to virtual canvas coordinate */
-function turtx(x: number): number {
-  const exact = ((x - startx) * width) / sizex;
-  return doubled ? Math.round(exact) + 1 : Math.round(exact);
-}
-
-/** converts turty to virtual canvas coordinate */
-function turty(y: number): number {
-  const exact = ((y - starty) * height) / sizey;
-  return doubled ? Math.round(exact) + 1 : Math.round(exact);
-}
-
-/** converts turtt to virtual canvas thickness */
-function turtt(t: number): number {
-  return doubled ? t * 2 : t;
-}
-
-/** maps turtle coordinates to virtual turtle coordinates */
-function vcoords(coords: [number, number]): [number, number] {
-  return [turtx(coords[0]), turty(coords[1])];
-}
-
-/** converts x to virtual canvas coordinate */
-function virtx(x: number): number {
-  const { left, width } = canvas.getBoundingClientRect();
-  const exact = ((x - left) * sizex) / width + startx;
-  return Math.floor(exact);
-}
-
-/** converts y to virtual canvas coordinate */
-function virty(y: number): number {
-  const { height, top } = canvas.getBoundingClientRect();
-  const exact = ((y - top) * sizey) / height + starty;
-  return Math.floor(exact);
 }

@@ -6,24 +6,12 @@
 import { on } from "../../tools/hub.ts";
 
 // get relevant elements
-const turtX = document.querySelector(
-  '[data-component="turtxDisplay"]'
-) as HTMLSpanElement;
-const turtY = document.querySelector(
-  '[data-component="turtyDisplay"]'
-) as HTMLSpanElement;
-const turtD = document.querySelector(
-  '[data-component="turtdDisplay"]'
-) as HTMLSpanElement;
-const turtA = document.querySelector(
-  '[data-component="turtaDisplay"]'
-) as HTMLSpanElement;
-const turtT = document.querySelector(
-  '[data-component="turttDisplay"]'
-) as HTMLSpanElement;
-const turtC = document.querySelector(
-  '[data-component="turtcDisplay"]'
-) as HTMLSpanElement;
+const turtX = document.querySelector('[data-component="turtxDisplay"]') as HTMLSpanElement;
+const turtY = document.querySelector('[data-component="turtyDisplay"]') as HTMLSpanElement;
+const turtD = document.querySelector('[data-component="turtdDisplay"]') as HTMLSpanElement;
+const turtA = document.querySelector('[data-component="turtaDisplay"]') as HTMLSpanElement;
+const turtT = document.querySelector('[data-component="turttDisplay"]') as HTMLSpanElement;
+const turtC = document.querySelector('[data-component="turtcDisplay"]') as HTMLSpanElement;
 
 if (turtX && turtY && turtD && turtA && turtT && turtC) {
   // register to keep in sync with the machine state
@@ -46,9 +34,7 @@ if (turtX && turtY && turtD && turtA && turtT && turtC) {
   on("turttChanged", function (t: number) {
     const penup = t < 0;
     const thickness = Math.abs(t);
-    turtT.innerHTML = penup
-      ? `(${thickness.toString(10)})`
-      : thickness.toString(10);
+    turtT.innerHTML = penup ? `(${thickness.toString(10)})` : thickness.toString(10);
   });
 
   on("turtcChanged", function (c: string) {

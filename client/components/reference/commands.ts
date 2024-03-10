@@ -2,12 +2,9 @@
  * Native commands reference table.
  */
 import type { Command } from "../../constants/commands.ts";
-import {
-  type Expression,
-  commandCategories,
-} from "../../constants/categories.ts";
+import { type Expression, commandCategories } from "../../constants/categories.ts";
 import { fill, tr, td, code } from "../../tools/elements.ts";
-import highlight from "../../lexer/highlight.ts";
+import highlight from "../../tokenizer/highlight.ts";
 import { state } from "../../state/index.ts";
 import { on } from "../../tools/hub.ts";
 
@@ -27,12 +24,9 @@ if (commandsTableBody) {
 function updateTable(): void {
   if (commandsTableBody) {
     let commands = commandCategories[state.commandsCategoryIndex].expressions;
-    if (!state.showSimpleCommands)
-      commands = commands.filter((x) => x.level !== 0);
-    if (!state.showIntermediateCommands)
-      commands = commands.filter((x) => x.level !== 1);
-    if (!state.showAdvancedCommands)
-      commands = commands.filter((x) => x.level !== 2);
+    if (!state.showSimpleCommands) commands = commands.filter((x) => x.level !== 0);
+    if (!state.showIntermediateCommands) commands = commands.filter((x) => x.level !== 1);
+    if (!state.showAdvancedCommands) commands = commands.filter((x) => x.level !== 2);
     commands = commands.filter((x) => (x as Command).names[state.language]);
     fill(commandsTableBody, commands.map(commandTableRow));
   }
@@ -45,19 +39,13 @@ function commandTableRow(expression: Expression): HTMLTableRowElement {
       td({
         content: [
           code({
-            content: highlight(
-              command.names[state.language] as string,
-              state.language
-            ),
+            content: highlight(command.names[state.language] as string, state.language),
           }),
         ],
       }),
       td({
         content: command.parameters
-          .map(
-            (x) =>
-              `<code>${highlight(x.name, state.language)}</code> (${x.type})`
-          )
+          .map((x) => `<code>${highlight(x.name, state.language)}</code> (${x.type})`)
           .join("<br>"),
       }),
       td({ content: command.returns || "-" }),

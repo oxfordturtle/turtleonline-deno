@@ -1,11 +1,11 @@
 void main () {
-  // write question to console
-  write('What is your name?  ');
+  // printon question to console
+  printon('What is your name?  ');
   // read characters from keybuffer until ENTER key is pressed
   string name = gets();
-  // write a greeting (on a new line)
-  writeline('');
-  write('Hello, ' + name + ', ...  ');
+  // printon a greeting (on a new line)
+  print('');
+  printon('Hello, ' + name + ', ...  ');
   pause(500);
-  writeline('How are you?');
+  print('How are you?');
 }

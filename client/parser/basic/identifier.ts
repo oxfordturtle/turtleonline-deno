@@ -1,17 +1,14 @@
-import type Lexemes from "../definitions/lexemes.ts";
-import type { SubroutineType } from "../definitions/subroutine.ts";
-import type { Type } from "../../lexer/lexeme.ts";
+import type { Type } from "../../lexer/types.ts";
 import { CompilerError } from "../../tools/error.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import type { SubroutineType } from "../definitions/routines/subroutine.ts";
 
 /** parses a lexeme as an identifier */
 export function identifier(lexemes: Lexemes): string {
   const identifier = lexemes.get();
 
   if (!identifier) {
-    throw new CompilerError(
-      "{lex} must be followed by an identifier.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("{lex} must be followed by an identifier.", lexemes.get(-1));
   }
 
   if (identifier.type !== "identifier") {
@@ -31,9 +28,7 @@ export function identifier(lexemes: Lexemes): string {
 }
 
 /** parses a lexeme as a subroutine name */
-export function subroutineName(
-  lexemes: Lexemes
-): [string, SubroutineType, Type, number] {
+export function subroutineName(lexemes: Lexemes): [string, SubroutineType, Type, number] {
   const name = identifier(lexemes);
 
   let subroutineType: SubroutineType;
@@ -50,7 +45,7 @@ export function subroutineName(
 
   const test = name.match(/\$(\d+)$/);
   let type: Type = "boolint";
-  let stringLength = 32;
+  let stringLength = 64;
   if (name.slice(-1) === "$") {
     type = "string";
   } else if (test) {
@@ -67,7 +62,7 @@ export function variableName(lexemes: Lexemes): [string, Type, number] {
 
   const test = name.match(/\$(\d+)$/);
   let type: Type;
-  let stringLength = 32;
+  let stringLength = 64;
   if (name.slice(-1) === "%") {
     type = "boolint";
   } else if (name.slice(-1) === "$") {

@@ -58,9 +58,7 @@ export function closeMenu(id: string): void {
     for (const subMenu of Array.from(menu.querySelectorAll("[data-menu]"))) {
       closeMenu((subMenu as HTMLElement).dataset.menu as string);
     }
-    for (const subMenu of Array.from(
-      menu.querySelectorAll("[data-system-menu]")
-    )) {
+    for (const subMenu of Array.from(menu.querySelectorAll("[data-system-menu]"))) {
       closeSystemMenu((subMenu as HTMLElement).dataset.systemMenu as string);
     }
 
@@ -135,17 +133,12 @@ export function closeSystemMenu(id: string): void {
 
 /** activates a tab */
 export function selectTab(id: string): void {
-  for (const select of Array.from(
-    document.querySelectorAll('[data-action="selectTab"]')
-  )) {
+  for (const select of Array.from(document.querySelectorAll('[data-action="selectTab"]'))) {
     for (const option of Array.from(select.children)) {
-      if ((option as HTMLOptionElement).value === id)
-        (option as HTMLOptionElement).selected = true;
+      if ((option as HTMLOptionElement).value === id) (option as HTMLOptionElement).selected = true;
     }
   }
-  for (const tabPane of Array.from(
-    document.querySelectorAll(`[data-tab="${id}"]`)
-  )) {
+  for (const tabPane of Array.from(document.querySelectorAll(`[data-tab="${id}"]`))) {
     if (tabPane.parentElement) {
       for (const sibling of Array.from(tabPane.parentElement.children)) {
         sibling.classList.remove("active");

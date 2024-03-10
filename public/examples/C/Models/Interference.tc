@@ -73,7 +73,7 @@ void drawwave (string s, int top, int wavelength, int wavecol) {
     blot(5);
     int turn = divmult((clockx[n] - leftx) % wavelength, wavelength, 360);
     if (report) {
-      writeline(s + ', clock ' + itoa(n) + ': dist=' + itoa(clockx[n]) + '; turn=' + itoa(turn));
+      print(s + ', clock ' + itoa(n) + ': dist=' + itoa(clockx[n]) + '; turn=' + itoa(turn));
     }
     turnxy(sin(turn, 1, 1000), -cos(turn, 1, 1000));
     colour(wavecol);
@@ -141,8 +141,8 @@ void randomwaves () {
 
 void changeprompt () {
   console(true, white);
-  writeline('Press "1" or "2" for the dimensionality required,');
-  write('or press "R" to pick random new wavelengths: ');
+  print('Press "1" or "2" for the dimensionality required,');
+  printon('or press "R" to pick random new wavelengths: ');
   do {} while ((abs(?key) != \1) && (abs(?key) != \2) && (abs(?key) != \r));
   if (abs(?key) == \1) {
     dimensions = 1;

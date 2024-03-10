@@ -18,11 +18,7 @@ if (stackTableBody && heapTableBody) {
   // register to keep in sync with system state
   on(
     "memoryDumped",
-    function (memory: {
-      stack: number[];
-      heap: number[];
-      heapBase: number;
-    }): void {
+    function (memory: { stack: number[]; heap: number[]; heapBase: number }): void {
       const stackSplit: number[][] = [];
       const heapSplit: number[][] = [];
       while (memory.stack.length > 0) {

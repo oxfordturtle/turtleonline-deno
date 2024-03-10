@@ -1,5 +1,5 @@
 import { assertEquals } from "testing";
-import { Status } from "http";
+import { STATUS_CODE } from "http";
 import { testImpSucceed } from "./imp.ts";
 import router from "./router.ts";
 
@@ -25,10 +25,10 @@ Deno.test({
     for (const page of pages) {
       const request = new Request(`http://localhost/${page}`);
       const response = await router(request, testImpSucceed);
-      assertEquals(response.status, Status.OK);
+      assertEquals(response.status, STATUS_CODE.OK);
     }
     const request = new Request("http://localhost/documentation");
     const response = await router(request, testImpSucceed);
-    assertEquals(response.status, Status.Found);
+    assertEquals(response.status, STATUS_CODE.Found);
   },
 });

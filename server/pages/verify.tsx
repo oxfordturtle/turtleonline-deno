@@ -1,5 +1,5 @@
 import React from "react";
-import { Status } from "http";
+import { STATUS_CODE } from "http";
 import type { Imp, RequestParams } from "../types.ts";
 import page from "./_layout/page.tsx";
 import { htmlResponse } from "../utils/response.ts";
@@ -15,7 +15,7 @@ export default async (
     requestParams.sections[2]
   ))
     ? verifyResponse(requestParams, requestParams.sections[1], imp)
-    : error(requestParams, Status.NotFound);
+    : error(requestParams, STATUS_CODE.NotFound);
 
 // TODO: this function is duplicated in reset.tsx
 const isValidUserToken = async (

@@ -1,18 +1,16 @@
-import { expression, typeCheck } from "../expression.ts";
-import evaluate from "../evaluate.ts";
-import Lexemes from "../definitions/lexemes.ts";
-import Program from "../definitions/program.ts";
-import { Subroutine } from "../definitions/subroutine.ts";
-import { Type } from "../../lexer/lexeme.ts";
+import type { Type } from "../../lexer/types.ts";
 import { CompilerError } from "../../tools/error.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import type { Routine } from "../definitions/routine.ts";
+import evaluate from "../common/evaluate.ts";
+import parseExpression from "../common/expression.ts";
+import typeCheck from "../common/typeCheck.ts";
 
-/** parses lexemes as a variable/parameter type specification */
-export default function type(
-  lexemes: Lexemes,
-  routine: Program | Subroutine
-): [boolean, Type, number, [number, number][]] {
+type TypeInformation = [boolean, Type, number, [number, number][]];
+
+const type = (lexemes: Lexemes, routine: Routine): TypeInformation => {
   const lexeme = lexemes.get();
-  let stringLength = 32;
+  let stringLength = 64;
 
   // expecting type
   if (!lexeme) {
@@ -35,19 +33,13 @@ export default function type(
         // expecting positive integer literal
         const integer = lexemes.get();
         if (!integer) {
-          throw new CompilerError(
-            "Expected string size specification.",
-            lexemes.get(-1)
-          );
+          throw new CompilerError("Expected string size specification.", lexemes.get(-1));
         }
         if (integer.type !== "literal" || integer.subtype !== "integer") {
           throw new CompilerError("String size must be an integer.", integer);
         }
         if (integer.value <= 0) {
-          throw new CompilerError(
-            "String size must be greater than zero.",
-            integer
-          );
+          throw new CompilerError("String size must be greater than zero.", integer);
         }
         stringLength = integer.value;
         lexemes.next();
@@ -69,30 +61,21 @@ export default function type(
       return [false, "string", stringLength, []];
 
     case "final":
-      throw new CompilerError(
-        '"Final" must be written with a capital "F".',
-        lexeme
-      );
+      throw new CompilerError('"Final" must be written with a capital "F".', lexeme);
 
     case "Final":
       lexemes.next();
       return [true, "boolint", stringLength, []];
 
     case "list":
-      throw new CompilerError(
-        '"List" must be written with a capital "L".',
-        lexeme
-      );
+      throw new CompilerError('"List" must be written with a capital "L".', lexeme);
 
     case "List": {
       lexemes.next();
 
       // expecting opening square bracket
       if (!lexemes.get()) {
-        throw new CompilerError(
-          '"List" must be followed by a type in square brackets.',
-          lexeme
-        );
+        throw new CompilerError('"List" must be followed by a type in square brackets.', lexeme);
       }
       if (lexemes.get()?.content !== "[") {
         throw new CompilerError(
@@ -126,8 +109,8 @@ export default function type(
       lexemes.next();
 
       // expecting integer expression (size of array)
-      const exp = expression(lexemes, routine);
-      typeCheck(exp, "integer");
+      const exp = parseExpression(lexemes, routine);
+      typeCheck(routine.language, exp, "integer");
       const value = evaluate(exp, "Python", "array");
       if (typeof value === "string") {
         throw new CompilerError("List length must be an integer.", exp.lexeme);
@@ -162,4 +145,6 @@ export default function type(
         lexemes.get()
       );
   }
-}
+};
+
+export default type;

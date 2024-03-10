@@ -1,144 +1,91 @@
-import Routine from "./routine.ts";
-import Program from "./program.ts";
-import type { Subroutine } from "./subroutine.ts";
-import type { Type } from "../../lexer/lexeme.ts";
+import type { Type } from "../../lexer/types.ts";
+import type { Routine } from "./routine.ts";
+import type { Subroutine } from "./routines/subroutine.ts";
 
-/** variable */
-export default class Variable {
+export interface Variable {
+  readonly __: "Variable";
   readonly name: string;
-  readonly routine: Program | Subroutine;
-  isParameter = false;
-  isReferenceParameter = false;
-  isPointer = false;
-  type: Type = "boolint";
+  readonly routine: Routine;
+  readonly isGlobal: boolean;
+  isParameter: boolean;
+  isReferenceParameter: boolean;
+  isPointer: boolean;
+  type: Type;
   typeIsCertain: boolean;
   turtle?: number; // index of turtle variable (if this is one)
-  stringLength = 32;
-  arrayDimensions: [number, number][] = []; // for array variables
+  stringLength: number;
+  arrayDimensions: [number, number][]; // for array variables
   private?: Subroutine; // subroutine for private variables (BASIC only)
-
-  /** constructor */
-  constructor(name: string, routine: Program | Subroutine) {
-    this.name = routine.language === "Pascal" ? name.toLowerCase() : name;
-    this.routine = routine;
-    // TODO: make this false for TypeScript as well, once type inference works there
-    this.typeIsCertain = routine.language === "Python" ? false : true;
-  }
-
-  /** whether the variable is an array */
-  get isArray(): boolean {
-    return this.arrayDimensions.length > 0;
-  }
-
-  /** whether the variable is a global */
-  get isGlobal(): boolean {
-    return this.routine instanceof Program;
-  }
-
-  /** length of each of the variable's ultimate elements */
-  get baseLength(): number {
-    return this.type === "string"
-      ? this.stringLength + 3 // 3 = pointer + max length byte + actual length byte
-      : 1;
-  }
-
-  /** length of each of the variable's immediate elements */
-  get elementLength(): number {
-    return this.arrayDimensions.length > 1 ? 1 : this.baseLength;
-  }
-
-  /** internal length of an array variable (i.e. how many elements it contains) */
-  get elementCount(): number {
-    return this.isArray
-      ? this.arrayDimensions[0][1] - this.arrayDimensions[0][0] + 1
-      : 0;
-  }
-
-  /** full length of the variable (i.e. how many "bytes" of memory it requires) */
-  get length(): number {
-    // reference parameters and pointers (simply hold the address to the varaiable)
-    if (this.isReferenceParameter || this.isPointer) {
-      return 1;
-    }
-
-    // arrays
-    if (this.isArray) {
-      return this.subVariables[0].length * this.elementCount + 2; // +2 for pointer and length byte
-      /*let length = this.baseLength
-      for (const dimensions of this.arrayDimensions) {
-        const size = dimensions[1] - dimensions[0] + 1
-        length = (length * size) + 2 // 2 = pointer + array length byte
-      }
-      return length*/
-    }
-
-    // all other variables
-    return this.baseLength;
-  }
-
-  /** sub variables (for arrays) */
-  get subVariables(): SubVariable[] {
-    const subVariables: SubVariable[] = [];
-    if (this.isArray) {
-      for (let i = 0; i < this.elementCount; i += 1) {
-        const subVariable = new SubVariable(this, i);
-        subVariables.push(subVariable);
-      }
-    }
-    return subVariables;
-  }
-
-  /** address of the variable (absolute for globals, relative for subroutines) */
-  get address(): number {
-    // N.B. this is different for subvariables
-    const arrayIndex = this.routine.variables.indexOf(this);
-    const routine = new Routine(this.routine.language);
-    routine.variables = this.routine.variables.slice(0, arrayIndex);
-    return this.routine instanceof Program
-      ? this.routine.turtleAddress +
-          this.routine.turtleVariables.length +
-          routine.memoryNeeded +
-          1
-      : routine.memoryNeeded + 1;
-  }
-
-  /** address of the length byte of the variable (for strings and arrays) */
-  get lengthByteAddress(): number {
-    // N.B. this is different for subvariables
-    return this.address + 1;
-  }
 }
 
-/** subvariable (element of array variable) */
-class SubVariable extends Variable {
+const makeVariable = (name: string, routine: Routine): Variable => ({
+  __: "Variable",
+  name: routine.language === "Pascal" ? name.toLowerCase() : name,
+  routine,
+  isGlobal: routine.__ === "Program",
+  isParameter: false,
+  isReferenceParameter: false,
+  isPointer: false,
+  type: "boolint",
+  typeIsCertain: routine.language === "Python" ? false : true,
+  stringLength: 64,
+  arrayDimensions: [],
+});
+
+export default makeVariable;
+
+export const isArray = (variable: Variable): boolean => variable.arrayDimensions.length > 0;
+
+export const baseLength = (variable: Variable): number =>
+  variable.type === "string"
+    ? variable.stringLength + 3 // 3 = pointer + max length byte + actual length byte
+    : 1;
+
+export const elementCount = (variable: Variable): number =>
+  isArray(variable) ? variable.arrayDimensions[0][1] - variable.arrayDimensions[0][0] + 1 : 0;
+
+export const getLength = (variable: Variable): number => {
+  // reference parameters and pointers (simply hold the address to the variable)
+  if (variable.isReferenceParameter || variable.isPointer) {
+    return 1;
+  }
+
+  // arrays
+  if (isArray(variable)) {
+    return getLength(getSubVariables(variable)[0]) * elementCount(variable) + 2; // +2 for pointer and length byte
+  }
+
+  // all other variables
+  return baseLength(variable);
+};
+
+export const getSubVariables = (variable: Variable): SubVariable[] => {
+  const subVariables: SubVariable[] = [];
+  if (isArray(variable)) {
+    for (let i = 0; i < elementCount(variable); i += 1) {
+      subVariables.push(makeSubVariable(variable, i));
+    }
+  }
+  return subVariables;
+};
+
+export interface SubVariable extends Variable {
   readonly variable: Variable | SubVariable;
   readonly index: number;
-
-  /** constructor */
-  constructor(variable: Variable | SubVariable, index: number) {
-    super(`${variable.name}_${index.toString(10)}`, variable.routine);
-    this.variable = variable;
-    this.index = index;
-    this.type = variable.type;
-    this.isParameter = variable.isParameter;
-    this.isReferenceParameter = variable.isReferenceParameter;
-    this.stringLength = variable.stringLength;
-    this.arrayDimensions = variable.arrayDimensions.slice(1);
-    this.private = variable.private;
-  }
-
-  /** address of the subvariable (absolute for globals, relative for subroutines) */
-  get address(): number {
-    //const base = this.variable.lengthByteAddress + 1
-    //return base + (this.index * this.variable.elementLength)
-    return this.variable.lengthByteAddress + this.index + 1;
-  }
-
-  /** address of the length byte of the variable (for strings and arrays) */
-  get lengthByteAddress(): number {
-    //const base = this.variable.lengthByteAddress + (this.variable.elementLength * this.variable.elementCount) + 1
-    const base =
-      this.variable.lengthByteAddress + this.variable.elementCount + 1;
-    return base + (this.length - 1) * this.index; // length - 1 because we don't want to count the pointer here
-  }
 }
+
+export const makeSubVariable = (variable: Variable | SubVariable, index: number): SubVariable => ({
+  ...makeVariable(`${variable.name}_${index.toString(10)}`, variable.routine),
+  isGlobal: variable.isGlobal,
+  isParameter: variable.isParameter,
+  isReferenceParameter: variable.isReferenceParameter,
+  isPointer: variable.isPointer,
+  type: variable.type,
+  typeIsCertain: variable.typeIsCertain,
+  turtle: variable.turtle,
+  stringLength: variable.stringLength,
+  arrayDimensions: variable.arrayDimensions.slice(1),
+  private: variable.private,
+  variable,
+  index,
+});

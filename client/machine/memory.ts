@@ -1,5 +1,5 @@
 // type imports
-import type { Options } from "./options.ts";
+import type { Options } from "./types.ts";
 
 // the memory arrays
 export const main: number[] = [];
@@ -12,6 +12,7 @@ export const stack: number[] = [];
 export const memoryStack: number[] = [];
 export const returnStack: number[] = [];
 export const subroutineStack: number[] = [];
+export const tryStack: number[] = [];
 
 // stack top and heapBase markers
 let stackTop = 0;
@@ -45,6 +46,7 @@ export function init(options: Options): void {
   memoryStack.length = 0;
   returnStack.length = 0;
   subroutineStack.length = 0;
+  tryStack.length = 0;
   // set up stack top and markers.heapBase markers
   stackTop = 0;
   heapGlobal = -1;
@@ -80,11 +82,7 @@ export function peekAddressOffset(address: number, offset: number): number {
 }
 
 /** writes the given value at the address stored at the given address with offset */
-export function pokeAddressOffset(
-  address: number,
-  offset: number,
-  value: number
-): void {
+export function pokeAddressOffset(address: number, offset: number, value: number): void {
   main[main[address] + offset] = value;
 }
 

@@ -1,12 +1,12 @@
-import type from "./type.ts";
-import identifier from "./identifier.ts";
-import variable from "./variable.ts";
-import Lexemes from "../definitions/lexemes.ts";
-import Program from "../definitions/program.ts";
-import { Subroutine } from "../definitions/subroutine.ts";
-import Variable from "../definitions/variable.ts";
+import type { TypeLexeme } from "../../lexer/lexeme.ts";
 import { CompilerError } from "../../tools/error.ts";
-import { TypeLexeme } from "../../lexer/lexeme.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import type { Program } from "../definitions/routines/program.ts";
+import makeSubroutine, { type Subroutine } from "../definitions/routines/subroutine.ts";
+import makeVariable, { type Variable } from "../definitions/variable.ts";
+import identifier from "./identifier.ts";
+import type from "./type.ts";
+import variable from "./variable.ts";
 
 /** parses lexemes at subroutine definition, and returns the subroutine */
 export default function subroutine(
@@ -19,12 +19,12 @@ export default function subroutine(
   const name = identifier(lexemes, program);
 
   // create the subroutine
-  const subroutine = new Subroutine(lexeme, program, name);
+  const subroutine = makeSubroutine(lexeme, program, name);
   subroutine.index = program.subroutines.length + 1;
 
   // set the return type and unshift the result variable for functions
   if (subroutineType !== null) {
-    const variable = new Variable("!result", subroutine);
+    const variable = makeVariable("!result", subroutine);
     variable.type = subroutineType;
     variable.stringLength = stringLength;
     subroutine.variables.push(variable);
@@ -73,16 +73,10 @@ export default function subroutine(
 function parameters(lexemes: Lexemes, subroutine: Subroutine): Variable[] {
   // expecting opening bracket "("
   if (!lexemes.get()) {
-    throw new CompilerError(
-      "Opening bracket missing after method name.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("Opening bracket missing after method name.", lexemes.get(-1));
   }
   if (lexemes.get()?.content !== "(") {
-    throw new CompilerError(
-      "Opening bracket missing after method name.",
-      lexemes.get()
-    );
+    throw new CompilerError("Opening bracket missing after method name.", lexemes.get());
   }
   lexemes.next();
 
@@ -99,10 +93,7 @@ function parameters(lexemes: Lexemes, subroutine: Subroutine): Variable[] {
 
   // check for closing bracket
   if (lexemes.get()?.content !== ")") {
-    throw new CompilerError(
-      "Closing bracket missing after method parameters.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("Closing bracket missing after method parameters.", lexemes.get(-1));
   }
   lexemes.next();
 

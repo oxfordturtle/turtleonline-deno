@@ -116,19 +116,19 @@ void graph () {
   setxy(850, 520);
   display(qitoa(gtotal, gnum, 2), 4, 25);
   update();
-  write(itoa(gen));
-  write(' - c=');
-  write(itoa(cnum));
-  write(' (av=');
-  write(qitoa(ctotal, cnum, 2));
-  writeline(')');
+  printon(itoa(gen));
+  printon(' - c=');
+  printon(itoa(cnum));
+  printon(' (av=');
+  printon(qitoa(ctotal, cnum, 2));
+  print(')');
   update();
   noupdate();
-  write('     g=');
-  write(itoa(gnum));
-  write(' (av=');
-  write(qitoa(gtotal, gnum, 2));
-  writeline(')');
+  printon('     g=');
+  printon(itoa(gnum));
+  printon(' (av=');
+  printon(qitoa(gtotal, gnum, 2));
+  print(')');
 }
 
 void deadcheetah (int c) {

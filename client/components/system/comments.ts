@@ -20,9 +20,6 @@ if (commentsTableBody) {
 
 function commentTableRow(comment: CommentLexeme): HTMLTableRowElement {
   return tr({
-    content: [
-      td({ content: comment.line.toString(10) }),
-      td({ content: comment.value }),
-    ],
+    content: [td({ content: comment.line.toString(10) }), td({ content: comment.value })],
   });
 }

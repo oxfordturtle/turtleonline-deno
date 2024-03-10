@@ -1,4 +1,4 @@
-import { Status } from "http";
+import { STATUS_CODE } from "http";
 import type { Imp, RequestParams, User } from "../types.ts";
 import error from "./error.tsx";
 import account from "./account/account.tsx";
@@ -18,8 +18,8 @@ export default (requestParams: RequestParams, imp: Imp): Promise<Response> =>
           requestParams.user,
           imp
         )
-      : error(requestParams, Status.NotFound)
-    : error(requestParams, Status.Forbidden);
+      : error(requestParams, STATUS_CODE.NotFound)
+    : error(requestParams, STATUS_CODE.Forbidden);
 
 const handler: Record<
   string,

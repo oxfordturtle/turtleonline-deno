@@ -1,237 +1,457 @@
-/*
- * Details of example programs.
- *
- * Example program code is stored in the /public/examples directory, to be
- * fetched as needed.
- */
+import type { ExampleGroupId } from "./exampleGroups.ts";
 import type { Language } from "./languages.ts";
 
-/** Example class */
-export class Example {
-  readonly groupId: string;
+export interface Example {
+  readonly __: "Example";
+  readonly groupId: ExampleGroupId;
   readonly id: string;
-  readonly names: Record<Language, string>;
-
-  /** constructor */
-  constructor(
-    groupId: string,
-    id: string,
-    names: Record<Language, string> | string
-  ) {
-    this.groupId = groupId;
-    this.id = id;
-    this.names =
-      typeof names === "string"
-        ? {
-            BASIC: names,
-            C: names,
-            Java: names,
-            Pascal: names,
-            Python: names,
-            TypeScript: names,
-          }
-        : names;
-  }
+  readonly names: Partial<Record<Language, string | null>>;
 }
 
-/** Example group class */
-export class Group {
-  readonly index: number;
-  readonly id: string;
-  readonly title: string;
-  readonly examples: Example[];
+const example = (
+  groupId: ExampleGroupId,
+  id: string,
+  name: string,
+  names: Partial<Record<Language, string | null>> = {}
+): Example => ({
+  __: "Example",
+  groupId,
+  id,
+  names: {
+    BASIC: name,
+    C: name,
+    Java: name,
+    Pascal: name,
+    Python: name,
+    TypeScript: name,
+    ...names,
+  },
+});
 
-  /** constructor */
-  constructor(index: number, id: string, title: string) {
-    this.index = index;
-    this.id = id;
-    this.title = title;
-    this.examples = examples.filter((x) => x.groupId === id);
-  }
-}
-
-/** array of examples */
-export const examples: Example[] = [
-  // examples 0 - CSAC (not to be shown in the menu)
-  new Example("CSAC", "LifeStart", "Initialising Conway’s Game of Life"),
-  new Example("CSAC", "Mandelbrot", "Mandelbrot set"),
-  new Example("CSAC", "MandelbrotMini", "Mandelbrot mini"),
-  new Example("CSAC", "MandelbrotSpectrum", "Mandelbrot spectrum"),
-  new Example("CSAC", "MandelbrotMiniSpectrum", "Mandelbrot mini spectrum"),
-  new Example("CSAC", "SierpinskiColour", "Sierpinski colour"),
-  new Example("CSAC", "SierpinskiIFS", "Sierpinski IFS"),
-  new Example("CSAC", "BarnsleyColour", "Barnsley colour"),
-  new Example("CSAC", "BarnsleyIFS", "Barnsley IFS"),
-  new Example("CSAC", "DragonColour", "Dragon colour"),
-  new Example("CSAC", "DragonIFS", "Dragon IFS"),
-  new Example("CSAC", "TreeIFS", "Tree IFS"),
-  new Example("CASC", "WaveSuperposer", "Hugh Wallis’s wave superposer"),
+export default [
+  // examples 0 - CSAC (not shown in the menu)
+  example("CSAC", "LifeStart", "Initialising Conway's Game of Life", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("CSAC", "Mandelbrot", "Mandelbrot set", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("CSAC", "MandelbrotMini", "Mandelbrot mini", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("CSAC", "MandelbrotSpectrum", "Mandelbrot spectrum", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("CSAC", "MandelbrotMiniSpectrum", "Mandelbrot mini spectrum", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("CSAC", "SierpinskiColour", "Sierpinski colour", {
+    C: null,
+    Java: null,
+    Python: null,
+    TypeScript: null,
+  }),
+  example("CSAC", "SierpinskiIFS", "Sierpinski IFS", {
+    C: null,
+    Java: null,
+    Python: null,
+    TypeScript: null,
+  }),
+  example("CSAC", "BarnsleyColour", "Barnsley colour", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("CSAC", "BarnsleyIFS", "Barney IFS", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("CSAC", "DragonColour", "Dragon colour", {
+    C: null,
+    Java: null,
+    Python: null,
+    TypeScript: null,
+  }),
+  example("CSAC", "DragonIFS", "Dragon IFS", {
+    C: null,
+    Java: null,
+    Python: null,
+    TypeScript: null,
+  }),
+  example("CSAC", "TreeIFS", "Tree IFS", {
+    C: null,
+    Java: null,
+    Python: null,
+    TypeScript: null,
+  }),
   // examples 1 - Drawing
-  new Example("Drawing", "DrawPause", "Simple drawing with pauses"),
-  new Example("Drawing", "SmileyFace", "Smiley face (using PENUP and ELLBLOT)"),
-  new Example("Drawing", "ThePlough", "The plough (using SETXY and POLYLINE)"),
-  new Example("Drawing", "OlympicRings", "Olympic rings (using a variable)"),
-  new Example("Drawing", "ForLoop", "FOR (counting) loop"),
-  new Example("Drawing", "TriangleSpin", "Spinning triangle pattern"),
-  new Example("Drawing", "Circles", "Circling circles"),
-  new Example("Drawing", "NestedLoops", "Nested FOR loops"),
-  new Example("Drawing", "RandomLines", "Random lines pattern"),
-  new Example("Drawing", "RandomEllipses", "Random ellipses pattern"),
+  example("Drawing", "DrawPause", "Simple drawing with pauses"),
+  example("Drawing", "SmileyFace", "Smiley face [PENUP, ELLBLOT]"),
+  example("Drawing", "ThePlough", "The plough [SETXY, POLYLINE]"),
+  example("Drawing", "OlympicRings", "Olympic rings (uses a variable)"),
+  example("Drawing", "ForLoop", "FOR loop (uses a counting variable)"),
+  example("Drawing", "TriangleSpin", "Spinning triangle pattern [MOVEXY]"),
+  example("Drawing", "Circles", "Circling circles"),
+  example("Drawing", "NestedLoops", "Nested FOR loops [DIRECTION, RGB]"),
+  example("Drawing", "RandomLines", "Random lines pattern [IF, PIXCOL, RECOLOUR]"),
+  example("Drawing", "RandomEllipses", "Random ellipses pattern"),
   // examples 2 - Procedures
-  new Example("Procedures", "ColourSpiral", "Spiral of colours (simple PCODE)"),
-  new Example("Procedures", "SimpleProc", "Simple procedure (using REPEAT)"),
-  new Example("Procedures", "ParameterProc", "Procedure with parameter"),
-  new Example(
-    "Procedures",
-    "ResizableFace",
-    "Resizable face (nested procedures)"
-  ),
-  new Example("Procedures", "Polygons", "Polygons (two parameters)"),
-  new Example("Procedures", "Stars", "Stars (using ANGLES and FORGET)"),
-  new Example("Procedures", "PolygonRings", "Polygon rings (three parameters)"),
-  new Example("Procedures", "Triangle1", "Simple triangle"),
-  new Example("Procedures", "Triangle2", "Triangle procedure"),
-  new Example("Procedures", "Triangle3", "Triangle procedure with limit"),
-  new Example("Procedures", "Triangles", "Recursive triangles"),
-  new Example("Procedures", "Factorials", "Recursive factorials"),
+  example("Procedures", "ColourSpiral", "Spiral of colours [WHILE, RANDCOL]", {
+    BASIC: "Spiral of colours [REPEAT, RNDCOL]",
+    Pascal: "Spiral of colours [REPEAT, RANDCOL]",
+    Python: "Spiral of colours [WHILE, RNDCOL]",
+  }),
+  example("Procedures", "SimpleProc", "Simple procedure [WHILE, TURTD]", {
+    BASIC: "Simple procedure [REPEAT, TURTD]",
+    Pascal: "Simple procedure [REPEAT, TURTD]",
+  }),
+  example("Procedures", "ParameterProc", "Function with parameter", {
+    BASIC: "Procedure with parameter",
+    Pascal: "Procedure with parameter",
+  }),
+  example("Procedures", "ResizableFace", "Resizable face (hierarchical functions)", {
+    BASIC: "Resizable face (hierarchical procedures)",
+    Pascal: "Resizable face (nested procedures)",
+  }),
+  example("Procedures", "Polygons", "Polygons (uses 2 parameters) [POLYGON, POLYLINE]"),
+  example("Procedures", "Stars", "Stars [ANGLES, FORGET]"),
+  example("Procedures", "PolygonRings", "Polygon rings (uses 3 parameters) [MOD]"),
+  example("Procedures", "Triangle1", "Simple triangle"),
+  example("Procedures", "Triangle2", "Triangle function", {
+    BASIC: "Triangle procedure",
+    Pascal: "Triangle procedure",
+  }),
+  example("Procedures", "Triangle3", "Triangle function with limit", {
+    BASIC: "Triangle procedure with limit",
+    Pascal: "Triangle procedure with limit",
+  }),
+  example("Procedures", "Triangles", "Recursive triangles"),
+  example("Procedures", "Factorials", "Recursive factorials [Function, OUTPUT]", {
+    Pascal: "Recursive factorials [FUNCTION, OUTPUT]",
+  }),
   // examples 3 - Further
-  new Example("Further", "YouAreHere", "Text and arrow (using PRINT)"),
-  new Example("Further", "CycleColours", "Cycling colours (using MOD)"),
-  new Example("Further", "Clock", "Analogue clock (using REPEAT)"),
-  new Example("Further", "DigitalClock", "Digital clock (using IF and WHILE)"),
-  new Example("Further", "Flashlights", "Flashlights (using Booleans)"),
-  new Example("Further", "RefParams", "Reference parameters"),
-  new Example("Further", "Balls3D", "3D colour effects"),
-  new Example("Further", "StringFunctions", "Standard string functions"),
-  new Example(
-    "Further",
-    "UserStringFunctions",
-    "User-defined string functions"
-  ),
-  new Example("Further", "MathFunctions", "Mathematical functions"),
-  new Example("Further", "TrigGraphs", "Trigonometric graphs"),
+  example("Further", "YouAreHere", "Text and arrow [DISPLAY]"),
+  example("Further", "CycleColours", "Cycling colours [MOD]"),
+  example("Further", "Clock", "Analogue clock (nested WHILE loops)", {
+    BASIC: "Analogue clock (nested REPEAT loops)",
+    Pascal: "Analogue clock (nested REPEAT loops)",
+  }),
+  example("Further", "DigitalClock", "Digital clock [IF, WHILE]"),
+  example("Further", "Flashlights", "Flashlights (using Booleans)"),
+  example("Further", "RefParams", "Reference parameters", {
+    BASIC: "Reference parameters (using RETURN)",
+    Python: "Reference parameters [PEEK, POKE]",
+  }),
+  example("Further", "Balls3D", "3D colour effects"),
+  example("Further", "StringFunctions", "Standard string functions"),
+  example("Further", "UserStringFunctions", "User-defined string functions"),
+  example("Further", "ListFunctions", "Python list functions", {
+    BASIC: null,
+    C: null,
+    Java: null,
+    Pascal: null,
+    TypeScript: null,
+  }),
+  example("Further", "MathFunctions", "Mathematical functions"),
+  example("Further", "TrigGraphs", "Trigonometric graphs"),
   // examples 4 - Movement
-  new Example("Movement", "MovingBall", "Moving ball (using variables)"),
-  new Example("Movement", "BouncingBall", "Bouncing ball (using variables)"),
-  new Example("Movement", "TurtleMove", "Moving ball (using Turtle)"),
-  new Example("Movement", "TurtleBounce", "Bouncing ball (using Turtle)"),
-  new Example("Movement", "BouncingFace", "Bouncing face"),
-  new Example("Movement", "MultiBounce", "Multiple bouncing balls"),
-  new Example("Movement", "BouncingTriangle", "Bouncing triangle"),
-  new Example("Movement", "BouncingShapes", "Multiple bouncing shapes"),
-  new Example("Movement", "GravitySteps", "Movement under gravity"),
-  new Example("Movement", "SolarSystem", "Solar system"),
+  example("Movement", "MovingBall", "Moving ball (using variables)"),
+  example("Movement", "BouncingBall", "Bouncing ball (using variables)"),
+  example("Movement", "TurtleMove", "Moving ball (using Turtle)"),
+  example("Movement", "TurtleBounce", "Bouncing ball (using Turtle)"),
+  example("Movement", "BouncingFace", "Bouncing face"),
+  example("Movement", "MultiBounce", "Multiple bouncing balls"),
+  example("Movement", "BouncingTriangle", "Bouncing triangle"),
+  example("Movement", "BouncingShapes", "Multiple bouncing shapes"),
+  example("Movement", "GravitySteps", "Movement under gravity"),
+  example("Movement", "SolarSystem", "Solar system"),
+  // these two examples aren't working properly :(
+  // example("Movement", "BirdTree", "Bird and tree - student example", {
+  //   BASIC: null,
+  //   C: null,
+  //   Java: null,
+  //   Python: null,
+  //   TypeScript: null,
+  // }),
+  // example("Movement", "ChickenCoop", "Chicken coop - student example", {
+  //   BASIC: null,
+  //   C: null,
+  //   Java: null,
+  //   Python: null,
+  //   TypeScript: null,
+  // }),
   // examples 5 - Interaction
-  new Example("Interaction", "AskInput", "Asking for typed input"),
-  new Example("Interaction", "QuickClick", "Mouse reaction game"),
-  new Example("Interaction", "TypingTest", "Typing test (checking characters)"),
-  new Example("Interaction", "TypingTestKeys", "Typing test (checking keys)"),
-  new Example(
-    "Interaction",
-    "IterationGame",
-    "Iteration game (Collatz sequence)"
-  ),
-  new Example(
-    "Interaction",
-    "SpongeThrow",
-    "Throwing sponges at a moving face"
-  ),
-  new Example("Interaction", "Arcade", "Arcade shooting game"),
-  new Example("Interaction", "SnakeGame", "Snake (classic game)"),
-  new Example("Interaction", "SimpleDraw", "Drawing to the mouse"),
-  new Example("Interaction", "PaintApp", "Painting application"),
-  new Example(
-    "Interaction",
-    "MultipleTurtles",
-    "Multiple turtles and varying ANGLES"
-  ),
+  example("Interaction", "AskInput", "Asking for typed input"),
+  example("Interaction", "QuickClick", "Mouse reaction game"),
+  example("Interaction", "TypingTest", "Typing test (checking characters)"),
+  example("Interaction", "TypingTestKeys", "Typing test (checking keys)"),
+  example("Interaction", "IterationGame", "Iteration game (Collatz sequence)"),
+  example("Interaction", "SpongeThrow", "Throwing sponges at a moving face"),
+  example("Interaction", "Arcade", "Arcade shooting game"),
+  example("Interaction", "ColourCells", "Colouring cells", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Interaction", "SnakeGame", "Snake (classic game)"),
+  example("Interaction", "SimpleDraw", "Drawing to the mouse"),
+  example("Interaction", "PaintApp", "Painting application"),
+  example("Interaction", "MultipleTurtles", "Multiple turtles and varying ANGLES", {
+    Python: null,
+  }),
   // examples 6 - Files
-  new Example("Files", "WriteAndReadFile", "Writing and reading a text file"),
-  new Example("Files", "RenameAndDeleteFile", "Renaming and deleting a file"),
-  new Example("Files", "FileSearching", "File searching"),
-  new Example("Files", "SaveCSV", "Saving a CSV file"),
-  new Example("Files", "ReadCSV", "Reading a CSV file"),
-  new Example("Files", "RandomSentences", "Random sentences (using files)"),
-  new Example("Files", "FileCommands", "File commands"),
-  new Example("Files", "DirectoryCommands", "Directory commands"),
+  // example("Files", "WriteAndReadFile", "Writing and reading a text file"),
+  // example("Files", "RenameAndDeleteFile", "Renaming and deleting a file"),
+  // example("Files", "FileSearching", "File searching"),
+  // example("Files", "SaveCSV", "Saving a CSV file"),
+  // example("Files", "ReadCSV", "Reading a CSV file"),
+  // example("Files", "RandomSentences", "Random sentences (using files)"),
+  // example("Files", "FileCommands", "File commands"),
+  // example("Files", "DirectoryCommands", "Directory commands"),
   // examples 7 - Cellular
-  new Example("Cellular", "Disease", "Spread of disease"),
-  new Example("Cellular", "TippingPoint", "Tipping point (city epidemic)"),
-  new Example("Cellular", "GameOfLife", "Conway’s Game of Life"),
-  new Example("Cellular", "LifeArrays", "Game of Life, using arrays"),
-  new Example("Cellular", "Automata", "One-dimensional cellular automata"),
-  new Example("Cellular", "Diffusion", "A model of diffusion"),
-  new Example("Cellular", "Dendrites", "Dendritic crystal growth"),
-  new Example("Cellular", "Schelling", "Schelling’s segregation model"),
-  new Example("Cellular", "IteratedPD", "Iterated Prisoner’s Dilemma"),
+  example("Cellular", "TippingPoint", "Tipping point (city epidemic)", {
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Cellular", "Disease", "Spread of disease", {
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Cellular", "GameOfLife", "Conway’s Game of Life", {
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Cellular", "GameOfLifeSetup", "Game of Life with user setup", {
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Cellular", "LifeArrays", "Game of Life, using arrays", {
+    Java: null,
+    Python: "Game of Life, using lists",
+    TypeScript: null,
+  }),
+  example("Cellular", "Automata", "One-dimensional cellular automata", {
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Cellular", "Diffusion", "Diffusion in a tapering tube", {
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Cellular", "Dendrites", "Dendritic crystal growth", {
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Cellular", "Schelling", "Schelling’s segregation model", {
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Cellular", "IteratedPD", "Iterated Prisoner’s Dilemma", {
+    Java: null,
+    TypeScript: null,
+  }),
   // examples 8 - Models
-  new Example("Models", "AimCannon", "Firing a cannon (manual)"),
-  new Example("Models", "AutoCannon", "Firing a cannon (automatic)"),
-  new Example("Models", "Launch", "Launching a rocket into orbit"),
-  new Example("Models", "BrownianMotion", "Brownian motion"),
-  new Example("Models", "Cheetahs", "Cheetahs and gazelles"),
-  new Example("Models", "SexRatio", "The sex ratio"),
-  new Example("Models", "Flocking", "Flocking behaviour"),
-  new Example("Models", "Roads", "Town road simulation"),
-  new Example("Models", "Interference", "Wave interference tutor"),
-  new Example("Models", "TwoSlits", "Interference from two slits"),
+  example("Models", "AimCannon", "Firing a cannon (manual)", {
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Models", "AutoCannon", "Firing a cannon (automatic)", {
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Models", "Launch", "Launching a rocket into orbit", {
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Models", "BrownianMotion", "Brownian motion", {
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Models", "Cheetahs", "Cheetahs and gazelles", {
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Models", "SexRatio", "Evolution of sex ratio", {
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Models", "Flocking", "Flocking behaviour", {
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Models", "Roads", "Town road simulation", {
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Models", "Interference", "Wave interference tutor", {
+    BASIC: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Models", "TwoSlits", "Interference from two slits", {
+    BASIC: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Models", "WaveSuperposer", "Hugh Wallis's wave superposer", {
+    BASIC: null,
+    C: null,
+    Java: null,
+    Python: null,
+    TypeScript: null,
+  }),
   // examples 9 - Fractals
-  new Example("Fractals", "RecursionFactory", "Recursion factory"),
-  new Example("Fractals", "RecursiveTree", "Recursive tree"),
-  new Example("Fractals", "KochSnowflake", "Koch snowflake"),
-  new Example("Fractals", "SquareKoch", "Square Koch fractal curves"),
-  new Example("Fractals", "Sierpinski", "Sierpinski triangle (by deletion)"),
-  new Example(
-    "Fractals",
-    "SierpinskiDots",
-    "Sierpinski triangle (by random dots)"
-  ),
-  new Example(
-    "Fractals",
-    "IFSBackground",
-    "Iterated function systems (IFS) background"
-  ),
-  new Example("Fractals", "IFSColour", "IFS mappings on coloured background"),
-  new Example("Fractals", "IFSDemonstrator", "IFS demonstrator program"),
-  new Example("Fractals", "Logistic", "Logistic equation"),
-  new Example("Fractals", "LogisticSpider", "Logistic spider"),
-  new Example("Fractals", "MandelbrotDemo", "Mandelbrot multi-colour"),
-  new Example(
-    "Fractals",
-    "MandelbrotSpectrumDemo",
-    "Mandelbrot spectral colours"
-  ),
-  new Example("Fractals", "Quine", "Quine (self-replicating) program"),
+  example("Fractals", "RecursionFactory", "Recursion factory", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Fractals", "RecursiveTree", "Recursive tree", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Fractals", "KochSnowflake", "Koch snowflake", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Fractals", "SquareKoch", "Square Koch fractal curves", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Fractals", "Sierpinski", "Sierpinski triangle (by deletion)", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Fractals", "SierpinskiDots", "Sierpinski triangle (by random dots)", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Fractals", "IFSBackground", "Iterated function systems (IFS) background", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Fractals", "IFSColour", "IFS mappings on coloured background", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Fractals", "IFSDemonstrator", "IFS demonstrator program", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Fractals", "Logistic", "Logistic equation", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Fractals", "LogisticSpider", "Logistic spider", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Fractals", "MandelbrotDemo", "Mandelbrot multi-colour", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Fractals", "MandelbrotSpectrumDemo", "Mandelbrot spectral colours", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Fractals", "Quine", "Quine (self-replicating) program", {
+    BASIC: null,
+    C: null,
+    Java: null,
+    Python: null,
+    TypeScript: null,
+  }),
   // examples 10 - Logic&CS
-  new Example("Logic&CS", "Hanoi", "Tower of Hanoi by recursion"),
-  new Example("Logic&CS", "IterateRoot", "Square roots by iteration"),
-  new Example("Logic&CS", "Fibonaccis", "Fibonaccis (using ARRAY and TIME)"),
-  new Example("Logic&CS", "Sorting", "Comparison of sorting methods"),
-  new Example(
-    "Logic&CS",
-    "SortingStrings",
-    "Comparison of sorting methods (strings)"
-  ),
-  new Example("Logic&CS", "NoughtsAndCrosses", "Noughts and crosses"),
-  new Example("Logic&CS", "NimLearn", "Nim learning program"),
-  new Example("Logic&CS", "MultiNim", "Nim with multiple piles"),
-  new Example("Logic&CS", "KnightsTour", "Knight’s Tour program"),
-  // these last two examples don't yet compile properly :(
-  // new Example('Logic&CS', 'TuringMachines', 'Turing machine simulator'),
-  // new Example('Logic&CS', 'Syllogisms', 'Syllogism testing program')
-];
-
-/** array of example groups */
-export const groups: Group[] = [
-  new Group(0, "CSAC", "other CSAC programs"),
-  new Group(1, "Drawing", "drawing and counting loops"),
-  new Group(2, "Procedures", "procedures and simple recursion"),
-  new Group(3, "Further", "further commands and structures"),
-  new Group(4, "Movement", "smooth movement and bouncing"),
-  // new Group(5, 'Files', 'file and directory handling'),
-  new Group(5, "Interaction", "user input, interaction and games"),
-  new Group(6, "Cellular", "cellular models"),
-  new Group(7, "Models", "other models"),
-  new Group(8, "Fractals", "self-similarity and chaos"),
-  new Group(9, "Logic&CS", "computer science and logic"),
-];
+  example("Logic&CS", "Hanoi", "Tower of Hanoi by recursion", {
+    BASIC: null,
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Logic&CS", "BinarySearch", "Binary search guessing game", {
+    BASIC: null,
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Logic&CS", "IterateRoot", "Square roots by iteration", {
+    BASIC: null,
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Logic&CS", "Fibonacci", "Fibonacci recursion and iteration (dynamic programming)", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Logic&CS", "Sorting", "Comparison of sorting methods", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Logic&CS", "SortingStrings", "Comparison of sorting methods (strings)", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Logic&CS", "NoughtsAndCrosses", "Noughts and crosses", {
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Logic&CS", "NimLearn", "Nim learning program", {
+    BASIC: null,
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Logic&CS", "MultiNim", "Nim with multiple piles", {
+    C: null,
+    Java: null,
+    Python: null,
+    TypeScript: null,
+  }),
+  example("Logic&CS", "KnightsTour", "Knight’s Tour program", {
+    BASIC: null,
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Logic&CS", "TuringMachines", "Turing machine simulator", {
+    BASIC: null,
+    C: null,
+    Java: null,
+    TypeScript: null,
+  }),
+  example("Logic&CS", "Syllogisms", "Syllogism testing program", {
+    BASIC: null,
+    C: null,
+    Java: null,
+    Python: null,
+    TypeScript: null,
+  }),
+] as const;

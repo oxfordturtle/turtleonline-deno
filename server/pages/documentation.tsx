@@ -1,4 +1,4 @@
-import { Status } from "http";
+import { STATUS_CODE } from "http";
 import type { Imp, RequestParams } from "../types.ts";
 import { redirectResponse } from "../utils/response.ts";
 import error from "./error.tsx";
@@ -17,7 +17,7 @@ export default (requestParams: RequestParams, imp: Imp): Promise<Response> => {
     ? redirectResponse(`${requestParams.url.origin}/documentation/programming`)
     : handler[requestParams.sections[1]]
     ? handler[requestParams.sections[1]](requestParams, imp)
-    : error(requestParams, Status.NotFound);
+    : error(requestParams, STATUS_CODE.NotFound);
 };
 
 const handler: Record<

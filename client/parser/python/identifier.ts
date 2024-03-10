@@ -1,22 +1,13 @@
-import * as find from "../find.ts";
-import Lexemes from "../definitions/lexemes.ts";
-import Program from "../definitions/program.ts";
-import { Subroutine } from "../definitions/subroutine.ts";
 import { CompilerError } from "../../tools/error.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import type { Routine } from "../definitions/routine.ts";
+import * as find from "../common/find.ts";
 
-/** parses lexeme as an identifier, and returns the name */
-export default function identifier(
-  lexemes: Lexemes,
-  routine: Program | Subroutine,
-  duplicateCheck: boolean
-): string {
+export default (lexemes: Lexemes, routine: Routine, duplicateCheck: boolean): string => {
   const identifier = lexemes.get();
 
   if (!identifier) {
-    throw new CompilerError(
-      "{lex} must be followed by an identifier.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("{lex} must be followed by an identifier.", lexemes.get(-1));
   }
 
   if (identifier.type !== "identifier") {
@@ -25,10 +16,7 @@ export default function identifier(
 
   if (duplicateCheck) {
     if (identifier.subtype === "turtle") {
-      throw new CompilerError(
-        "{lex} is already the name of a Turtle attribute.",
-        identifier
-      );
+      throw new CompilerError("{lex} is already the name of a Turtle attribute.", identifier);
     }
     if (find.isDuplicate(routine, identifier.value)) {
       throw new CompilerError(
@@ -41,4 +29,4 @@ export default function identifier(
   lexemes.next();
 
   return identifier.value;
-}
+};

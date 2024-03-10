@@ -1,22 +1,16 @@
 // type imports
-import { type Turtle } from "../../machine/turtle.ts";
+import { type Turtle } from "../../machine/types.ts";
 
 // module imports
-import { cursors } from "../../constants/cursors.ts";
-import { fonts } from "../../constants/fonts.ts";
+import cursors from "../../constants/cursors.ts";
+import fonts from "../../constants/fonts.ts";
 import * as machine from "../../machine/index.ts";
 import { on } from "../../tools/hub.ts";
 
 // get relevant elements
-const canvas = document.querySelector(
-  '[data-component="canvas"]'
-) as HTMLCanvasElement;
-const xcoords = document.querySelector(
-  '[data-component="canvasXCoords"]'
-) as HTMLDivElement;
-const ycoords = document.querySelector(
-  '[data-component="canvasYCoords"]'
-) as HTMLDivElement;
+const canvas = document.querySelector('[data-component="canvas"]') as HTMLCanvasElement;
+const xcoords = document.querySelector('[data-component="canvasXCoords"]') as HTMLDivElement;
+const ycoords = document.querySelector('[data-component="canvasYCoords"]') as HTMLDivElement;
 
 if (canvas && xcoords && ycoords) {
   // get relevant sub-elements
@@ -38,8 +32,7 @@ if (canvas && xcoords && ycoords) {
 
   // set the canvas resolution
   on("resolution", function (data: { width: number; height: number }): void {
-    canvas.style.imageRendering =
-      data.width < 500 || data.height < 500 ? "pixelated" : "auto";
+    canvas.style.imageRendering = data.width < 500 || data.height < 500 ? "pixelated" : "auto";
     canvas.width = data.width;
     canvas.height = data.height;
   });
@@ -47,38 +40,17 @@ if (canvas && xcoords && ycoords) {
   // set the virtual canvas dimensions (updates coordinates display)
   on(
     "canvas",
-    function (data: {
-      startx: number;
-      starty: number;
-      sizex: number;
-      sizey: number;
-    }): void {
+    function (data: { startx: number; starty: number; sizex: number; sizey: number }): void {
       xcoords1.innerHTML = data.startx.toString(10);
-      xcoords2.innerHTML = Math.round((data.startx + data.sizex) / 4).toString(
-        10
-      );
-      xcoords3.innerHTML = Math.round((data.startx + data.sizex) / 2).toString(
-        10
-      );
-      xcoords4.innerHTML = Math.round(
-        ((data.startx + data.sizex) / 4) * 3
-      ).toString(10);
-      xcoords5.innerHTML = Math.round(data.startx + data.sizex - 1).toString(
-        10
-      );
+      xcoords2.innerHTML = Math.round((data.startx + data.sizex) / 4).toString(10);
+      xcoords3.innerHTML = Math.round((data.startx + data.sizex) / 2).toString(10);
+      xcoords4.innerHTML = Math.round(((data.startx + data.sizex) / 4) * 3).toString(10);
+      xcoords5.innerHTML = Math.round(data.startx + data.sizex - 1).toString(10);
       ycoords1.innerHTML = data.starty.toString(10);
-      ycoords2.innerHTML = Math.round((data.starty + data.sizey) / 4).toString(
-        10
-      );
-      ycoords3.innerHTML = Math.round((data.starty + data.sizey) / 2).toString(
-        10
-      );
-      ycoords4.innerHTML = Math.round(
-        ((data.starty + data.sizey) / 4) * 3
-      ).toString(10);
-      ycoords5.innerHTML = Math.round(data.starty + data.sizey - 1).toString(
-        10
-      );
+      ycoords2.innerHTML = Math.round((data.starty + data.sizey) / 4).toString(10);
+      ycoords3.innerHTML = Math.round((data.starty + data.sizey) / 2).toString(10);
+      ycoords4.innerHTML = Math.round(((data.starty + data.sizey) / 4) * 3).toString(10);
+      ycoords5.innerHTML = Math.round(data.starty + data.sizey - 1).toString(10);
     }
   );
 
@@ -91,12 +63,7 @@ if (canvas && xcoords && ycoords) {
   // draw text on the canvas
   on(
     "print",
-    function (data: {
-      turtle: Turtle;
-      string: string;
-      font: number;
-      size: number;
-    }): void {
+    function (data: { turtle: Turtle; string: string; font: number; size: number }): void {
       context.textBaseline = "hanging";
       context.fillStyle = data.turtle.c;
       context.font = `${data.size}pt ${fonts[data.font & 0xf].css}`;
@@ -132,81 +99,53 @@ if (canvas && xcoords && ycoords) {
   });
 
   // draw a polygon (optionally filled)
-  on(
-    "poly",
-    function (data: {
-      turtle: Turtle;
-      coords: [number, number][];
-      fill: boolean;
-    }): void {
-      context.beginPath();
-      data.coords.forEach((coords, index) => {
-        if (index === 0) {
-          context.moveTo(coords[0], coords[1]);
-        } else {
-          context.lineTo(coords[0], coords[1]);
-        }
-      });
-      if (data.fill) {
-        context.closePath();
-        context.fillStyle = data.turtle.c;
-        context.fill();
+  on("poly", function (data: { turtle: Turtle; coords: [number, number][]; fill: boolean }): void {
+    context.beginPath();
+    data.coords.forEach((coords, index) => {
+      if (index === 0) {
+        context.moveTo(coords[0], coords[1]);
       } else {
-        context.lineCap = "round";
-        context.lineWidth = Math.abs(data.turtle.p);
-        context.strokeStyle = data.turtle.c;
-        context.stroke();
+        context.lineTo(coords[0], coords[1]);
       }
+    });
+    if (data.fill) {
+      context.closePath();
+      context.fillStyle = data.turtle.c;
+      context.fill();
+    } else {
+      context.lineCap = "round";
+      context.lineWidth = Math.abs(data.turtle.p);
+      context.strokeStyle = data.turtle.c;
+      context.stroke();
     }
-  );
+  });
 
   // draw a circle/ellipse (optionally filled)
-  on(
-    "arc",
-    function (data: {
-      turtle: Turtle;
-      x: number;
-      y: number;
-      fill: boolean;
-    }): void {
-      context.beginPath();
-      if (data.x === data.y) {
-        context.arc(
-          data.turtle.x,
-          data.turtle.y,
-          data.x,
-          0,
-          2 * Math.PI,
-          false
-        );
-      } else {
-        context.save();
-        context.translate(data.turtle.x - data.x, data.turtle.y - data.y);
-        context.scale(data.x, data.y);
-        context.arc(1, 1, 1, 0, 2 * Math.PI, false);
-        context.restore();
-      }
-      if (data.fill) {
-        context.fillStyle = data.turtle.c;
-        context.fill();
-      } else {
-        context.lineWidth = Math.abs(data.turtle.p);
-        context.strokeStyle = data.turtle.c;
-        context.stroke();
-      }
+  on("arc", function (data: { turtle: Turtle; x: number; y: number; fill: boolean }): void {
+    context.beginPath();
+    if (data.x === data.y) {
+      context.arc(data.turtle.x, data.turtle.y, data.x, 0, 2 * Math.PI, false);
+    } else {
+      context.save();
+      context.translate(data.turtle.x - data.x, data.turtle.y - data.y);
+      context.scale(data.x, data.y);
+      context.arc(1, 1, 1, 0, 2 * Math.PI, false);
+      context.restore();
     }
-  );
+    if (data.fill) {
+      context.fillStyle = data.turtle.c;
+      context.fill();
+    } else {
+      context.lineWidth = Math.abs(data.turtle.p);
+      context.strokeStyle = data.turtle.c;
+      context.stroke();
+    }
+  });
 
   // draw a box
   on(
     "box",
-    function (data: {
-      turtle: Turtle;
-      x: number;
-      y: number;
-      fill: string;
-      border: boolean;
-    }): void {
+    function (data: { turtle: Turtle; x: number; y: number; fill: string; border: boolean }): void {
       context.beginPath();
       context.moveTo(data.turtle.x, data.turtle.y);
       context.lineTo(data.x, data.turtle.y);
@@ -225,27 +164,19 @@ if (canvas && xcoords && ycoords) {
   );
 
   // set the colour of a canvas pixel
-  on(
-    "pixset",
-    function (data: {
-      x: number;
-      y: number;
-      c: number;
-      doubled: boolean;
-    }): void {
-      const img = context.createImageData(1, 1);
-      img.data[0] = (data.c >> 16) & 0xff;
-      img.data[1] = (data.c >> 8) & 0xff;
-      img.data[2] = data.c & 0xff;
-      img.data[3] = 0xff;
-      context.putImageData(img, data.x, data.y);
-      if (data.doubled) {
-        context.putImageData(img, data.x - 1, data.y);
-        context.putImageData(img, data.x, data.y - 1);
-        context.putImageData(img, data.x - 1, data.y - 1);
-      }
+  on("pixset", function (data: { x: number; y: number; c: number; doubled: boolean }): void {
+    const img = context.createImageData(1, 1);
+    img.data[0] = (data.c >> 16) & 0xff;
+    img.data[1] = (data.c >> 8) & 0xff;
+    img.data[2] = data.c & 0xff;
+    img.data[3] = 0xff;
+    context.putImageData(img, data.x, data.y);
+    if (data.doubled) {
+      context.putImageData(img, data.x - 1, data.y);
+      context.putImageData(img, data.x, data.y - 1);
+      context.putImageData(img, data.x - 1, data.y - 1);
     }
-  );
+  });
 
   // black the canvas in the given colour
   on("blank", function (colour: string): void {
@@ -256,23 +187,14 @@ if (canvas && xcoords && ycoords) {
   // flood a portion of the canvas
   on(
     "flood",
-    function (data: {
-      x: number;
-      y: number;
-      c1: number;
-      c2: number;
-      boundary: boolean;
-    }): void {
+    function (data: { x: number; y: number; c1: number; c2: number; boundary: boolean }): void {
       const img = context.getImageData(0, 0, canvas.width, canvas.height);
       const pixStack: number[] = [];
       const dx = [0, -1, 1, 0];
       const dy = [-1, 0, 0, 1];
       let i = 0;
       let offset = (data.y * canvas.width + data.x) * 4;
-      const c3 =
-        256 * 256 * img.data[offset] +
-        256 * img.data[offset + 1] +
-        img.data[offset + 2];
+      const c3 = 256 * 256 * img.data[offset] + 256 * img.data[offset + 1] + img.data[offset + 2];
       let nextX: number;
       let nextY: number;
       let nextC: number;

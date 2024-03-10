@@ -1,11 +1,6 @@
 /// <reference lib="dom" />
-
-// type imports
-import type { Language } from "./constants/languages.ts";
-
-// module imports
 import { type State, state } from "./state/index.ts";
-import { languages } from "./constants/languages.ts";
+import languages, { type Language } from "./constants/languages.ts";
 import { on } from "./tools/hub.ts";
 
 // load general site components
@@ -81,7 +76,7 @@ addEventListener("beforeunload", function () {
 // register to handle state and machine errors
 on("error", function (error: Error): void {
   console.error(error);
-  window.alert(error.message);
+  alert(error.message);
 });
 
 // initialise the page

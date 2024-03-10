@@ -1,6 +1,6 @@
-import Lexemes from "../definitions/lexemes.ts";
-import { Type } from "../../lexer/lexeme.ts";
+import type { Type } from "../../lexer/types.ts";
 import { CompilerError } from "../../tools/error.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
 
 /** parses lexemes at a type specification */
 export default function type(lexemes: Lexemes): [Type | null, number] {
@@ -23,28 +23,19 @@ export default function type(lexemes: Lexemes): [Type | null, number] {
   lexemes.next();
 
   // string length is allowable here
-  let stringLength = 32;
+  let stringLength = 64;
   if (lexemes.get()?.content === "[") {
     lexemes.next();
     // expecting integer
     const integerLexeme = lexemes.get();
     if (!integerLexeme) {
-      throw new CompilerError(
-        "Expecting string size specification.",
-        lexemes.get(-1)
-      );
+      throw new CompilerError("Expecting string size specification.", lexemes.get(-1));
     }
-    if (
-      integerLexeme.type !== "literal" ||
-      integerLexeme.subtype !== "integer"
-    ) {
+    if (integerLexeme.type !== "literal" || integerLexeme.subtype !== "integer") {
       throw new CompilerError("String size must be an integer.", lexemes.get());
     }
     if (integerLexeme.value <= 0) {
-      throw new CompilerError(
-        "String size must be greater than zero.",
-        lexemes.get()
-      );
+      throw new CompilerError("String size must be greater than zero.", lexemes.get());
     }
     stringLength = integerLexeme.value;
     lexemes.next();

@@ -1,3 +1,5 @@
+REM SmileyFace
+
 REM avoid drawing lines as Turtle moves
 PENUP
 REM draw head
@@ -20,7 +22,7 @@ REM Turtle is now pointing leftwards
 FORWARD(80)
 REM draw left eye
 COLOUR(WHITE)
-ELLBLOT(30, 20)
+ELLBLOT(30,20)
 COLOUR(EMERALD)
 BLOT(18)
 COLOUR(BLACK)
@@ -29,7 +31,7 @@ REM move to right eye position
 BACK(160)
 REM draw right eye
 COLOUR(WHITE)
-ELLBLOT(30, 20)
+ELLBLOT(30,20)
 COLOUR(EMERALD)
 BLOT(18)
 COLOUR(BLACK)

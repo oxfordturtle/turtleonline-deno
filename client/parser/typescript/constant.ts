@@ -1,19 +1,18 @@
+import { CompilerError } from "../../tools/error.ts";
+import evaluate from "../common/evaluate.ts";
+import parseExpression from "../common/expression.ts";
+import typeCheck from "../common/typeCheck.ts";
+import constant, { type Constant } from "../definitions/constant.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import type { Routine } from "../definitions/routine.ts";
 import identifier from "./identifier.ts";
 import type from "./type.ts";
-import Lexemes from "../definitions/lexemes.ts";
-import { Constant } from "../definitions/constant.ts";
-import Program from "../definitions/program.ts";
-import { Subroutine } from "../definitions/subroutine.ts";
-import { expression, typeCheck } from "../expression.ts";
-import evaluate from "../evaluate.ts";
-import { CompilerError } from "../../tools/error.ts";
 
-/** parses lexemes at a constant definition */
-export default function constant(
+export default (
   lexemes: Lexemes,
-  routine: Program | Subroutine,
+  routine: Routine,
   duplicateCheck: boolean
-): Constant {
+): Constant => {
   // expecting identifier
   const name = identifier(lexemes, routine, duplicateCheck);
 
@@ -31,24 +30,18 @@ export default function constant(
 
   // expecting "="
   if (!lexemes.get()) {
-    throw new CompilerError(
-      `Constant ${name} must be assigned a value.`,
-      lexemes.get(-1)
-    );
+    throw new CompilerError(`Constant ${name} must be assigned a value.`, lexemes.get(-1));
   }
   if (lexemes.get()?.content !== "=") {
-    throw new CompilerError(
-      `Constant ${name} must be assigned a value.`,
-      lexemes.get()
-    );
+    throw new CompilerError(`Constant ${name} must be assigned a value.`, lexemes.get());
   }
   lexemes.next();
 
   // expecting value expression
-  const exp = expression(lexemes, routine);
-  typeCheck(exp, constantType);
+  const exp = parseExpression(lexemes, routine);
+  typeCheck(routine.language, exp, constantType);
   const value = evaluate(exp, "TypeScript", "constant");
 
   // create and return the constant
-  return new Constant("TypeScript", name, value);
-}
+  return constant("TypeScript", name, value);
+};

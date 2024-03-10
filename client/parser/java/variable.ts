@@ -1,16 +1,12 @@
+import { CompilerError } from "../../tools/error.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import type { Routine } from "../definitions/routine.ts";
+import makeVariable, { type Variable } from "../definitions/variable.ts";
 import identifier from "./identifier.ts";
 import type from "./type.ts";
-import Lexemes from "../definitions/lexemes.ts";
-import Program from "../definitions/program.ts";
-import { Subroutine } from "../definitions/subroutine.ts";
-import Variable from "../definitions/variable.ts";
-import { CompilerError } from "../../tools/error.ts";
 
 /** parses lexemes as a variable declaration */
-export default function variable(
-  lexemes: Lexemes,
-  routine: Program | Subroutine
-): Variable {
+export default function variable(lexemes: Lexemes, routine: Routine): Variable {
   // expecting type specification
   const [variableType, stringLength, arrayDimensions] = type(lexemes, routine);
 
@@ -26,7 +22,7 @@ export default function variable(
   const name = identifier(lexemes, routine);
 
   // create the variable
-  const variable = new Variable(name, routine);
+  const variable = makeVariable(name, routine);
   variable.type = variableType;
   variable.stringLength = stringLength;
   variable.arrayDimensions = arrayDimensions;

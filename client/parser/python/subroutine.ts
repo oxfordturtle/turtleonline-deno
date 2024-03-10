@@ -1,28 +1,26 @@
+import type { KeywordLexeme } from "../../lexer/lexeme.ts";
+import { CompilerError } from "../../tools/error.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import { getAllSubroutines, type Routine } from "../definitions/routine.ts";
+import makeSubroutine, { getProgram, type Subroutine } from "../definitions/routines/subroutine.ts";
+import makeVariable, { type Variable } from "../definitions/variable.ts";
 import identifier from "./identifier.ts";
 import type from "./type.ts";
 import variable from "./variable.ts";
-import Lexemes from "../definitions/lexemes.ts";
-import Program from "../definitions/program.ts";
-import { Subroutine } from "../definitions/subroutine.ts";
-import { Constant } from "../definitions/constant.ts";
-import Variable from "../definitions/variable.ts";
-import { CompilerError } from "../../tools/error.ts";
-import { KeywordLexeme } from "../../lexer/lexeme.ts";
 
-/** parses lexemes as a subroutine definition (without parsing the subroutine's statements) */
-export default function subroutine(
+export default (
   lexeme: KeywordLexeme,
   lexemes: Lexemes,
-  parent: Program | Subroutine,
+  parent: Routine,
   baseIndent: number
-): Subroutine {
+): Subroutine => {
   // expecting an identifier
   const name = identifier(lexemes, parent, true);
 
   // define the subroutine
-  const program = parent instanceof Program ? parent : parent.program;
-  const subroutine = new Subroutine(lexeme, parent, name);
-  subroutine.index = program.allSubroutines.length + 1;
+  const program = parent.__ === "Program" ? parent : getProgram(parent);
+  const subroutine = makeSubroutine(lexeme, parent, name);
+  subroutine.index = getAllSubroutines(program).length + 1;
 
   // expecting parameters
   subroutine.variables.push(...parameters(lexemes, subroutine));
@@ -32,29 +30,20 @@ export default function subroutine(
     lexemes.next();
 
     // expecting return type specification
-    const [isConstant, returnType, stringLength, arrayDimensions] = type(
-      lexemes,
-      parent
-    );
+    const [isConstant, returnType, stringLength, arrayDimensions] = type(lexemes, parent);
 
     // constants are not allowed
     if (isConstant) {
-      throw new CompilerError(
-        "Functions cannot return constant values.",
-        lexemes.get()
-      );
+      throw new CompilerError("Functions cannot return constant values.", lexemes.get());
     }
 
     // array return values are not allowed
     if (arrayDimensions.length > 0) {
-      throw new CompilerError(
-        "Functions cannot return arrays.",
-        lexemes.get(-1)
-      );
+      throw new CompilerError("Functions cannot return arrays.", lexemes.get(-1));
     }
 
     // set the return type and unshift the result variable for functions
-    const variable = new Variable("!result", subroutine);
+    const variable = makeVariable("!result", subroutine);
     variable.type = returnType;
     variable.typeIsCertain = true;
     variable.stringLength = stringLength;
@@ -79,10 +68,7 @@ export default function subroutine(
 
   // expecting new line followed by an indent
   if (!lexemes.get()) {
-    throw new CompilerError(
-      "No statements found after subroutine definition.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("No statements found after subroutine definition.", lexemes.get(-1));
   }
   if (lexemes.get()?.type !== "newline") {
     throw new CompilerError(
@@ -92,16 +78,10 @@ export default function subroutine(
   }
   lexemes.next();
   if (!lexemes.get()) {
-    throw new CompilerError(
-      "No statements found after subroutine definition.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("No statements found after subroutine definition.", lexemes.get(-1));
   }
   if (lexemes.get()?.type !== "indent") {
-    throw new CompilerError(
-      "Indent needed after subroutine definition.",
-      lexemes.get()
-    );
+    throw new CompilerError("Indent needed after subroutine definition.", lexemes.get());
   }
   subroutine.indent = baseIndent + 1;
   lexemes.next();
@@ -125,22 +105,15 @@ export default function subroutine(
 
   // return the subroutine
   return subroutine;
-}
+};
 
-/** parses lexemes as subroutine parameters inside brackets */
-function parameters(lexemes: Lexemes, routine: Subroutine): Variable[] {
+const parameters = (lexemes: Lexemes, routine: Subroutine): Variable[] => {
   // expecting open bracket
   if (!lexemes.get()) {
-    throw new CompilerError(
-      'Opening bracket "(" missing after function name.',
-      lexemes.get(-1)
-    );
+    throw new CompilerError('Opening bracket "(" missing after function name.', lexemes.get(-1));
   }
   if (lexemes.get()?.content !== "(") {
-    throw new CompilerError(
-      'Opening bracket "(" missing after function name.',
-      lexemes.get()
-    );
+    throw new CompilerError('Opening bracket "(" missing after function name.', lexemes.get());
   }
   lexemes.next();
 
@@ -148,11 +121,8 @@ function parameters(lexemes: Lexemes, routine: Subroutine): Variable[] {
   const parameters: Variable[] = [];
   while (lexemes.get()?.content !== ")") {
     const parameter = variable(lexemes, routine);
-    if (parameter instanceof Constant) {
-      throw new CompilerError(
-        "Subroutine parameters cannot be constants.",
-        lexemes.get(-1)
-      );
+    if (parameter.__ === "constant") {
+      throw new CompilerError("Subroutine parameters cannot be constants.", lexemes.get(-1));
     }
     parameter.isParameter = true;
     parameters.push(parameter);
@@ -163,13 +133,10 @@ function parameters(lexemes: Lexemes, routine: Subroutine): Variable[] {
 
   // check for closing bracket
   if (lexemes.get()?.content !== ")") {
-    throw new CompilerError(
-      "Closing bracket missing after function parameters.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("Closing bracket missing after function parameters.", lexemes.get(-1));
   }
   lexemes.next();
 
   // return the parameters
   return parameters;
-}
+};

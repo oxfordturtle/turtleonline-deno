@@ -1,18 +1,15 @@
+import { CompilerError } from "../../tools/error.ts";
+import evaluate from "../common/evaluate.ts";
+import parseExpression from "../common/expression.ts";
+import typeCheck from "../common/typeCheck.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import type { Routine } from "../definitions/routine.ts";
+import makeVariable, { type Variable } from "../definitions/variable.ts";
 import identifier from "./identifier.ts";
 import type from "./type.ts";
-import { expression, typeCheck } from "../expression.ts";
-import evaluate from "../evaluate.ts";
-import Lexemes from "../definitions/lexemes.ts";
-import Program from "../definitions/program.ts";
-import { Subroutine } from "../definitions/subroutine.ts";
-import Variable from "../definitions/variable.ts";
-import { CompilerError } from "../../tools/error.ts";
 
 /** parses lexemes as a variable declaration */
-export default function variable(
-  lexemes: Lexemes,
-  routine: Program | Subroutine
-): Variable {
+export default function variable(lexemes: Lexemes, routine: Routine): Variable {
   const typeLexeme = lexemes.get();
 
   // expecting type specification
@@ -37,7 +34,7 @@ export default function variable(
   const name = identifier(lexemes, routine);
 
   // create the variable
-  const variable = new Variable(name, routine);
+  const variable = makeVariable(name, routine);
   variable.type = variableType;
   variable.stringLength = stringLength;
   variable.isPointer = isPointer;
@@ -53,8 +50,8 @@ export default function variable(
         lexemes.get(-1)
       );
     }
-    const exp = expression(lexemes, routine);
-    typeCheck(exp, "integer");
+    const exp = parseExpression(lexemes, routine);
+    typeCheck(routine.language, exp, "integer");
     const value = evaluate(exp, "C", "array");
     if (typeof value === "string") {
       throw new CompilerError("Array size must be an integer.", lexemes.get());

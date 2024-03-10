@@ -1,8 +1,7 @@
 /**
  * Cursors reference table.
  */
-import type { Cursor } from "../../constants/cursors.ts";
-import { cursors } from "../../constants/cursors.ts";
+import cursors, { type Cursor } from "../../constants/cursors.ts";
 import { fill, tr } from "../../tools/elements.ts";
 import { on } from "../../tools/hub.ts";
 

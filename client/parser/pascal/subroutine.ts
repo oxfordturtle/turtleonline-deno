@@ -1,13 +1,18 @@
-import identifier from "./identifier.ts";
-import type from "./type.ts";
-import { semicolon, statement } from "./statement.ts";
-import { variables } from "./variable.ts";
-import type Lexemes from "../definitions/lexemes.ts";
-import Program from "../definitions/program.ts";
-import { Subroutine } from "../definitions/subroutine.ts";
-import Variable from "../definitions/variable.ts";
-import { CompilerError } from "../../tools/error.ts";
 import type { KeywordLexeme, Lexeme } from "../../lexer/lexeme.ts";
+import { CompilerError } from "../../tools/error.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import { getAllSubroutines } from "../definitions/routine.ts";
+import type { Program } from "../definitions/routines/program.ts";
+import makeSubroutine, {
+  getSubroutineType,
+  type Subroutine,
+} from "../definitions/routines/subroutine.ts";
+import makeVariable, { type Variable } from "../definitions/variable.ts";
+import identifier from "./identifier.ts";
+import parseStatement from "./statement.ts";
+import parseSemicolon from "./statements/semicolon.ts";
+import type from "./type.ts";
+import { variables } from "./variable.ts";
 
 /** parses lexemes as a subroutine definition */
 export default function subroutine(
@@ -22,7 +27,7 @@ export default function subroutine(
   const name = identifier(lexemes, parent);
 
   // create the subroutine
-  const sub = new Subroutine(lexeme, parent, name);
+  const sub = makeSubroutine(lexeme, parent, name);
   sub.index = subroutineIndex(sub);
 
   // optionally expecting parameters
@@ -33,25 +38,18 @@ export default function subroutine(
 
   // for functions, expecting return type
   if (isFunction) {
-    const [returnType, stringLength, arrayDimensions] = type(
-      lexemes,
-      sub,
-      false
-    );
+    const [returnType, stringLength, arrayDimensions] = type(lexemes, sub, false);
     if (arrayDimensions.length > 0) {
-      throw new CompilerError(
-        "Functions cannot return arrays.",
-        lexemes.get(-1)
-      );
+      throw new CompilerError("Functions cannot return arrays.", lexemes.get(-1));
     }
-    const foo = new Variable("result", sub);
+    const foo = makeVariable("result", sub);
     foo.type = returnType;
     foo.stringLength = stringLength;
     sub.variables.unshift(foo);
   }
 
   // semicolon check
-  semicolon(lexemes, true, `${sub.type} definition`);
+  parseSemicolon(lexemes, true, `${getSubroutineType(sub)} definition`);
 
   // expecting variable declarations, subroutine definitions, or subroutine body
   let begun = false;
@@ -77,12 +75,9 @@ export default function subroutine(
           case "begin":
             begun = true;
             lexemes.next();
-            while (
-              lexemes.get() &&
-              lexemes.get()?.content?.toLowerCase() !== "end"
-            ) {
+            while (lexemes.get() && lexemes.get()?.content?.toLowerCase() !== "end") {
               const lexeme = lexemes.get() as Lexeme;
-              sub.statements.push(statement(lexeme, lexemes, sub));
+              sub.statements.push(parseStatement(lexeme, lexemes, sub));
             }
             break;
 
@@ -90,14 +85,11 @@ export default function subroutine(
           default:
             if (!begun) {
               throw new CompilerError(
-                `Keyword "begin" missing for ${sub.type} ${sub.name}.`,
+                `Keyword "begin" missing for ${getSubroutineType(sub)} ${sub.name}.`,
                 lexemes.get()
               );
             }
-            throw new CompilerError(
-              "{lex} makes no sense here.",
-              lexemes.get()
-            );
+            throw new CompilerError("{lex} makes no sense here.", lexemes.get());
         }
         break;
 
@@ -105,7 +97,7 @@ export default function subroutine(
       default:
         if (!begun) {
           throw new CompilerError(
-            `Keyword "begin" missing for ${sub.type} ${sub.name}.`,
+            `Keyword "begin" missing for ${getSubroutineType(sub)} ${sub.name}.`,
             lexemes.get()
           );
         }
@@ -116,18 +108,18 @@ export default function subroutine(
   // final error checking
   if (!begun) {
     throw new CompilerError(
-      `Keyword "begin" missing for ${sub.type} ${sub.name}.`,
+      `Keyword "begin" missing for ${getSubroutineType(sub)} ${sub.name}.`,
       lexemes.get(-1)
     );
   }
   if (!lexemes.get()) {
     throw new CompilerError(
-      `Keyword "end" missing for ${sub.type} ${sub.name}.`,
+      `Keyword "end" missing for ${getSubroutineType(sub)} ${sub.name}.`,
       lexemes.get(-1)
     );
   }
   lexemes.next();
-  semicolon(lexemes, true, `${sub.type} end`);
+  parseSemicolon(lexemes, true, `${getSubroutineType(sub)} end`);
 
   // return the subroutine
   return sub;
@@ -135,9 +127,9 @@ export default function subroutine(
 
 /** calculates the index of a subroutine (before it and its parents have been added to the program) */
 function subroutineIndex(subroutine: Subroutine): number {
-  return subroutine.parent instanceof Program
-    ? subroutine.parent.allSubroutines.length + 1
-    : subroutineIndex(subroutine.parent) + subroutine.allSubroutines.length + 1;
+  return subroutine.parent.__ === "Program"
+    ? getAllSubroutines(subroutine.parent).length + 1
+    : subroutineIndex(subroutine.parent) + getAllSubroutines(subroutine).length + 1;
 }
 
 /** parses lexemes as subroutine parameters */
@@ -152,23 +144,17 @@ function parameters(lexemes: Lexemes, subroutine: Subroutine): Variable[] {
       lexemes.next();
       // throw error for trailing semicolons
       if (lexemes.get()?.content === ")") {
-        throw new CompilerError(
-          "Trailing semicolon at end of parameter list.",
-          lexemes.get()
-        );
+        throw new CompilerError("Trailing semicolon at end of parameter list.", lexemes.get());
       }
     } else if (lexemes.get()?.type === "identifier") {
-      throw new CompilerError(
-        "Semicolon missing between parameters.",
-        lexemes.get()
-      );
+      throw new CompilerError("Semicolon missing between parameters.", lexemes.get());
     }
   }
 
   // check for closing bracket
   if (lexemes.get()?.content !== ")") {
     throw new CompilerError(
-      `Closing bracket missing after ${subroutine.type} parameters.`,
+      `Closing bracket missing after ${getSubroutineType(subroutine)} parameters.`,
       lexemes.get(-1)
     );
   }
@@ -182,7 +168,7 @@ function parameters(lexemes: Lexemes, subroutine: Subroutine): Variable[] {
 function parameterSet(lexemes: Lexemes, subroutine: Subroutine): Variable[] {
   const parameters: Variable[] = [];
 
-  // "var" is permissable here (for reference parameters)
+  // "var" is permissible here (for reference parameters)
   let isReferenceParameter = false;
   if (lexemes.get()?.content === "var") {
     isReferenceParameter = true;
@@ -192,23 +178,16 @@ function parameterSet(lexemes: Lexemes, subroutine: Subroutine): Variable[] {
   // expecting comma separated list of identifiers
   while (lexemes.get() && lexemes.get()?.content !== ":") {
     const name = identifier(lexemes, subroutine);
-    parameters.push(new Variable(name, subroutine));
+    parameters.push(makeVariable(name, subroutine));
     if (lexemes.get()?.content === ",") {
       lexemes.next();
     } else if (lexemes.get()?.type === "identifier") {
-      throw new CompilerError(
-        "Comma missing between parameter names.",
-        lexemes.get()
-      );
+      throw new CompilerError("Comma missing between parameter names.", lexemes.get());
     }
   }
 
   // expecting type specification
-  const [parameterType, stringLength, arrayDimensions] = type(
-    lexemes,
-    subroutine,
-    true
-  );
+  const [parameterType, stringLength, arrayDimensions] = type(lexemes, subroutine, true);
   for (const foo of parameters) {
     foo.type = parameterType;
     foo.stringLength = stringLength;

@@ -1,16 +1,11 @@
+import constant, { type Constant } from "../definitions/constant.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import type { Routine } from "../definitions/routine.ts";
+import makeVariable, { type Variable } from "../definitions/variable.ts";
 import identifier from "./identifier.ts";
 import type from "./type.ts";
-import Lexemes from "../definitions/lexemes.ts";
-import Program from "../definitions/program.ts";
-import { Subroutine } from "../definitions/subroutine.ts";
-import { Constant } from "../definitions/constant.ts";
-import Variable from "../definitions/variable.ts";
 
-/** parses lexemes as a variable/parameter declaration */
-export default function variable(
-  lexemes: Lexemes,
-  routine: Program | Subroutine
-): Constant | Variable {
+export default (lexemes: Lexemes, routine: Routine): Constant | Variable => {
   // expecting identifier
   const name = identifier(lexemes, routine, true);
 
@@ -19,18 +14,15 @@ export default function variable(
     lexemes.next();
 
     // expecting type specification
-    const [isConstant, variableType, stringLength, arrayDimensions] = type(
-      lexemes,
-      routine
-    );
+    const [isConstant, variableType, stringLength, arrayDimensions] = type(lexemes, routine);
 
     if (isConstant) {
       // return the constant with any value; the value will be set later
-      return new Constant("Python", name, 0);
+      return constant("Python", name, 0);
     }
 
     // create and return the variable
-    const variable = new Variable(name, routine);
+    const variable = makeVariable(name, routine);
     variable.type = variableType;
     variable.typeIsCertain = true;
     variable.stringLength = stringLength;
@@ -39,5 +31,5 @@ export default function variable(
   }
 
   // if there's no type hint, just return a default (boolint) variable
-  return new Variable(name, routine);
-}
+  return makeVariable(name, routine);
+};

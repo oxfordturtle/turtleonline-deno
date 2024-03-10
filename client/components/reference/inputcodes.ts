@@ -2,7 +2,7 @@
  * Keycodes reference table.
  */
 import type { Input } from "../../constants/inputs.ts";
-import { inputs } from "../../constants/inputs.ts";
+import inputs from "../../constants/inputs.ts";
 import { fill, tr, td, code } from "../../tools/elements.ts";
 import { on } from "../../tools/hub.ts";
 
@@ -17,10 +17,7 @@ if (keycodesTableBody) {
 
 function updateTable(): void {
   if (keycodesTableBody) {
-    fill(
-      keycodesTableBody,
-      inputs.filter((x) => x.value > 0).map(keycodeTableRow)
-    );
+    fill(keycodesTableBody, inputs.filter((x) => x.value > 0).map(keycodeTableRow));
   }
 }
 

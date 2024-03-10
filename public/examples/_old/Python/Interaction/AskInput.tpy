@@ -1,0 +1,6 @@
+print('What is your name?  ')
+s = readline()
+print('')
+print('Hello, ' + s + ', ...  ')
+pause(500)
+print('How are you?')

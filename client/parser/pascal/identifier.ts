@@ -1,21 +1,14 @@
-import type Lexemes from "../definitions/lexemes.ts";
-import type Program from "../definitions/program.ts";
-import type { Subroutine } from "../definitions/subroutine.ts";
-import * as find from "../find.ts";
 import { CompilerError } from "../../tools/error.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import type { Routine } from "../definitions/routine.ts";
+import * as find from "../common/find.ts";
 
 /** parses a lexeme as a new identifier */
-export default function identifier(
-  lexemes: Lexemes,
-  routine: Program | Subroutine
-): string {
+export default function identifier(lexemes: Lexemes, routine: Routine): string {
   const identifier = lexemes.get();
 
   if (!identifier) {
-    throw new CompilerError(
-      "{lex} must be followed by an identifier.",
-      lexemes.get(-1)
-    );
+    throw new CompilerError("{lex} must be followed by an identifier.", lexemes.get(-1));
   }
 
   if (identifier.type !== "identifier") {
@@ -30,10 +23,7 @@ export default function identifier(
   }
 
   if (find.isDuplicate(routine, identifier.value)) {
-    throw new CompilerError(
-      "{lex} is already defined in the current scope.",
-      identifier
-    );
+    throw new CompilerError("{lex} is already defined in the current scope.", identifier);
   }
 
   lexemes.next();

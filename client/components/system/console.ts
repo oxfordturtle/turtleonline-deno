@@ -4,9 +4,7 @@
 import { on } from "../../tools/hub.ts";
 
 // get relevant elements
-const console = document.querySelector(
-  '[data-component="console"]'
-) as HTMLPreElement;
+const console = document.querySelector('[data-component="console"]') as HTMLPreElement;
 
 if (console) {
   // log text in the console

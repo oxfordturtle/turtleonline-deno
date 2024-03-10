@@ -1,62 +1,141 @@
-/**
- * Command and keywords categories (for help tables and usage analysis).
- */
-import type { Command } from "./commands.ts";
-import { commands } from "./commands.ts";
-import type { Keyword } from "./keywords.ts";
-import { keywords } from "./keywords.ts";
-import type { Language } from "./languages.ts";
-import { Subroutine } from "../parser/definitions/subroutine.ts";
+import type { Subroutine } from "../parser/definitions/routines/subroutine.ts";
+import commands, { type Command } from "./commands.ts";
+import keywords, { type Keyword } from "./keywords.ts";
 
-/** expression type definition */
 export type Expression = Command | Keyword | Subroutine;
 
-/** category class defintiion */
-export class Category {
+export interface Category<Exp extends Expression> {
+  readonly __: "Category";
   readonly index: number;
   readonly title: string;
-  readonly expressions: Expression[];
-
-  constructor(index: number, title: string, expressions: Expression[]) {
-    this.index = index;
-    this.title = title;
-    this.expressions =
-      expressions[0] && expressions[0] instanceof Subroutine
-        ? expressions
-        : expressions.filter(
-            (x) => (x as Command | Keyword).category === index
-          );
-  }
+  readonly expressions: ReadonlyArray<Exp>;
 }
 
-/** array of command categories */
-export const commandCategories: Category[] = [
-  new Category(0, "Turtle: relative movement", commands),
-  new Category(1, "Turtle: absolute movement", commands),
-  new Category(2, "Turtle: drawing shapes", commands),
-  new Category(3, "Other Turtle commands", commands),
-  new Category(4, "Canvas operations", commands),
-  new Category(5, "General arithmetic functions", commands),
-  new Category(6, "Trig / exp / log functions", commands),
-  new Category(7, "String operations", commands),
-  new Category(8, "Type conversion routines", commands),
-  new Category(9, "Input and timing routines", commands),
-  new Category(10, "File processing", commands),
-  new Category(11, "Turtle Machine monitoring", commands),
-];
+export const category = <Exp extends Expression>(
+  index: number,
+  title: string,
+  expressions: ReadonlyArray<Exp>
+): Category<Exp> => ({
+  __: "Category",
+  index,
+  title,
+  expressions,
+});
 
-/** arrays of keyword categories for each language */
-export const keywordCategories: Record<Language, Category[]> = {
+export const commandCategories = [
+  category(
+    0,
+    "Turtle: relative movement",
+    commands.filter((x) => x.category === 0)
+  ),
+  category(
+    1,
+    "Turtle: absolute movement",
+    commands.filter((x) => x.category === 1)
+  ),
+  category(
+    2,
+    "Turtle: drawing shapes",
+    commands.filter((x) => x.category === 2)
+  ),
+  category(
+    3,
+    "Other Turtle commands",
+    commands.filter((x) => x.category === 3)
+  ),
+  category(
+    4,
+    "Canvas operations",
+    commands.filter((x) => x.category === 4)
+  ),
+  category(
+    5,
+    "General arithmetic functions",
+    commands.filter((x) => x.category === 5)
+  ),
+  category(
+    6,
+    "Trig / exp / log functions",
+    commands.filter((x) => x.category === 6)
+  ),
+  category(
+    7,
+    "String operations",
+    commands.filter((x) => x.category === 7)
+  ),
+  category(
+    8,
+    "Type conversion routines",
+    commands.filter((x) => x.category === 8)
+  ),
+  category(
+    9,
+    "Input and timing routines",
+    commands.filter((x) => x.category === 9)
+  ),
+  category(
+    10,
+    "File processing",
+    commands.filter((x) => x.category === 10)
+  ),
+  category(
+    11,
+    "Turtle Machine monitoring",
+    commands.filter((x) => x.category === 11)
+  ),
+] as const;
+
+export const keywordCategories = {
   BASIC: [
-    new Category(20, "Command structures", keywords.BASIC),
-    new Category(21, "Variable scope modifiers", keywords.BASIC),
+    category(
+      20,
+      "Command structures",
+      keywords.BASIC.filter((x) => x.category === 20)
+    ),
+    category(
+      21,
+      "Variable scope modifiers",
+      keywords.BASIC.filter((x) => x.category === 21)
+    ),
   ],
-  C: [new Category(20, "Command structures", keywords.C)],
-  Java: [new Category(20, "Command structures", keywords.Java)],
-  Pascal: [new Category(20, "Command structures", keywords.Pascal)],
+  C: [
+    category(
+      20,
+      "Command structures",
+      keywords.C.filter((x) => x.category === 20)
+    ),
+  ],
+  Java: [
+    category(
+      20,
+      "Command structures",
+      keywords.Java.filter((x) => x.category === 20)
+    ),
+  ],
+  Pascal: [
+    category(
+      20,
+      "Command structures",
+      keywords.Pascal.filter((x) => x.category === 20)
+    ),
+  ],
   Python: [
-    new Category(20, "Command structures", keywords.Python),
-    new Category(21, "Variable scope modifiers", keywords.Python),
+    category(
+      20,
+      "Command structures",
+      keywords.Python.filter((x) => x.category === 20)
+    ),
+    category(
+      21,
+      "Variable scope modifiers",
+      keywords.Python.filter((x) => x.category === 21)
+    ),
   ],
-  TypeScript: [new Category(20, "Command structures", keywords.TypeScript)],
-};
+  TypeScript: [
+    category(
+      20,
+      "Command structures",
+      keywords.TypeScript.filter((x) => x.category === 20)
+    ),
+  ],
+} as const;

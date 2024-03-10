@@ -1,5 +1,5 @@
 # move to start, without drawing
-movexy(-100, 150)
+movexy(-100,150)
 # draw first side, and turn
 forward(256)
 right(120)

@@ -1,21 +1,23 @@
-import { Example, Group, groups } from "../../constants/examples.ts";
+import type { Example } from "../../constants/examples.ts";
+import exampleGroups, { type ExampleGroup } from "../../constants/exampleGroups.ts";
 import { fill, a, span, i, div } from "../../tools/elements.ts";
 import { state } from "../../state/index.ts";
 import { closeMenu, toggleMenu } from "../view.ts";
+import { on } from "../../tools/hub.ts";
 
-const examplesMenu = document.querySelector('[data-component="examplesMenu"]');
+const examplesMenu = document.querySelector('[data-component="examplesMenu"]') as HTMLElement;
 
-if (examplesMenu) {
-  const groupLinks = groups.slice(1).map(exampleGroupLink);
-  const groupMenus = groups.slice(1).map(exampleGroupMenu);
-  fill(examplesMenu as HTMLElement, groupLinks.concat(groupMenus));
-}
+const fillExamplesMenu = () => {
+  const groupLinks = exampleGroups.slice(1).map(exampleGroupLink);
+  const groupMenus = exampleGroups.slice(1).map(exampleGroupMenu);
+  fill(examplesMenu, groupLinks.concat(groupMenus));
+};
 
-function exampleGroupLink(group: Group): HTMLElement {
-  return a({
+const exampleGroupLink = (group: ExampleGroup): HTMLElement =>
+  a({
     on: [
       "click",
-      function () {
+      () => {
         toggleMenu(group.id);
       },
     ],
@@ -28,17 +30,16 @@ function exampleGroupLink(group: Group): HTMLElement {
       i({ className: "fa fa-caret-right", "aria-hidden": "true" }),
     ],
   });
-}
 
-function exampleGroupMenu(group: Group): HTMLElement {
-  return div({
+const exampleGroupMenu = (group: ExampleGroup): HTMLElement =>
+  div({
     className: "system-sub-menu",
     "data-menu": group.id,
     content: [
       a({
         on: [
           "click",
-          function () {
+          () => {
             closeMenu(group.id);
           },
         ],
@@ -49,12 +50,13 @@ function exampleGroupMenu(group: Group): HTMLElement {
           span({ content: "back" }),
         ],
       }) as HTMLElement,
-    ].concat(group.examples.map(exampleLink)),
+    ].concat(
+      group.examples.filter((example) => example.names[state.language] !== null).map(exampleLink)
+    ),
   });
-}
 
-function exampleLink(example: Example): HTMLElement {
-  return a({
+const exampleLink = (example: Example): HTMLElement =>
+  a({
     on: [
       "click",
       function () {
@@ -63,4 +65,8 @@ function exampleLink(example: Example): HTMLElement {
     ],
     content: [span({ content: example.names[state.language] })],
   });
+
+if (examplesMenu) {
+  fillExamplesMenu();
+  on("languageChanged", fillExamplesMenu);
 }

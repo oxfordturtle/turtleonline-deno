@@ -4,12 +4,8 @@
 import { on } from "../../tools/hub.ts";
 
 // get relevant elements
-const playButton = document.querySelector(
-  '[data-component="runButton"]'
-) as HTMLButtonElement;
-const haltButton = document.querySelector(
-  '[data-component="haltButton"]'
-) as HTMLButtonElement;
+const playButton = document.querySelector('[data-component="runButton"]') as HTMLButtonElement;
+const haltButton = document.querySelector('[data-component="haltButton"]') as HTMLButtonElement;
 
 if (playButton && haltButton) {
   // register to keep in sync with system state

@@ -1,14 +1,14 @@
-import type Lexemes from "../definitions/lexemes.ts";
 import type { KeywordLexeme } from "../../lexer/lexeme.ts";
-import subroutine from "./subroutine.ts";
-import body from "./body.ts";
-import Program from "../definitions/program.ts";
 import { CompilerError } from "../../tools/error.ts";
+import type { Lexemes } from "../definitions/lexemes.ts";
+import makeProgram, { type Program } from "../definitions/routines/program.ts";
+import body from "./body.ts";
+import subroutine from "./subroutine.ts";
 
 /** parses lexemes as a BASIC program */
 export default function basic(lexemes: Lexemes): Program {
   // create the program
-  const program = new Program("BASIC");
+  const program = makeProgram("BASIC");
 
   // find the (first) "END" lexeme
   const endLexemeIndex = lexemes.lexemes.findIndex((x) => x.content === "END");
@@ -24,9 +24,7 @@ export default function basic(lexemes: Lexemes): Program {
       lexemes.next();
     } else if (lexemes.get()?.content === "DEF") {
       lexemes.next();
-      program.subroutines.push(
-        subroutine(lexemes.get(-1) as KeywordLexeme, lexemes, program)
-      );
+      program.subroutines.push(subroutine(lexemes.get(-1) as KeywordLexeme, lexemes, program));
     } else {
       throw new CompilerError(
         'Only subroutine definitions are permissible after program "END".',

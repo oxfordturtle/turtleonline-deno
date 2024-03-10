@@ -1,8 +1,7 @@
 /**
  * Colour constants reference table.
  */
-import type { Colour } from "../../constants/colours.ts";
-import { colours } from "../../constants/colours.ts";
+import colours, { type Colour } from "../../constants/colours.ts";
 import type { Language } from "../../constants/languages.ts";
 import { state } from "../../state/index.ts";
 import { on } from "../../tools/hub.ts";
@@ -31,7 +30,7 @@ function updateTable(): void {
 function colourTableCells(colour: Colour): string {
   return `
     <th>${colour.index}</th>
-    <td style="background:#${colour.hex};color:${colour.text}">
+    <td style="background:#${colour.hex};color:${colour.dark ? "white" : "black"}">
       ${colour.names[state.language]}<br>${hex(state.language, colour.hex)}
     </td>`;
 }
