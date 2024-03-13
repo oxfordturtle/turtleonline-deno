@@ -18,6 +18,7 @@ import { isArray } from "../definitions/variable.ts";
 import parseExpression from "./expression.ts";
 import * as find from "./find.ts";
 import typeCheck from "./typeCheck.ts";
+import makeVariable from "../definitions/variable.ts";
 
 const parseFactor = (lexemes: Lexemes, routine: Routine): Expression => {
   const lexeme = lexemes.get() as Lexeme;
@@ -226,8 +227,16 @@ const parseFactor = (lexemes: Lexemes, routine: Routine): Expression => {
         return parseFunctionCall(lexeme, lexemes, routine, command);
       }
 
-      // if none of those were found, throw an error
-      throw new CompilerError("{lex} is not defined.", lexeme);
+      // if none of those were found...
+      if (routine.language === "Python") {
+        // for Python, just create the variable and try again
+        const variable = makeVariable(lexeme.content, routine);
+        routine.variables.push(variable);
+        return parseFactor(lexemes, routine);
+      } else {
+        // throw an error
+        throw new CompilerError("{lex} is not defined.", lexeme);
+      }
     }
 
     // everything else

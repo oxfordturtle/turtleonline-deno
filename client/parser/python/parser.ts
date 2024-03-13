@@ -1,8 +1,11 @@
 import type { Lexeme } from "../../lexer/lexeme.ts";
 import { CompilerError } from "../../tools/error.ts";
+import * as find from "../common/find.ts";
 import type { Lexemes } from "../definitions/lexemes.ts";
 import makeProgram, { type Program } from "../definitions/routines/program.ts";
-import type { Subroutine } from "../definitions/routines/subroutine.ts";
+import { getProgram, type Subroutine } from "../definitions/routines/subroutine.ts";
+import makeVariable from "../definitions/variable.ts";
+import identifiers from "./identifiers.ts";
 import statement from "./statement.ts";
 import subroutine from "./subroutine.ts";
 
@@ -19,10 +22,10 @@ export default (lexemes: Lexemes): Program => {
 
   // return the program
   return program;
-}
+};
 
 const parseBody = (lexemes: Lexemes, routine: Program | Subroutine): void => {
-  // first pass: hoist global and nonlocal declarations and subroutine definitions
+  // first pass: hoist subroutines and their declared globals
   let indents = 0;
   lexemes.index = routine.start;
   while (lexemes.index < routine.end) {
@@ -56,7 +59,7 @@ const parseBody = (lexemes: Lexemes, routine: Program | Subroutine): void => {
   for (const sub of routine.subroutines) {
     parseBody(lexemes, sub);
   }
-}
+};
 
 const checkForUncertainTypes = (routine: Program | Subroutine): void => {
   const untypedVariable = routine.variables.find((x) => !x.typeIsCertain);
@@ -65,4 +68,4 @@ const checkForUncertainTypes = (routine: Program | Subroutine): void => {
   }
 
   routine.subroutines.forEach(checkForUncertainTypes);
-}
+};

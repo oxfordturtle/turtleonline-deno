@@ -13,6 +13,10 @@ import typeCheck from "./typeCheck.ts";
 import { Command } from "../../constants/commands.ts";
 import { Variable } from "../definitions/variable.ts";
 import { Parameter } from "../../constants/commands.ts";
+import makeNamedArgument from "../definitions/expressions/namedArgument.ts";
+import makeStringValue from "../definitions/expressions/stringValue.ts";
+import { stringLexeme } from "../../lexer/lexeme.ts";
+import { token } from "../../tokenizer/token.ts";
 
 const parseArguments = (
   lexeme: IdentifierLexeme,
@@ -93,25 +97,73 @@ const parseArgumentList = (
     commandCall.command.__ === "Command"
       ? commandCall.command.parameters
       : getParameters(commandCall.command);
-  while (commandCall.arguments.length < parameters.length && lexemes.get()?.content !== ")") {
-    const parameter = parameters[commandCall.arguments.length];
-    let argument = parseExpression(lexemes, routine);
-    argument = typeCheckArgument(routine.language, commandCall.command, argument, parameter);
-    commandCall.arguments.push(argument);
-    if (commandCall.arguments.length < parameters.length) {
-      if (!lexemes.get()) {
-        throw new CompilerError("Comma needed after parameter.", argument.lexeme);
+  
+  if (routine.language === "Python" && commandName === "input") {
+    // Python "input" command is a special case (until I generalise variadic functions)
+    // single string argument is allowed (but not required)
+    if (lexemes.get()?.content !== ")") {
+      const parameter = parameters[0];
+      const argument = parseExpression(lexemes, routine);
+      typeCheckArgument(routine.language, commandCall.command, argument, parameter);
+      commandCall.arguments.push(argument);
+    }
+    // allow 0 arguments
+    if (commandCall.arguments.length === 0) {
+      const lexeme = stringLexeme(token("string", "''", 0, 0), "Python");
+      commandCall.arguments.push(makeStringValue(lexeme));
+    }
+  } else if (routine.language === "Python" && commandName === "print") {
+    // Python "print" command is a special case (until I generalise variadic functions)
+    // any number of string arguments is allowed (including zero)
+    const parameter = parameters[0];
+    while (lexemes.get()?.content !== ")") {
+      const lexeme = lexemes.get()!;
+      if (lexeme.type === "identifier" && lexemes.get(1)?.content === "=") {
+        if (lexeme.content !== "end") {
+          throw new CompilerError(`Unknown named argument ${lexeme.content}.`, lexeme);
+        }
+        lexemes.next();
+        lexemes.next();
+        const argument = parseExpression(lexemes, routine);
+        typeCheckArgument(routine.language, commandCall.command, argument, parameter);
+        const namedArgument = makeNamedArgument(lexeme, argument);
+        commandCall.arguments.push(namedArgument);
+      } else {
+        const argument = parseExpression(lexemes, routine);
+        typeCheckArgument(routine.language, commandCall.command, argument, parameter);
+        commandCall.arguments.push(argument);
+        if (lexemes.get()?.content === ",") {
+          lexemes.next();
+        }
       }
-      if (lexemes.get()?.content === ")") {
-        throw new CompilerError(
-          `Not enough arguments given for command "${commandName}".`,
-          commandCall.lexeme
-        );
+    }
+    // allow 0 arguments
+    if (commandCall.arguments.length === 0) {
+      const lexeme = stringLexeme(token("string", "''", 0, 0), "Python");
+      commandCall.arguments.push(makeStringValue(lexeme));
+    }
+  } else {
+    // everything else is normal
+    while (commandCall.arguments.length < parameters.length && lexemes.get()?.content !== ")") {
+      const parameter = parameters[commandCall.arguments.length];
+      let argument = parseExpression(lexemes, routine);
+      argument = typeCheckArgument(routine.language, commandCall.command, argument, parameter);
+      commandCall.arguments.push(argument);
+      if (commandCall.arguments.length < parameters.length) {
+        if (!lexemes.get()) {
+          throw new CompilerError("Comma needed after parameter.", argument.lexeme);
+        }
+        if (lexemes.get()?.content === ")") {
+          throw new CompilerError(
+            `Not enough arguments given for command "${commandName}".`,
+            commandCall.lexeme
+          );
+        }
+        if (lexemes.get()?.content !== ",") {
+          throw new CompilerError("Comma needed after parameter.", argument.lexeme);
+        }
+        lexemes.next();
       }
-      if (lexemes.get()?.content !== ",") {
-        throw new CompilerError("Comma needed after parameter.", argument.lexeme);
-      }
-      lexemes.next();
     }
   }
 

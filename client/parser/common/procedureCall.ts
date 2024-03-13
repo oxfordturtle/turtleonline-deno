@@ -15,15 +15,11 @@ const parseProcedureCall = (
   command: Command | Subroutine
 ): ProcedureCall => {
   // check it's not a function
-  const commandType = command.__ === "Command" ? command.type : getSubroutineType(command);
-  if (commandType === "function") {
-    throw new CompilerError("{lex} is a function, not a procedure.", lexeme);
-  }
-
-  // for Python, establish that it's definitely not a function
-  // (so subsequent attempts to call it as such will throw an error)
-  if (command.__ === "Subroutine") {
-    command.typeIsCertain = true;
+  if (routine.language === "BASIC" || routine.language === "Pascal" || routine.language === "C" || routine.language === "Java") {
+    const commandType = command.__ === "Command" ? command.type : getSubroutineType(command);
+    if (commandType === "function") {
+      throw new CompilerError("{lex} is a function, not a procedure.", lexeme);
+    }
   }
 
   const procedureCall = makeProcedureCall(lexeme, command);

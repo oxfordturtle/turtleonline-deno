@@ -15,6 +15,23 @@ export default (
 ): number[][] => {
   const pcode: number[][] = [];
 
+  // Python "print" command is a special case...
+  if (program.language === "Python" && stmt.command.__ === "Command" && stmt.command.names.Python === "print") {
+    let newLine = true;
+    for (const argument of stmt.arguments) {
+      if (argument.expressionType === "namedArgument") {
+        newLine = false;
+      } else {
+        merge(pcode, expression(argument, program, options));
+        merge(pcode, [[PCode.writ]]);
+      }
+    }
+    if (newLine) {
+      merge(pcode, [[PCode.newl]]);
+    }
+    return pcode;
+  }
+
   // first: load arguments onto the stack
   const parameters = stmt.command.__ === "Command" ? stmt.command.parameters : getParameters(stmt.command);
   for (let index = 0; index < parameters.length; index += 1) {

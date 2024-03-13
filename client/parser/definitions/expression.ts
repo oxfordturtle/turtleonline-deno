@@ -5,8 +5,9 @@ import type { CompoundExpression } from "./expressions/compoundExpression.ts";
 import type { ConstantValue } from "./expressions/constantValue.ts";
 import type { FunctionCall } from "./expressions/functionCall.ts";
 import type { InputValue } from "./expressions/inputValue.ts";
-import type { QueryValue } from "./expressions/queryValue.ts";
 import type { IntegerValue } from "./expressions/integerValue.ts";
+import type { NamedArgument } from "./expressions/namedArgument.ts";
+import type { QueryValue } from "./expressions/queryValue.ts";
 import type { StringValue } from "./expressions/stringValue.ts";
 import type { VariableAddress } from "./expressions/variableAddress.ts";
 import type { VariableValue } from "./expressions/variableValue.ts";
@@ -20,6 +21,7 @@ export type Expression =
   | ConstantValue
   | VariableAddress
   | VariableValue
+  | NamedArgument
   | FunctionCall
   | CompoundExpression
   | CastExpression;
@@ -43,6 +45,7 @@ export const getType = (expression: Expression): Type => {
           : expression.constant.type;
       }
       return expression.constant.type;
+
     case "variable":
       // type is not known in advance, as it depends on expression.indexes.length
       return languagesWithCharacterType.includes(expression.variable.routine.language)
@@ -51,6 +54,10 @@ export const getType = (expression: Expression): Type => {
           ? "character"
           : expression.variable.type
         : expression.variable.type;
+
+    case "namedArgument":
+      return getType(expression.expression);
+
     default:
       return expression.type;
   }

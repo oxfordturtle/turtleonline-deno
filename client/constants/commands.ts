@@ -668,7 +668,7 @@ const commands = [
   ),
   // 7. String/list operations
   command(
-    ["PRINTON", "printon", "printon", "write", "printon"],
+    ["PRINTON", "printon", "printon", "write", , "printon"],
     () => [PCode.writ],
     [p("string", "string")],
     null,
@@ -1103,12 +1103,20 @@ const commands = [
     "Waits for the RETURN key to be pressed, then returns everything in the keybuffer up to (and not including) the new line character."
   ),
   command(
-    ["INPUT$", "scan", "input", , "input", "input"],
+    ["INPUT$", "scan", "input", , , "input"],
     () => [PCode.writ, PCode.newl, PCode.rdln],
     [p("prompt", "string")],
     "string",
     { category: 9, level: 0 },
     "Gives an input prompt, then returns the input when the RETURN key is pressed (using the keybuffer)."
+  ),
+  command(
+    [, , , , "input"],
+    () => [PCode.writ, PCode.rdln],
+    [p("prompt", "string")],
+    "string",
+    { category: 9, level: 0 },
+    "Gives an optional input prompt, then returns the input when the RETURN key is pressed (using the keybuffer)."
   ),
   command(
     "cursor",

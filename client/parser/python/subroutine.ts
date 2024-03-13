@@ -1,10 +1,12 @@
 import type { KeywordLexeme } from "../../lexer/lexeme.ts";
 import { CompilerError } from "../../tools/error.ts";
+import * as find from "../common/find.ts";
 import type { Lexemes } from "../definitions/lexemes.ts";
 import { getAllSubroutines, type Routine } from "../definitions/routine.ts";
 import makeSubroutine, { getProgram, type Subroutine } from "../definitions/routines/subroutine.ts";
 import makeVariable, { type Variable } from "../definitions/variable.ts";
 import identifier from "./identifier.ts";
+import identifiers from "./identifiers.ts";
 import type from "./type.ts";
 import variable from "./variable.ts";
 
@@ -89,13 +91,30 @@ export default (
   // save start lexeme for later
   subroutine.start = lexemes.index;
 
-  // move past the subroutine's lexemes
+  // move past the subroutine's lexemes, hoisting any undefined globals
   let indents = 0;
   while (lexemes.get() && indents >= 0) {
-    if (lexemes.get()?.type === "indent") {
-      indents += 1;
-    } else if (lexemes.get()?.type === "dedent") {
-      indents -= 1;
+    const lexeme = lexemes.get()!;
+    switch (lexeme.type) {
+      case "indent":
+        indents += 1;
+        break;
+      case "dedent":
+        indents -= 1;
+        break;
+      case "keyword":
+        if (lexeme.subtype === "global") {
+          lexemes.next();
+          const globals = identifiers(lexemes, subroutine, "global");
+          for (const global of globals) {
+            // create the global variable if it doesn't exist
+            if (!find.variable(subroutine, global)) {
+              const program = getProgram(subroutine);
+              program.variables.push(makeVariable(global, program));
+            }
+          }
+        }
+        break;
     }
     lexemes.next();
   }

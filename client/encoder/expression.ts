@@ -15,7 +15,7 @@ import literalStringValue from "./expressions/literalStringValue.ts";
 import variableAddress from "./expressions/variableAddress.ts";
 import variableValue from "./expressions/variableValue.ts";
 
-export default (
+const expression = (
   exp: Expression,
   program: Program,
   options: Options,
@@ -40,6 +40,8 @@ export default (
       return reference && !referenceVariableAddressIsValue(exp)
         ? variableAddress(exp, program, options)
         : variableValue(exp, program, options);
+    case "namedArgument":
+      return expression(exp.expression, program, options, reference);
     case "function":
       return functionValue(exp, program, options);
     case "compound":
@@ -48,6 +50,8 @@ export default (
       return castExpression(exp, program, options);
   }
 };
+
+export default expression;
 
 const referenceVariableAddressIsValue = (exp: VariableValue): boolean =>
   (isArray(exp.variable) && exp.indexes.length < exp.variable.arrayDimensions.length) ||
