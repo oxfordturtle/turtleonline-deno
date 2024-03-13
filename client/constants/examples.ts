@@ -345,16 +345,19 @@ export default [
   example("Fractals", "IFSBackground", "Iterated function systems (IFS) background", {
     C: null,
     Java: null,
+    Python: null,
     TypeScript: null,
   }),
   example("Fractals", "IFSColour", "IFS mappings on coloured background", {
     C: null,
     Java: null,
+    Python: null,
     TypeScript: null,
   }),
   example("Fractals", "IFSDemonstrator", "IFS demonstrator program", {
     C: null,
     Java: null,
+    Python: null,
     TypeScript: null,
   }),
   example("Fractals", "Logistic", "Logistic equation", {
@@ -395,6 +398,7 @@ export default [
     BASIC: null,
     C: null,
     Java: null,
+    Python: null,
     TypeScript: null,
   }),
   example("Logic&CS", "IterateRoot", "Square roots by iteration", {
@@ -445,6 +449,7 @@ export default [
     BASIC: null,
     C: null,
     Java: null,
+    Python: null,
     TypeScript: null,
   }),
   example("Logic&CS", "Syllogisms", "Syllogism testing program", {
