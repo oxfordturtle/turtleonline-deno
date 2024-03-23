@@ -8,8 +8,10 @@ export const operators: [Operator[], Operator[], Operator[], Operator[]] = [
   ["neg", "not"],
 ];
 
-export const operator = (lexeme: Lexeme, level: number): Operator | undefined =>
-  operators[level].find((x) => lexeme.type === "operator" && lexeme.subtype === x);
+export const operator = (lexeme: Lexeme | undefined, level: number): Operator | undefined =>
+  lexeme
+    ? operators[level].find((x) => lexeme.type === "operator" && lexeme.subtype === x)
+    : undefined;
 
 export const operatorType: Record<Operator, Type> = {
   not: "boolean",
@@ -52,4 +54,4 @@ export const stringOperator = (operator: Operator): Operator => {
   };
 
   return stringOperators[operator] ?? operator;
-}
+};

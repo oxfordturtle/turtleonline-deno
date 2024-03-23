@@ -1,5 +1,6 @@
-import type { Lexeme, OperatorLexeme } from "../../lexer/lexeme.ts";
+import type { OperatorLexeme } from "../../lexer/lexeme.ts";
 import type { Operator } from "../../lexer/types.ts";
+import { CompilerError } from "../../tools/error.ts";
 import { getType, type Expression } from "../definitions/expression.ts";
 import makeCompoundExpression from "../definitions/expressions/compoundExpression.ts";
 import { type Lexemes } from "../definitions/lexemes.ts";
@@ -9,15 +10,21 @@ import parseFactor from "./factor.ts";
 import typeCheck from "./typeCheck.ts";
 
 const parseExpression = (lexemes: Lexemes, routine: Routine, level = 0): Expression => {
+  // check for a lexeme
+  const lexeme = lexemes.get();
+  if (lexeme === undefined) {
+    throw new CompilerError("Expected an expression after {lex}.", lexemes.get(-1));
+  }
+
   // break out of recursion at level > 2
   if (level > 2) {
-    return parseFactor(lexemes, routine);
+    return parseFactor(lexeme, lexemes, routine);
   }
 
   // evaluate the first bit
   let exp = parseExpression(lexemes, routine, level + 1);
 
-  while (lexemes.get() && operator(lexemes.get() as Lexeme, level)) {
+  while (operator(lexemes.get(), level)) {
     // get the operator (provisionally), and save the operator lexeme
     const lexeme = lexemes.get() as OperatorLexeme;
     let op = operator(lexeme, level) as Operator;

@@ -13,47 +13,106 @@ const evaluate = (
 
   switch (expression.expressionType) {
     // variable values are not allowed
-    case "address":
     case "variable":
-      if (context === "constant") {
-        throw new CompilerError("Constant value cannot refer to any variables.", expression.lexeme);
-      } else if (context === "string") {
-        throw new CompilerError(
-          "String size specification cannot refer to any variables.",
-          expression.lexeme
-        );
-      } else if (context === "array") {
-        throw new CompilerError(
-          "Array size specification cannot refer to any variables.",
-          expression.lexeme
-        );
-      } else {
-        throw new CompilerError(
-          "FOR loop step change specification cannot refer to any variables.",
-          expression.lexeme
-        );
+    case "variableAddress":
+    case "variableIndex":
+    case "variableSlice":
+    case "namedArgument":
+      switch (context) {
+        case "constant":
+          throw new CompilerError(
+            "Constant value cannot refer to any variables.",
+            expression.lexeme
+          );
+        case "string":
+          throw new CompilerError(
+            "String size specification cannot refer to any variables.",
+            expression.lexeme
+          );
+        case "array":
+          throw new CompilerError(
+            "Array size specification cannot refer to any variables.",
+            expression.lexeme
+          );
+        case "step":
+          throw new CompilerError(
+            "FOR loop step change specification cannot refer to any variables.",
+            expression.lexeme
+          );
       }
+      break;
 
     // function calls are not allowed
     case "function":
-      if (context === "constant") {
-        throw new CompilerError("Constant value cannot invoke any functions.", expression.lexeme);
-      } else if (context === "string") {
-        throw new CompilerError(
-          "String size specification cannot invoke any functions.",
-          expression.lexeme
-        );
-      } else if (context === "array") {
-        throw new CompilerError(
-          "Array size specification cannot invoke any functions.",
-          expression.lexeme
-        );
-      } else {
-        throw new CompilerError(
-          "FOR loop step change specification cannot invoke any functions.",
-          expression.lexeme
-        );
+      switch (context) {
+        case "constant":
+          throw new CompilerError("Constant value cannot invoke any functions.", expression.lexeme);
+        case "string":
+          throw new CompilerError(
+            "String size specification cannot invoke any functions.",
+            expression.lexeme
+          );
+        case "array":
+          throw new CompilerError(
+            "Array size specification cannot invoke any functions.",
+            expression.lexeme
+          );
+        case "step":
+          throw new CompilerError(
+            "FOR loop step change specification cannot invoke any functions.",
+            expression.lexeme
+          );
       }
+      break;
+
+    // array values are not allowed
+    case "arrayLiteral":
+      switch (context) {
+        case "constant":
+          throw new CompilerError("Constant value cannot be a list/array.", expression.lexeme);
+        case "string":
+          throw new CompilerError(
+            "String size specification cannot be a list/array.",
+            expression.lexeme
+          );
+        case "array":
+          throw new CompilerError(
+            "Array size specification cannot be a list/array.",
+            expression.lexeme
+          );
+        case "step":
+          throw new CompilerError(
+            "FOR loop step change specification cannot be a list/array.",
+            expression.lexeme
+          );
+      }
+      break;
+
+    // constant index values are not allowed
+    case "constantIndex":
+      switch (context) {
+        case "constant":
+          throw new CompilerError(
+            "Constant value cannot refer to any constant indexes.",
+            expression.lexeme
+          );
+        case "string":
+          throw new CompilerError(
+            "String size specification cannot refer to any variables with a constant index.",
+            expression.lexeme
+          );
+        case "array":
+          throw new CompilerError(
+            "Array size specification cannot refer to any variables with a constant index.",
+            expression.lexeme
+          );
+        case "step":
+          throw new CompilerError(
+            "FOR loop step change specification cannot refer to any variables with a constant index.",
+            expression.lexeme
+          );
+      }
+      break;
 
     // constant values
     case "constant":
@@ -64,8 +123,9 @@ const evaluate = (
     case "string":
       return expression.value;
 
-    // input values
+    // input and query values
     case "input":
+    case "query":
       return expression.input.value;
 
     // colour values
@@ -147,7 +207,11 @@ const evaluate = (
         case "mult":
           return (left as number) * (right as number);
       }
+      break;
     }
+
+    default:
+      return expression satisfies never;
   }
 };
 

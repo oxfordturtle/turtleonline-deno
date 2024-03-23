@@ -1,14 +1,14 @@
-import type { Command } from "../../constants/commands.ts";
-import type { IdentifierLexeme } from "../../lexer/lexeme.ts";
-import { CompilerError } from "../../tools/error.ts";
-import basicBody from "../basic/body.ts";
-import makeFunctionCall, { type FunctionCall } from "../definitions/expressions/functionCall.ts";
-import type { VariableValue } from "../definitions/expressions/variableValue.ts";
-import type { Lexemes } from "../definitions/lexemes.ts";
-import type { Routine } from "../definitions/routine.ts";
-import { getSubroutineType, type Subroutine } from "../definitions/routines/subroutine.ts";
-import makeVariable from "../definitions/variable.ts";
-import parseArguments, { typeCheckArgument } from "./arguments.ts";
+import type { Command } from "../../../constants/commands.ts";
+import type { IdentifierLexeme } from "../../../lexer/lexeme.ts";
+import { CompilerError } from "../../../tools/error.ts";
+import basicBody from "../../basic/body.ts";
+import makeFunctionCall, { type FunctionCall } from "../../definitions/expressions/functionCall.ts";
+import type { VariableValue } from "../../definitions/expressions/variableValue.ts";
+import type { Lexemes } from "../../definitions/lexemes.ts";
+import type { Routine } from "../../definitions/routine.ts";
+import { getSubroutineType, type Subroutine } from "../../definitions/routines/subroutine.ts";
+import makeVariable from "../../definitions/variable.ts";
+import parseArguments, { typeCheckArgument } from "../arguments.ts";
 
 const parseFunctionCall = (
   lexeme: IdentifierLexeme,
