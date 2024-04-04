@@ -6,7 +6,11 @@ import expression from "../expression.ts";
 import merge from "../merge.ts";
 import type { Options } from "../options.ts";
 
-export default (exp: CompoundExpression, program: Program, options: Options): number[][] => {
+export default (
+  exp: CompoundExpression,
+  program: Program,
+  options: Options
+): number[][] => {
   // generate left hand side code
   const left = exp.left ? expression(exp.left, program, options) : null;
 
@@ -36,7 +40,11 @@ export default (exp: CompoundExpression, program: Program, options: Options): nu
   return right;
 };
 
-const operator = (op: Operator, program: Program, _options: Options): number[] => {
+const operator = (
+  op: Operator,
+  program: Program,
+  _options: Options
+): number[] => {
   switch (op) {
     case "not":
       return program.language === "C" ||

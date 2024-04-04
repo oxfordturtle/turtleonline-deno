@@ -1,4 +1,5 @@
 import PCode from "../../constants/pcodes.ts";
+import { OperatorLexeme } from "../../lexer/lexeme.ts";
 import type { Program } from "../../parser/definitions/routines/program.ts";
 import type { ReturnStatement } from "../../parser/definitions/statements/returnStatement.ts";
 import makeVariableAssignment from "../../parser/definitions/statements/variableAssignment.ts";
@@ -14,7 +15,7 @@ export default (
 ): number[][] => {
   // N.B. stmt.lexeme is a KeywordLexeme, but VariableAssignment constructor
   // requires an IdentifierLexeme; it makes no difference here
-  const statement = makeVariableAssignment(stmt.lexeme as any, stmt.routine.variables[0], [], stmt.value);
+  const statement = makeVariableAssignment(stmt.lexeme as OperatorLexeme, stmt.routine.variables[0], [], stmt.value);
 
   const pcode = variableAssignment(statement, program, startLine, options);
   pcode.push([

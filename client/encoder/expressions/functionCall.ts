@@ -1,17 +1,27 @@
 import PCode from "../../constants/pcodes.ts";
 import type { FunctionCall } from "../../parser/definitions/expressions/functionCall.ts";
 import type { Program } from "../../parser/definitions/routines/program.ts";
-import { getParameters, getResultType } from "../../parser/definitions/routines/subroutine.ts";
+import {
+  getParameters,
+  getResultType,
+} from "../../parser/definitions/routines/subroutine.ts";
 import { resultAddress, turtleAddress } from "../addresses.ts";
 import expression from "../expression.ts";
 import merge from "../merge.ts";
 import type { Options } from "../options.ts";
 
-export default (exp: FunctionCall, program: Program, options: Options): number[][] => {
+export default (
+  exp: FunctionCall,
+  program: Program,
+  options: Options
+): number[][] => {
   const pcode: number[][] = [];
 
   // first: load arguments onto stack
-  const parameters = exp.command.__ === "Command" ? exp.command.parameters : getParameters(exp.command);
+  const parameters =
+    exp.command.__ === "Command"
+      ? exp.command.parameters
+      : getParameters(exp.command);
   for (let index = 0; index < parameters.length; index += 1) {
     const arg = exp.arguments[index];
     const param = parameters[index];

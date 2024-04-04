@@ -1,31 +1,17 @@
 import PCode from "../../constants/pcodes.ts";
 import type { ConstantValue } from "../../parser/definitions/expressions/constantValue.ts";
 import type { Program } from "../../parser/definitions/routines/program.ts";
-import expression from "../expression.ts";
-import merge from "../merge.ts";
 import type { Options } from "../options.ts";
 
-export default (exp: ConstantValue, program: Program, options: Options): number[][] => {
-  const pcode: number[][] = [];
-
-  // string constant
-  if (exp.constant.type === "string") {
-    const value = exp.constant.value as string;
-    pcode.push([PCode.lstr, value.length].concat(Array.from(value).map((x) => x.charCodeAt(0))));
-    if (exp.indexes.length > 0) {
-      const indexExp = expression(exp.indexes[0], program, options);
-      merge(pcode, indexExp);
-      if (program.language === "Pascal") {
-        merge(pcode, [[PCode.decr]]); // Pascal indexes strings from 1 instead of 0
-      }
-      merge(pcode, [[PCode.swap, PCode.test, PCode.plus, PCode.incr, PCode.lptr]]);
-    }
-
-    // integer or boolean constant
-  } else {
-    pcode.push([PCode.ldin, exp.constant.value as number]);
-  }
-
-  // return the pcode
-  return pcode;
-};
+export default (
+  expression: ConstantValue,
+  _program: Program,
+  _options: Options
+): number[][] =>
+  expression.constant.type === "string"
+    ? [
+        [PCode.lstr, expression.constant.value.length].concat(
+          Array.from(expression.constant.value).map((x) => x.charCodeAt(0))
+        ),
+      ]
+    : [[PCode.ldin, expression.constant.value]];

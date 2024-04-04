@@ -1,58 +1,95 @@
-import type { Expression } from "../parser/definitions/expression.ts";
+import {
+  getDimensions,
+  type Expression,
+  getVariable,
+} from "../parser/definitions/expression.ts";
 import type { VariableValue } from "../parser/definitions/expressions/variableValue.ts";
 import type { Program } from "../parser/definitions/routines/program.ts";
-import { isArray } from "../parser/definitions/variable.ts";
 import type { Options } from "./options.ts";
-import castExpression from "./expressions/castExpression.ts";
-import colourValue from "./expressions/colourValue.ts";
-import compoundExpression from "./expressions/compoundExpression.ts";
-import constantValue from "./expressions/constantValue.ts";
-import functionValue from "./expressions/functionValue.ts";
-import inputValue from "./expressions/inputValue.ts";
-import queryValue from "./expressions/queryValue.ts";
-import literalIntegerValue from "./expressions/literalIntegerValue.ts";
-import literalStringValue from "./expressions/literalStringValue.ts";
-import variableAddress from "./expressions/variableAddress.ts";
-import variableValue from "./expressions/variableValue.ts";
+import encodeArrayLiteralValue from "./expressions/arrayLiteralValue.ts";
+import encodeCastExpression from "./expressions/castExpression.ts";
+import encodeColourValue from "./expressions/colourValue.ts";
+import encodeCompoundExpression from "./expressions/compoundExpression.ts";
+import encodeConstantIndex from "./expressions/constantIndex.ts";
+import encodeConstantValue from "./expressions/constantValue.ts";
+import encodeFunctionCall from "./expressions/functionCall.ts";
+import encodeInputValue from "./expressions/inputValue.ts";
+import encodeIntegerValue from "./expressions/integerValue.ts";
+import encodeQueryValue from "./expressions/queryValue.ts";
+import encodeStringValue from "./expressions/stringValue.ts";
+import encodeVariableAddress from "./expressions/variableAddress.ts";
+import encodeVariableExpression from "./expressions/variableExpression.ts";
+import { VariableIndex } from "../parser/definitions/expressions/variableIndex.ts";
+import { VariableSlice } from "../parser/definitions/expressions/variableSlice.ts";
+import { getArrayDepth } from "../parser/definitions/variable.ts";
 
-const expression = (
-  exp: Expression,
+const encodeExpression = (
+  expression: Expression,
   program: Program,
   options: Options,
   reference = false
 ): number[][] => {
-  switch (exp.expressionType) {
+  switch (expression.expressionType) {
     case "integer":
-      return [literalIntegerValue(exp, program, options)];
+      return [encodeIntegerValue(expression, program, options)];
     case "string":
-      return [literalStringValue(exp, program, options)];
+      return [encodeStringValue(expression, program, options)];
+    case "arrayLiteral":
+      return [encodeArrayLiteralValue(expression, program, options)];
     case "input":
-      return [inputValue(exp, program, options)];
+      return [encodeInputValue(expression, program, options)];
     case "query":
-      return [queryValue(exp, program, options)];
+      return [encodeQueryValue(expression, program, options)];
     case "colour":
-      return [colourValue(exp, program, options)];
+      return [encodeColourValue(expression, program, options)];
     case "constant":
-      return constantValue(exp, program, options);
-    case "address":
-      return variableAddress(exp, program, options);
+      return encodeConstantValue(expression, program, options);
+    case "constantIndex":
+      return encodeConstantIndex(expression, program, options);
+    case "variableAddress":
+      return encodeVariableAddress(expression, program, options);
     case "variable":
-      return reference && !referenceVariableAddressIsValue(exp)
-        ? variableAddress(exp, program, options)
-        : variableValue(exp, program, options);
+    case "variableIndex":
+      return reference && !referenceVariableAddressIsValue(expression)
+        ? encodeVariableAddress(expression, program, options)
+        : encodeVariableExpression(expression, program, options);
+    case "variableSlice":
+      return encodeVariableExpression(expression, program, options);
     case "namedArgument":
-      return expression(exp.expression, program, options, reference);
+      return encodeExpression(
+        expression.expression,
+        program,
+        options,
+        reference
+      );
     case "function":
-      return functionValue(exp, program, options);
+      return encodeFunctionCall(expression, program, options);
     case "compound":
-      return compoundExpression(exp, program, options);
+      return encodeCompoundExpression(expression, program, options);
     case "cast":
-      return castExpression(exp, program, options);
+      return encodeCastExpression(expression, program, options);
+    default:
+      return expression satisfies never;
   }
 };
 
-export default expression;
+export default encodeExpression;
 
-const referenceVariableAddressIsValue = (exp: VariableValue): boolean =>
-  (isArray(exp.variable) && exp.indexes.length < exp.variable.arrayDimensions.length) ||
-  (exp.variable.type === "string" && exp.indexes.length === 0);
+const referenceVariableAddressIsValue = (
+  expression: VariableIndex | VariableSlice | VariableValue
+): boolean => {
+  // for arrays and strings, the address is the value
+  if (expression.expressionType === "variable") {
+    return (
+      expression.variable.isArray || expression.variable.type === "string"
+    );
+  }
+
+  // for indexed variables / variable slices, check that we haven't gone all the way down to the bottom
+  const variable = getVariable(expression);
+  const dimensions = getDimensions(expression);
+  return (
+    (variable.isArray && dimensions < getArrayDepth(variable)) ||
+    (!variable.isArray && variable.type === "string" && dimensions === 0)
+  );
+};

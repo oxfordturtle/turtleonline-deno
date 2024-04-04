@@ -1,6 +1,4 @@
 import PCode from "../../constants/pcodes.ts";
-import type { VariableAddress } from "../../parser/definitions/expressions/variableAddress.ts";
-import type { VariableIndex } from "../../parser/definitions/expressions/variableIndex.ts";
 import makeVariableValue, { type VariableValue } from "../../parser/definitions/expressions/variableValue.ts";
 import type { Program } from "../../parser/definitions/routines/program.ts";
 import { isArray } from "../../parser/definitions/variable.ts";
@@ -9,11 +7,7 @@ import expression from "../expression.ts";
 import merge from "../merge.ts";
 import type { Options } from "../options.ts";
 
-export default (
-  exp: VariableAddress | VariableIndex | VariableValue,
-  program: Program,
-  options: Options
-): number[][] => {
+export default (exp: VariableValue, program: Program, options: Options): number[][] => {
   const pcode: number[][] = [];
 
   // array element
@@ -30,10 +24,11 @@ export default (
       } else if (exp.variable.arrayDimensions[i] === undefined) {
         // this means the final index expression is to a character within an array of strings
         if (program.language === "Pascal") {
-          merge(pcode, [[PCode.decr]]); // Pascal strings are indexed from 1 instead of zero
+          // Pascal string indexes start from 1 instead of 0
+          merge(pcode, [[PCode.decr]]);
         }
       }
-      merge(pcode, [[PCode.swap, PCode.test, PCode.plus, PCode.incr]]);
+      merge(pcode, [[PCode.swap, PCode.test, PCode.plus, PCode.incr, PCode.lptr]]);
     }
   }
 
@@ -46,22 +41,44 @@ export default (
     }
     const baseVariableExp = makeVariableValue(exp.lexeme, exp.variable); // same variable, no indexes
     merge(pcode, expression(baseVariableExp, program, options));
-    merge(pcode, [[PCode.test, PCode.plus, PCode.incr]]);
+    merge(pcode, [[PCode.test, PCode.plus, PCode.incr, PCode.lptr]]);
+    if (program.language === "Python" || program.language === "TypeScript") {
+      // Python and TypeScript don't have character types, so we need to add
+      // this here - it won't be picked up with a contextual type cast
+      // (N.B. BASIC doesn't have a character type either, but BASIC doesn't
+      // allow direct reference to characters within strings, so this
+      // situation won't arise for BASIC)
+      merge(pcode, [[PCode.ctos]]);
+    }
   }
 
   // predefined turtle property
   else if (exp.variable.turtle) {
-    pcode.push([PCode.ldag, turtleAddress(program) + exp.variable.turtle]);
+    pcode.push([PCode.ldvg, turtleAddress(program) + exp.variable.turtle]);
   }
 
   // global variable
   else if (exp.variable.routine.__ === "Program") {
-    pcode.push([PCode.ldag, variableAddress(exp.variable)]);
+    pcode.push([PCode.ldvg, variableAddress(exp.variable)]);
   }
 
-  // local variable
+  // local reference variable (except arrays and strings)
+  else if (
+    exp.variable.isReferenceParameter &&
+    !isArray(exp.variable) &&
+    exp.variable.type !== "string"
+  ) {
+    pcode.push([PCode.ldvr, subroutineAddress(exp.variable.routine), variableAddress(exp.variable)]);
+  }
+
+  // local value variable (and arrays and strings passed by reference)
   else {
-    pcode.push([PCode.ldav, subroutineAddress(exp.variable.routine), variableAddress(exp.variable)]);
+    pcode.push([PCode.ldvv, subroutineAddress(exp.variable.routine), variableAddress(exp.variable)]);
+  }
+
+  // add peek code for pointer variables
+  if (exp.variable.isPointer) {
+    merge(pcode, [[PCode.lptr]]);
   }
 
   // return the pcode

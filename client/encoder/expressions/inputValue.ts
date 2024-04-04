@@ -3,7 +3,8 @@ import type { InputValue } from "../../parser/definitions/expressions/inputValue
 import type { Program } from "../../parser/definitions/routines/program.ts";
 import type { Options } from "../options.ts";
 
-export default (exp: InputValue, _program: Program, _options: Options): number[] => [
-  PCode.ldin,
-  exp.input.value,
-];
+export default (
+  exp: InputValue,
+  _program: Program,
+  _options: Options
+): number[] => [PCode.ldin, exp.input.value];

@@ -1,5 +1,5 @@
 import type { Type } from "../../lexer/types.ts";
-import type { Variable } from "./variable.ts";
+import { getArrayDepth, getBaseVariable, type Variable } from "./variable.ts";
 import type { ArrayLiteralValue } from "./expressions/arrayLiteralValue.ts";
 import type { CastExpression } from "./expressions/castExpression.ts";
 import type { ColourValue } from "./expressions/colourValue.ts";
@@ -43,25 +43,33 @@ export const makeExpression = (): ExpressionCommon => ({
   __: "expression",
 });
 
-export const getVariable = (expression: VariableValue | VariableIndex | VariableSlice): Variable => {
+export const getVariableExpression = (
+  expression: VariableValue | VariableIndex | VariableSlice
+): VariableValue => {
   switch (expression.expressionType) {
     case "variable":
-      return expression.variable;
+      return expression;
     default:
-      return getVariable(expression.variableExpression);
+      return getVariableExpression(expression.variableExpression);
   }
-}
+};
 
-export const getDimensions = (expression: VariableValue | VariableIndex | VariableSlice): number => {
+export const getVariable = (
+  expression: VariableValue | VariableIndex | VariableSlice
+): Variable => getVariableExpression(expression).variable;
+
+export const getDimensions = (
+  expression: VariableValue | VariableIndex | VariableSlice
+): number => {
   switch (expression.expressionType) {
     case "variable":
-      return expression.variable.arrayDimensions.length;
+      return expression.variable.isArray ? getArrayDepth(expression.variable) : 0;
     case "variableIndex":
       return getDimensions(expression.variableExpression) - 1;
     case "variableSlice":
       return getDimensions(expression.variableExpression);
   }
-}
+};
 
 const languagesWithCharacterType = ["C", "Java", "Pascal"];
 
@@ -70,26 +78,31 @@ export const getType = (expression: Expression): Type => {
     case "constant":
       return expression.constant.type;
     case "constantIndex":
-      if (languagesWithCharacterType.includes(expression.constantExpression.constant.language)) {
+      if (
+        languagesWithCharacterType.includes(
+          expression.constantExpression.constant.language
+        )
+      ) {
         return expression.constantExpression.constant.type === "string"
           ? "character"
           : expression.constantExpression.constant.type;
       }
       return expression.constantExpression.constant.type;
     case "variable":
-      return expression.variable.type;
+      return getBaseVariable(expression.variable).type;
     case "variableAddress":
       return "integer";
     case "variableSlice":
       return getType(expression.variableExpression);
     case "variableIndex": {
       const variable = getVariable(expression);
+      const baseVariable = getBaseVariable(variable);
       const variableDimensions = getDimensions(expression);
       return languagesWithCharacterType.includes(variable.routine.language)
-        ? variable.type === "string" && variableDimensions === 0
+        ? baseVariable.type === "string" && variableDimensions === 0
           ? "character"
-          : variable.type
-        : variable.type;
+          : baseVariable.type
+        : baseVariable.type;
     }
     case "namedArgument":
       return getType(expression.expression);

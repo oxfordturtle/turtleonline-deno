@@ -102,13 +102,9 @@ export default (
       lexemes.get(-1)
     );
   }
-  let value = parseExpression(lexemes, routine);
-  const variableValue = makeVariableValue(variableLexeme, variable);
-  variableValue.indexes.push(...indexes);
-
-  // type checking
-  value = typeCheck(routine.language, value, variable);
+  const value = parseExpression(lexemes, routine);
+  const checkedValue = typeCheck(routine.language, value, variable);
 
   // create and return the variable assignment statement
-  return makeVariableAssignment(assignmentLexeme, variable, indexes, value);
+  return makeVariableAssignment(assignmentLexeme, variable, indexes, checkedValue);
 };
