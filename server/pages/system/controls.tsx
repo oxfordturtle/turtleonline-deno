@@ -1,9 +1,10 @@
 import React from "react";
+import languages from "../../../client/constants/languages.ts";
 
 export default (): JSX.Element => (
   <>
-    <div className="controls" data-action="closeMenu" data-arg="system">
-      <select aria-label="tab" data-action="selectTab">
+    <div className="controls" data-send="closeMenu" data-value="system">
+      <select aria-label="tab" data-send="selectTab">
         <option value="canvas">Canvas &amp; Console</option>
         <option value="output">Output</option>
         <option value="usage" data-mode="normal,expert,machine">
@@ -26,8 +27,10 @@ export default (): JSX.Element => (
           Run Settings
         </option>
       </select>
-      <select aria-label="language" data-binding="language"></select>
-      <button title="Maximize" data-action="maximize">
+      <select aria-label="language" data-bind="language">
+        {languages.map((language) => <option value={language}>{language}</option>)}
+      </select>
+      <button title="Maximize" data-send="maximize">
         <i className="fa fa-expand" aria-hidden="true"></i>
       </button>
     </div>

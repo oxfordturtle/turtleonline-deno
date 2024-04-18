@@ -8,7 +8,7 @@ export default (): JSX.Element => (
       data-mode="expert,machine"
     >
       <div className="system-buttons">
-        <button data-action="dumpMemory">Show Current State</button>
+        <button data-send="dumpMemory">Show Current State</button>
       </div>
       <div className="memory-container">
         <table>

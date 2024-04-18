@@ -15,7 +15,10 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="Python">
-        colour(green) blot(100) pause(1000) # etc.
+        colour(green)<br />
+        blot(100)<br />
+        pause(1000)<br />
+        # etc.
       </code>
     </pre>
     <p>(From the first example program in the Help menu.)</p>
@@ -27,7 +30,10 @@ export default (): JSX.Element => (
       value is less than 500; do it like this:
     </p>
     <pre>
-      <code data-language="Python">if radius &lt; 500: blot(radius)</code>
+      <code data-language="Python">
+        if radius &lt; 500:<br />
+        blot(radius)
+      </code>
     </pre>
     <p>
       If you want to do something different when the condition is not met (e.g.
@@ -37,7 +43,10 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="Python">
-        if radius &lt; 500: blot(radius) else: blot(radius // 2)
+        if radius &lt; 500:<br />
+        blot(radius)<br />
+        else:<br />
+        blot(radius // 2)
       </code>
     </pre>
     <p>
@@ -62,9 +71,11 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="Python">
-        if radius &lt; 500: blot(radius) blot(radius // 3) # too many indents
-        else: # should match the if line blot(radius // 2) # needs indent after
-        else
+        if radius &lt; 500:<br />
+        blot(radius)<br />
+        blot(radius // 3) # too many indents
+        else: # should match the if line<br />
+        blot(radius // 2) # needs indent after else
       </code>
     </pre>
 
@@ -78,7 +89,10 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="Python">
-        for count in range(1, 201, 1): forward(count // 3) right(5) # etc.
+        for count in range(1, 201, 1):<br />
+        forward(count // 3)<br />
+        right(5)<br />
+        # etc.
       </code>
     </pre>
     <p>
@@ -114,7 +128,8 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="Python">
-        while condition: # sequence of commands
+        while condition:<br />
+        # sequence of commands
       </code>
     </pre>
     <p>

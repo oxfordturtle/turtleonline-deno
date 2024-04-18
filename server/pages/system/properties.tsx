@@ -3,12 +3,12 @@ import React from "react";
 export default (): JSX.Element => (
   <>
     <div className="turtle-properties">
-      <button title="RUN" data-action="run" data-component="runButton">
+      <button title="RUN" data-send="run" data-component="runButton">
         <i className="fa fa-play" aria-hidden="true"></i>
       </button>
       <button
         title="HALT"
-        data-action="halt"
+        data-send="halt"
         disabled={true}
         data-component="haltButton"
       >

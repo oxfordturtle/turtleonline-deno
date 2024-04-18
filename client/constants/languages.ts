@@ -4,6 +4,9 @@ const languages = ["BASIC", "C", "Java", "Pascal", "Python", "TypeScript"] as co
 
 export default languages;
 
+export const isLanguage = (value: string): value is Language =>
+  languages.includes(value as Language);
+
 export const extension: Record<Language, string> = {
   BASIC: "tbas",
   C: "tc",

@@ -5,7 +5,10 @@ export default (): JSX.Element => (
     <h3>Programs and Procedures: the Basics</h3>
     <p>The simplest BASIC programs take this form:</p>
     <pre>
-      <code data-language="BASIC">REM [program commands] END</code>
+      <code data-language="BASIC">
+        REM [program commands]<br />
+        END
+      </code>
     </pre>
     <p>
       The first couple of Turtle example programs (from the Examples menu) are
@@ -16,7 +19,9 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="BASIC">
-        ringsize% = 130 REM [other program commands] END
+        ringsize% = 130<br />
+        REM [other program commands]<br />
+        END
       </code>
     </pre>
     <p>
@@ -33,8 +38,10 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="BASIC">
-        DEF PROCmyprocedure(par1%) LOCAL local1%, local2$ REM [procedure
-        commands] ENDPROC
+        DEF PROCmyprocedure(par1%)<br />
+        LOCAL local1%, local2$<br />
+        REM [procedure commands]<br />
+        ENDPROC
       </code>
     </pre>
     <p>
@@ -55,7 +62,9 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="BASIC">
-        DEF FNmyfunction$(par1%) REM [procedure commands] = "output"
+        DEF FNmyfunction$(par1%)<br />
+        REM [procedure commands]<br />
+        = "output"
       </code>
     </pre>
     <p>

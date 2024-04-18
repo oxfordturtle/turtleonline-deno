@@ -15,7 +15,10 @@ export default (): JSX.Element => (
     </pre>
     <pre>
       <code data-language="Python">
-        colour(green) blot(200) colour(red) blot(100)
+        colour(green)<br />
+        blot(200)<br />
+        colour(red)<br />
+        blot(100)
       </code>
     </pre>
     <p>
@@ -38,7 +41,10 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="Python">
-        home() colour(red) circle(50) ellipse(50, 80)
+        home()<br />
+        colour(red)<br />
+        circle(50)<br />
+        ellipse(50, 80)
       </code>
     </pre>
     <p>
@@ -64,7 +70,11 @@ export default (): JSX.Element => (
       assign it a value. Variables in Turtle Python are declared like this:
     </p>
     <pre>
-      <code data-language="Python">ringsize: int draw: bool name: str</code>
+      <code data-language="Python">
+        ringsize: int<br />
+        draw: bool<br />
+        name: str
+      </code>
     </pre>
     <p>
       After they have been declared, variables can be assigned a value like
@@ -72,7 +82,9 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="Python">
-        ringsize = 130 draw = True name = 'Turtle Python'
+        ringsize = 130<br />
+        draw = True<br />
+        name = 'Turtle Python'
       </code>
     </pre>
     <p>
@@ -85,7 +97,9 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="Python">
-        ringsize: int = 130 draw: bool = True name: str = 'Turtle Python'
+        ringsize: int = 130<br />
+        draw: bool = True<br />
+        name: str = 'Turtle Python'
       </code>
     </pre>
     <p>
@@ -162,7 +176,10 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="Python">
-        def prong(): forward(400) blot(20) back(400)
+        def prong():<br />
+        forward(400)<br />
+        blot(20)<br />
+        back(400)
       </code>
     </pre>
     <p>
@@ -173,12 +190,15 @@ export default (): JSX.Element => (
     <p>
       Functions can also be given parameters, which are specified inside the
       brackets after the function name. These are like variables for the
-      function that are assinged a value each time the function is called. For
+      function that are assigned a value each time the function is called. For
       example:
     </p>
     <pre>
       <code data-language="Python">
-        def prong(size: int): forward(size) blot(20) back(size)
+        def prong(size: int):<br />
+        forward(size)<br />
+        blot(20)<br />
+        back(size)
       </code>
     </pre>
     <p>
@@ -193,7 +213,8 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="Python">
-        def double(a: int) -&gt; int: return a * 2
+        def double(a: int) -&gt; int:<br />
+        return a * 2
       </code>
     </pre>
 
@@ -213,7 +234,10 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="Python">
-        x: int def drawCircle(): circle(x) x = 100 drawCircle()
+        x: int<br />
+        def drawCircle():<br />
+        circle(x) x = 100<br />
+        drawCircle()
       </code>
     </pre>
     <p>
@@ -223,7 +247,10 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="Python">
-        def declarex(): x: int = 100 declarex() circle(x)
+        def declarex():<br />
+        x: int = 100<br />
+        declarex()<br />
+        circle(x)
       </code>
     </pre>
     <p>
@@ -236,10 +263,14 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="Python">
-        x: int = 100 # x is now a global variable def foo(): x = 200 # this is
-        an error; # the global x cannot be assigned a value here # and no local
-        x has been declared def bar(): global x x = 200 # this is fine, and will
-        set the value of the global x
+        x: int = 100 # x is now a global variable<br />
+        def foo():<br />
+        x = 200 # this is an error;<br />
+        # the global x cannot be assigned a value here<br />
+        # and no local x has been declared<br />
+        def bar():<br />
+        global x<br />
+        x = 200 # this is fine, and will set the value of the global x
       </code>
     </pre>
     <p>

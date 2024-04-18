@@ -15,7 +15,11 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="Pascal">
-        colour(green); blot(100); pause(1000); colour(red); forward(450);
+        colour(green);<br />
+        blot(100);<br />
+        pause(1000);<br />
+        colour(red);<br />
+        forward(450);<br />
         &#123;etc.&#125;
       </code>
     </pre>
@@ -59,8 +63,14 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="Pascal">
-        if &#123;condition&#125; then begin &#123;sequence1&#125; end else begin
-        &#123;sequence2&#125; end;
+        if &#123;condition&#125; then<br />
+        begin<br />
+        &#123;sequence1&#125;<br />
+        end<br />
+        else<br />
+        begin<br />
+        &#123;sequence2&#125;<br />
+        end;
       </code>
     </pre>
     <p>
@@ -84,8 +94,12 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="Pascal">
-        for count := 1 to 200 do begin forward(count / 3); right(5);
-        &#123;etc.&#125; end;
+        for count := 1 to 200 do<br />
+        begin<br />
+        forward(count / 3);<br />
+        right(5);<br />
+        &#123;etc.&#125;<br />
+        end;
       </code>
     </pre>
     <p>
@@ -117,8 +131,10 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="Pascal">
-        repeat &#123;command1;&#125; &#123;command2; (etc.)&#125; until
-        &#123;condition&#125;
+        repeat<br />
+        &#123;command1;&#125;<br />
+        &#123;command2; (etc.)&#125;<br />
+        until &#123;condition&#125;
       </code>
     </pre>
     <p>
@@ -130,7 +146,9 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="Pascal">
-        while &#123;condition&#125; do begin &#123;sequence of commands&#125;
+        while &#123;condition&#125; do<br />
+        begin<br />
+        &#123;sequence of commands&#125;<br />
         end;
       </code>
     </pre>
@@ -145,7 +163,7 @@ export default (): JSX.Element => (
       tests the condition <em>before</em> executing the sequence of commands,
       and so will not execute them even once if condition is false to start
       with. (For examples of the various loops, see the second set of example
-      programs, ‘Further commands and structures’.
+      programs, ‘Further commands and structures’.)
     </p>
   </>
 );

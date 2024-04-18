@@ -39,6 +39,6 @@ export const skeletons: Record<Language, string> = {
   Java: "class ProgramName {\n  void main () {\n    int var1 = 100;\n    colour(green);\n    blot(var1);\n  }\n}",
   Pascal:
     "PROGRAM programName;\nVAR var1: integer;\nBEGIN\n  var1 := 100;\n  colour(green);\n  blot(var1)\nEND.",
-  Python: "var1: int = 100\ncolour(green)\nblot(var1)",
+  Python: "var1 = 100\ncolour(green)\nblot(var1)",
   TypeScript: "var var1 = 100;\ncolour(green);\nblot(var1);",
 };

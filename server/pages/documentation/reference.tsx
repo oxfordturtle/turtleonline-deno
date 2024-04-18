@@ -12,6 +12,7 @@ import CommandsTable from "./reference/tables/commands.tsx";
 import CursorsTable from "./reference/tables/cursors.tsx";
 import FontsTable from "./reference/tables/fonts.tsx";
 import KeycodesTable from "./reference/tables/keycodes.tsx";
+import languages from "../../../client/constants/languages.ts";
 
 export default (requestParams: RequestParams): Promise<Response> =>
   htmlResponse(page(requestParams, header(tab(requestParams)), main(tab(requestParams))));
@@ -23,7 +24,7 @@ const header = (tab: string): JSX.Element => (
   <>
     <div className="title">
       <h1>Commands &amp; Constants Reference</h1>
-      <select data-action="selectTab">
+      <select data-send="selectTab">
         <option value="commands" selected={tab === "commands"}>
           Native Commands
         </option>
@@ -40,7 +41,9 @@ const header = (tab: string): JSX.Element => (
           Input Keycodes
         </option>
       </select>
-      <select data-binding="language"></select>
+      <select data-bind="language">
+        {languages.map((language) => <option value={language}>{language}</option>)}
+      </select>
     </div>
     <div className="tab-panes">
       <div className={`tab-pane${tab === "commands" ? " active" : ""}`} data-tab="commands">

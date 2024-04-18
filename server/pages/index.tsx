@@ -26,13 +26,13 @@ const main = (
   <>
     <div className="download">
       <h2>Download for Windows</h2>
-      <select id="version-select">
+      <select data-send="version">
         <option value="14">v14</option>
         <option value="15" selected>
           v15
         </option>
       </select>
-      <a href="/download/15" className="button" id="download-link">
+      <a href="/download/15" className="button" data-component="downloadLink">
         <span className="icon">
           <i className="fa fa-download"></i>
         </span>

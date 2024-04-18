@@ -11,36 +11,36 @@ export default (): JSX.Element => (
         <label>
           <input
             type="radio"
-            name="pcodeOptions1"
+            name="pcodeDisplayType"
             value="assembler"
-            data-binding="assembler"
+            data-bind="pcodeDisplayType"
           />
           Assembler Code
         </label>
         <label>
           <input
             type="radio"
-            name="pcodeOptions1"
+            name="pcodeDisplayType"
             value="machine"
-            data-binding="assembler"
+            data-bind="pcodeDisplayType"
           />
           Machine Code
         </label>
         <label>
           <input
             type="radio"
-            name="pcodeOptions2"
+            name="pcodeDisplayRadix"
             value="decimal"
-            data-binding="decimal"
+            data-bind="pcodeDisplayRadix"
           />
           Decimal
         </label>
         <label>
           <input
             type="radio"
-            name="pcodeOptions2"
+            name="pcodeDisplayRadix"
             value="hexadecimal"
-            data-binding="decimal"
+            data-bind="pcodeDisplayRadix"
           />
           Hexadecimal
         </label>

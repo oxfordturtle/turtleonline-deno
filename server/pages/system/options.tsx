@@ -6,7 +6,7 @@ export default (): JSX.Element => (
       <div className="option">
         <label>
           Default number of simultaneous drawing commands:
-          <input type="number" min="1" max="100" data-binding="drawCountMax" />
+          <input type="number" min="1" max="100" data-bind="drawCountMax" />
         </label>
         <p>
           Performing more than one drawing command at a time greatly increases
@@ -21,7 +21,7 @@ export default (): JSX.Element => (
             type="number"
             min="0"
             max="10000000"
-            data-binding="codeCountMax"
+            data-bind="codeCountMax"
           />
         </label>
         <p>
@@ -35,7 +35,7 @@ export default (): JSX.Element => (
       <div className="option">
         <label>
           Resolution at which to scale up the canvas:
-          <input type="number" min="0" max="100" data-binding="smallSize" />
+          <input type="number" min="0" max="100" data-bind="smallSize" />
         </label>
         <p>
           When the program sets the resolution to this value or less (in either
@@ -51,7 +51,7 @@ export default (): JSX.Element => (
             type="number"
             min="100"
             max="1000000"
-            data-binding="stackSize"
+            data-bind="stackSize"
           />
         </label>
         <p>

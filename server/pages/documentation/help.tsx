@@ -26,6 +26,7 @@ import TypeScriptBasics from "./help/TypeScript/basics.tsx";
 import TypeScriptStructures from "./help/TypeScript/structures.tsx";
 import TypeScriptOperators from "./help/TypeScript/operators.tsx";
 import TypeScriptInput from "./help/TypeScript/input.tsx";
+import languages from "../../../client/constants/languages.ts";
 
 export default (requestParams: RequestParams): Promise<Response> =>
   htmlResponse(page(requestParams, header(tab(requestParams)), main(tab(requestParams))));
@@ -37,7 +38,7 @@ const header = (tab: string): JSX.Element => (
   <>
     <div className="title">
       <h1>Turtle Languages Help</h1>
-      <select data-action="selectTab">
+      <select data-send="selectTab">
         <option value="basics" selected={tab === "basics"}>
           Programs &amp; Procedures
         </option>
@@ -51,7 +52,9 @@ const header = (tab: string): JSX.Element => (
           User Input
         </option>
       </select>
-      <select data-binding="language"></select>
+      <select data-bind="language">
+        {languages.map((language) => <option value={language}>{language}</option>)}
+      </select>
     </div>
     <p>
       The <em>Turtle System</em> supports programming in several specially designed languages. These

@@ -1,6 +1,3 @@
-/// <reference lib="dom" />
-
-// module imorts
 import { on } from "../../tools/hub.ts";
 
 // get relevant elements

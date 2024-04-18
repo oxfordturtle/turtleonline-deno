@@ -1,15 +1,15 @@
 /**
  * Binds select/input elements to state properties.
  */
-import { state } from "../state/index.ts";
-import type { Property } from "../constants/properties.ts";
-import type { Language } from "../constants/languages.ts";
-import languages from "../constants/languages.ts";
-import type { Mode } from "../constants/modes.ts";
-import { option, fill } from "../tools/elements.ts";
-import { commandCategories } from "../constants/categories.ts";
-import { SystemError } from "../tools/error.ts";
-import { on, send } from "../tools/hub.ts";
+import { state } from "../../state/index.ts";
+import type { Property } from "../../constants/properties.ts";
+import type { Language } from "../../constants/languages.ts";
+import languages from "../../constants/languages.ts";
+import type { Mode } from "../../constants/modes.ts";
+import { option, fill } from "../../tools/elements.ts";
+import { commandCategories } from "../../constants/categories.ts";
+import { SystemError } from "../../tools/error.ts";
+import { on, send } from "../../tools/hub.ts";
 
 for (const element of Array.from(document.querySelectorAll("[data-binding]"))) {
   switch ((element as HTMLElement).dataset.binding as Property) {

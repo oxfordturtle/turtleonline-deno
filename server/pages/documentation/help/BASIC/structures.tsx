@@ -15,7 +15,12 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="BASIC">
-        COLOUR(GREEN) BLOT(100) PAUSE(1000) COLOUR(RED) FORWARD(450) REM etc.
+        COLOUR(GREEN)<br />
+        BLOT(100)<br />
+        PAUSE(1000)<br />
+        COLOUR(RED)<br />
+        FORWARD(450)<br />
+        REM etc.
       </code>
     </pre>
     <p>(From the first example program in the Help menu.)</p>
@@ -28,7 +33,9 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="BASIC">
-        IF radius% &lt; 500 THEN BLOT(radius%) ENDIF
+        IF radius% &lt; 500 THEN<br />
+        BLOT(radius%)<br />
+        ENDIF
       </code>
     </pre>
     <p>
@@ -39,7 +46,11 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="BASIC">
-        IF radius% &lt; 500 THEN BLOT(radius%) ELSE BLOT(radius% / 2) ENDIF
+        IF radius% &lt; 500 THEN<br />
+        BLOT(radius%)<br />
+        ELSE<br />
+        BLOT(radius% / 2)<br />
+        ENDIF
       </code>
     </pre>
 
@@ -75,7 +86,11 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="BASIC">
-        FOR count% = 1 TO 200 FORWARD(count% / 3) RIGHT(5) REM etc. NEXT
+        FOR count% = 1 TO 200<br />
+        FORWARD(count% / 3)<br />
+        RIGHT(5)<br />
+        REM etc.<br />
+        NEXT
       </code>
     </pre>
     <p>
@@ -105,7 +120,10 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="BASIC">
-        REPEAT REM command1 REM command2 (etc.) UNTIL REM condition
+        REPEAT<br />
+        REM command1<br />
+        REM command2 (etc.)<br />
+        UNTIL REM condition
       </code>
     </pre>
     <p>

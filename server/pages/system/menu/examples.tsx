@@ -3,7 +3,7 @@ import React from "react";
 export default (): JSX.Element => (
   <>
     <div className="system-sub-menu">
-      <a data-action="toggleSystemMenu" data-arg="examples">
+      <a data-send="toggleSystemMenu" data-value="examples">
         <i className="fa fa-life-ring" title="Examples"></i>
         <span>Examples</span>
         <i className="fa fa-caret-right"></i>
@@ -12,11 +12,11 @@ export default (): JSX.Element => (
         <div data-component="examplesMenu"></div>
         <hr />
         <label>
-          <input type="checkbox" data-binding="includeCommentsInExamples" />
+          <input type="checkbox" data-bind="includeCommentsInExamples" />
           <span>Include comments within example programs</span>
         </label>
         <label>
-          <input type="checkbox" data-binding="loadCorrespondingExample" />
+          <input type="checkbox" data-bind="loadCorrespondingExample" />
           <span>Load corresponding example on language switch</span>
         </label>
       </div>

@@ -10,11 +10,7 @@ export default (
   ReactDOMServer.renderToString(
     <html>
       <Head />
-      <Body
-        requestParams={requestParams}
-        headerContent={headerContent}
-        mainContent={mainContent}
-      />
+      <Body requestParams={requestParams} headerContent={headerContent} mainContent={mainContent} />
     </html>
   );
 
@@ -35,11 +31,7 @@ const Head = (): JSX.Element => (
     <meta name="theme-color" content="#159d6b" />
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
     <link rel="apple-touch-icon" href="/images/turtle-152x152.png" />
-    <link rel="manifest" href="/js/manifest.json" />
-    <script
-      src="https://kit.fontawesome.com/03273b8e38.js"
-      crossOrigin="anonymous"
-    ></script>
+    <script src="https://kit.fontawesome.com/03273b8e38.js" crossOrigin="anonymous"></script>
     <link href="/css/screen.css" rel="stylesheet" />
     <title>The Turtle System</title>
     <script defer src="/js/index.js"></script>
@@ -58,7 +50,7 @@ const Body = ({
 }): JSX.Element => (
   <body className={requestParams.sections[0]}>
     <Nav requestParams={requestParams} />
-    <div className="wrapper" data-action="closeSiteMenus">
+    <div className="wrapper" data-send="closeSiteMenus">
       <div className="container">
         <header className="header">{headerContent}</header>
         <main className="main">{mainContent}</main>
@@ -68,15 +60,11 @@ const Body = ({
   </body>
 );
 
-const Nav = ({
-  requestParams,
-}: {
-  requestParams: RequestParams;
-}): JSX.Element => (
+const Nav = ({ requestParams }: { requestParams: RequestParams }): JSX.Element => (
   <nav className="site-nav">
     <div className="site-nav-left">
       <div className="site-menu">
-        <a data-action="toggleMenu" data-arg="site">
+        <a data-send="toggleMenu" data-value="site">
           <span className="icon logo">
             <img src="/images/turtle.png" alt="turtle logo" />
           </span>
@@ -86,19 +74,13 @@ const Nav = ({
           </span>
         </a>
         <div className="site-sub-menu" data-menu="site">
-          <a
-            href="/"
-            className={requestParams.sections[0] === "index" ? "active" : ""}
-          >
+          <a href="/" className={requestParams.sections[0] === "index" ? "active" : ""}>
             <span className="icon logo">
               <img src="/images/turtle.png" alt="turtle logo" />
             </span>
             <span className="text">The Turtle System</span>
           </a>
-          <a
-            href="/run"
-            className={requestParams.sections[0] === "run" ? "active" : ""}
-          >
+          <a href="/run" className={requestParams.sections[0] === "run" ? "active" : ""}>
             <span className="icon">
               <i className="fa fa-play"></i>
             </span>
@@ -106,11 +88,9 @@ const Nav = ({
           </a>
           <div className="site-menu">
             <a
-              className={
-                requestParams.sections[0] === "documentation" ? "active" : ""
-              }
-              data-action="toggleMenu"
-              data-arg="documentation"
+              className={requestParams.sections[0] === "documentation" ? "active" : ""}
+              data-send="toggleMenu"
+              data-value="documentation"
             >
               <span className="icon">
                 <i className="fa fa-book"></i>
@@ -177,19 +157,13 @@ const Nav = ({
               </a>
             </div>
           </div>
-          <a
-            href="/about"
-            className={requestParams.sections[0] === "about" ? "active" : ""}
-          >
+          <a href="/about" className={requestParams.sections[0] === "about" ? "active" : ""}>
             <span className="icon">
               <i className="fa fa-info"></i>
             </span>
             <span className="text">About</span>
           </a>
-          <a
-            href="/contact"
-            className={requestParams.sections[0] === "contact" ? "active" : ""}
-          >
+          <a href="/contact" className={requestParams.sections[0] === "contact" ? "active" : ""}>
             <span className="icon">
               <i className="fa fa-at"></i>
             </span>
@@ -204,16 +178,9 @@ const Nav = ({
   </nav>
 );
 
-const UserNav = ({
-  requestParams,
-}: {
-  requestParams: RequestParams;
-}): JSX.Element =>
+const UserNav = ({ requestParams }: { requestParams: RequestParams }): JSX.Element =>
   requestParams.user ? (
-    <LoggedInNav
-      requestParams={requestParams}
-      username={requestParams.user.username}
-    />
+    <LoggedInNav requestParams={requestParams} username={requestParams.user.username} />
   ) : (
     <LoggedOutNav requestParams={requestParams} />
   );
@@ -228,8 +195,8 @@ const LoggedInNav = ({
   <div className="site-menu">
     <a
       className={requestParams.sections[0] === "account" ? "active" : ""}
-      data-action="toggleMenu"
-      data-arg="user"
+      data-send="toggleMenu"
+      data-value="user"
     >
       <span className="icon">
         <i className="fa fa-user" aria-hidden="true"></i>
@@ -240,16 +207,10 @@ const LoggedInNav = ({
       </span>
     </a>
     <div className="site-sub-menu" data-menu="user">
-      <a
-        href="/account"
-        className={requestParams.page === "account" ? "active" : ""}
-      >
+      <a href="/account" className={requestParams.page === "account" ? "active" : ""}>
         My Account
       </a>
-      <a
-        href="/account/files"
-        className={requestParams.page === "files" ? "active" : ""}
-      >
+      <a href="/account/files" className={requestParams.page === "files" ? "active" : ""}>
         My Files
       </a>
       <a href="/logout" className="">
@@ -259,25 +220,15 @@ const LoggedInNav = ({
   </div>
 );
 
-const LoggedOutNav = ({
-  requestParams,
-}: {
-  requestParams: RequestParams;
-}): JSX.Element => (
+const LoggedOutNav = ({ requestParams }: { requestParams: RequestParams }): JSX.Element => (
   <>
-    <a
-      href="/register"
-      className={requestParams.sections[0] === "register" ? "active" : ""}
-    >
+    <a href="/register" className={requestParams.sections[0] === "register" ? "active" : ""}>
       <span className="icon">
         <i className="fa fa-user-plus"></i>
       </span>
       <span className="text">Register</span>
     </a>
-    <a
-      href="/login"
-      className={requestParams.sections[0] === "login" ? "active" : ""}
-    >
+    <a href="/login" className={requestParams.sections[0] === "login" ? "active" : ""}>
       <span className="icon">
         <i className="fa fa-sign-in-alt"></i>
       </span>
@@ -314,37 +265,23 @@ const Footer = (): JSX.Element => (
         target="blank"
         title="The Department for Education"
       >
-        <img
-          src="/images/government-logo.png"
-          alt="The Department for Education Crest"
-        />
+        <img src="/images/government-logo.png" alt="The Department for Education Crest" />
       </a>
-      <a
-        href="http://www.hertford.ox.ac.uk/"
-        target="blank"
-        title="Hertford College"
-      >
+      <a href="http://www.hertford.ox.ac.uk/" target="blank" title="Hertford College">
         <img src="/images/hertford-logo.png" alt="Hertford College Crest" />
       </a>
     </div>
     <p className="acknowledgements">
       The Oxford Turtle Project is funded by the{" "}
-      <a
-        href="https://www.gov.uk/government/organisations/department-for-education"
-        target="blank"
-      >
+      <a href="https://www.gov.uk/government/organisations/department-for-education" target="blank">
         UK Department for Education
       </a>
-      , with matched funding from various sources within the University of
-      Oxford (the{" "}
+      , with matched funding from various sources within the University of Oxford (the{" "}
       <a href="http://www.cs.ox.ac.uk/" target="blank">
         Department of Computer Science
       </a>
       , the{" "}
-      <a
-        href="http://www.admin.ox.ac.uk/councilsec/trusts/applying/vanhoutenfund/"
-        target="blank"
-      >
+      <a href="http://www.admin.ox.ac.uk/councilsec/trusts/applying/vanhoutenfund/" target="blank">
         Van Houten Fund
       </a>
       , and a private donor at{" "}

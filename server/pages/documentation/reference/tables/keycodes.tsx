@@ -1,4 +1,5 @@
 import React from "react";
+import inputs, { type Input } from "../../../../../client/constants/inputs.ts";
 
 export default (): JSX.Element => (
   <>
@@ -9,7 +10,16 @@ export default (): JSX.Element => (
           <th>Name</th>
         </tr>
       </thead>
-      <tbody data-component="keycodesTableBody"></tbody>
+      <tbody>{inputs.map(keycodeTableRow)}</tbody>
     </table>
   </>
+);
+
+const keycodeTableRow = (keycode: Input) => (
+  <tr>
+    <td>
+      <code>{keycode.name}</code>
+    </td>
+    <td>{keycode.value}</td>
+  </tr>
 );

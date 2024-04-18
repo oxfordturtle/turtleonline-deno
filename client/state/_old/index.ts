@@ -28,6 +28,7 @@ import parser from "../parser/parser.ts";
 import makeProgram, { type Program } from "../parser/definitions/routines/program.ts";
 import analyse from "../analyser/analyse.ts";
 import encoder from "../encoder/encode.ts";
+import view from "../components/_old/view.ts";
 
 /** system state */
 export class State {
@@ -717,6 +718,77 @@ export class State {
     };
   }
 
+  // general actions
+  newFile(skeleton = false) {
+    const file = new File(this.language);
+    if (skeleton) {
+      file.code = skeletons[this.language];
+    }
+    this.addFile(file);
+  }
+
+  openLocalFile() {
+    const state = this;
+    const fileInput = input({
+      type: "file",
+      on: [
+        "change",
+        function () {
+          if (fileInput.files) {
+            const file = fileInput.files[0];
+            const fr = new FileReader();
+            fr.onload = function () {
+              state.openFile(file.name, fr.result as string);
+            };
+            fr.readAsText(file);
+          }
+        },
+      ],
+    });
+    fileInput.click();
+  }
+
+  saveExportFile() {
+    send("error", new SystemError("This feature has not yet been implemented in the online system."))
+  }
+
+  closeCurrentFile(): void {
+    machine.halt();
+    this.files = this.files
+      .slice(0, this.currentFileIndex)
+      .concat(this.files.slice(this.currentFileIndex + 1));
+    if (this.files.length === 0) {
+      this.newFile();
+    } else if (this.currentFileIndex > this.files.length - 1) {
+      this.currentFileIndex = this.currentFileIndex - 1;
+    } else {
+      // although the currentFileIndex doesn't change in this case, we want
+      // everything refreshed as though it has changed
+      this.currentFileIndex = this.currentFileIndex;
+    }
+    send("closeMenu", "system");
+  }
+
+  copyCanvasGraphic() {
+    send("error", new SystemError("This feature has not yet been implemented in the online system."))
+  }
+
+  saveCanvasGraphic() {
+    send("error", new SystemError("This feature has not yet been implemented in the online system."))
+  }
+
+  printProgram() {
+    send("error", new SystemError("This feature has not yet been implemented in the online system."))
+  }
+
+  printOutputText() {
+    send("error", new SystemError("This feature has not yet been implemented in the online system."))
+  }
+
+  printConsoleText() {
+    send("error", new SystemError("This feature has not yet been implemented in the online system."))
+  }
+
   // edit actions
   undo(): void {}
 
@@ -730,7 +802,72 @@ export class State {
 
   selectAll(): void {}
 
-  // save settings (requires login)
+  findAndReplace(): void {}
+
+  autoFormat(): void {}
+
+  backupCode(): void {
+    this.file.backup = this.file.code;
+  }
+
+  restoreCode(): void {
+    if (this.file.code !== this.file.backup) {
+      this.file.compiled = false;
+    }
+    this.file.code = this.file.backup;
+  }
+
+  // compile actions
+  compileCurrentFile(): void {
+    // if this file's language doesn't match the current language, now is the
+    // time to make it match
+    this.file.language = this.language;
+    try {
+      this.tokens = tokenize(this.code, this.language);
+      this.lexemes = lexify(this.tokens, this.language);
+      this.program = parser(this.lexemes, this.language);
+      this.usage = analyse(this.lexemes, this.program);
+      this.pcode = encoder(this.program, this.compilerOptions);
+      this.file.language = this.language;
+      this.file.compiled = true;
+      this.files = this.files; // to update the session storage
+    } catch (error) {
+      send("error", error);
+    }
+  }
+
+  savePCodeJson(): void {
+    send("error", new SystemError("This feature has not yet been implemented in the online system."))
+  }
+
+  savePCodeBinary(): void {
+    send("error", new SystemError("This feature has not yet been implemented in the online system."))
+  }
+
+  // run actions
+  playPauseMachine() {
+    if (machine.isRunning()) {
+      if (machine.isPaused()) {
+        machine.play();
+      } else {
+        machine.pause();
+      }
+    } else {
+      if (!this.file.compiled) {
+        this.compileCurrentFile();
+      }
+      if (this.file.compiled) {
+        machine.run(this.pcode, this.machineOptions);
+      }
+    }
+    send("closeMenu", "system");
+  }
+
+  loadAndRunPCode(): void {
+    send("error", new SystemError("This feature has not yet been implemented in the online system."))
+  }
+
+  // options actions
   async saveSettings(): Promise<void> {
     const response = await fetch("/status");
     const user = response.ok ? await response.json() : null;
@@ -832,7 +969,6 @@ export class State {
     }
   }
 
-  // reset default settings
   resetDefaults(): void {
     // system settings
     this.language = defaults.language;
@@ -874,7 +1010,7 @@ export class State {
     send("closeMenu", "system");
   }
 
-  // add a file to the files array (and update current file index)
+  // other actions
   addFile(file: File): void {
     // stop the machine (if it's running)
     machine.halt();
@@ -894,34 +1030,6 @@ export class State {
     send("closeMenu", "system");
   }
 
-  // close the current file (and update current file index)
-  closeCurrentFile(): void {
-    machine.halt();
-    this.files = this.files
-      .slice(0, this.currentFileIndex)
-      .concat(this.files.slice(this.currentFileIndex + 1));
-    if (this.files.length === 0) {
-      this.newFile();
-    } else if (this.currentFileIndex > this.files.length - 1) {
-      this.currentFileIndex = this.currentFileIndex - 1;
-    } else {
-      // although the currentFileIndex doesn't change in this case, we want
-      // everything refreshed as though it has changed
-      this.currentFileIndex = this.currentFileIndex;
-    }
-    send("closeMenu", "system");
-  }
-
-  // create a new file
-  newFile(skeleton = false) {
-    const file = new File(this.language);
-    if (skeleton) {
-      file.code = skeletons[this.language];
-    }
-    this.addFile(file);
-  }
-
-  // open a file from disk
   openFile(filename: string, content: string, example: string | null = null) {
     const file = new File(this.language, example);
     const bits = filename.split(".");
@@ -999,27 +1107,6 @@ export class State {
     }
   }
 
-  openLocalFile() {
-    const state = this;
-    const fileInput = input({
-      type: "file",
-      on: [
-        "change",
-        function () {
-          if (fileInput.files) {
-            const file = fileInput.files[0];
-            const fr = new FileReader();
-            fr.onload = function () {
-              state.openFile(file.name, fr.result as string);
-            };
-            fr.readAsText(file);
-          }
-        },
-      ],
-    });
-    fileInput.click();
-  }
-
   openRemoteFile(_url: string) {
     send("error", new SystemError("Feature not yet available."));
   }
@@ -1042,6 +1129,7 @@ export class State {
             new SystemError(`Example "${exampleId}" is not available for Turtle ${this.language}.`)
           );
         }
+        view.send("closeMenu", "system");
       });
     }
   }
@@ -1071,24 +1159,6 @@ export class State {
     send("error", new SystemError("Feature not yet available."));
   }
 
-  compileCurrentFile(): void {
-    // if this file's language doesn't match the current language, now is the
-    // time to make it match
-    this.file.language = this.language;
-    try {
-      this.tokens = tokenize(this.code, this.language);
-      this.lexemes = lexify(this.tokens, this.language);
-      this.program = parser(this.lexemes, this.language);
-      this.usage = analyse(this.lexemes, this.program);
-      this.pcode = encoder(this.program, this.compilerOptions);
-      this.file.language = this.language;
-      this.file.compiled = true;
-      this.files = this.files; // to update the session storage
-    } catch (error) {
-      send("error", error);
-    }
-  }
-
   async outputAllExamples(): Promise<void> {
     let allExamplesText = "";
     for (const example of examples) {
@@ -1109,39 +1179,9 @@ export class State {
     a.click();
   }
 
-  backupCode(): void {
-    this.file.backup = this.file.code;
-  }
-
-  restoreCode(): void {
-    if (this.file.code !== this.file.backup) {
-      this.file.compiled = false;
-    }
-    this.file.code = this.file.backup;
-  }
-
   // TODO: this should be in the machine module
   dumpMemory(): void {
     send("memoryDumped", memory.dump());
-  }
-
-  // play/pause the machine
-  playPauseMachine() {
-    if (machine.isRunning()) {
-      if (machine.isPaused()) {
-        machine.play();
-      } else {
-        machine.pause();
-      }
-    } else {
-      if (!this.file.compiled) {
-        this.compileCurrentFile();
-      }
-      if (this.file.compiled) {
-        machine.run(this.pcode, this.machineOptions);
-      }
-    }
-    send("closeMenu", "system");
   }
 }
 

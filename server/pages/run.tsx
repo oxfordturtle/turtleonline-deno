@@ -24,7 +24,7 @@ export default (requestParams: RequestParams): Promise<Response> =>
 
 const main = (searchParams: URLSearchParams): JSX.Element => (
   <div
-    id="turtle"
+    data-component="system"
     className="system"
     data-language={searchParams.get("l")}
     data-example={searchParams.get("x")}
@@ -34,8 +34,8 @@ const main = (searchParams: URLSearchParams): JSX.Element => (
     <header className="system-header">
       <button
         aria-label="system menu"
-        data-action="toggleMenu"
-        data-arg="system"
+        data-send="toggleMenu"
+        data-value="system"
       >
         <i className="fa fa-bars" aria-hidden="true"></i>
       </button>
@@ -43,7 +43,7 @@ const main = (searchParams: URLSearchParams): JSX.Element => (
     </header>
     <div className="system-body">
       <Menu />
-      <main className="system-main" data-action="closeMenu" data-arg="system">
+      <main className="system-main" data-send="closeMenu" data-value="system">
         <section className="system-section left">
           <Filename />
           <Editor />

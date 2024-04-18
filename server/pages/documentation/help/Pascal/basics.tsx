@@ -6,7 +6,10 @@ export default (): JSX.Element => (
     <p>The simplest Pascal programs take this form:</p>
     <pre>
       <code data-language="Pascal">
-        PROGRAM myprog; BEGIN &#123;program commands&#125; END.
+        PROGRAM myprog;<br />
+        BEGIN<br />
+        &#123;program commands&#125;<br />
+        END.
       </code>
     </pre>
     <p>
@@ -18,8 +21,11 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="Pascal">
-        PROGRAM myprog; VAR global1: integer; global2, global3: integer; BEGIN
-        &#123;program commands&#125; END.
+        PROGRAM myprog;<br />
+        VAR global1: integer; global2, global3: integer;<br />
+        BEGIN<br />
+        &#123;program commands&#125;<br />
+        END.
       </code>
     </pre>
     <p>
@@ -27,7 +33,7 @@ export default (): JSX.Element => (
       various tasks and make them easier to understand. Pascal has two types of
       subroutine, procedures (which are like mini-programs) and functions (which
       are designed to calculate some value). The ‘Simple procedure’ example
-      program has a procedure to draw a ‘prong’ â€“ a line ending in a blot â€“
+      program has a procedure to draw a ‘prong’ - a line ending in a blot -
       and then return to the starting point. Procedures fit into a Pascal
       program after the global variables and before the{" "}
       <code data-language="Pascal">BEGIN</code> of the main program; they look
@@ -35,8 +41,11 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="Pascal">
-        Procedure myprocedure(par1: integer); Var local1, local2: integer; Begin
-        &#123;procedure commands&#125; End;
+        Procedure myprocedure(par1: integer);<br />
+        Var local1, local2: integer;<br />
+        Begin<br />
+        &#123;procedure commands&#125;<br />
+        End;
       </code>
     </pre>
     <p>
@@ -56,7 +65,7 @@ export default (): JSX.Element => (
       <code data-language="Pascal">program</code>,{" "}
       <code data-language="Pascal">Program</code> or even{" "}
       <code data-language="Pascal">PrOgRaM</code>!). These three words are also
-      in red here â€“ this is to indicate that they are special ‘reserved’ words
+      in red here - this is to indicate that they are special ‘reserved’ words
       that cannot be used for other purposes (so you can’t call a procedure or
       variable ‘begin’). As well as variables, a program can use constants to
       give a convenient name to a particular value. Any constants must be
@@ -64,13 +73,15 @@ export default (): JSX.Element => (
     </p>
     <pre>
       <code data-language="Pascal">
-        PROGRAM myprog; CONST limit = 4; VAR global1: integer; &#123;and so
-        on&#125;
+        PROGRAM myprog;<br />
+        CONST limit = 4;<br />
+        VAR global1: integer;<br />
+        &#123;and so on&#125;
       </code>
     </pre>
     <p>
       Notice that variable and constant declarations must all end with a
-      semicolon â€“ Turtle will tell you if you forget! Notice also that while
+      semicolon - Turtle will tell you if you forget! Notice also that while
       constants are given a value when declared (e.g.{" "}
       <code data-language="Pascal">limit</code> is given the value{" "}
       <code data-language="Pascal">4</code> above), variables are given a{" "}
