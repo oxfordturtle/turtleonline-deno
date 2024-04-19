@@ -10,7 +10,7 @@ export const createHub = <Values extends Dictionary>(id = crypto.randomUUID()): 
   // create the `send` function for triggering events
   const send = <Key extends keyof Values>(
     key: Key,
-    value: Values[Key],
+    value: Values[Key] = undefined as Values[Key],
     element?: Element
   ): void => {
     // create and dispatch the event
